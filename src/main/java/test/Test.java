@@ -1,7 +1,6 @@
 package test;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

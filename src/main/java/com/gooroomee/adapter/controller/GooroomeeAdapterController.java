@@ -11,6 +11,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import com.gooroomee.adapter.constant.TeleConstant;
 import com.gooroomee.adapter.dto.common.ResponseDto;
 import com.gooroomee.adapter.dto.common.ResponseDto.Result;
+import com.gooroomee.adapter.dto.io.IfMcCs002_I;
+import com.gooroomee.adapter.dto.io.IfMcCs002_O;
 
 @Controller
 public class GooroomeeAdapterController {
@@ -29,6 +32,14 @@ public class GooroomeeAdapterController {
 	
 	@Autowired
 	public RestTemplateBuilder restTemplateBuilder; 
+	
+	
+	
+	@GetMapping(path = {"/intrf"})
+	public @ResponseBody ResponseDto<IfMcCs002_O> doOcr(@RequestBody IfMcCs002_I ifMcCs002_I){
+		return null;
+	}
+	
 
 	@RequestMapping(path = "test1", method = RequestMethod.GET)
 	@ResponseBody
