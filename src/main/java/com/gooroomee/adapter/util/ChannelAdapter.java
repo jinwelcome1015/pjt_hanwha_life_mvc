@@ -1,10 +1,7 @@
 package com.gooroomee.adapter.util;
 
-import org.springframework.util.StringUtils;
-
 import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.constant.TeleConstant.TargetType;
-import com.gooroomee.adapter.dto.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.common.HlicpMessageHeader;
 
 public class ChannelAdapter {
 	

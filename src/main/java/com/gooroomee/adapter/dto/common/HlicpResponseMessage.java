@@ -1,4 +1,4 @@
-package com.gooroomee.adapter.dto;
+package com.gooroomee.adapter.dto.common;
 
 /**
  * 응답 메세지

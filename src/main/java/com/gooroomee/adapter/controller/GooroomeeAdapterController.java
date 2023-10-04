@@ -17,21 +17,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.dto.ResponseDto;
+import com.gooroomee.adapter.dto.common.ResponseDto;
+import com.gooroomee.adapter.dto.common.ResponseDto.Result;
 
 @Controller
 public class GooroomeeAdapterController {
 	
-	@Value(value = "#{propertiesFactoryBean['interface.target.url']}")
+	@Value(value = "#{propertiesFactoryBean['interface.endpoint.url']}")
 	String targetUrl;
 	
 	
 	@Autowired
 	public RestTemplateBuilder restTemplateBuilder; 
 
-	@RequestMapping(path = "adapter/test", method = RequestMethod.GET)
+	@RequestMapping(path = "test1", method = RequestMethod.GET)
 	@ResponseBody
 	public String doTest1() throws URISyntaxException {
+		
+		System.out.println("targetUrl : " + targetUrl);
+		
+		
 		URI url = new URI("https://jsonplaceholder.typicode.com/posts");
 		
 		RestTemplate restTemplate = restTemplateBuilder.build();
@@ -43,7 +48,7 @@ public class GooroomeeAdapterController {
 		return result;
 	}
 	
-	@GetMapping(path = "/test1")
+	@GetMapping(path = "/test2")
 	public @ResponseBody String doTest2() {
 		System.out.println("targetUrl : " + targetUrl);
 		
@@ -51,7 +56,7 @@ public class GooroomeeAdapterController {
 	}
 	
 	
-	@GetMapping(path = "/test2")
+	@GetMapping(path = "/test3")
 	public @ResponseBody ResponseDto doTest3() {
 		
 		Map<String, Object> map1 = new HashMap<String, Object>();
@@ -62,7 +67,7 @@ public class GooroomeeAdapterController {
 		map2.put("2", map3);
 		map3.put("3", "a");
 		
-		ResponseDto<Map> responseDto = new ResponseDto<Map>(HttpStatus.ACCEPTED, map1);
+		ResponseDto<Map> responseDto = new ResponseDto<Map>(Result.SUCCESS, HttpStatus.OK, map1);
 		
 		return responseDto;
 	}

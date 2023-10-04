@@ -1,4 +1,4 @@
-package com.gooroomee.adapter.dto;
+package com.gooroomee.adapter.dto.io;
 
 public class IfMcCs002_O {
 	

@@ -1,4 +1,4 @@
-package com.gooroomee.adapter.dto;
+package com.gooroomee.adapter.dto.io;
 
 import java.util.Date;
 
