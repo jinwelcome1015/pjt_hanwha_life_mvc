@@ -1,8 +1,9 @@
 package com.gooroomee.adapter.constant;
 
 public class TeleConstant {
+	
 	public enum TargetType {
-		MCI, ESB
+		MCI, ESB, FEB;
 	}
 	
 	/**

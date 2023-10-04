@@ -1,6 +1,9 @@
 package com.gooroomee.adapter.util;
 
+import org.springframework.util.StringUtils;
+
 import com.gooroomee.adapter.constant.TeleConstant;
+import com.gooroomee.adapter.constant.TeleConstant.TargetType;
 import com.gooroomee.adapter.dto.HlicpMessageHeader;
 
 public class ChannelAdapter {
@@ -33,13 +36,13 @@ public class ChannelAdapter {
 	/**
 	 * 전송대상(MCI/ESB/FEB) URL 정보
 	 */
-	private String targetUrl;
+	private String targetBaseUrl;
 	
-	public ChannelAdapter(String enmb, String activeProfile, String targetUrl) {
+	public ChannelAdapter(String enmb, String activeProfile, String targetBaseUrl) {
 		super();
 		this.enmb = enmb;
 		this.activeProfile = activeProfile;
-		this.targetUrl = targetUrl;
+		this.targetBaseUrl = targetBaseUrl;
 	}
 	
 	public String getEnmb() {
@@ -57,41 +60,35 @@ public class ChannelAdapter {
 	public void setActiveProfile(String activeProfile) {
 		this.activeProfile = activeProfile;
 	}
-
-	public String getTargetUrl() {
-		return targetUrl;
+	
+	public String getTargetBaseUrl() {
+		return targetBaseUrl;
 	}
 
-	public void setTargetUrl(String targetUrl) {
-		this.targetUrl = targetUrl;
+	public void setTargetBaseUrl(String targetBaseUrl) {
+		this.targetBaseUrl = targetBaseUrl;
 	}
 
-	/**
-	 * 
-	 * @param itfcId
-	 * @param rcveSrvcId
-	 * @param rcveSysCode
-	 * @param prsnInfoIncsYn
-	 * @param emnb
-	 * @return
-	 */
-	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode, String prsnInfoIncsYn, String emnb) {
+	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode) {
+		return createHeader(itfcId, rcveSrvcId, rcveSysCode, "N");
+	}
+	
+	
+	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode, String prsnInfoIncsYn) {
 		HlicpMessageHeader header = new HlicpMessageHeader();
 		header.setItfcId(itfcId);
 		header.setRcveSrvcId(rcveSrvcId);
 		header.setChnlTypeCode(CHNL_TYPE_CODE);
 		header.setTrnmSysCode(TRNM_SYS_CODE);
 		header.setRcveSysCode(rcveSysCode);
-		header.setEmnb(emnb);
+		header.setEmnb(this.getEnmb());
 		header.setBelnOrgnCode(BELN_ORGN_CODE);
 		header.setPrsnInfoIncsYn(prsnInfoIncsYn);
-		
-		header.setIpAddr(TeleUtils.getIpAddress());
+		header.setIpAddr(TeleUtils.getLocalIpAddress());
 		header.setTlgrCretDttm(TeleUtils.getTlgrCretDttm());
-		header.setRndmNo(rndmNo);
+		header.setRndmNo(TeleUtils.getRandomNumber());
 		header.setServerType(this.getServerType());
 		header.setRspnDvsnCode(TeleConstant.RSPN_DVSN_SEND);
-		
 		return header;
 	}
 
@@ -119,5 +116,23 @@ public class ChannelAdapter {
 		
 		return serverType;
 	}
+	
+	public String getTargetFullUrl(TeleConstant.TargetType targetType) {
+		
+		String targetFullUrl = "";
+		
+		String targetBaseUrl = this.getTargetBaseUrl();
+		
+		if(targetType == TeleConstant.TargetType.MCI) {
+			targetFullUrl = targetBaseUrl + "/mci" + "/" + TRNM_SYS_CODE.toLowerCase();
+		}else if(targetType == TeleConstant.TargetType.ESB) {
+			targetFullUrl = targetBaseUrl + "/esb";
+		}else if(targetType == TeleConstant.TargetType.FEB) {
+			targetFullUrl = targetBaseUrl + "/feb";
+		}
+		
+		return targetFullUrl;
+	}
+	
 	
 }
