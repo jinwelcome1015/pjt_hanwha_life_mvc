@@ -55,7 +55,10 @@ public class TeleUtils {
 		return DEFAULT_IP_ADDRESS;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public static String getRandomNumber() {
 		return getRandomNumber(4);
 	}
