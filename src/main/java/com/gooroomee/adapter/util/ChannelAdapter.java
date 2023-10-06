@@ -1,5 +1,6 @@
 package com.gooroomee.adapter.util;
 
+import com.gooroomee.adapter.constant.IfType;
 import com.gooroomee.adapter.constant.TeleConstant;
 import com.gooroomee.adapter.dto.common.HlicpMessageHeader;
 
@@ -114,17 +115,18 @@ public class ChannelAdapter {
 		return serverType;
 	}
 	
-	public String getTargetFullUrl(TeleConstant.TargetType targetType) {
+	
+	public String getTargetFullUrl(IfType ifType) {
 		
 		String targetFullUrl = "";
 		
 		String targetBaseUrl = this.getTargetBaseUrl();
 		
-		if(targetType == TeleConstant.TargetType.MCI) {
+		if(ifType == IfType.MCI) {
 			targetFullUrl = targetBaseUrl + "/mci" + "/" + TRNM_SYS_CODE.toLowerCase();
-		}else if(targetType == TeleConstant.TargetType.ESB) {
+		}else if(ifType == IfType.ESB) {
 			targetFullUrl = targetBaseUrl + "/esb";
-		}else if(targetType == TeleConstant.TargetType.FEB) {
+		}else if(ifType == IfType.FEB) {
 			targetFullUrl = targetBaseUrl + "/feb";
 		}
 		

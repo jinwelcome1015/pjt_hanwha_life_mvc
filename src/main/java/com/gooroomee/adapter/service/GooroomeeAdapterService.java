@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gooroomee.adapter.constant.TeleConstant;
+import com.gooroomee.adapter.constant.IfSpec;
 import com.gooroomee.adapter.dto.common.HlicpMessageHeader;
 import com.gooroomee.adapter.dto.io.IfMcCs001_I;
 import com.gooroomee.adapter.dto.io.IfMcCs001_O;
@@ -126,11 +126,9 @@ public class GooroomeeAdapterService {
 
 		ChannelAdapter channelAdapter = new ChannelAdapter(user_ID, activeProfile, ifEndpointUrl);
 
-		TeleConstant.IfSpec ifSpec = TeleConstant.IfSpec.IfMcCs012;
+		IfSpec ifSpec = IfSpec.IfMcCs012;
 
 		HlicpMessageHeader createHeader = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
-		
-		
 		
 		
 		return null;
