@@ -1,9 +1,9 @@
-package com.gooroomee.adapter.dto.common;
+package com.gooroomee.adapter.dto.client;
 
 import lombok.Data;
 
 @Data
-public class Request012Dto {
+public class Mvc012ReqDto {
 	/**
 	 * 사용자ID
 	 */

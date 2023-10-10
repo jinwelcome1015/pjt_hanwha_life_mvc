@@ -1,4 +1,4 @@
-package com.gooroomee.adapter.dto.common;
+package com.gooroomee.adapter.dto.intrf;
 
 import java.util.List;
 

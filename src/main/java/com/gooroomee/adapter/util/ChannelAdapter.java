@@ -2,8 +2,13 @@ package com.gooroomee.adapter.util;
 
 import com.gooroomee.adapter.constant.IfType;
 import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.dto.common.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.intrf.HlicpMessageHeader;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ChannelAdapter {
 	
 	/**
@@ -36,34 +41,11 @@ public class ChannelAdapter {
 	 */
 	private String targetBaseUrl;
 	
+	
 	public ChannelAdapter(String enmb, String activeProfile, String targetBaseUrl) {
 		super();
 		this.enmb = enmb;
 		this.activeProfile = activeProfile;
-		this.targetBaseUrl = targetBaseUrl;
-	}
-	
-	public String getEnmb() {
-		return enmb;
-	}
-
-	public void setEnmb(String enmb) {
-		this.enmb = enmb;
-	}
-
-	public String getActiveProfile() {
-		return activeProfile;
-	}
-
-	public void setActiveProfile(String activeProfile) {
-		this.activeProfile = activeProfile;
-	}
-	
-	public String getTargetBaseUrl() {
-		return targetBaseUrl;
-	}
-
-	public void setTargetBaseUrl(String targetBaseUrl) {
 		this.targetBaseUrl = targetBaseUrl;
 	}
 

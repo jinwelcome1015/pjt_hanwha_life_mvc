@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.adapter.constant.IfSpec;
-import com.gooroomee.adapter.dto.common.HlicpMessageHeader;
-import com.gooroomee.adapter.dto.io.IfMcCs001_I;
-import com.gooroomee.adapter.dto.io.IfMcCs001_O;
-import com.gooroomee.adapter.dto.io.IfMcCs012_I;
-import com.gooroomee.adapter.dto.io.IfMcCs012_O;
-import com.gooroomee.adapter.dto.io.IfMcCs012_O.DataBody.Payload;
+import com.gooroomee.adapter.dto.intrf.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.intrf.IfMcCs001_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs001_O;
+import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs003_O;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_O;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_O.DataBody.Payload;
 import com.gooroomee.adapter.util.ChannelAdapter;
 
 @Service
@@ -65,28 +67,6 @@ public class GooroomeeAdapterService {
 	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-iv']}")
 	private String encryptAesIv;
 
-	/**
-	 * 기관 코드
-	 */
-	@Value(value = "#{propertiesFactoryBean['interface.common.orgn-code']}")
-	private String orgnCode;
-
-	/**
-	 * 서비스 ID
-	 */
-	@Value(value = "#{propertiesFactoryBean['interface.common.srvc-id']}")
-	private String srvcId;
-
-	/**
-	 * 송신 시스템 코드
-	 */
-	@Value(value = "#{propertiesFactoryBean['interface.common.send-system-code']}")
-	private String sendSystemCode;
-
-	/**
-	 * 화면 ID
-	 */
-	private static final String SCRN_ID = "";
 
 	// 신분증 OCR 요청
 	public IfMcCs001_O ifmccs001(IfMcCs001_I cs001_I) {
@@ -96,10 +76,26 @@ public class GooroomeeAdapterService {
 		Payload payload = new IfMcCs012_O.DataBody.Payload();
 		return null;
 	}
+	
+	
+	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I cs003_I) {
+		
+		ChannelAdapter channelAdapter = new ChannelAdapter(emnb, activeProfile, ifEndpointUrl);
+
+		IfSpec ifSpec = IfSpec.IfMcCs012;
+
+		HlicpMessageHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		header.
+		
+		
+		return null;
+	}
+	
+	
 
 	public IfMcCs012_O ifmccs012(IfMcCs012_I cs012_I) throws JsonProcessingException {
 
-		com.gooroomee.adapter.dto.io.IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
+		com.gooroomee.adapter.dto.intrf.IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
 		dataHeader.setSRVC_ID(srvcId);
 		dataHeader.setSCRN_ID(SCRN_ID);
 		dataHeader.setCRTF_RTCD("");
@@ -107,7 +103,7 @@ public class GooroomeeAdapterService {
 		dataHeader.setORGN_CODE(orgnCode);
 		dataHeader.setUSER_ID(cs012_I.getDataHeader().getUSER_ID());
 
-		com.gooroomee.adapter.dto.io.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
+		com.gooroomee.adapter.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
 		dataBody.setInitechOAuthToken(cs012_I.getDataBody().getInitechOAuthToken());
 		dataBody.setReqTxId(cs012_I.getDataBody().getReqTxId());
 		dataBody.setOp("sign");

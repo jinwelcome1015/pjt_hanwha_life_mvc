@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.gooroomee.adapter.dto.io.IfMcCs012_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_I;
 
 @SpringBootTest
 public class GooroomeeAdapterServiceTest {

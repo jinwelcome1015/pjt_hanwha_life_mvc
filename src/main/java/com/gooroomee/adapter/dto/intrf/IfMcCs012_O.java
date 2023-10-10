@@ -1,7 +1,7 @@
-package com.gooroomee.adapter.dto.io;
+package com.gooroomee.adapter.dto.intrf;
 
-import com.gooroomee.adapter.dto.io.IfMcCs012_I.DataBody;
-import com.gooroomee.adapter.dto.io.IfMcCs012_I.DataHeader;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_I.DataBody;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_I.DataHeader;
 
 import lombok.Getter;
 import lombok.Setter;

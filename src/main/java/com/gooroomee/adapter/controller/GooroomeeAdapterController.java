@@ -19,14 +19,18 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.dto.common.ResponseDto;
-import com.gooroomee.adapter.dto.common.ResponseDto.Result;
-import com.gooroomee.adapter.dto.io.IfMcCs001_I;
-import com.gooroomee.adapter.dto.io.IfMcCs001_O;
-import com.gooroomee.adapter.dto.io.IfMcCs002_I;
-import com.gooroomee.adapter.dto.io.IfMcCs002_O;
-import com.gooroomee.adapter.dto.io.IfMcCs012_I;
-import com.gooroomee.adapter.dto.io.IfMcCs012_O;
+import com.gooroomee.adapter.dto.client.Mvc003ReqDto;
+import com.gooroomee.adapter.dto.client.Mvc003ResDto;
+import com.gooroomee.adapter.dto.client.common.ResponseDto;
+import com.gooroomee.adapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.adapter.dto.intrf.IfMcCs001_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs001_O;
+import com.gooroomee.adapter.dto.intrf.IfMcCs002_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs002_O;
+import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs003_O;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.adapter.service.GooroomeeAdapterService;
 
 @Controller
@@ -34,7 +38,7 @@ public class GooroomeeAdapterController {
 
 	@Autowired
 	public RestTemplateBuilder restTemplateBuilder;
-	
+
 	@Autowired
 	public GooroomeeAdapterService gooroomeeAdapterService;
 
@@ -52,12 +56,34 @@ public class GooroomeeAdapterController {
 		return null;
 	}
 
+	// 신분증 스캔 후 처리
+	@GetMapping(path = { "/intrf/ifmccs003" })
+	public @ResponseBody ResponseDto<Mvc003ResDto> ifmccs003(@RequestBody Mvc003ReqDto reqDto) {
+		
+		IfMcCs003_I cs003_I = new IfMcCs003_I();
+		cs003_I.setCustId(reqDto.getCustId());
+		cs003_I.setPushRcvrEmnb(reqDto.getPushRcvrEmnb());
+		cs003_I.setCsnsYn(reqDto.getCsnsYn());
+		
+		String emnb = reqDto.getEmnb();
+		
+		IfMcCs003_O cs003_O = gooroomeeAdapterService.ifmccs003(emnb, cs003_I);
+		
+		Mvc003ResDto resDto = new Mvc003ResDto();
+		resDto.setPrcsSucsYn(cs003_O.getPrcsSucsYn());
+		
+		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+		
+		return responseDto;
+	}
+
 	// 간편인증 상태 조회
 	@GetMapping(path = { "/intrf/ifmccs012" })
-	public @ResponseBody ResponseDto<IfMcCs012_O> ifmccs012(@RequestBody IfMcCs012_I req_ifMcCs012_I) throws JsonProcessingException {
+	public @ResponseBody ResponseDto<IfMcCs012_O> ifmccs012(@RequestBody IfMcCs012_I req_ifMcCs012_I)
+			throws JsonProcessingException {
 
 		gooroomeeAdapterService.ifmccs012(req_ifMcCs012_I);
-		
+
 		return null;
 	}
 
@@ -75,7 +101,6 @@ public class GooroomeeAdapterController {
 
 		return result;
 	}
-
 
 	@GetMapping(path = "/test3")
 	public @ResponseBody ResponseDto doTest3() {

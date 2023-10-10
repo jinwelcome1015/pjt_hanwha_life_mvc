@@ -55,29 +55,25 @@ public class TeleConstant {
 	 */
 	public static final String RSPN_DVSN_RECEIVE_DUMMY = "P";
 	
-	/**
-	 * 운영서버
-	 */
-	public static final String SERVER_TYPE_PROD = "PROD";
-	
-	/**
-	 * QA서버
-	 */
-	public static final String SERVER_TYPE_QA = "QA";
-		
-	/**
-	 * 개발서버
-	 */
-	public static final String SERVER_TYPE_DEV = "DEV";
-		
-	/**
-	 * 로컬서버
-	 */
-	public static final String SERVER_TYPE_LOCAL = "LOCAL";
-		
-		
-	
-	public static final String INTERNAL_COM = "COM";	// 보험코어-업무공통
+//	/**
+//	 * 운영서버
+//	 */
+//	public static final String SERVER_TYPE_PROD = "PROD";
+//	
+//	/**
+//	 * QA서버
+//	 */
+//	public static final String SERVER_TYPE_QA = "QA";
+//		
+//	/**
+//	 * 개발서버
+//	 */
+//	public static final String SERVER_TYPE_DEV = "DEV";
+//		
+//	/**
+//	 * 로컬서버
+//	 */
+//	public static final String SERVER_TYPE_LOCAL = "LOCAL";
 	
 	
 }

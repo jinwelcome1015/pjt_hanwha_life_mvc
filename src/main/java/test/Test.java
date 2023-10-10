@@ -12,8 +12,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gooroomee.adapter.dto.common.ResponseDto;
-import com.gooroomee.adapter.dto.common.ResponseDto.Result;
+import com.gooroomee.adapter.dto.client.common.ResponseDto;
+import com.gooroomee.adapter.dto.client.common.ResponseDto.Result;
 
 public class Test {
 
