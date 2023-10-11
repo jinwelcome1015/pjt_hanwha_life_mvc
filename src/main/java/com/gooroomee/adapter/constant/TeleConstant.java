@@ -33,27 +33,27 @@ public class TeleConstant {
 	 */
 	public static final String PRCS_RSLT_DVSN_CODE_FAIL = "1";
 	
-	/**
-	 * 요청응답 구분코드 : 요청
-	 */
-	public static final String RSPN_DVSN_SEND = "S";
-	
-	/**
-	 * 요청응답 구분코드 : 응답
-	 */
-	public static final String RSPN_DVSN_RECEIVE = "R";
-	
-	// 요청응답 구분코드 : 요청 더미
-	
-	/**
-	 * 요청응답 구분코드 : 요청 더미
-	 */
-	public static final String RSPN_DVSN_SEND_DUMMY = "Q";
-	
-	/**
-	 * 요청응답 구분코드 : 응답 더미
-	 */
-	public static final String RSPN_DVSN_RECEIVE_DUMMY = "P";
+//	/**
+//	 * 요청응답 구분코드 : 요청
+//	 */
+//	public static final String RSPN_DVSN_SEND = "S";
+//	
+//	/**
+//	 * 요청응답 구분코드 : 응답
+//	 */
+//	public static final String RSPN_DVSN_RECEIVE = "R";
+//	
+//	// 요청응답 구분코드 : 요청 더미
+//	
+//	/**
+//	 * 요청응답 구분코드 : 요청 더미
+//	 */
+//	public static final String RSPN_DVSN_SEND_DUMMY = "Q";
+//	
+//	/**
+//	 * 요청응답 구분코드 : 응답 더미
+//	 */
+//	public static final String RSPN_DVSN_RECEIVE_DUMMY = "P";
 	
 //	/**
 //	 * 운영서버
