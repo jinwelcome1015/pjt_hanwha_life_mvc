@@ -58,7 +58,7 @@ public class GooroomeeAdapterController {
 
 	// 신분증 스캔 후 처리
 	@GetMapping(path = { "/intrf/ifmccs003" })
-	public @ResponseBody ResponseDto<Mvc003ResDto> ifmccs003(@RequestBody Mvc003ReqDto reqDto) {
+	public @ResponseBody ResponseDto<Mvc003ResDto> ifmccs003(@RequestBody Mvc003ReqDto reqDto) throws JsonProcessingException, URISyntaxException {
 		
 		IfMcCs003_I cs003_I = new IfMcCs003_I();
 		cs003_I.setCustId(reqDto.getCustId());
@@ -77,16 +77,18 @@ public class GooroomeeAdapterController {
 		return responseDto;
 	}
 
+	/*
 	// 간편인증 상태 조회
 	@GetMapping(path = { "/intrf/ifmccs012" })
 	public @ResponseBody ResponseDto<IfMcCs012_O> ifmccs012(@RequestBody IfMcCs012_I req_ifMcCs012_I)
 			throws JsonProcessingException {
-
+	
 		gooroomeeAdapterService.ifmccs012(req_ifMcCs012_I);
-
+	
 		return null;
 	}
-
+	*/
+	
 	@RequestMapping(path = "test1", method = RequestMethod.GET)
 	@ResponseBody
 	public String doTest1() throws URISyntaxException {

@@ -1,19 +1,17 @@
 package com.gooroomee.adapter.service;
 
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gooroomee.adapter.constant.IfSpec;
-import com.gooroomee.adapter.dto.intrf.HlicpMessageHeader;
-import com.gooroomee.adapter.dto.intrf.IfMcCs001_I;
-import com.gooroomee.adapter.dto.intrf.IfMcCs001_O;
+import com.gooroomee.adapter.constant.TeleConstant;
+import com.gooroomee.adapter.constant.TeleConstant.IfSpec;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_O;
-import com.gooroomee.adapter.dto.intrf.IfMcCs012_I;
-import com.gooroomee.adapter.dto.intrf.IfMcCs012_O;
-import com.gooroomee.adapter.dto.intrf.IfMcCs012_O.DataBody.Payload;
+import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.intrf.common.SimpleMessageEnvelop;
 import com.gooroomee.adapter.util.ChannelAdapter;
 
 @Service
@@ -67,34 +65,43 @@ public class GooroomeeAdapterService {
 	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-iv']}")
 	private String encryptAesIv;
 
-
+	/*
 	// 신분증 OCR 요청
 	public IfMcCs001_O ifmccs001(IfMcCs001_I cs001_I) {
-
-//		new IfMcCs012_O.DataHeader()
-
+	
+	//		new IfMcCs012_O.DataHeader()
+	
 		Payload payload = new IfMcCs012_O.DataBody.Payload();
 		return null;
 	}
+	*/	
 	
-	
-	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I cs003_I) {
+	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I cs003_I) throws JsonProcessingException, URISyntaxException {
 		
 		ChannelAdapter channelAdapter = new ChannelAdapter(emnb, activeProfile, ifEndpointUrl);
 
-		IfSpec ifSpec = IfSpec.IfMcCs012;
+		IfSpec ifSpec = TeleConstant.IfSpec.IfMcCs003;
 
 		HlicpMessageHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
-		header.
 		
 		
-		return null;
+		//----------------------------------------------------------------------------------------------------
+        // 연계시스템 서비스 호출
+        //----------------------------------------------------------------------------------------------------
+        SimpleMessageEnvelop<IfMcCs003_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(TeleConstant.IfType.MCI, header, cs003_I, IfMcCs003_O.class);
+
+        //----------------------------------------------------------------------------------------------------
+        // 응답 Data 조회
+        //----------------------------------------------------------------------------------------------------
+        IfMcCs003_O cs003_O = outputEnvelop.getPayload();
+		
+		return cs003_O;
 	}
 	
 	
-
+	/*
 	public IfMcCs012_O ifmccs012(IfMcCs012_I cs012_I) throws JsonProcessingException {
-
+	
 		com.gooroomee.adapter.dto.intrf.IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
 		dataHeader.setSRVC_ID(srvcId);
 		dataHeader.setSCRN_ID(SCRN_ID);
@@ -102,12 +109,12 @@ public class GooroomeeAdapterService {
 		dataHeader.setDLRE_MSG("");
 		dataHeader.setORGN_CODE(orgnCode);
 		dataHeader.setUSER_ID(cs012_I.getDataHeader().getUSER_ID());
-
+	
 		com.gooroomee.adapter.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
 		dataBody.setInitechOAuthToken(cs012_I.getDataBody().getInitechOAuthToken());
 		dataBody.setReqTxId(cs012_I.getDataBody().getReqTxId());
 		dataBody.setOp("sign");
-
+	
 		IfMcCs012_I ifMcCs012_I = new IfMcCs012_I();
 		ifMcCs012_I.setDataHeader(dataHeader);
 		ifMcCs012_I.setDataBody(dataBody);
@@ -115,19 +122,19 @@ public class GooroomeeAdapterService {
 		// XXX
 		ObjectMapper objectMapper = new ObjectMapper();
 		String writeValueAsString = objectMapper.writeValueAsString(ifMcCs012_I);
-
+	
 		System.out.println("*** " + writeValueAsString);
 		
 		String user_ID = cs012_I.getDataHeader().getUSER_ID();
-
+	
 		ChannelAdapter channelAdapter = new ChannelAdapter(user_ID, activeProfile, ifEndpointUrl);
-
+	
 		IfSpec ifSpec = IfSpec.IfMcCs012;
-
+	
 		HlicpMessageHeader createHeader = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
 		
 		return null;
 	}
-
+	*/
 }

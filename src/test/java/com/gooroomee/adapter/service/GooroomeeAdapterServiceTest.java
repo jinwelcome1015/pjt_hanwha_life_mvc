@@ -87,11 +87,12 @@ public class GooroomeeAdapterServiceTest {
 	
 	@Autowired
 	private GooroomeeAdapterService gooroomeeAdapterService;
-	
+	/*
 	@Test
 	public void doTest1() throws JsonProcessingException {
 		System.out.println("111");
 		IfMcCs012_I cs012_I = new IfMcCs012_I();
 		gooroomeeAdapterService.ifmccs012(cs012_I);
 	}
+	*/
 }

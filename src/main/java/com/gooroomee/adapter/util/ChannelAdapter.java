@@ -1,8 +1,28 @@
 package com.gooroomee.adapter.util;
 
-import com.gooroomee.adapter.constant.IfType;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.dto.intrf.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
+import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.intrf.common.HlicpResponseMessage;
+import com.gooroomee.adapter.dto.intrf.common.SimpleMessageEnvelop;
+import com.gooroomee.adapter.exception.TeleException;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,17 +34,17 @@ public class ChannelAdapter {
 	/**
 	 * 송신 시스템 코드
 	 */
-	private static final String TRNM_SYS_CODE = "MVC";
+	private static final String TRNM_SYS_CODE = TeleConstant.TRNM_SYS_CODE;
 	
 	/**
 	 * 채널 타입 코드
 	 */
-	private static final String CHNL_TYPE_CODE = "SVR";
+	private static final String CHNL_TYPE_CODE = TeleConstant.IfChnlTypeCode.SERVER.getValue();
 	
 	/**
 	 * 소속 기관 코드
 	 */
-	private static final String BELN_ORGN_CODE = "00630";
+	private static final String BELN_ORGN_CODE = TeleConstant.BELN_ORGN_CODE;
 	
 	/**
 	 * 사원 번호
@@ -41,18 +61,18 @@ public class ChannelAdapter {
 	 */
 	private String targetBaseUrl;
 	
-	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+		
 	public ChannelAdapter(String enmb, String activeProfile, String targetBaseUrl) {
 		super();
 		this.enmb = enmb;
 		this.activeProfile = activeProfile;
 		this.targetBaseUrl = targetBaseUrl;
 	}
-
+	
 	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode) {
 		return createHeader(itfcId, rcveSrvcId, rcveSysCode, "N");
 	}
-	
 	
 	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode, String prsnInfoIncsYn) {
 		HlicpMessageHeader header = new HlicpMessageHeader();
@@ -68,52 +88,93 @@ public class ChannelAdapter {
 		header.setTlgrCretDttm(TeleUtils.getTlgrCretDttm());
 		header.setRndmNo(TeleUtils.getRandomNumber());
 		header.setServerType(this.getServerType());
-		header.setRspnDvsnCode(TeleConstant.RSPN_DVSN_SEND);
+		header.setRspnDvsnCode(TeleConstant.IfRspnDvsnCode.SEND.getValue());
 		return header;
 	}
 
 	private String getServerType() {
-		String profile = this.getActiveProfile();
-		String uvEnv = TeleConstant.SERVER_TYPE_PROD;
-		
-		if("local".equalsIgnoreCase(profile)) {
-			uvEnv = TeleConstant.SERVER_TYPE_LOCAL;
-		}else if("dev".equalsIgnoreCase(profile)) {
-			uvEnv = TeleConstant.SERVER_TYPE_DEV;
-		}else if("qa".equalsIgnoreCase(profile)) {
-			uvEnv = TeleConstant.SERVER_TYPE_QA;
-		}
-		
 		String serverType = "";
 		
-		if(TeleConstant.SERVER_TYPE_PROD.equalsIgnoreCase(uvEnv)) {
-			serverType = "P";
-		}else if(TeleConstant.SERVER_TYPE_QA.equalsIgnoreCase(uvEnv)) {
-			serverType = "Q";
-		}else if(TeleConstant.SERVER_TYPE_DEV.equalsIgnoreCase(uvEnv)) {
-			serverType = "D";
+		String profile = this.getActiveProfile();
+		
+		if("local".equalsIgnoreCase(profile)) {
+			serverType = TeleConstant.IfServerType.LOCAL.getValue();
+		}else if("dev".equalsIgnoreCase(profile)) {
+			serverType = TeleConstant.IfServerType.DEV.getValue();
+		}else if("qa".equalsIgnoreCase(profile)) {
+			serverType = TeleConstant.IfServerType.QA.getValue();
+		}else if("prod".equalsIgnoreCase(profile)) {
+			serverType = TeleConstant.IfServerType.PROD.getValue();
+		}else {
+			serverType = TeleConstant.IfServerType.ETC.getValue();
 		}
 		
 		return serverType;
 	}
 	
 	
-	public String getTargetFullUrl(IfType ifType) {
+	public String getTargetFullUrl(TeleConstant.IfType ifType) {
 		
 		String targetFullUrl = "";
 		
 		String targetBaseUrl = this.getTargetBaseUrl();
 		
-		if(ifType == IfType.MCI) {
+		if(ifType == TeleConstant.IfType.MCI) {
 			targetFullUrl = targetBaseUrl + "/mci" + "/" + TRNM_SYS_CODE.toLowerCase();
-		}else if(ifType == IfType.ESB) {
+		}else if(ifType == TeleConstant.IfType.ESB) {
 			targetFullUrl = targetBaseUrl + "/esb";
-		}else if(ifType == IfType.FEB) {
+		}else if(ifType == TeleConstant.IfType.FEB) {
 			targetFullUrl = targetBaseUrl + "/feb";
 		}
 		
 		return targetFullUrl;
 	}
 	
-	
+
+    
+    public <I, O> SimpleMessageEnvelop<O> sendAndReceiveMessage(TeleConstant.IfType ifType, HlicpMessageHeader header, I inputDto, Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+		
+		SimpleMessageEnvelop<I> requestEnvelop = new SimpleMessageEnvelop<I>();
+		requestEnvelop.setHeader(header);
+		requestEnvelop.setPayload(inputDto);
+		
+    	SimpleMessageEnvelop<O> responseEnvelop = null;
+        
+        String requestJson = objectMapper.writeValueAsString(requestEnvelop);
+        
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+        
+        String targetFullUrl = getTargetFullUrl(ifType);
+        
+        RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
+        
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+        String responseBody = responseEntity.getBody();
+        
+        if (responseBody != null) {
+            JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class, outputDtoClass);
+            responseEnvelop = objectMapper.readValue(responseBody, javaType);
+        }
+        
+        HlicpMessageHeader responseEnvelopHeader = responseEnvelop.getHeader();
+        
+        String prcsRsltDvsnCode = responseEnvelopHeader.getPrcsRsltDvsnCode();
+        
+        if(!TeleConstant.IfPrcsRsltDvsnCode.NORMAL.getValue().equals(prcsRsltDvsnCode)) {
+        	int cnt = responseEnvelopHeader.getMsgeListCont();
+            List<HlicpResponseMessage> msgeList = responseEnvelopHeader.getMsgeList();
+
+            if (cnt > 0 && msgeList != null && msgeList.size() > 0) {
+                throw new TeleException(msgeList.get(0).getMsgeCntn());
+            }
+        }
+        
+        return responseEnvelop;
+    }
+    
+    
 }

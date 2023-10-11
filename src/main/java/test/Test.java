@@ -11,9 +11,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.adapter.dto.client.common.ResponseDto;
 import com.gooroomee.adapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
+import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
+import com.gooroomee.adapter.dto.intrf.common.SimpleMessageEnvelop;
 
 public class Test {
 
@@ -124,6 +129,7 @@ public class Test {
 		System.out.println(writeValueAsString);
 	}
 
+	/*
 	public static void main(String[] args) {
 		Test test = new Test();
 		try {
@@ -132,5 +138,34 @@ public class Test {
 			e.printStackTrace();
 		}
 		
+	}
+	*/
+	public static void main(String[] args) throws JsonProcessingException {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+		IfMcCs003_I cs003_I = new IfMcCs003_I();
+		cs003_I.setCsnsYn("Y");
+		cs003_I.setCustId("ABC");
+		cs003_I.setPushRcvrEmnb("123");
+		
+		HlicpMessageHeader hlicpMessageHeader = new HlicpMessageHeader();
+		hlicpMessageHeader.setBaseCnty("baseCnty");
+		hlicpMessageHeader.setBaseCrny("baseCrny");
+		
+		SimpleMessageEnvelop<Object> simpleMessageEnvelop = new SimpleMessageEnvelop<>();
+		simpleMessageEnvelop.setHeader(hlicpMessageHeader);
+		simpleMessageEnvelop.setPayload(cs003_I);
+		
+		String valueAsString = objectMapper.writeValueAsString(simpleMessageEnvelop);
+		
+		System.out.println(valueAsString);
+		System.out.println("============================================");
+		
+		SimpleMessageEnvelop<IfMcCs003_I> responseEnvelop = null;
+		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class, IfMcCs003_I.class);
+        responseEnvelop = objectMapper.readValue(valueAsString, javaType);
+        
+        String valueAsString2 = objectMapper.writeValueAsString(responseEnvelop);
+        System.out.println(valueAsString2);
 	}
 }
