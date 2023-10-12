@@ -12,8 +12,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.gooroomee.adapter.dto.client.Mvc003ResDto;
+import com.gooroomee.adapter.dto.client.Mvc006ResDto;
 import com.gooroomee.adapter.dto.client.common.ResponseDto;
 import com.gooroomee.adapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
@@ -100,7 +103,7 @@ public class Test {
 					+ ", toString()=" + super.toString() + "]";
 		}
 	}
-	
+
 	public void doTestHttp() throws JsonProcessingException {
 		URI uri = UriComponentsBuilder.fromUriString("https://reqres.in/").path("/api/users").build().toUri();
 
@@ -114,16 +117,17 @@ public class Test {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<TestResDto> exchange = restTemplate.exchange(uri, HttpMethod.POST, requestEntity,
 				TestResDto.class);
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		String writeValueAsString = objectMapper.writeValueAsString(exchange);
 
 		System.out.println(writeValueAsString);
 //		exchange.getBody();
 	}
-	
+
 	public void doResult() throws JsonProcessingException {
-		ResponseDto<TestResDto> responseDto = new ResponseDto<TestResDto>(Result.SUCCESS, HttpStatus.OK, new TestResDto());
+		ResponseDto<TestResDto> responseDto = new ResponseDto<TestResDto>(Result.SUCCESS, HttpStatus.OK,
+				new TestResDto());
 		ObjectMapper objectMapper = new ObjectMapper();
 		String writeValueAsString = objectMapper.writeValueAsString(responseDto);
 		System.out.println(writeValueAsString);
@@ -140,13 +144,47 @@ public class Test {
 		
 	}
 	*/
+	/*
 	public static void main(String[] args) throws JsonProcessingException {
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	
+		ObjectMapper objectMapper = new ObjectMapper();
+	
 		IfMcCs003_I cs003_I = new IfMcCs003_I();
 		cs003_I.setCsnsYn("Y");
 		cs003_I.setCustId("ABC");
 		cs003_I.setPushRcvrEmnb("123");
+	
+		HlicpMessageHeader hlicpMessageHeader = new HlicpMessageHeader();
+		hlicpMessageHeader.setBaseCnty("baseCnty");
+		hlicpMessageHeader.setBaseCrny("baseCrny");
+	
+		SimpleMessageEnvelop<Object> simpleMessageEnvelop = new SimpleMessageEnvelop<>();
+		simpleMessageEnvelop.setHeader(hlicpMessageHeader);
+		simpleMessageEnvelop.setPayload(cs003_I);
+	
+		String valueAsString = objectMapper.writeValueAsString(simpleMessageEnvelop);
+	
+		System.out.println(valueAsString);
+		System.out.println("============================================");
+	
+		SimpleMessageEnvelop<IfMcCs003_I> responseEnvelop = null;
+	//		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class, IfMcCs003_I.class);
+		TypeReference<SimpleMessageEnvelop<IfMcCs003_I>> javaType = new TypeReference<SimpleMessageEnvelop<IfMcCs003_I>>() {};
+		
+		responseEnvelop = objectMapper.readValue(valueAsString, javaType);
+	
+		String valueAsString2 = objectMapper.writeValueAsString(responseEnvelop);
+		System.out.println(valueAsString2);
+	}
+	*/
+	
+	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		String origin = "{ \"empeInfoList\": [ { \"empeDvsnCode\": \"2\", \"orgnNm\": \"다이렉트개발팀\", \"orgnCode\": \"00583\", \"empeNm\": \"이혜란\", \"tnofDvsnCode\": \"P\", \"clpsCode\": \"12\", \"emnb\": \"2230201\", \"wkisYn\": \"Y\", \"rrnoInidSuid\": 1000000000028402080, \"custId\": \"4041297134\", \"prsnCorpSaleDvsnCode\": \"1\", \"pstnCode\": \"12\", \"rsofCode\": \"BC1\" } ] }";
+		
+		Mvc006ResDto resDto = objectMapper.readValue(origin, Mvc006ResDto.class);
+		
+		String writeValueAsString = objectMapper.writeValueAsString(resDto);
 		
 		HlicpMessageHeader hlicpMessageHeader = new HlicpMessageHeader();
 		hlicpMessageHeader.setBaseCnty("baseCnty");
@@ -154,7 +192,7 @@ public class Test {
 		
 		SimpleMessageEnvelop<Object> simpleMessageEnvelop = new SimpleMessageEnvelop<>();
 		simpleMessageEnvelop.setHeader(hlicpMessageHeader);
-		simpleMessageEnvelop.setPayload(cs003_I);
+		simpleMessageEnvelop.setPayload(resDto);
 		
 		String valueAsString = objectMapper.writeValueAsString(simpleMessageEnvelop);
 		
@@ -162,10 +200,13 @@ public class Test {
 		System.out.println("============================================");
 		
 		SimpleMessageEnvelop<IfMcCs003_I> responseEnvelop = null;
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class, IfMcCs003_I.class);
-        responseEnvelop = objectMapper.readValue(valueAsString, javaType);
-        
-        String valueAsString2 = objectMapper.writeValueAsString(responseEnvelop);
-        System.out.println(valueAsString2);
+		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class,
+				Mvc006ResDto.class);
+		responseEnvelop = objectMapper.readValue(valueAsString, javaType);
+		
+		String valueAsString2 = objectMapper.writeValueAsString(responseEnvelop);
+		System.out.println(valueAsString2);
+		
 	}
+	
 }

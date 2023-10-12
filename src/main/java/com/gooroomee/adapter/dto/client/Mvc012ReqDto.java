@@ -1,9 +1,15 @@
 package com.gooroomee.adapter.dto.client;
 
-import lombok.Data;
+import com.gooroomee.adapter.dto.client.common.ReqSuperDto;
 
-@Data
-public class Mvc012ReqDto {
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter 
+@Setter
+@ToString
+public class Mvc012ReqDto extends ReqSuperDto{
 	/**
 	 * 사용자ID
 	 */

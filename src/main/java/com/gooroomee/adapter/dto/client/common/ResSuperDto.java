@@ -7,7 +7,5 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class ReqSuperDto {
-	/** 사원번호 */
-	private String emnb;
+public class ResSuperDto {
 }

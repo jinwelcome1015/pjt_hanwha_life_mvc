@@ -10,18 +10,14 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc003ReqDto extends ReqSuperDto{
-	/**
-	 * 고객 ID
-	 */
-	private String custId;
 	
-	/**
-	 * 푸시 수신자 사원 번호
-	 */
+	/** 고객ID */
+	private String custId;
+
+	/** 푸시수신자사원번호 */
 	private String pushRcvrEmnb;
 	
-	/**
-	 * 일치 여부
-	 */
+	/** 일치여부 */
 	private String csnsYn;
+
 }
