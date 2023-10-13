@@ -229,4 +229,13 @@ public class ChannelAdapter {
 
 		return formattedRandomNumber;
 	}
+	
+	public static void main(String[] args) {
+		
+		System.out.println("1");
+		ChannelAdapter channelAdapter = new ChannelAdapter("", "", "");
+		System.out.println("2");
+		
+		
+	}
 }
