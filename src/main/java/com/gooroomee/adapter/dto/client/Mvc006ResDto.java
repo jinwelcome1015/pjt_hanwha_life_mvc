@@ -46,7 +46,7 @@ public class Mvc006ResDto extends ResSuperDto{
 		private String tlphExno;
 		
 		/** 주민등록번호통합식별자SUID */
-		private Long rrnoInidSuid;
+		private long rrnoInidSuid;
 		
 		/** 고객ID */
 		private String custId;

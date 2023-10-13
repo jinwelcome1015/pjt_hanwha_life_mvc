@@ -7,12 +7,10 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class IfMcCs005_I {
+public class IfMcCs016_O {
 	
-	/** 사원번호 */
-	private String emnb;
-
-	/** 로그인비밀번호 */
-	private String lognPswd;
-
+	// XXX 확인
+	/** 대체키SUID */
+	private long sbsnKeySuid;
+	
 }

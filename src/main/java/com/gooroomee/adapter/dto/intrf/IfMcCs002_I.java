@@ -1,7 +1,7 @@
 package com.gooroomee.adapter.dto.intrf;
 
-import java.util.Date;
 
+import java.sql.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,99 +11,64 @@ import lombok.ToString;
 @ToString
 public class IfMcCs002_I {
 	
-	/**
-	 * 진위 확인 구분 코드
-	 */
+	/** 진위확인구분코드 */
 	private String trflCnfmDvsnCode;
 	
-	/**
-	 * 진위 확인 업무 구분 코드
-	 */
+	/** 진위확인업무구분코드 */
 	private String trflCnfmBswrDvsnCode;
 	
-	/**
-	 * 진위 확인 채널 코드
-	 */
+	/** 진위확인채널코드 */
 	private String trflCnfmChnlCode;
 	
-	/**
-	 * 처리 업무 화면 ID
-	 */
+	/** 처리업무화면ID */
 	private String prcsBswrScrnId;
 	
-	/**
-	 * 진위 확인 작업 코드
-	 */
+	/** 진위확인작업코드 */
 	private String trflCnfmJobCode;
-
-	/**
-	 * 고객 ID
-	 */
+	
+	/** 고객ID */
 	private String custId;
 	
-	/**
-	 * 관리 번호
-	 */
+	/** 관리번호 */
 	private String mgmtNo;
 	
-	/**
-	 * 고객 이름
-	 */
+	/** 고객명 */
 	private String custNm;
 	
-	/**
-	 * 발급 일자
-	 */
+	// XXX 확인
+	/** 발급일자 */
 	private Date isncDate;
-	
-	/**
-	 * 생년 월일
-	 */
+
+	// XXX 확인
+	/** 생년월일 */
 	private Date btdt;
 	
-	/**
-	 * 운전 면허 일련 번호 
-	 */
+	/** 운전면허일련번호 */
 	private String drvnLcnsSqno;
 	
-	/**
-	 * 주만 등록 번호
-	 */
+	/** 주민등록번호 */
 	private String rrno;
 	
-	/**
-	 * 운전 면허 일련 번호
-	 */
+	/** 운전면허번호 */
 	private String drvnLcnsNo;
 	
-	/**
-	 * 외국인 등록 번호
-	 */
-	private String fmrRgstNo;
+	/** 외국인등록번호 */
+	private String frnrRgstNo;
 	
-	/**
-	 * 여권 번호
-	 */
+	/** 여권번호 */
 	private String psprNo;
 	
-	/**
-	 * 만료 일자
-	 */
+	// XXX 확인
+	/** 만료일자 */
 	private Date expyDate;
 	
-	/**
-	 * 이미지 관리 번호
-	 */
+	/** 이미지관리번호 */
 	private String imgeMgmtNo;
 	
-	/**
-	 * 이미지 종류 코드
-	 */
+	/** 이미지종류코드 */
 	private String imgeKindCode;
 	
-	/**
-	 * 이미지 파일 ID
-	 */
-	private String imgeField;
+	/** 이미지파일ID */
+	private String imgeFileId;
 
 }

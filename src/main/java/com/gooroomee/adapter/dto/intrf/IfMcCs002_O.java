@@ -9,29 +9,18 @@ import lombok.ToString;
 @ToString
 public class IfMcCs002_O {
 	
-	/**
-	 * 일치 여부
-	 */
+	/** 일치여부 */
 	private String csnsYn;
-	
-	/**
-	 * 진위 확인 결과 값
-	 */
+
+	/** 진위확인결과값 */
 	private String trflCnfmRsltVal;
 	
-	/**
-	 * 결과 메시지 내용
-	 */
+	/** 결과메시지내용 */
 	private String rsltMsgeCntn;
 	
-	/**
-	 * 전문 추적 번호
-	 */
+	/** 전문추적번호 */
 	private String tlgrTrcgNo;
 	
-	/**
-	 * 고객 ID
-	 */
+	/** 고객ID */
 	private String custId;
-	
 }

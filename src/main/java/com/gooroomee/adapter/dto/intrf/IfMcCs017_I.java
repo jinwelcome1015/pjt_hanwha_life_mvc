@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
-public class IfMcCs008_I {
-	
-	/** 고객ID */
-	private String custId;
+public class IfMcCs017_I {
 
+	// XXX 확인
+	/** 대체키SUID */
+	private long sbsnKeySuid;
 }

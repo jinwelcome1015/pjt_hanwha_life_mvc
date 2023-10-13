@@ -10,7 +10,7 @@ import lombok.ToString;
 public class IfMcCs003_O {
 	
 	/**
-	 * 처리 성공 여부
+	 * 처리성공여부
 	 */
 	private String prcsSucsYn;
 
