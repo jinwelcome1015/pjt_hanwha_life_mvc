@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gooroomee.adapter.constant.TeleConstant;
 import com.gooroomee.adapter.constant.TeleConstant.IfSpec;
+import com.gooroomee.adapter.dto.intrf.IfMcCs002_I;
+import com.gooroomee.adapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_O;
 import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
@@ -65,16 +67,23 @@ public class GooroomeeAdapterService {
 	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-iv']}")
 	private String encryptAesIv;
 
-	/*
-	// 신분증 OCR 요청
-	public IfMcCs001_O ifmccs001(IfMcCs001_I cs001_I) {
 	
-	//		new IfMcCs012_O.DataHeader()
-	
-		Payload payload = new IfMcCs012_O.DataBody.Payload();
-		return null;
+	public IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I cs002_I) throws JsonProcessingException, URISyntaxException {
+		
+		ChannelAdapter channelAdapter = new ChannelAdapter(emnb, activeProfile, ifEndpointUrl);
+
+		IfSpec ifSpec = TeleConstant.IfSpec.IfMcCs002;
+
+		HlicpMessageHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+        SimpleMessageEnvelop<IfMcCs002_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(TeleConstant.IfType.MCI, header, cs002_I, IfMcCs002_O.class);
+
+        IfMcCs002_O cs002_O = outputEnvelop.getPayload();
+		
+		return cs002_O;
 	}
-	*/	
+	
+	
 	
 	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I cs003_I) throws JsonProcessingException, URISyntaxException {
 		
@@ -84,15 +93,8 @@ public class GooroomeeAdapterService {
 
 		HlicpMessageHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-		
-		//----------------------------------------------------------------------------------------------------
-        // 연계시스템 서비스 호출
-        //----------------------------------------------------------------------------------------------------
         SimpleMessageEnvelop<IfMcCs003_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(TeleConstant.IfType.MCI, header, cs003_I, IfMcCs003_O.class);
 
-        //----------------------------------------------------------------------------------------------------
-        // 응답 Data 조회
-        //----------------------------------------------------------------------------------------------------
         IfMcCs003_O cs003_O = outputEnvelop.getPayload();
 		
 		return cs003_O;

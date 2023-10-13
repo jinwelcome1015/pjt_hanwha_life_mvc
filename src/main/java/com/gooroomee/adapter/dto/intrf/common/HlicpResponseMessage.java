@@ -1,10 +1,17 @@
 package com.gooroomee.adapter.dto.intrf.common;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * 응답 메세지
  * @author T440s
  *
  */
+@Getter 
+@Setter
+@ToString
 public class HlicpResponseMessage {
 	/**
 	 * 메시지 코드
@@ -36,34 +43,4 @@ public class HlicpResponseMessage {
 		this.msgeOtptDvsnCode = msgeOtptDvsnCode;
 	}
 
-	public String getMsgeCode() {
-		return msgeCode;
-	}
-
-	public void setMsgeCode(String msgeCode) {
-		this.msgeCode = msgeCode;
-	}
-
-	public String getMsgeCntn() {
-		return msgeCntn;
-	}
-
-	public void setMsgeCntn(String msgeCntn) {
-		this.msgeCntn = msgeCntn;
-	}
-
-	public String getMsgeOtptDvsnCode() {
-		return msgeOtptDvsnCode;
-	}
-
-	public void setMsgeOtptDvsnCode(String msgeOtptDvsnCode) {
-		this.msgeOtptDvsnCode = msgeOtptDvsnCode;
-	}
-
-	@Override
-	public String toString() {
-		return "HlicpResponseMessage [msgeCode=" + msgeCode + ", msgeCntn=" + msgeCntn + ", msgeOtptDvsnCode="
-				+ msgeOtptDvsnCode + "]";
-	}
-	
 }

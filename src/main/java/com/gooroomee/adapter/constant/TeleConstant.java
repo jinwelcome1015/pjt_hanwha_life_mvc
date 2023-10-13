@@ -11,6 +11,11 @@ public class TeleConstant {
 	 * 소속 기관 코드
 	 */
 	public static final String BELN_ORGN_CODE = "00630";
+	
+	/**
+	 * DEFAULT_IP_ADDRESS 
+	 */
+	public static final String DEFAULT_IP_ADDRESS = "127.0.0.1";
 
 	/**
 	 * 채널유형코드

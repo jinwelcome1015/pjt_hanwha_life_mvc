@@ -1,60 +1,62 @@
-½Ã½ºÅÛ¸í	MCC	Level 1(¾÷¹«¿µ¿ª¸í)	MC						Level 2(¼­ºê¾÷¹«¸í)	CS									
-ÀÎÅÍÆäÀÌ½ºID	IF-MC-CS-006	ÀÎÅÍÆäÀÌ½º¸í	»ç¿ø¸ñ·ÏÁ¶È¸																
-¼ö½Å¼­ºñ½ºID	comEmpeInqyPSI001r	¼ö½Å¼­ºñ½º¸í	»ç¿ø¸ñ·ÏÁ¶È¸						°á°ú ¼ö½Å¼­ºñ½º			°á°ú ¼ö½Å¼­ºñ½º							Å¸ÀÓ¾Æ¿ô Ã³¸®¼­ºñ½º
-½Ã½ºÅÛ±¸ºÐ	´ë³»																		
-																			
-1. ¿äÃ»Àü¹®																			
-Source									Target									¼³¸í	
-½Ã½ºÅÛ	MCC(È­»ó»ó´ã)								½Ã½ºÅÛ	COM(ÄÚ¾î-°øÅë)									
-´ã´çÀÚ(¿¬¶ôÃ³)									´ã´çÀÚ(¿¬¶ôÃ³)										
-µ¥ÀÌÅÍÆ÷¸Ë	Json								µ¥ÀÌÅÍÆ÷¸Ë	Json									
-ÀÎÅÍÆäÀÌ½º¹æ½Ä	HTTP								ÀÎÅÍÆäÀÌ½º¹æ½Ä	HTTP									
-No.	ÇÊµå¸í		I/O	ÇÊµå¼Ó¼º	ÇÊµå±æÀÌ	¼Ò¼öÁ¡ÀÌÇÏ	¹Ýº¹¿©ºÎ	¹Ýº¹È½¼ö	No.	ÇÊµå¸í		I/O	ÇÊµå¼Ó¼º	ÇÊµå±æÀÌ	¼Ò¼öÁ¡ÀÌÇÏ	¹Ýº¹¿©ºÎ	¹Ýº¹È½¼ö		
-	ÇÑ±Û¸í	¿µ¹®¸í								ÇÑ±Û¸í	¿µ¹®¸í								
-1	°Ë»ö¾î¸í	scwdNm	I	STRING	3000				1	°Ë»ö¾î¸í	scwdNm	I	STRING	3000					
-2	±â°üÄÚµå	orgnCode	I	STRING	5				2	±â°üÄÚµå	orgnCode	I	STRING	5					
-3	»ç¿ø±¸ºÐÄÚµå	empeDvsnCode	I	STRING	10				3	»ç¿ø±¸ºÐÄÚµå	empeDvsnCode	I	STRING	10					
-4	ÀüÃ¼»ç¿øÁ¶È¸¿©ºÎ	wholEmpeInqyYn	I	STRING	1				4	ÀüÃ¼»ç¿øÁ¶È¸¿©ºÎ	wholEmpeInqyYn	I	STRING	1					
-5	FPÁ¦¿Ü¿©ºÎ	fpExlsYn	I	STRING	1				5	FPÁ¦¿Ü¿©ºÎ	fpExlsYn	I	STRING	1					
-6	ÀçÁ÷±¸ºÐÄÚµå	tnofDvsnCode	I	STRING	10				6	ÀçÁ÷±¸ºÐÄÚµå	tnofDvsnCode	I	STRING	10					
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-																			
-2. ÀÀ´äÀü¹®																			
-No.	ÇÊµå¸í		I/O	ÇÊµå¼Ó¼º	ÇÊµå±æÀÌ	¼Ò¼öÁ¡ÀÌÇÏ	¹Ýº¹¿©ºÎ	¹Ýº¹È½¼ö	No.	ÇÊµå¸í		I/O	ÇÊµå¼Ó¼º	ÇÊµå±æÀÌ	¼Ò¼öÁ¡ÀÌÇÏ	¹Ýº¹¿©ºÎ	¹Ýº¹È½¼ö	¼³¸í	
-	ÇÑ±Û¸í	¿µ¹®¸í								ÇÑ±Û¸í	¿µ¹®¸í								
-1	»ç¿øÁ¤º¸	empeInfoList	O	GROUP_DYNAMIC	0				1	»ç¿øÁ¤º¸	empeInfoList	O	GROUP_DYNAMIC	0					
-2	±â°ü¸í	orgnNm	O	STRING	600				2	±â°ü¸í	orgnNm	O	STRING	600					
-3	±â°üÀüÈ­¹øÈ£	orgnTlno	O	STRING	25				3	±â°üÀüÈ­¹øÈ£	orgnTlno	O	STRING	25					
-4	±â°üÄÚµå	orgnCode	O	STRING	5				4	±â°üÄÚµå	orgnCode	O	STRING	5					
-5	»ç¿ø±¸ºÐÄÚµå	empeDvsnCode	O	STRING	10				5	»ç¿ø±¸ºÐÄÚµå	empeDvsnCode	O	STRING	10					
-6	»ç¿ø¸í	empeNm	O	STRING	150				6	»ç¿ø¸í	empeNm	O	STRING	150					
-7	»ç¿ø¹øÈ£	emnb	O	STRING	10				7	»ç¿ø¹øÈ£	emnb	O	STRING	10					
-8	ÀçÁ÷±¸ºÐÄÚµå	tnofDvsnCode	O	STRING	10				8	ÀçÁ÷±¸ºÐÄÚµå	tnofDvsnCode	O	STRING	10					
-9	ÀüÈ­³»¼±¹øÈ£	tlphExno	O	STRING	25				9	ÀüÈ­³»¼±¹øÈ£	tlphExno	O	STRING	25					
-10	ÁÖ¹Îµî·Ï¹øÈ£ÅëÇÕ½Äº°ÀÚSUID	rrnoInidSuid	O	NUMBER	19				10	ÁÖ¹Îµî·Ï¹øÈ£ÅëÇÕ½Äº°ÀÚSUID	rrnoInidSuid	O	NUMBER	19					
-11	°í°´ID	custId	O	STRING	10				11	°í°´ID	custId	O	STRING	10					
-12	ÁÖ¹Îµî·Ï¹øÈ£	rrno	O	STRING	13				12	ÁÖ¹Îµî·Ï¹øÈ£	rrno	O	STRING	13					
-13	Á÷±ÞÄÚµå	clpsCode	O	STRING	10				13	Á÷±ÞÄÚµå	clpsCode	O	STRING	10					
-14	Á÷Ã¥ÄÚµå	rsofCode	O	STRING	10				14	Á÷Ã¥ÄÚµå	rsofCode	O	STRING	10					
-15	Á÷À§ÄÚµå	pstnCode	O	STRING	10				15	Á÷À§ÄÚµå	pstnCode	O	STRING	10					
-16	FPÁ÷Ã¥ÄÚµå	fpRsofCode	O	STRING	10				16	FPÁ÷Ã¥ÄÚµå	fpRsofCode	O	STRING	10					
-17	³»±Ù¿©ºÎ	wkisYn	O	STRING	1				17	³»±Ù¿©ºÎ	wkisYn	O	STRING	1					
-18	°³ÀÎ¹ýÀÎÆÇ¸Å±¸ºÐÄÚµå	prsnCorpSaleDvsnCode	O	STRING	10				18	°³ÀÎ¹ýÀÎÆÇ¸Å±¸ºÐÄÚµå	prsnCorpSaleDvsnCode	O	STRING	10					
-																			
-																			
-																			
-EAI ¸ð´ÏÅÍ¸µ½Ã½ºÅÛ (hanwhalife.com)																			
-ÀÎÅÍÆäÀÌ½ºID	ÀÏ	½ÃÀÛ½Ã°£	Á¾·á½Ã°£																
-HLICSY00020	2023-09-30	22:00:00	22:04:59																
+ï»¿,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+ì‹œìŠ¤í…œëª…,MCC,Level 1(ì—…ë¬´ì˜ì—­ëª…),MC,,,,,,Level 2(ì„œë¸Œì—…ë¬´ëª…),CS,,,,,,,,,,
+ì¸í„°íŽ˜ì´ìŠ¤ID,IF-MC-CS-006,ì¸í„°íŽ˜ì´ìŠ¤ëª…,ì‚¬ì›ëª©ë¡ì¡°íšŒ,,,,,,,,,,,,,,,,,
+ìˆ˜ì‹ ì„œë¹„ìŠ¤ID,comEmpeInqyPSI001r,ìˆ˜ì‹ ì„œë¹„ìŠ¤ëª…,ì‚¬ì›ëª©ë¡ì¡°íšŒ,,,,,,ê²°ê³¼ ìˆ˜ì‹ ì„œë¹„ìŠ¤,,,ê²°ê³¼ ìˆ˜ì‹ ì„œë¹„ìŠ¤,,,,,,,íƒ€ìž„ì•„ì›ƒ ì²˜ë¦¬ì„œë¹„ìŠ¤,
+ì‹œìŠ¤í…œêµ¬ë¶„,ëŒ€ë‚´,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+1. ìš”ì²­ì „ë¬¸,,,,,,,,,,,,,,,,,,,,
+Source,,,,,,,,,Target,,,,,,,,,ì„¤ëª…,,
+ì‹œìŠ¤í…œ,MCC(í™”ìƒìƒë‹´),,,,,,,,ì‹œìŠ¤í…œ,COM(ì½”ì–´-ê³µí†µ),,,,,,,,,,
+ë‹´ë‹¹ìž(ì—°ë½ì²˜),,,,,,,,,ë‹´ë‹¹ìž(ì—°ë½ì²˜),,,,,,,,,,,
+ë°ì´í„°í¬ë§·,Json,,,,,,,,ë°ì´í„°í¬ë§·,Json,,,,,,,,,,
+ì¸í„°íŽ˜ì´ìŠ¤ë°©ì‹,HTTP,,,,,,,,ì¸í„°íŽ˜ì´ìŠ¤ë°©ì‹,HTTP,,,,,,,,,,
+No.,í•„ë“œëª…,,I/O,í•„ë“œì†ì„±,í•„ë“œê¸¸ì´,ì†Œìˆ˜ì ì´í•˜,ë°˜ë³µì—¬ë¶€,ë°˜ë³µíšŸìˆ˜,No.,í•„ë“œëª…,,I/O,í•„ë“œì†ì„±,í•„ë“œê¸¸ì´,ì†Œìˆ˜ì ì´í•˜,ë°˜ë³µì—¬ë¶€,ë°˜ë³µíšŸìˆ˜,,,
+,í•œê¸€ëª…,ì˜ë¬¸ëª…,,,,,,,,í•œê¸€ëª…,ì˜ë¬¸ëª…,,,,,,,,,
+1,ê²€ìƒ‰ì–´ëª…,scwdNm,I,STRING,3000,,,,1,ê²€ìƒ‰ì–´ëª…,scwdNm,I,STRING,3000,,,,,,
+2,ê¸°ê´€ì½”ë“œ,orgnCode,I,STRING,5,,,,2,ê¸°ê´€ì½”ë“œ,orgnCode,I,STRING,5,,,,,,
+3,ì‚¬ì›êµ¬ë¶„ì½”ë“œ,empeDvsnCode,I,STRING,10,,,,3,ì‚¬ì›êµ¬ë¶„ì½”ë“œ,empeDvsnCode,I,STRING,10,,,,,,
+4,ì „ì²´ì‚¬ì›ì¡°íšŒì—¬ë¶€,wholEmpeInqyYn,I,STRING,1,,,,4,ì „ì²´ì‚¬ì›ì¡°íšŒì—¬ë¶€,wholEmpeInqyYn,I,STRING,1,,,,,,
+5,FPì œì™¸ì—¬ë¶€,fpExlsYn,I,STRING,1,,,,5,FPì œì™¸ì—¬ë¶€,fpExlsYn,I,STRING,1,,,,,,
+6,ìž¬ì§êµ¬ë¶„ì½”ë“œ,tnofDvsnCode,I,STRING,10,,,,6,ìž¬ì§êµ¬ë¶„ì½”ë“œ,tnofDvsnCode,I,STRING,10,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+2. ì‘ë‹µì „ë¬¸,,,,,,,,,,,,,,,,,,,,
+No.,í•„ë“œëª…,,I/O,í•„ë“œì†ì„±,í•„ë“œê¸¸ì´,ì†Œìˆ˜ì ì´í•˜,ë°˜ë³µì—¬ë¶€,ë°˜ë³µíšŸìˆ˜,No.,í•„ë“œëª…,,I/O,í•„ë“œì†ì„±,í•„ë“œê¸¸ì´,ì†Œìˆ˜ì ì´í•˜,ë°˜ë³µì—¬ë¶€,ë°˜ë³µíšŸìˆ˜,ì„¤ëª…,,
+,í•œê¸€ëª…,ì˜ë¬¸ëª…,,,,,,,,í•œê¸€ëª…,ì˜ë¬¸ëª…,,,,,,,,,
+1,ì‚¬ì›ì •ë³´,empeInfoList,O,GROUP_DYNAMIC,0,,,,1,ì‚¬ì›ì •ë³´,empeInfoList,O,GROUP_DYNAMIC,0,,,,,,
+2,ê¸°ê´€ëª…,orgnNm,O,STRING,600,,,,2,ê¸°ê´€ëª…,orgnNm,O,STRING,600,,,,,,
+3,ê¸°ê´€ì „í™”ë²ˆí˜¸,orgnTlno,O,STRING,25,,,,3,ê¸°ê´€ì „í™”ë²ˆí˜¸,orgnTlno,O,STRING,25,,,,,,
+4,ê¸°ê´€ì½”ë“œ,orgnCode,O,STRING,5,,,,4,ê¸°ê´€ì½”ë“œ,orgnCode,O,STRING,5,,,,,,
+5,ì‚¬ì›êµ¬ë¶„ì½”ë“œ,empeDvsnCode,O,STRING,10,,,,5,ì‚¬ì›êµ¬ë¶„ì½”ë“œ,empeDvsnCode,O,STRING,10,,,,,,
+6,ì‚¬ì›ëª…,empeNm,O,STRING,150,,,,6,ì‚¬ì›ëª…,empeNm,O,STRING,150,,,,,,
+7,ì‚¬ì›ë²ˆí˜¸,emnb,O,STRING,10,,,,7,ì‚¬ì›ë²ˆí˜¸,emnb,O,STRING,10,,,,,,
+8,ìž¬ì§êµ¬ë¶„ì½”ë“œ,tnofDvsnCode,O,STRING,10,,,,8,ìž¬ì§êµ¬ë¶„ì½”ë“œ,tnofDvsnCode,O,STRING,10,,,,,,
+9,ì „í™”ë‚´ì„ ë²ˆí˜¸,tlphExno,O,STRING,25,,,,9,ì „í™”ë‚´ì„ ë²ˆí˜¸,tlphExno,O,STRING,25,,,,,,
+10,ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸í†µí•©ì‹ë³„ìžSUID,rrnoInidSuid,O,NUMBER,19,,,,10,ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸í†µí•©ì‹ë³„ìžSUID,rrnoInidSuid,O,NUMBER,19,,,,,,
+11,ê³ ê°ID,custId,O,STRING,10,,,,11,ê³ ê°ID,custId,O,STRING,10,,,,,,
+12,ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸,rrno,O,STRING,13,,,,12,ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸,rrno,O,STRING,13,,,,,,
+13,ì§ê¸‰ì½”ë“œ,clpsCode,O,STRING,10,,,,13,ì§ê¸‰ì½”ë“œ,clpsCode,O,STRING,10,,,,,,
+14,ì§ì±…ì½”ë“œ,rsofCode,O,STRING,10,,,,14,ì§ì±…ì½”ë“œ,rsofCode,O,STRING,10,,,,,,
+15,ì§ìœ„ì½”ë“œ,pstnCode,O,STRING,10,,,,15,ì§ìœ„ì½”ë“œ,pstnCode,O,STRING,10,,,,,,
+16,FPì§ì±…ì½”ë“œ,fpRsofCode,O,STRING,10,,,,16,FPì§ì±…ì½”ë“œ,fpRsofCode,O,STRING,10,,,,,,
+17,ë‚´ê·¼ì—¬ë¶€,wkisYn,O,STRING,1,,,,17,ë‚´ê·¼ì—¬ë¶€,wkisYn,O,STRING,1,,,,,,
+18,ê°œì¸ë²•ì¸íŒë§¤êµ¬ë¶„ì½”ë“œ,prsnCorpSaleDvsnCode,O,STRING,10,,,,18,ê°œì¸ë²•ì¸íŒë§¤êµ¬ë¶„ì½”ë“œ,prsnCorpSaleDvsnCode,O,STRING,10,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+EAI ëª¨ë‹ˆí„°ë§ì‹œìŠ¤í…œ (hanwhalife.com),,,,,,,,,,,,,,,,,,,,
+ì¸í„°íŽ˜ì´ìŠ¤ID,ì¼,ì‹œìž‘ì‹œê°„,ì¢…ë£Œì‹œê°„,,,,,,,,,,,,,,,,,
+HLICSY00020,2023-09-30,22:00:00,22:04:59,,,,,,,,,,,,,,,,,

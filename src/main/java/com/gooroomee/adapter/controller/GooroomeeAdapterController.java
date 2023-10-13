@@ -89,9 +89,8 @@ public class GooroomeeAdapterController {
 	}
 	*/
 	
-	@RequestMapping(path = "test1", method = RequestMethod.GET)
-	@ResponseBody
-	public String doTest1() throws URISyntaxException {
+	@GetMapping(path = "/test3")
+	public @ResponseBody String doTest1() throws URISyntaxException {
 
 		URI url = new URI("https://jsonplaceholder.typicode.com/posts");
 
