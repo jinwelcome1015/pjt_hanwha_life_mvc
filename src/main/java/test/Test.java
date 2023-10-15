@@ -20,8 +20,8 @@ import com.gooroomee.adapter.dto.client.Mvc006ResDto;
 import com.gooroomee.adapter.dto.client.common.ResponseDto;
 import com.gooroomee.adapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
-import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
-import com.gooroomee.adapter.dto.intrf.common.SimpleMessageEnvelop;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegram;
 
 public class Test {
 
@@ -186,11 +186,11 @@ public class Test {
 		
 		String writeValueAsString = objectMapper.writeValueAsString(resDto);
 		
-		HlicpMessageHeader hlicpMessageHeader = new HlicpMessageHeader();
+		IfTelegramHeader hlicpMessageHeader = new IfTelegramHeader();
 		hlicpMessageHeader.setBaseCnty("baseCnty");
 		hlicpMessageHeader.setBaseCrny("baseCrny");
 		
-		SimpleMessageEnvelop<Object> simpleMessageEnvelop = new SimpleMessageEnvelop<>();
+		IfTelegram<Object> simpleMessageEnvelop = new IfTelegram<>();
 		simpleMessageEnvelop.setHeader(hlicpMessageHeader);
 		simpleMessageEnvelop.setPayload(resDto);
 		
@@ -199,8 +199,8 @@ public class Test {
 		System.out.println(valueAsString);
 		System.out.println("============================================");
 		
-		SimpleMessageEnvelop<IfMcCs003_I> responseEnvelop = null;
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class,
+		IfTelegram<IfMcCs003_I> responseEnvelop = null;
+		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class,
 				Mvc006ResDto.class);
 		responseEnvelop = objectMapper.readValue(valueAsString, javaType);
 		

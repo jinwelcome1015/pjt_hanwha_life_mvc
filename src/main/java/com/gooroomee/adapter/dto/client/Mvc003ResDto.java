@@ -13,8 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc003ResDto extends ResSuperDto{
+	
 	/** 처리성공여부 */
-	private String prcsSucsYn
-;
-
+	private String prcsSucsYn;
 }

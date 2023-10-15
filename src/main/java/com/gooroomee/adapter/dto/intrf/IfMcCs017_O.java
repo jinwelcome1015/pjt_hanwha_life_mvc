@@ -4,82 +4,139 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
 public class IfMcCs017_O {
-	
+
 	/** 연락처SUID */
-	/** 연락처구분코드 */
-	/** 연락처참조SUID */
-	/** SNS */
-	/** SNS_SUID */
-	/** SNS값 */
-	/** SNS비고내용 */
-	/** 전화번호 */
-	/** 전화번호SUID */
-	/** 국가코드 */
-	/** 전화식별코드 */
-	/** 전화국번호 */
-	/** 전화가입자번호 */
-	/** 전화내선번호 */
-	/** 전화번호비고내용 */
-	/** 주소 */
-	/** 주소SUID */
-	/** 국가코드 */
-	/** 기본주소 */
-	/** 상세주소 */
-	/** 건물번호값 */
-	/** 1번째우편번호 */
-	/** 2번째우편번호 */
-	/** 3번째우편번호 */
-	/** 도로명 */
-	/** 도로명주소여부 */
-	/** 정제여부 */
-	/** 시도구분코드 */
-	/** 주소비고내용 */
-	/** 전자위치 */
-	/** 전자위치SUID */
-	/** 전자위치구분코드 */
-	/** 전자위치값 */
-	/** 이메일도메인코드 */
-	/** 전자위치비고내용 */
-
-
 	private String cnplSuid;
+	/** 연락처구분코드 */
 	private String cnplDvsnCode;
+	/** 연락처참조SUID */
 	private String cnplRfrnSuid;
-	private String sns;
-	private String snsSuid;
-	private String snsVal;
-	private String snsRmrkCntn;
-	private String tlno;
-	private String tlnoSuid;
-	private String cntyCode;
-	private String tlphIdnfCode;
-	private String tlphOfno;
-	private String tlphSbno;
-	private String tlphExno;
-	private String tlnoRmrkCntn;
-	private String addr;
-	private String addrSuid;
-	private String cntyCode;
-	private String baseAddr;
-	private String detlAddr;
-	private String bldnNoVal;
-	private String odn1Pscd;
-	private String odn2Pscd;
-	private String odn3Pscd;
-	private String roadNm;
-	private String roadNmAddrYn;
-	private String clsgYn;
-	private String ctprDvsnCode;
-	private String addrRmrkCntn;
-	private String elctLoct;
-	private String elctLoctSuid;
-	private String elctLoctDvsnCode;
-	private String elctLoctVal;
-	private String mailDmanCode;
-	private String elctLoctRmrkCntn;
+
+	// XXX 확인
+	/** SNS */
+	private Sns sns;
+
+	// XXX 확인
+	/** 전화번호 */
+	private Tlno tlno;
+
+	// XXX 확인
+	/** 주소 */
+	private Addr addr;
+
+	// XXX 확인
+	/** 전자위치 */
+	private ElctLoct elctLoct;
+
+	@Getter
+	@Setter
+	@ToString
+	public static class Sns {
+
+		/** SNS_SUID */
+		private String snsSuid;
+
+		/** SNS값 */
+		private String snsVal;
+
+		/** SNS비고내용 */
+		private String snsRmrkCntn;
+	}
+
+	@Getter
+	@Setter
+	@ToString
+	public static class Tlno {
+		/** 전화번호SUID */
+		private String tlnoSuid;
+
+		/** 국가코드 */
+		private String cntyCode;
+
+		/** 전화식별코드 */
+		private String tlphIdnfCode;
+
+		/** 전화국번호 */
+		private String tlphOfno;
+
+		/** 전화가입자번호 */
+		private String tlphSbno;
+
+		/** 전화내선번호 */
+		private String tlphExno;
+
+		/** 전화번호비고내용 */
+		private String tlnoRmrkCntn;
+	}
+
+	@Getter
+	@Setter
+	@ToString
+	public static class Addr {
+
+		/** 주소SUID */
+		private String addrSuid;
+
+		/** 국가코드 */
+		private String cntyCode;
+
+		/** 기본주소 */
+		private String baseAddr;
+
+		/** 상세주소 */
+		private String detlAddr;
+
+		/** 건물번호값 */
+		private String bldnNoVal;
+
+		/** 1번째우편번호 */
+		private String odn1Pscd;
+
+		/** 2번째우편번호 */
+		private String odn2Pscd;
+
+		/** 3번째우편번호 */
+		private String odn3Pscd;
+
+		/** 도로명 */
+		private String roadNm;
+
+		/** 도로명주소여부 */
+		private String roadNmAddrYn;
+
+		/** 정제여부 */
+		private String clsgYn;
+
+		/** 시도구분코드 */
+		private String ctprDvsnCode;
+
+		/** 주소비고내용 */
+		private String addrRmrkCntn;
+
+	}
+
+	@Getter
+	@Setter
+	@ToString
+	public static class ElctLoct {
+		/** 전자위치SUID */
+		private String elctLoctSuid;
+
+		/** 전자위치구분코드 */
+		private String elctLoctDvsnCode;
+
+		/** 전자위치값 */
+		private String elctLoctVal;
+
+		/** 이메일도메인코드 */
+		private String mailDmanCode;
+
+		/** 전자위치비고내용 */
+		private String elctLoctRmrkCntn;
+	}
 
 }

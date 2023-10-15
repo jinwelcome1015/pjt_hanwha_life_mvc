@@ -6,19 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.gooroomee.adapter.constant.TeleConstant;
 import com.gooroomee.adapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.adapter.dto.client.Mvc003ResDto;
 import com.gooroomee.adapter.dto.client.common.ResponseDto;
@@ -29,8 +25,6 @@ import com.gooroomee.adapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.adapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_O;
-import com.gooroomee.adapter.dto.intrf.IfMcCs012_I;
-import com.gooroomee.adapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.adapter.service.GooroomeeAdapterService;
 
 @Controller
@@ -52,7 +46,13 @@ public class GooroomeeAdapterController {
 	// 진위확인 결과 조회
 	@GetMapping(path = { "/intrf/ifmccs002" })
 	public @ResponseBody ResponseDto<IfMcCs002_O> ifmccs002(@RequestBody IfMcCs002_I req_ifMcCs002_I) {
+		
+		System.out.println("========================1");
 
+		System.out.println(req_ifMcCs002_I);
+		
+		System.out.println("========================2");
+		
 		return null;
 	}
 

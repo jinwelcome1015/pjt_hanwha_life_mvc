@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class SimpleMessageEnvelop<P> {
-	private HlicpMessageHeader header;
+public class IfTelegram<P> {
+	private IfTelegramHeader header;
 	private P payload;
 }

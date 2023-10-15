@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.constant.TeleConstant.IfSpec;
+import com.gooroomee.adapter.constant.IfConstant;
+import com.gooroomee.adapter.constant.IfConstant.IfSpec;
 import com.gooroomee.adapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.adapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.adapter.dto.intrf.IfMcCs003_O;
-import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
-import com.gooroomee.adapter.dto.intrf.common.SimpleMessageEnvelop;
-import com.gooroomee.adapter.util.ChannelAdapter;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.adapter.util.IfAdapter;
 
 @Service
 public class GooroomeeAdapterServiceImpl implements GooroomeeAdapterService {
@@ -71,13 +71,13 @@ public class GooroomeeAdapterServiceImpl implements GooroomeeAdapterService {
 	@Override
 	public IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I cs002_I) throws JsonProcessingException, URISyntaxException {
 		
-		ChannelAdapter channelAdapter = new ChannelAdapter(emnb, activeProfile, ifEndpointUrl);
+		IfAdapter channelAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
 
-		IfSpec ifSpec = TeleConstant.IfSpec.IfMcCs002;
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 
-		HlicpMessageHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		IfTelegramHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        SimpleMessageEnvelop<IfMcCs002_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(TeleConstant.IfType.MCI, header, cs002_I, IfMcCs002_O.class);
+        IfTelegram<IfMcCs002_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, cs002_I, IfMcCs002_O.class);
 
         IfMcCs002_O cs002_O = outputEnvelop.getPayload();
 		
@@ -89,13 +89,13 @@ public class GooroomeeAdapterServiceImpl implements GooroomeeAdapterService {
 	@Override
 	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I cs003_I) throws JsonProcessingException, URISyntaxException {
 		
-		ChannelAdapter channelAdapter = new ChannelAdapter(emnb, activeProfile, ifEndpointUrl);
+		IfAdapter channelAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
 
-		IfSpec ifSpec = TeleConstant.IfSpec.IfMcCs003;
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
-		HlicpMessageHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		IfTelegramHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        SimpleMessageEnvelop<IfMcCs003_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(TeleConstant.IfType.MCI, header, cs003_I, IfMcCs003_O.class);
+        IfTelegram<IfMcCs003_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, cs003_I, IfMcCs003_O.class);
 
         IfMcCs003_O cs003_O = outputEnvelop.getPayload();
 		

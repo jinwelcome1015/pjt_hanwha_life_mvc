@@ -1,5 +1,7 @@
 package com.gooroomee.adapter.dto.intrf;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,57 +13,63 @@ public class IfMcCs006_O {
 	
 	// XXX 확인
 	/** 사원정보 */
-	private String empeInfoList;
+	private List<EmpeInfo> empeInfoList;
+	
+	
+	@Getter 
+	@Setter
+	@ToString
+	public static class EmpeInfo {
+		/** 기관명 */
+		private String orgnNm;
 
-	/** 기관명 */
-	private String orgnNm;
+		/** 기관전화번호 */
+		private String orgnTlno;
 
-	/** 기관전화번호 */
-	private String orgnTlno;
+		/** 기관코드 */
+		private String orgnCode;
 
-	/** 기관코드 */
-	private String orgnCode;
+		/** 사원구분코드 */
+		private String empeDvsnCode;
 
-	/** 사원구분코드 */
-	private String empeDvsnCode;
+		/** 사원명 */
+		private String empeNm;
 
-	/** 사원명 */
-	private String empeNm;
+		/** 사원번호 */
+		private String emnb;
 
-	/** 사원번호 */
-	private String emnb;
+		/** 재직구분코드 */
+		private String tnofDvsnCode;
 
-	/** 재직구분코드 */
-	private String tnofDvsnCode;
+		/** 전화내선번호 */
+		private String tlphExno;
 
-	/** 전화내선번호 */
-	private String tlphExno;
+		/** 주민등록번호통합식별자SUID */
+		private long rrnoInidSuid;
 
-	/** 주민등록번호통합식별자SUID */
-	private long rrnoInidSuid;
+		/** 고객ID */
+		private String custId;
 
-	/** 고객ID */
-	private String custId;
+		/** 주민등록번호 */
+		private String rrno;
 
-	/** 주민등록번호 */
-	private String rrno;
+		/** 직급코드 */
+		private String clpsCode;
 
-	/** 직급코드 */
-	private String clpsCode;
+		/** 직책코드 */
+		private String rsofCode;
 
-	/** 직책코드 */
-	private String rsofCode;
+		/** 직위코드 */
+		private String pstnCode;
 
-	/** 직위코드 */
-	private String pstnCode;
+		/** FP직책코드 */
+		private String fpRsofCode;
 
-	/** FP직책코드 */
-	private String fpRsofCode;
+		/** 내근여부 */
+		private String wkisYn;
 
-	/** 내근여부 */
-	private String wkisYn;
-
-	/** 개인법인판매구분코드 */
-	private String prsnCorpSaleDvsnCode;
+		/** 개인법인판매구분코드 */
+		private String prsnCorpSaleDvsnCode;
+	}
 
 }

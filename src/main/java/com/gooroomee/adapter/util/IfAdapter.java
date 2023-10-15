@@ -24,65 +24,53 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.gooroomee.adapter.constant.TeleConstant;
-import com.gooroomee.adapter.dto.intrf.common.HlicpMessageHeader;
-import com.gooroomee.adapter.dto.intrf.common.HlicpResponseMessage;
-import com.gooroomee.adapter.dto.intrf.common.SimpleMessageEnvelop;
-import com.gooroomee.adapter.exception.TeleException;
+import com.gooroomee.adapter.constant.IfConstant;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegramHeaderResponseMessage;
+import com.gooroomee.adapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.adapter.exception.IfException;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ChannelAdapter {
+public class IfAdapter {
 
-	/**
-	 * 송신 시스템 코드
-	 */
-	private static final String TRNM_SYS_CODE = TeleConstant.TRNM_SYS_CODE;
+	/** 송신 시스템 코드 */
+	private static final String TRNM_SYS_CODE = IfConstant.TRNM_SYS_CODE;
 
-	/**
-	 * 채널 타입 코드
-	 */
-	private static final String CHNL_TYPE_CODE = TeleConstant.IfChnlTypeCode.SERVER.getValue();
+	/** 채널 타입 코드 */
+	private static final String CHNL_TYPE_CODE = IfConstant.IfChnlTypeCode.SERVER.getValue();
 
-	/**
-	 * 소속 기관 코드
-	 */
-	private static final String BELN_ORGN_CODE = TeleConstant.BELN_ORGN_CODE;
+	/** 소속 기관 코드 */
+	private static final String BELN_ORGN_CODE = IfConstant.BELN_ORGN_CODE;
 
-	/**
-	 * 사원 번호
-	 */
+	/** 사원 번호 */
 	private String enmb;
 
-	/**
-	 * 활성 프로필(PROD, QA, DEV, LOCAL)
-	 */
+	/** 활성 프로필(PROD, QA, DEV, LOCAL) */
 	private String activeProfile;
 
-	/**
-	 * 전송대상(MCI/ESB/FEB) URL 정보
-	 */
+	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public ChannelAdapter(String enmb, String activeProfile, String targetBaseUrl) {
+	public IfAdapter(String enmb, String activeProfile, String targetBaseUrl) {
 		super();
 		this.enmb = enmb;
 		this.activeProfile = activeProfile;
 		this.targetBaseUrl = targetBaseUrl;
 	}
 
-	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode) {
+	public IfTelegramHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode) {
 		return createHeader(itfcId, rcveSrvcId, rcveSysCode, "N");
 	}
 
-	public HlicpMessageHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode,
+	public IfTelegramHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode,
 			String prsnInfoIncsYn) {
-		HlicpMessageHeader header = new HlicpMessageHeader();
+		IfTelegramHeader header = new IfTelegramHeader();
 		header.setItfcId(itfcId);
 		header.setRcveSrvcId(rcveSrvcId);
 		header.setChnlTypeCode(CHNL_TYPE_CODE);
@@ -95,7 +83,7 @@ public class ChannelAdapter {
 		header.setTlgrCretDttm(this.getTlgrCretDttm());
 		header.setRndmNo(this.getRandomNumber());
 		header.setServerType(this.getServerType());
-		header.setRspnDvsnCode(TeleConstant.IfRspnDvsnCode.SEND.getValue());
+		header.setRspnDvsnCode(IfConstant.IfRspnDvsnCode.SEND.getValue());
 		return header;
 	}
 
@@ -105,48 +93,48 @@ public class ChannelAdapter {
 		String profile = this.getActiveProfile();
 
 		if ("local".equalsIgnoreCase(profile)) {
-			serverType = TeleConstant.IfServerType.LOCAL.getValue();
+			serverType = IfConstant.IfServerType.LOCAL.getValue();
 		} else if ("dev".equalsIgnoreCase(profile)) {
-			serverType = TeleConstant.IfServerType.DEV.getValue();
+			serverType = IfConstant.IfServerType.DEV.getValue();
 		} else if ("qa".equalsIgnoreCase(profile)) {
-			serverType = TeleConstant.IfServerType.QA.getValue();
+			serverType = IfConstant.IfServerType.QA.getValue();
 		} else if ("prod".equalsIgnoreCase(profile)) {
-			serverType = TeleConstant.IfServerType.PROD.getValue();
+			serverType = IfConstant.IfServerType.PROD.getValue();
 		} else {
-			serverType = TeleConstant.IfServerType.ETC.getValue();
+			serverType = IfConstant.IfServerType.ETC.getValue();
 		}
 
 		return serverType;
 	}
 
-	public String getTargetFullUrl(TeleConstant.IfType ifType) {
+	public String getTargetFullUrl(IfConstant.IfType ifType) {
 
 		String targetFullUrl = "";
 
 		String targetBaseUrl = this.getTargetBaseUrl();
 
-		if (ifType == TeleConstant.IfType.MCI) {
+		if (ifType == IfConstant.IfType.MCI) {
 			targetFullUrl = targetBaseUrl + "/mci" + "/" + TRNM_SYS_CODE.toLowerCase();
-		} else if (ifType == TeleConstant.IfType.ESB) {
+		} else if (ifType == IfConstant.IfType.ESB) {
 			targetFullUrl = targetBaseUrl + "/esb";
-		} else if (ifType == TeleConstant.IfType.FEB) {
+		} else if (ifType == IfConstant.IfType.FEB) {
 			targetFullUrl = targetBaseUrl + "/feb";
 		}
 
 		return targetFullUrl;
 	}
 
-	public <I, O> SimpleMessageEnvelop<O> sendAndReceiveMessage(TeleConstant.IfType ifType, HlicpMessageHeader header,
+	public <I, O> IfTelegram<O> sendAndReceiveMessage(IfConstant.IfType ifType, IfTelegramHeader header,
 			I inputDto, Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		SimpleMessageEnvelop<I> requestEnvelop = new SimpleMessageEnvelop<I>();
-		requestEnvelop.setHeader(header);
-		requestEnvelop.setPayload(inputDto);
+		IfTelegram<I> requestTelegram = new IfTelegram<I>();
+		requestTelegram.setHeader(header);
+		requestTelegram.setPayload(inputDto);
 
-		SimpleMessageEnvelop<O> responseEnvelop = null;
+		IfTelegram<O> responseTelegram = null;
 
-		String requestJson = objectMapper.writeValueAsString(requestEnvelop);
+		String requestJson = objectMapper.writeValueAsString(requestTelegram);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
@@ -161,25 +149,25 @@ public class ChannelAdapter {
 		String responseBody = responseEntity.getBody();
 
 		if (responseBody != null) {
-			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(SimpleMessageEnvelop.class,
+			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class,
 					outputDtoClass);
-			responseEnvelop = objectMapper.readValue(responseBody, javaType);
+			responseTelegram = objectMapper.readValue(responseBody, javaType);
 		}
 
-		HlicpMessageHeader responseEnvelopHeader = responseEnvelop.getHeader();
+		IfTelegramHeader responseTelegramHeader = responseTelegram.getHeader();
 
-		String prcsRsltDvsnCode = responseEnvelopHeader.getPrcsRsltDvsnCode();
+		String prcsRsltDvsnCode = responseTelegramHeader.getPrcsRsltDvsnCode();
 
-		if (!TeleConstant.IfPrcsRsltDvsnCode.NORMAL.getValue().equals(prcsRsltDvsnCode)) {
-			int cnt = responseEnvelopHeader.getMsgeListCont();
-			List<HlicpResponseMessage> msgeList = responseEnvelopHeader.getMsgeList();
+		if (!IfConstant.IfPrcsRsltDvsnCode.NORMAL.getValue().equals(prcsRsltDvsnCode)) {
+			int cnt = responseTelegramHeader.getMsgeListCont();
+			List<IfTelegramHeaderResponseMessage> msgeList = responseTelegramHeader.getMsgeList();
 
 			if (cnt > 0 && msgeList != null && msgeList.size() > 0) {
-				throw new TeleException(msgeList.get(0).getMsgeCntn());
+				throw new IfException(msgeList.get(0).getMsgeCntn());
 			}
 		}
 
-		return responseEnvelop;
+		return responseTelegram;
 	}
 
 	public String getTlgrCretDttm() {
@@ -209,7 +197,7 @@ public class ChannelAdapter {
 			logger.error(e.getMessage());
 		}
 
-		return TeleConstant.DEFAULT_IP_ADDRESS;
+		return IfConstant.DEFAULT_IP_ADDRESS;
 	}
 
 	public String getRandomNumber() {
@@ -230,12 +218,4 @@ public class ChannelAdapter {
 		return formattedRandomNumber;
 	}
 	
-	public static void main(String[] args) {
-		
-		System.out.println("1");
-		ChannelAdapter channelAdapter = new ChannelAdapter("", "", "");
-		System.out.println("2");
-		
-		
-	}
 }
