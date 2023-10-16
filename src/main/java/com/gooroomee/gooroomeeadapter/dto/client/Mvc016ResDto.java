@@ -9,9 +9,10 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class Mvc003ResDto extends ResSuperDto {
+public class Mvc016ResDto extends ResSuperDto {
 	
-	/** 처리성공여부 */
-	private String prcsSucsYn;
-
+	// XXX 확인
+	/** 대체키SUID */
+	private long sbsnKeySuid;
+	
 }

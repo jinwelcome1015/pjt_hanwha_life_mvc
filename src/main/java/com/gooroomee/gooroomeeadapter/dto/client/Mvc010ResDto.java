@@ -1,62 +1,55 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ReqSuperDto;
+import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
-public class Mvc012ReqDto extends ReqSuperDto {
+public class Mvc010ResDto extends ResSuperDto {
+
+	// XXX 확인
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
-	
+
+	// XXX 확인
 	/** 데이터바디 */
 	private DataBody dataBody;
-	
-	
-	@Getter 
+
+	@Getter
 	@Setter
 	@ToString
 	public static class DataHeader {
-		
+
 		/** 서비스ID */
 		private String SRVC_ID;
 
 		/** 화면ID */
 		private String SCRN_ID;
-		
+
 		/** 처리코드 */
 		private String CRTF_RTCD;
-		
+
 		/** 처리결과메세지 */
 		private String DLRE_MSG;
-		
-		/** 기관코드 */
-		private String ORGN_CODE;
-		
-		/** 사용자ID */
-		private String USER_ID;
-		
+
 	}
 
-	
-	
-	@Getter 
+	@Getter
 	@Setter
 	@ToString
 	public static class DataBody {
-		
-		/** 이니텍인증토큰 */
-		private String initechOAuthToken;
 
-		/** 트랜잭션ID */
-		private String reqTxId;
-		
-		/** 인증서명구분 */
-		private String op;
+		/** 액세스토큰 */
+		private String access_token;
+
+		/** 토큰타입 */
+		private String token_type;
+
+		/** 토큰유효시간 */
+		private String expires_in;
 	}
-	
 }

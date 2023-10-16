@@ -9,15 +9,12 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class Mvc003ReqDto extends ReqSuperDto {
+public class Mvc005ReqDto extends ReqSuperDto {
+	
+	/** 사원번호 */
+	private String emnb;
 
-	/** 고객ID */
-	private String custId;
-	
-	/** 푸시수신자사원번호 */
-	private String pushRcvrEmnb;
-	
-	/** 일치여부 */
-	private String csnsYn;
+	/** 로그인비밀번호 */
+	private String lognPswd;
 
 }

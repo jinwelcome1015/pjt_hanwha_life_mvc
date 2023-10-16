@@ -39,20 +39,12 @@ public class GooroomeeAdapterController {
 	// 신분증OCR요청
 	@GetMapping(path = { "/intrf/ifmccs001" })
 	public @ResponseBody ResponseDto<IfMcCs001_O> ifmccs001(@RequestBody IfMcCs001_I req_ifMcCs001_I) {
-
 		return null;
 	}
 
 	// 진위확인 결과 조회
 	@GetMapping(path = { "/intrf/ifmccs002" })
 	public @ResponseBody ResponseDto<IfMcCs002_O> ifmccs002(@RequestBody IfMcCs002_I req_ifMcCs002_I) {
-		
-		System.out.println("========================1");
-
-		System.out.println(req_ifMcCs002_I);
-		
-		System.out.println("========================2");
-		
 		return null;
 	}
 

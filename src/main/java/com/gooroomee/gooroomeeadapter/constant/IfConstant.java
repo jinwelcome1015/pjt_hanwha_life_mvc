@@ -8,6 +8,9 @@ public class IfConstant {
 	/** 소속 기관 코드 */
 	public static final String BELN_ORGN_CODE = "00630";
 	
+	/** 서비스 ID */
+	public static final String SRVC_ID = "SVC028";
+	
 	/** DEFAULT_IP_ADDRESS */
 	public static final String DEFAULT_IP_ADDRESS = "127.0.0.1";
 

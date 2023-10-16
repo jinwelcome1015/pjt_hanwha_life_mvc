@@ -9,8 +9,8 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class Mvc006ReqDto extends ReqSuperDto{
-
+public class Mvc006ReqDto extends ReqSuperDto {
+	
 	/** 검색어명 */
 	private String scwdNm;
 
