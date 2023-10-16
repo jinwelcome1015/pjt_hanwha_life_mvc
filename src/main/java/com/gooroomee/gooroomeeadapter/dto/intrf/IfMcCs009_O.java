@@ -1,4 +1,4 @@
-package com.gooroomee.adapter.dto.intrf;
+package com.gooroomee.gooroomeeadapter.dto.intrf;
 
 import lombok.Getter;
 import lombok.Setter;
