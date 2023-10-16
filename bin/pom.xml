@@ -5,19 +5,23 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.11</version>
+		<version>2.7.17-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gooroomee</groupId>
-	<artifactId>gooroomeeAdapter</artifactId>
+	<artifactId>gooroomee-adapter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>gooroomeeAdapter</name>
+	<name>gooroomee-adapter</name>
 	<description>adapter web appllication for gooroomee</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -27,6 +31,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -46,8 +55,52 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>

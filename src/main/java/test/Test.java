@@ -15,13 +15,12 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.gooroomee.adapter.dto.client.Mvc003ResDto;
-import com.gooroomee.adapter.dto.client.Mvc006ResDto;
-import com.gooroomee.adapter.dto.client.common.ResponseDto;
-import com.gooroomee.adapter.dto.client.common.ResponseDto.Result;
-import com.gooroomee.adapter.dto.intrf.IfMcCs003_I;
-import com.gooroomee.adapter.dto.intrf.common.IfTelegramHeader;
-import com.gooroomee.adapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
+import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 
 public class Test {
 
