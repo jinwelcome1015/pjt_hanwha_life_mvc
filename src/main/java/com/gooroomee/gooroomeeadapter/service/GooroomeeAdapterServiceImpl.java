@@ -12,6 +12,10 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.IfAdapter;
@@ -69,38 +73,81 @@ public class GooroomeeAdapterServiceImpl implements GooroomeeAdapterService {
 
 	
 	@Override
-	public IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I cs002_I) throws JsonProcessingException, URISyntaxException {
+	public IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I ifInputDto) throws JsonProcessingException, URISyntaxException {
 		
-		IfAdapter channelAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
-
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 
-		IfTelegramHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
 		
-        IfTelegram<IfMcCs002_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, cs002_I, IfMcCs002_O.class);
+		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+        IfTelegram<IfMcCs002_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs002_O cs002_O = outputEnvelop.getPayload();
+        IfMcCs002_O ifOutputDto = outputEnvelop.getPayload();
 		
-		return cs002_O;
+		return ifOutputDto;
 	}
 	
 	
 	
 	@Override
-	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I cs003_I) throws JsonProcessingException, URISyntaxException {
+	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I ifInputDto) throws JsonProcessingException, URISyntaxException {
 		
-		IfAdapter channelAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
-
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
-		IfTelegramHeader header = channelAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
 		
-        IfTelegram<IfMcCs003_O> outputEnvelop = channelAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, cs003_I, IfMcCs003_O.class);
+		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+        IfTelegram<IfMcCs003_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs003_O cs003_O = outputEnvelop.getPayload();
+        IfMcCs003_O ifOutputDto = outputEnvelop.getPayload();
 		
-		return cs003_O;
+		return ifOutputDto;
 	}
+	
+	
+	@Override
+	public IfMcCs005_O ifmccs005(String emnb, IfMcCs005_I ifInputDto) throws JsonProcessingException, URISyntaxException {
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
+
+		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
+		
+		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+        IfTelegram<IfMcCs005_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+
+        IfMcCs005_O ifOutputDto = outputEnvelop.getPayload();
+		
+		return ifOutputDto;
+	}
+	
+	
+	@Override
+	public IfMcCs006_O ifmccs006(String emnb, IfMcCs006_I ifInputDto) throws JsonProcessingException, URISyntaxException {
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
+
+		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
+		
+		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+        IfTelegram<IfMcCs006_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+
+        IfMcCs006_O ifOutputDto = outputEnvelop.getPayload();
+		
+		return ifOutputDto;
+	}
+	
 	
 	
 	/*

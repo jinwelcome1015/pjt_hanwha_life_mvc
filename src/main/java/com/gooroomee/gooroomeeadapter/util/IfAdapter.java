@@ -79,7 +79,7 @@ public class IfAdapter {
 		header.setEmnb(this.getEnmb());
 		header.setBelnOrgnCode(BELN_ORGN_CODE);
 		header.setPrsnInfoIncsYn(prsnInfoIncsYn);
-		header.setIpAddr(this.getLocalIpAddress());
+		header.setIpAddr(this.formatIpAddress(this.getLocalIpAddress()));
 		header.setTlgrCretDttm(this.getTlgrCretDttm());
 		header.setRndmNo(this.getRandomNumber());
 		header.setServerType(this.getServerType());
@@ -169,11 +169,24 @@ public class IfAdapter {
 
 		return responseTelegram;
 	}
+	
+	public String formatIpAddress(String ipAddress) {
+		String formattedIpAddrString = "";
+		
+		String[] ipAddressTokens = ipAddress.split("\\.");
+		for (String ipAddressToken : ipAddressTokens) {
+			Integer ipTokenDigit = Integer.valueOf(ipAddressToken);
+			String formattedToken = String.format("%03d", ipTokenDigit);
+			formattedIpAddrString += formattedToken;
+		}
+		
+		return formattedIpAddrString;
+	}
 
 	public String getTlgrCretDttm() {
-		String pattern = "yyyyMMddHHmmss";
-		Date date = new Date();
+		String pattern = "yyyyMMddHHmmssSSS";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		Date date = new Date();
 		return simpleDateFormat.format(date);
 	}
 

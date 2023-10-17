@@ -11,7 +11,8 @@
 	<groupId>com.gooroomee</groupId>
 	<artifactId>gooroomee-adapter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<!--<packaging>war</packaging>-->
+	<packaging>jar</packaging>
 	<name>gooroomee-adapter</name>
 	<description>adapter web appllication for gooroomee</description>
 	<properties>
