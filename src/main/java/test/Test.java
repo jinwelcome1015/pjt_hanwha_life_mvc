@@ -2,6 +2,8 @@ package test;
 
 import java.net.URI;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +26,13 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 
 public class Test {
 
+	Logger logger = LoggerFactory.getLogger(Test.class);
+	
+	public void doTest_01() {
+		logger.debug("11111");
+	}
+	
+	
 	public static class TestReqDto {
 		private String name;
 		private String job;
@@ -176,6 +185,7 @@ public class Test {
 	}
 	*/
 	
+	/*
 	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -207,5 +217,9 @@ public class Test {
 		System.out.println(valueAsString2);
 		
 	}
+	*/
 	
+	public static void main(String[] args) {
+		new Test().doTest_01();
+	}
 }

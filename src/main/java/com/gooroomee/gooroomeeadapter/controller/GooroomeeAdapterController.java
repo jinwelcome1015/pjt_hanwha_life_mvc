@@ -1,9 +1,6 @@
 package com.gooroomee.gooroomeeadapter.controller;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
@@ -27,7 +23,11 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_O;
 import com.gooroomee.gooroomeeadapter.service.GooroomeeAdapterService;
 
+import lombok.extern.slf4j.Slf4j;
+
+
 @Controller
+@Slf4j
 public class GooroomeeAdapterController {
 
 	@Autowired
@@ -81,5 +81,9 @@ public class GooroomeeAdapterController {
 	}
 	*/
 	
-	
+	@GetMapping(path = "/test")
+	public @ResponseBody String doTest01() {
+		log.debug("111");
+		return "doTest01";
+	}
 }
