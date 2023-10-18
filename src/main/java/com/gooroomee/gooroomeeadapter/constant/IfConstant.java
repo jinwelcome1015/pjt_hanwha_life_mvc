@@ -152,7 +152,7 @@ public class IfConstant {
 		/** 인터페이스 명세 : 알림톡전송 */
 		IfMcCs015("HLIMVC00012", "iniUmsSendMgmtPSI004c", "INI"),
 		/** 인터페이스 명세 : 대체키별연락처저장 */
-//		IfMcCs016("HLIMVC00013", "iniUmsSendMgmtPSI004c", "INI"),
+		IfMcCs016("HLIMVC00013", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),
 		/** 인터페이스 명세 : 대체키별연락처조회 */
 		IfMcCs017("HLIMVC00014", "icmCnplSbsnKeyMgmtPSI002r", "ICM"),
 		/** 인터페이스 명세 : 우편번호조회 */

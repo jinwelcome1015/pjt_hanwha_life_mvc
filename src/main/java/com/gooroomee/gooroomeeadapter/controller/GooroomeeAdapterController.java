@@ -3,6 +3,7 @@ package com.gooroomee.gooroomeeadapter.controller;
 import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class GooroomeeAdapterController {
+	
+	/**
+	 * 인터페이스 엔드포인트 IP
+	 */
+	@Value(value = "#{propertiesFactoryBean['interface.endpoint.ip']}")
+	private String ifEndpointIp;
+	
 
 	@Autowired
 	public RestTemplateBuilder restTemplateBuilder;
@@ -81,9 +89,10 @@ public class GooroomeeAdapterController {
 	}
 	*/
 	
-	@GetMapping(path = "/test")
+	@GetMapping(path = "/doTest01")
 	public @ResponseBody String doTest01() {
 		log.debug("111");
+		
 		return "doTest01";
 	}
 }

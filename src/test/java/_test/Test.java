@@ -1,9 +1,7 @@
-package test;
+package _test;
 
 import java.net.URI;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,23 +11,16 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
-import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 
 public class Test {
 
-	Logger logger = LoggerFactory.getLogger(Test.class);
+//	Logger logger = LoggerFactory.getLogger(Test.class);
 	
 	public void doTest_01() {
-		logger.debug("11111");
+//		logger.debug("11111");
 	}
 	
 	
