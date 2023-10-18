@@ -1,16 +1,17 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ReqSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
-public class Mvc005ReqDto extends ReqSuperDto {
-	
+public class Mvc005ReqDto {
+
+	/** mock 응답 사용여부 */
+	public String useMockResponseYn;
+
 	/** 사원번호 */
 	private String emnb;
 

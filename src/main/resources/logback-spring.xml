@@ -41,9 +41,9 @@
 	<root level="info">
 		<appender-ref ref="STDOUT" />
 	</root>
-
-	<logger name="com.gooroomee.gooroomeeadapter" level="debug">
+	
+	<logger name="com.gooroomee.gooroomeeadapter" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-
+ 	
 </configuration>

@@ -42,7 +42,7 @@ No.,필드명,,I/O,필드속성,필드길이,소수점이하,반복여부,반복
 3,결과메시지내용,rsltMsgeCntn,O,STRING,4000,,,,3,결과메시지내용,rsltMsgeCntn,O,STRING,4000,,,,,,
 4,전문추적번호,tlgrTrcgNo,O,STRING,50,,,,4,전문추적번호,tlgrTrcgNo,O,STRING,50,,,,,,
 5,고객ID,custId,O,STRING,10,,,,5,고객ID,custId,O,STRING,10,,,,,,
-,,,,,,,,,,,,,,,,,,,,
+6,거래고유번호,trnnUniqNo,O,STRING,20,,,,6,거래고유번호,trnnUniqNo,O,STRING,20,,,,,,
 ,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,

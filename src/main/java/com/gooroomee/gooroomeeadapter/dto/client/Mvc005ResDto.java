@@ -1,23 +1,20 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
-public class Mvc005ResDto extends ResSuperDto {
-	
-	
+public class Mvc005ResDto {
+
 	/** 응답코드값 */
 	private String rspnCodeVal;
-	
+
 	/** 응답메시지내용 */
 	private String rspnMsgeCntn;
-	
+
 	/** 예약컬럼값 */
 	private String rsvtClmnVal;
 

@@ -23,4 +23,7 @@ public class IfMcCs002_O {
 	
 	/** 고객ID */
 	private String custId;
+	
+	/** 거래고유번호 */
+	private String trnnUniqNo;
 }

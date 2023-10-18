@@ -14,6 +14,9 @@ public class IfTelegramHeader {
 	
 	// XXX [BOC] 시스템 공통부
 	
+	/** trnnNo */
+	private String trnnNo;
+	
 	/** 송신 시스템 코드 */
 	private String trnmSysCode;
 	

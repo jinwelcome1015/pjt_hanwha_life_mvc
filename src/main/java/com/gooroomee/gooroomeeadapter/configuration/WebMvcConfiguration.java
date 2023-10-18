@@ -8,13 +8,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.gooroomee.gooroomeeadapter.interceptor.AuthInterceptor;
 
 @Configuration
-public class WebMvcConfiguration implements WebMvcConfigurer{
-	
+public class WebMvcConfiguration implements WebMvcConfigurer {
+
 	@Autowired
 	AuthInterceptor authInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authInterceptor).addPathPatterns("/**");
+		/*
+		registry
+			.addInterceptor(authInterceptor)
+				.addPathPatterns("/intrf/**");
+		*/
 	}
 }

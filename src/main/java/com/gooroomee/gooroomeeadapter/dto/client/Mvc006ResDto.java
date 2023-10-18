@@ -2,23 +2,20 @@ package com.gooroomee.gooroomeeadapter.dto.client;
 
 import java.util.List;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
-public class Mvc006ResDto extends ResSuperDto {
-	
+public class Mvc006ResDto {
+
 	// XXX 확인
 	/** 사원정보 */
 	private List<EmpeInfo> empeInfoList;
-	
-	
-	@Getter 
+
+	@Getter
 	@Setter
 	@ToString
 	public static class EmpeInfo {
