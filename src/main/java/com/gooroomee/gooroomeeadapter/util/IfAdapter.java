@@ -7,12 +7,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -32,10 +34,24 @@ import com.gooroomee.gooroomeeadapter.exception.IfException;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class IfAdapter {
+	
+	/** READ_TIMEOUT_SECOND */
+	private static final int READ_TIMEOUT_SECOND = 5;       	
+	
+	/** CONNECTION_TIMEOUT_SECOND */
+    private static final int CONNECTION_TIMEOUT_SECOND = 5;  	
+	
+	/** RestTemplate */
+	private static final RestTemplate REST_TEMPLATE = new RestTemplateBuilder()
+															.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
+															.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
+															.build();
 
 	/** 송신 시스템 코드 */
 	private static final String TRNM_SYS_CODE = IfConstant.TRNM_SYS_CODE;
@@ -55,7 +71,6 @@ public class IfAdapter {
 	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public IfAdapter(String enmb, String activeProfile, String targetBaseUrl) {
 		super();
@@ -144,8 +159,7 @@ public class IfAdapter {
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST,
 				new URI(targetFullUrl));
 
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+		ResponseEntity<String> responseEntity = REST_TEMPLATE.exchange(requestEntity, String.class);
 		String responseBody = responseEntity.getBody();
 
 		if (responseBody != null) {
@@ -207,7 +221,7 @@ public class IfAdapter {
 				}
 			}
 		} catch (SocketException e) {
-			logger.error(e.getMessage());
+			log.error(e.getMessage());
 		}
 
 		return IfConstant.DEFAULT_IP_ADDRESS;

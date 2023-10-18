@@ -25,18 +25,12 @@ public class ResponseDto<T> {
 		}
 	}
 	
-	/**
-	 * 결과 (열거형)
-	 */
+	/** 결과 (열거형) */
 	private final Result result;
 	
-	/**
-	 * HttpStatus (열거형)
-	 */
+	/** HttpStatus (열거형) */
 	private final HttpStatus httpStatus;
 	
-	/**
-	 * 데이터
-	 */
+	/** 데이터 */
 	private final T data;
 }

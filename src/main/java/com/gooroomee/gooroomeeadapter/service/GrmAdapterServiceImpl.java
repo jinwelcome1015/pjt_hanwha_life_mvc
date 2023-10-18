@@ -21,56 +21,39 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.IfAdapter;
 
 @Service
-public class GooroomeeAdapterServiceImpl implements GooroomeeAdapterService {
+public class GrmAdapterServiceImpl implements GrmAdapterService {
 
-	/**
-	 * 인터페이스 엔드포인트 URL
-	 */
+	/** 인터페이스 엔드포인트 URL */
 	@Value(value = "${spring.profiles.active}")
 	private String activeProfile;
 
-	/**
-	 * 인터페이스 엔드포인트 URL
-	 */
+	/** 인터페이스 엔드포인트 URL */
 	@Value(value = "#{propertiesFactoryBean['interface.common.endpoint.url']}")
 	private String ifEndpointUrl;
 
-	/**
-	 * 인터페이스 엔드포인트 IP
-	 */
+	/** 인터페이스 엔드포인트 IP */
 	@Value(value = "#{propertiesFactoryBean['interface.common.endpoint.ip']}")
 	private String ifEndpointIp;
 
-	/**
-	 * 인터페이스 엔드포인트 PORT
-	 */
+	/** 인터페이스 엔드포인트 PORT */
 	@Value(value = "#{propertiesFactoryBean['interface.common.endpoint.port']}")
 	private String ifEndpointPort;
 
-	/**
-	 * OCR URL
-	 */
+	/** OCR URL */
 	@Value(value = "#{propertiesFactoryBean['interface.ocr.url']}")
 	private String ocrUrl;
 
-	/**
-	 * OCR SECRET KEY
-	 */
+	/** OCR SECRET KEY */
 	@Value(value = "#{propertiesFactoryBean['interface.ocr.secret-key']}")
 	private String ocrSecretKey;
 
-	/**
-	 * 암호화 AES_KEY
-	 */
+	/** 암호화 AES_KEY */
 	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-key']}")
 	private String encryptAesKey;
 
-	/**
-	 * 암호화 AES_IV
-	 */
+	/** 암호화 AES_IV */
 	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-iv']}")
 	private String encryptAesIv;
-
 	
 	@Override
 	public IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I ifInputDto) throws JsonProcessingException, URISyntaxException {

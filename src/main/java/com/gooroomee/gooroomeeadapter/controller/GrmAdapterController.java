@@ -4,7 +4,6 @@ import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,27 +21,23 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_O;
-import com.gooroomee.gooroomeeadapter.service.GooroomeeAdapterService;
+import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 
 import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
 @Slf4j
-public class GooroomeeAdapterController {
+public class GrmAdapterController {
 	
 	/**
 	 * 인터페이스 엔드포인트 IP
 	 */
 	@Value(value = "#{propertiesFactoryBean['interface.endpoint.ip']}")
 	private String ifEndpointIp;
-	
 
 	@Autowired
-	public RestTemplateBuilder restTemplateBuilder;
-
-	@Autowired
-	public GooroomeeAdapterService gooroomeeAdapterService;
+	public GrmAdapterService gooroomeeAdapterService;
 
 	// 신분증OCR요청
 	@GetMapping(path = { "/intrf/ifmccs001" })
@@ -91,7 +86,7 @@ public class GooroomeeAdapterController {
 	
 	@GetMapping(path = "/doTest01")
 	public @ResponseBody String doTest01() {
-		log.debug("111");
+		log.debug("doTest01");
 		
 		return "doTest01";
 	}
