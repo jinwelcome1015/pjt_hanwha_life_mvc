@@ -41,6 +41,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.gooroomeeadapter.exception.IfException;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -133,6 +134,8 @@ public class GrmAdapterController {
 
 	@GetMapping(path = "/test/doTest01")
 	public @ResponseBody String doTest01() throws IOException {
+//	public @ResponseBody ResponseDto<String> doTest01() throws IOException {
+	
 		log.debug("doTest01");
 
 		ClassPathResource resource = new ClassPathResource("mockData/res.log");
@@ -141,6 +144,9 @@ public class GrmAdapterController {
 		List<String> lines = Files.readAllLines(path);
 
 		String delimiter = " ";
+		if(true) {
+			throw new IfException("[[[에러]]] : 1234123123123123");
+		}
 
 		/*
 		for (String line : lines) {

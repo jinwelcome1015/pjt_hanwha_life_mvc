@@ -60,23 +60,24 @@ public class GrmAdapterConfiguration {
 				.build();
 	}
 	*/
-
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-
-		// Apache HttpComponents
-		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(50) // 최대 커넥션 수
-				.setMaxConnPerRoute(20).build(); // 각 호스트(IP와 Port 의 조합)당 커넥션 풀에 생성가능한 커넥션 수
-
-		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		factory.setHttpClient(httpClient);
-
-		return restTemplateBuilder
-				// 로깅 인터셉터에서 Stream 소비 하기 때문에 BufferingClientHttpRequestFactory 사용
-				.requestFactory(() -> new BufferingClientHttpRequestFactory(factory))
-				.setReadTimeout(Duration.ofSeconds(5)) // read timeout
-				.setConnectTimeout(Duration.ofSeconds(3)) // connection timeout
-				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8)) // 메시지 컨버터 추가
-				.additionalInterceptors(restTemplateLoggingRequestInterceptor).build();
-	}
+	/*
+		@Bean
+		public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+	
+			// Apache HttpComponents
+			HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(50) // 최대 커넥션 수
+					.setMaxConnPerRoute(20).build(); // 각 호스트(IP와 Port 의 조합)당 커넥션 풀에 생성가능한 커넥션 수
+	
+			HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+			factory.setHttpClient(httpClient);
+	
+			return restTemplateBuilder
+					// 로깅 인터셉터에서 Stream 소비 하기 때문에 BufferingClientHttpRequestFactory 사용
+					.requestFactory(() -> new BufferingClientHttpRequestFactory(factory))
+					.setReadTimeout(Duration.ofSeconds(5)) // read timeout
+					.setConnectTimeout(Duration.ofSeconds(3)) // connection timeout
+					.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8)) // 메시지 컨버터 추가
+					.additionalInterceptors(restTemplateLoggingRequestInterceptor).build();
+		}
+		*/
 }

@@ -1,11 +1,17 @@
 package com.gooroomee.gooroomeeadapter.dto.client.common;
 
+import java.sql.Date;
+
 import org.springframework.http.HttpStatus;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @RequiredArgsConstructor
+@Getter
+@Setter
 @ToString
 public class ResponseDto<T> {
 	

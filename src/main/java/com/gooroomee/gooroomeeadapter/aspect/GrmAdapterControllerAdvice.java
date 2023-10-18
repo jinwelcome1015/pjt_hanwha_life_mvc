@@ -25,7 +25,8 @@ public class GrmAdapterControllerAdvice {
 		} catch (JsonProcessingException e1) {
 			stackTraceJson = e.getMessage();
 		}
-		log.error(e.getMessage());
+		
+		log.error(stackTraceJson);
 		
 		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 
