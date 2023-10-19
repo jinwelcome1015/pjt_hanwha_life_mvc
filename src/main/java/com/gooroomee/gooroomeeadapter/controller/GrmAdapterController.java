@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,11 +27,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
@@ -42,6 +47,9 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataBody;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataHeader;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
@@ -226,27 +234,52 @@ public class GrmAdapterController {
 	 */
 	@GetMapping(path = { "/test/api" })
 	public String getApiTestView(Model model) {
-		model.addAttribute(getApis(), model);
-		String view = "/test/apiTest.html";
+		
+		model.addAttribute("apiPathList", this.getApiPathList());
+		String view = "/test/apiTest";
 
 		return view;
 	}
 	
-	private List<String> getApiNameList(){
+	
+	private List<String> getApiPathList(){
+		List<String> apiNameList = new ArrayList<>();
+		
 		Method[] declaredMethods = this.getClass().getDeclaredMethods();
 		for (Method method : declaredMethods) {
-			System.out.println("***************** " + method.getName());
+			String methodName = method.getName();
 			PostMapping postMappingAnnotation = method.getAnnotation(PostMapping.class);
-			System.out.println(postMappingAnnotation);
+			if(postMappingAnnotation != null) {
+				String[] paths = postMappingAnnotation.path();
+				List<String> pathList = Arrays.asList(paths);
+				for (String path : pathList) {
+					if(path.startsWith("/intrf/")) {
+						apiNameList.add(path);
+					}
+				}
+			}
 		}
-		return null;
+		return apiNameList;
 	}
-	
 	
 	@GetMapping(path = { "/test/apis" })
 	public @ResponseBody String getApis() {
 		return "";
 	}
+	/*
+	public static void main(String[] args) throws JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_SNAKE_CASE);
+		DataHeader dataHeader = new IfMcCs001_I.DataHeader();
+		DataBody dataBody = new IfMcCs001_I.DataBody();
+		IfMcCs001_I ifMcCs001_I = new IfMcCs001_I();
+		ifMcCs001_I.setDataBody(dataBody);
+		ifMcCs001_I.setDataHeader(dataHeader);
+		
+		String writeValueAsString = objectMapper.writeValueAsString(ifMcCs001_I);
+		System.out.println(writeValueAsString);
+	}
+	*/
 	
 	
 	private <O> O getMockResponseData(String thisMethodName, Class<O> outputClass) throws IOException {
