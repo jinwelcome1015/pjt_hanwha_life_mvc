@@ -80,14 +80,14 @@ public class GrmAdapterController {
 	private static final String API_URL_TOKEN = "/intrf/";
 
 	/**
-	 * 진위확인 결과 조회
+	 * 진위확인결과조회
 	 * 
 	 * @param reqDto
 	 * @return
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@PostMapping(path = { "/intrf/trflCnfm" })
+	@PostMapping(path = { "/intrf/trflCnfm" }, name = "진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto)
 			throws URISyntaxException, IOException {
 		
@@ -116,7 +116,7 @@ public class GrmAdapterController {
 	}
 
 	/**
-	 * 신분증 스캔 후 처리
+	 * 신분증스캔후처리
 	 * 
 	 * @param reqDto
 	 * @return
