@@ -41,18 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class IfAdapter {
 	
-	/** READ_TIMEOUT_SECOND */
-	private static final int READ_TIMEOUT_SECOND = 5;       	
-	
-	/** CONNECTION_TIMEOUT_SECOND */
-    private static final int CONNECTION_TIMEOUT_SECOND = 5;  	
-	
-	/** RestTemplate */
-	private static final RestTemplate REST_TEMPLATE = new RestTemplateBuilder()
-															.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
-															.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
-															.build();
-
 	/** 송신 시스템 코드 */
 	private static final String TRNM_SYS_CODE = IfConstant.TRNM_SYS_CODE;
 
@@ -61,6 +49,9 @@ public class IfAdapter {
 
 	/** 소속 기관 코드 */
 	private static final String BELN_ORGN_CODE = IfConstant.BELN_ORGN_CODE;
+	
+	/** RestTemplate */
+	private RestTemplate restTemplate;
 
 	/** 사원 번호 */
 	private String enmb;
@@ -72,8 +63,9 @@ public class IfAdapter {
 	private String targetBaseUrl;
 
 
-	public IfAdapter(String enmb, String activeProfile, String targetBaseUrl) {
+	public IfAdapter(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
 		super();
+		this.restTemplate = restTemplate;
 		this.enmb = enmb;
 		this.activeProfile = activeProfile;
 		this.targetBaseUrl = targetBaseUrl;
@@ -159,7 +151,7 @@ public class IfAdapter {
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST,
 				new URI(targetFullUrl));
 
-		ResponseEntity<String> responseEntity = REST_TEMPLATE.exchange(requestEntity, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 		String responseBody = responseEntity.getBody();
 
 		if (responseBody != null) {

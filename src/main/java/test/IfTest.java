@@ -3,6 +3,8 @@ package test;
 import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestTemplate;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
@@ -76,7 +78,7 @@ public class IfTest {
         
         IfMcCs002_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs002_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 
@@ -90,7 +92,13 @@ public class IfTest {
     }
 
     
-    /**
+    private RestTemplate getRestTemplate() {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate;
+	}
+
+
+	/**
      * 신분증스캔후처리  
      * @throws JsonProcessingException
      * @throws URISyntaxException
@@ -109,7 +117,7 @@ public class IfTest {
         
         inputPayload.setPushRcvrEmnb(EMNB); // 사번 overwrite
 
-        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
@@ -139,7 +147,7 @@ public class IfTest {
         
         IfMcCs005_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs005_I.class);
         
-        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
 
@@ -173,7 +181,7 @@ public class IfTest {
         
         IfMcCs006_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs006_I.class);
         
-        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
 

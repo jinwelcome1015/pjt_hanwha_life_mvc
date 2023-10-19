@@ -2,8 +2,10 @@ package com.gooroomee.gooroomeeadapter.service;
 
 import java.net.URISyntaxException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
@@ -22,6 +24,9 @@ import com.gooroomee.gooroomeeadapter.util.IfAdapter;
 
 @Service
 public class GrmAdapterServiceImpl implements GrmAdapterService {
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	/** 인터페이스 엔드포인트 URL */
 	@Value(value = "${spring.profiles.active}")
@@ -62,7 +67,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
@@ -82,7 +87,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
@@ -101,7 +106,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
@@ -120,7 +125,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(emnb, activeProfile, ifEndpointUrl);
+		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		

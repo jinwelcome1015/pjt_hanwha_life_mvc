@@ -1,24 +1,34 @@
 package com.gooroomee.gooroomeeadapter.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -55,11 +65,32 @@ public class GrmAdapterController {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
-	// 진위확인 결과 조회
-	@GetMapping(path = { "/intrf/trflCnfm" })
+	/**
+	 * 진위확인 결과 조회
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@PostMapping(path = { "/intrf/trflCnfm" })
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto)
-			throws JsonProcessingException, URISyntaxException {
+			throws URISyntaxException, IOException {
+		
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs002_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs002_O.class);
+			
+			Mvc002ResDto resDto = modelMapper.map(mockResponseData, Mvc002ResDto.class);
+			ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
 
 		IfMcCs002_I cs002_I = modelMapper.map(reqDto, IfMcCs002_I.class);
 
@@ -74,32 +105,68 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
-	// 신분증 스캔 후 처리
-	@GetMapping(path = { "/intrf/itfcIdcdScan" })
+	/**
+	 * 신분증 스캔 후 처리
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@PostMapping(path = { "/intrf/itfcIdcdScan" })
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
-			throws JsonProcessingException, URISyntaxException {
+			throws URISyntaxException, IOException {
+		
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs003_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs003_O.class);
+			
+			Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
+			ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
 
-		IfMcCs003_I cs003_I = new IfMcCs003_I();
-		cs003_I.setCustId(reqDto.getCustId());
-		cs003_I.setPushRcvrEmnb(reqDto.getPushRcvrEmnb());
-		cs003_I.setCsnsYn(reqDto.getCsnsYn());
+		IfMcCs003_I cs003_I = modelMapper.map(reqDto, IfMcCs003_I.class);
 
 		String emnb = reqDto.getEmnb();
 
 		IfMcCs003_O cs003_O = gooroomeeAdapterService.ifmccs003(emnb, cs003_I);
 
-		Mvc003ResDto resDto = new Mvc003ResDto();
-		resDto.setPrcsSucsYn(cs003_O.getPrcsSucsYn());
+		Mvc003ResDto resDto = modelMapper.map(cs003_O, Mvc003ResDto.class);
 
 		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 		return responseDto;
 	}
 
-	// SSO대체로그인인증
+	
+
+	/**
+	 * SSO대체로그인인증
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	@PostMapping(path = { "/intrf/itfcUserCtfn" })
 	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto)
-			throws JsonProcessingException, URISyntaxException {
+			throws URISyntaxException, IOException {
+		
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs005_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs005_O.class);
+			
+			Mvc005ResDto resDto = modelMapper.map(mockResponseData, Mvc005ResDto.class);
+			ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
+		
+		
 
 		IfMcCs005_I cs005_I = modelMapper.map(reqDto, IfMcCs005_I.class);
 
@@ -114,10 +181,29 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
-	// 사원목록조회
+	/**
+	 * 사원목록조회
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	@PostMapping(path = { "/intrf/empeInqy" })
 	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto)
-			throws JsonProcessingException, URISyntaxException {
+			throws URISyntaxException, IOException {
+		
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs006_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs006_O.class);
+			
+			Mvc006ResDto resDto = modelMapper.map(mockResponseData, Mvc006ResDto.class);
+			ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
+		
 
 		IfMcCs006_I cs006_I = modelMapper.map(reqDto, IfMcCs006_I.class);
 
@@ -132,36 +218,49 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
-	@GetMapping(path = "/test/doTest01")
-	public @ResponseBody String doTest01() throws IOException {
-//	public @ResponseBody ResponseDto<String> doTest01() throws IOException {
 	
-		log.debug("doTest01");
+	/**
+	 * API 테스트 화면
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(path = { "/test/api" })
+	public String getApiTestView(Model model) {
+		model.addAttribute(getApis(), model);
+		String view = "/test/apiTest.html";
 
-		ClassPathResource resource = new ClassPathResource("mockData/res.log");
-		Path path = Paths.get(resource.getURI());
-
-		List<String> lines = Files.readAllLines(path);
-
-		String delimiter = " ";
-		if(true) {
-			throw new IfException("[[[에러]]] : 1234123123123123");
-		}
-
-		/*
-		for (String line : lines) {
-			System.out.println(line);
-		}
-		*/
-		return "doTest01";
+		return view;
 	}
-
-	public static void main(String[] args) throws IOException {
-		ClassPathResource resource = new ClassPathResource("mockData/res.log");
+	
+	private List<String> getApiNameList(){
+		Method[] declaredMethods = this.getClass().getDeclaredMethods();
+		for (Method method : declaredMethods) {
+			System.out.println("***************** " + method.getName());
+			PostMapping postMappingAnnotation = method.getAnnotation(PostMapping.class);
+			System.out.println(postMappingAnnotation);
+		}
+		return null;
+	}
+	
+	
+	@GetMapping(path = { "/test/apis" })
+	public @ResponseBody String getApis() {
+		return "";
+	}
+	
+	
+	private <O> O getMockResponseData(String thisMethodName, Class<O> outputClass) throws IOException {
+		String mockDataRootPath = "/assets/mockData/";
+		String mockDataDetailPath = mockDataRootPath + thisMethodName;
+		String mockResponseDataFileName = "res.log";
+		
+		File mockResponseDataFile = new File(mockDataDetailPath, mockResponseDataFileName);
+		
+		ClassPathResource resource = new ClassPathResource(mockResponseDataFile.toString());
 		Path path = Paths.get(resource.getURI());
-
+		
 		List<String> lines = Files.readAllLines(path);
-
+		
 		List<String> filteredLines = new ArrayList<>();
 		for (String line : lines) {
 			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
@@ -172,23 +271,106 @@ public class GrmAdapterController {
 			}
 			filteredLines.add(line);
 		}
-
+		
 		String delimiter = " ";
 		String jsonData = String.join(delimiter, filteredLines);
-
+		
 		String patternFrom = ".*(data=)";
-		String patternTo = ", encrypt=false]\s*$";
+		String patternTo = ", encrypt=false]\\s*$";
 		jsonData = jsonData.replaceAll(patternFrom, "");
 		jsonData = jsonData.replaceAll(patternTo, "");
-
-		System.out.println(jsonData);
-
+		
 		ObjectMapper objectMapper = new ObjectMapper();
-
+		
+		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputClass);
+		IfTelegram<O> responseTelegram = null;
+		responseTelegram = objectMapper.readValue(jsonData, javaType);
+		
+		
+		O payload = responseTelegram.getPayload();
+		
+		return payload;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	@PostMapping(path = "/test/doTest02")
+	public @ResponseBody String doTest02() throws IOException {
+		
+		UriComponents complexUrl = UriComponentsBuilder
+		        .fromUriString("https://jsonplaceholder.typicode.com/posts")
+		        .encode()
+		        .build(); 
+	
+		ResponseEntity<List<Map<String, String>>> exchange = restTemplate.exchange(complexUrl.toUri(), HttpMethod.GET,
+				null, new ParameterizedTypeReference<List<Map<String, String>>>() {
+				}
+		);
+		
+		String writeValueAsString = new ObjectMapper().writeValueAsString(exchange);
+		return writeValueAsString;
+	}
+	*/
+	
+	/*
+	public static void main(String[] args) throws IOException {
+		ClassPathResource resource = new ClassPathResource("mockData/res.log");
+		Path path = Paths.get(resource.getURI());
+	
+		List<String> lines = Files.readAllLines(path);
+	
+		List<String> filteredLines = new ArrayList<>();
+		for (String line : lines) {
+			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
+					|| line.contains("subTrnmSysType")) {
+				continue;
+			} else if (line.contains("msgeStackTrace") && line.endsWith(",")) {
+				line = line.replaceAll(",$", "");
+			}
+			filteredLines.add(line);
+		}
+	
+		String delimiter = " ";
+		String jsonData = String.join(delimiter, filteredLines);
+	
+		String patternFrom = ".*(data=)";
+		String patternTo = ", encrypt=false]\\s*$";
+		jsonData = jsonData.replaceAll(patternFrom, "");
+		jsonData = jsonData.replaceAll(patternTo, "");
+	
+		System.out.println(jsonData);
+	
+		ObjectMapper objectMapper = new ObjectMapper();
+	
 		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, IfMcCs005_O.class);
 		IfTelegram<IfMcCs005_O> responseTelegram = null;
 		responseTelegram = objectMapper.readValue(jsonData, javaType);
-
+	
 		System.out.println(responseTelegram);
 	}
+	*/
 }
