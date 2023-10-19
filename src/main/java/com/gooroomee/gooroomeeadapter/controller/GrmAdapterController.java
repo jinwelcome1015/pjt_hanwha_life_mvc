@@ -76,6 +76,8 @@ public class GrmAdapterController {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	private static final String API_URL_TOKEN = "/intrf/";
 
 	/**
 	 * 진위확인 결과 조회
@@ -227,6 +229,8 @@ public class GrmAdapterController {
 	}
 
 	
+	
+	
 	/**
 	 * API 테스트 화면
 	 * @param model
@@ -236,9 +240,8 @@ public class GrmAdapterController {
 	public String getApiTestView(Model model) {
 		
 		model.addAttribute("apiPathList", this.getApiPathList());
-		String view = "/test/apiTest";
 
-		return view;
+		return "/test/apiTest";
 	}
 	
 	
@@ -253,7 +256,7 @@ public class GrmAdapterController {
 				String[] paths = postMappingAnnotation.path();
 				List<String> pathList = Arrays.asList(paths);
 				for (String path : pathList) {
-					if(path.startsWith("/intrf/")) {
+					if(path.startsWith(API_URL_TOKEN)) {
 						apiNameList.add(path);
 					}
 				}
