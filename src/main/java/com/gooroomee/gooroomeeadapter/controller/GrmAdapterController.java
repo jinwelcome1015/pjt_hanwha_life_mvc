@@ -3,23 +3,20 @@ package com.gooroomee.gooroomeeadapter.controller;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.TypeVariable;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,15 +24,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
@@ -59,7 +52,6 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
-import com.gooroomee.gooroomeeadapter.exception.IfException;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -123,7 +115,7 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@PostMapping(path = { "/intrf/itfcIdcdScan" })
+	@PostMapping(path = { "/intrf/itfcIdcdScan" }, name = "신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
 			throws URISyntaxException, IOException {
 		
@@ -161,7 +153,7 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@PostMapping(path = { "/intrf/itfcUserCtfn" })
+	@PostMapping(path = { "/intrf/itfcUserCtfn" }, name = "SSO대체로그인인증")
 	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto)
 			throws URISyntaxException, IOException {
 		
@@ -199,7 +191,7 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@PostMapping(path = { "/intrf/empeInqy" })
+	@PostMapping(path = { "/intrf/empeInqy" }, name = "사원목록조회")
 	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto)
 			throws URISyntaxException, IOException {
 		
@@ -239,37 +231,40 @@ public class GrmAdapterController {
 	@GetMapping(path = { "/test/api" })
 	public String getApiTestView(Model model) {
 		
-		model.addAttribute("apiPathList", this.getApiPathList());
+		model.addAttribute("apiInfoList", this.getApiInfoList());
 
 		return "/test/apiTest";
 	}
 	
 	
-	private List<String> getApiPathList(){
-		List<String> apiNameList = new ArrayList<>();
+	private List<Map<String, String>> getApiInfoList(){
+		List<Map<String, String>> apiInfoList = new ArrayList<>();
 		
 		Method[] declaredMethods = this.getClass().getDeclaredMethods();
 		for (Method method : declaredMethods) {
-			String methodName = method.getName();
 			PostMapping postMappingAnnotation = method.getAnnotation(PostMapping.class);
 			if(postMappingAnnotation != null) {
+				String name = postMappingAnnotation.name();
 				String[] paths = postMappingAnnotation.path();
 				List<String> pathList = Arrays.asList(paths);
 				for (String path : pathList) {
 					if(path.startsWith(API_URL_TOKEN)) {
-						apiNameList.add(path);
+						Map<String, String> map = new HashMap<>();
+						map.put("path", path);
+						map.put("name", name);
+						apiInfoList.add(map);
 					}
 				}
 			}
 		}
-		return apiNameList;
+		return apiInfoList;
 	}
 	
 	@GetMapping(path = { "/test/apis" })
 	public @ResponseBody String getApis() {
 		return "";
 	}
-	/*
+	
 	public static void main(String[] args) throws JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_SNAKE_CASE);
@@ -282,7 +277,7 @@ public class GrmAdapterController {
 		String writeValueAsString = objectMapper.writeValueAsString(ifMcCs001_I);
 		System.out.println(writeValueAsString);
 	}
-	*/
+	
 	
 	
 	private <O> O getMockResponseData(String thisMethodName, Class<O> outputClass) throws IOException {

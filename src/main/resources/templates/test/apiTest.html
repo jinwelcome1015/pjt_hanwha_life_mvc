@@ -8,7 +8,7 @@
 	<h1>API TEST</h1>
 	
 	<select name="" id="">
-		<option th:each="apiPath : ${apiPathList}" th:value="${apiPath}" th:text="${apiPath}"></option>
+		<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}" th:text="${apiInfo.name}"></option>
 	</select>
 </body>
 </html>
