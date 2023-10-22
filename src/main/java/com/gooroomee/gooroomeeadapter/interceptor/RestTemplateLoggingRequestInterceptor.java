@@ -20,14 +20,12 @@ public class RestTemplateLoggingRequestInterceptor implements ClientHttpRequestI
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 			throws IOException {
-		// request log
-		URI uri = request.getURI();
+		
 		traceRequest(request, body);
 
-		// execute
 		ClientHttpResponse response = execution.execute(request, body);
 
-		// response log
+		URI uri = request.getURI();
 		traceResponse(response, uri);
 		return response;
 	}
