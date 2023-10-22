@@ -76,7 +76,7 @@ public class GrmAdapterController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private static final String API_URL_TOKEN = "/intrf";
+	public static final String API_URL_TOKEN = "/intrf";
 	
 	private static final String URL_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
 	
