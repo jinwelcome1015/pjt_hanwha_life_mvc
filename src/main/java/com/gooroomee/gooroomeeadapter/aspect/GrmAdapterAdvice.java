@@ -1,8 +1,8 @@
 package com.gooroomee.gooroomeeadapter.aspect;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrmAdapterAdvice {
 	
-	@Before("execution(* com.gooroomee.gooroomeeadapter.controller.*.*(..))")
-    public void logBefore(JoinPoint joinPoint) {
-        log.info("Before: " + joinPoint.getSignature().getName());
-        
+	@Around("execution(* com.gooroomee.gooroomeeadapter.controller.*.*(..))")
+    public Object responseWithMockData(JoinPoint joinPoint) {
+		Object[] args = joinPoint.getArgs();
+        return null;
     }
 }
