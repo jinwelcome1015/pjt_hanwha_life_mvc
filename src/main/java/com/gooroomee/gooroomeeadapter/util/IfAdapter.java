@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -61,6 +62,8 @@ public class IfAdapter {
 
 	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
+	
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
 	public IfAdapter(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
@@ -133,7 +136,7 @@ public class IfAdapter {
 
 	public <I, O> IfTelegram<O> sendAndReceiveMessage(IfConstant.IfType ifType, IfTelegramHeader header,
 			I inputDto, Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
-		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectMapper objectMapper = OBJECT_MAPPER;
 
 		IfTelegram<I> requestTelegram = new IfTelegram<I>();
 		requestTelegram.setHeader(header);

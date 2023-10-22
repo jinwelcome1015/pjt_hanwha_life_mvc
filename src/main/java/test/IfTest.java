@@ -5,13 +5,20 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
@@ -28,20 +35,37 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs009_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs009_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.gooroomeeadapter.util.AesUtil;
 import com.gooroomee.gooroomeeadapter.util.IfAdapter;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 public class IfTest {
+	
+	private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     private static final Logger logger = LoggerFactory.getLogger(IfTest.class);
 
@@ -66,42 +90,62 @@ public class IfTest {
     public static final String IF_ENDPOINT_URL = "https://qainf.hanwhalife.com:8713";
     
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
         IfTest ifTest = new IfTest();
-                  
-//                ifTest.doTest();          // 실패
+//                ifTest.doTest_00001();
+//                ifTest.doTest_00002();
+//                ifTest.doTest_encryptDecrypt();
+        
         
                 // XXX 실패
-//                ifTest.testIf001();       
-
+//                ifTest.testIf001();
+                
+        
+                // XXX 성공
 //                ifTest.testIf002();
 
+        
+                // XXX 성공
 //                ifTest.testIf003();
         
-                // XXX 비밀번호오류
+        
+                // XXX 실패 - 비밀번호오류
 //                ifTest.testIf005();
 
-//                ifTest.testIf006();ㅓ
+
+                // XXX 성공
+//                ifTest.testIf006();
 
                 // XXX 실패
-//                ifTest.testIf007();ㅓ
+                ifTest.testIf007();
+
+                // XXX 성공        
+//                ifTest.testIf008();
+
+                // XXX 성공
+//                ifTest.testIf009();
         
-//                  ifTest.testIf009();
+//                ifTest.testIf010();
+//                ifTest.testIf011();
+//                ifTest.testIf012();
         
-                // XXX 재시도
+                // XXX 실패
 //                ifTest.testIf015();
         
-//        ifTest.testIf016();
-        ifTest.testIf017();
+                // XXX 성공
+//                ifTest.testIf016();
+        
+                // XXX 성공
+//                ifTest.testIf017();
+                
+                // XXX 성공
+//                ifTest.testIf018();
     }
 
-    private RestTemplate getRestTemplate() {
-		return null;
-	}
     
     
     /**
-     * 진위확인결과조회
+     * 신분증OCR요청 
      * @throws URISyntaxException
      * @throws IOException 
      */
@@ -162,7 +206,7 @@ public class IfTest {
         
         
         
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
 
@@ -180,11 +224,7 @@ public class IfTest {
     
     
     
-    
-
-
-
-	/**
+    /**
      * 진위확인결과조회
      * @throws JsonProcessingException
      * @throws URISyntaxException
@@ -202,7 +242,7 @@ public class IfTest {
 
         IfMcCs002_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs002_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 
@@ -232,7 +272,7 @@ public class IfTest {
 
         inputPayload.setPushRcvrEmnb(EMNB); // 사번 overwrite
 
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
@@ -260,7 +300,7 @@ public class IfTest {
 
         IfMcCs005_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs005_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
 
@@ -289,7 +329,7 @@ public class IfTest {
 
         IfMcCs006_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs006_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
 
@@ -309,17 +349,34 @@ public class IfTest {
      * @throws JsonProcessingException
      * @throws URISyntaxException
      */
-    /*
+    
     public void testIf007() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-    
-        String payloadJson = "{\r\n" + "    \"custId\" : \"3002220133\",\r\n" + "    \"polyNo\" : \"\",\r\n"
-                + "    \"cntcDvsnCode\" : \"\",\r\n" + "    \"custDvsnCode\" : \"\",\r\n" + "    \"nextKey\" : \"1\",\r\n"
-                + "    \"pageSize\" : 10\r\n" + "  }";
+        /*
+        String payloadJson = "{\r\n" + 
+                "    \"custId\" : \"8061129138\",\r\n" + 
+                "    \"polyNo\" : \"\",\r\n" + 
+                "    \"cntcDvsnCode\" : \"01\",\r\n" + 
+                "    \"custDvsnCode\" : \"01\",\r\n" + 
+                "    \"nextKey\" : \"1\",\r\n" + 
+                "    \"pageSize\" : 10\r\n" + 
+                "  }";
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"polyNo\": \"\",\r\n" + 
+                "    \"cntcDvsnCode\": \"01\",\r\n" + 
+                "    \"custId\": \"2054672042\",\r\n" + 
+                "    \"custDvsnCode\": \"01\",\r\n" + 
+                "    \"nextKey\": \"1\",\r\n" + 
+                "    \"pageSize\": 50\r\n" + 
+                "}";
+        
     
         IfMcCs007_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs007_I.class);
+        System.out.println("---------- " +objectMapper.writeValueAsString(inputPayload));
     
-        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
     
@@ -333,7 +390,45 @@ public class IfTest {
     
         logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
-    */
+    
+    /**
+     * 고객계좌목록조회
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    
+    public void testIf008() throws JsonProcessingException, URISyntaxException {
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        
+        /*
+        String payloadJson = "{\r\n" + 
+                "    \"custId\" : \"6068807976\",\r\n" + 
+                "    \"pageSize\" : 20,\r\n" + 
+                "    \"pageNumber\" : 1\r\n" + 
+                "  }";
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"custId\": \"6068807976\"\r\n" + 
+                "}";
+        
+        IfMcCs008_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs008_I.class);
+    
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+    
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs008;
+    
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+                ifSpec.getRcveSysCode());
+    
+        IfTelegram<IfMcCs008_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.ESB, inputHeader, inputPayload,
+                IfMcCs008_O.class);
+    
+        IfMcCs008_O outputPayload = outputTelegram.getPayload();
+    
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
+    }
+    
     
     /**
      * 개인정보유출노출여부조회
@@ -349,7 +444,7 @@ public class IfTest {
 
         IfMcCs009_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs009_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs009;
 
@@ -371,17 +466,14 @@ public class IfTest {
      * @throws JsonProcessingException
      * @throws URISyntaxException
      */
-    /*
     public void testIf010() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
     
-        String payloadJson = "{\r\n" + 
-                "    \"custId\": \"3002220133\"\r\n" + 
-                "}";
+        String payloadJson = "";
     
-        IfMcCs009_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs009_I.class);
+        IfMcCs010_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs010_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs010;
     
@@ -395,8 +487,63 @@ public class IfTest {
     
         logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
-    */
     
+    
+    
+    /**
+     * 간편인증 요청
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    public void testIf011() throws JsonProcessingException, URISyntaxException {
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+    
+        String payloadJson = "";
+    
+        IfMcCs011_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs011_I.class);
+    
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+    
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs011;
+    
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+                ifSpec.getRcveSysCode());
+    
+        IfTelegram<IfMcCs011_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.ESB, inputHeader, inputPayload,
+                IfMcCs011_O.class);
+    
+        IfMcCs011_O outputPayload = outputTelegram.getPayload();
+    
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
+    }
+    
+    
+    /**
+     * 간편인증 상태 조회 
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    public void testIf012() throws JsonProcessingException, URISyntaxException {
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+    
+        String payloadJson = "";
+    
+        IfMcCs012_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs012_I.class);
+    
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+    
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs012;
+    
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+                ifSpec.getRcveSysCode());
+    
+        IfTelegram<IfMcCs012_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.ESB, inputHeader, inputPayload,
+                IfMcCs012_O.class);
+    
+        IfMcCs012_O outputPayload = outputTelegram.getPayload();
+    
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
+    }
     
     
     /**
@@ -404,7 +551,7 @@ public class IfTest {
      * @throws JsonProcessingException
      * @throws URISyntaxException
      */
-    /*
+    
     public void testIf015() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
     
@@ -449,7 +596,7 @@ public class IfTest {
     
         IfMcCs015_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs015_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
@@ -463,7 +610,7 @@ public class IfTest {
     
         logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
-    */
+    
     
     
     /**
@@ -488,7 +635,7 @@ public class IfTest {
     
         IfMcCs016_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs016_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
     
@@ -504,7 +651,7 @@ public class IfTest {
     
     
     /**
-     * 대체키별연락처저장
+     * 대체키별연락처조회
      * @throws JsonProcessingException
      * @throws URISyntaxException
      */
@@ -517,7 +664,7 @@ public class IfTest {
     
         IfMcCs017_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs017_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(getRestTemplate(), EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
     
@@ -533,8 +680,78 @@ public class IfTest {
     
     
     
+    /**
+     * 우편번호조회
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    public void testIf018() throws JsonProcessingException, URISyntaxException {
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
     
-    public void doTest() {
+        String payloadJson = "{\r\n" + 
+                "    \"scwdNm\" : \"가로공원로 82길\"\r\n" + 
+                "  }";
+    
+        IfMcCs018_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs018_I.class);
+    
+        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+    
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
+    
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+                ifSpec.getRcveSysCode());
+    
+        IfTelegram<IfMcCs018_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.ESB, inputHeader, inputPayload, IfMcCs018_O.class);
+    
+        IfMcCs018_O outputPayload = outputTelegram.getPayload();
+    
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
+    }
+    
+    
+    
+    
+    @Getter
+    @Setter
+    @ToString
+    public static class TestDto {
+        private String CRTF_RTCD;
+        private String DLRE_MSG;
+        private String SCRN_ID;
+        private String X_OCR_SECRET;
+        private String SRVC_ID;
+    }
+    
+    public void doTest_00001() {
         logger.debug("doTest");
+    }
+    
+    
+    public void doTest_00002() throws JsonMappingException, JsonProcessingException {
+        
+        String json = "{\r\n" + 
+                "            \"crtf_RTCD\": \"\",\r\n" + 
+                "            \"dlre_MSG\": \"\",\r\n" + 
+                "            \"scrn_ID\": \"\",\r\n" + 
+                "            \"x_OCR_SECRET\": \"ckZJZ29HcG1OZFF5WXJ3TXBYSXZlbUJzWmhGbmx6Ylc=\",\r\n" + 
+                "            \"srvc_ID\": \"SVC028\"\r\n" + 
+                "        }";
+        
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        TestDto readValue = objectMapper.readValue(json, TestDto.class);
+        
+        System.out.println(readValue);
+        
+    }
+    
+    public void doTest_encryptDecrypt() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+        final String AES_KEY = "TzK5/8gFpMXmTKH5aYS6Uw9j2UwBGwGeju46fsJDwNE=";
+        final String AES_IV = "vxg7xjhMOVsLDmPU+Wfp5g==";
+
+        String encrypt = AesUtil.encrypt("asdf", AES_KEY, AES_IV);
+        System.out.println("encrypt : " + encrypt);
+        String decrypt = AesUtil.decrypt(encrypt, AES_KEY, AES_IV);
+        System.out.println("decrypt : " + decrypt);
     }
 }

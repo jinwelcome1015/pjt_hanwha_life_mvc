@@ -23,6 +23,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
@@ -65,16 +66,24 @@ public class GrmAdapterConfiguration {
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE).setFieldMatchingEnabled(true)
+		modelMapper.getConfiguration()
+				.setFieldAccessLevel(AccessLevel.PRIVATE)
+				.setFieldMatchingEnabled(true)
 				.setMatchingStrategy(MatchingStrategies.LOOSE);
 
 		return modelMapper;
 	}
 
 	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return objectMapper;
+	}
+		
+	
+	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
 
-		// Apache HttpComponents
 		HttpClient httpClient = HttpClientBuilder.create()
 				.setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION)
 				.setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE)
