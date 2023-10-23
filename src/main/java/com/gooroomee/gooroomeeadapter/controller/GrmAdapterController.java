@@ -55,6 +55,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
+import com.gooroomee.gooroomeeadapter.util.MockUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -99,7 +100,7 @@ public class GrmAdapterController {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
-			IfMcCs002_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs002_O.class);
+			IfMcCs002_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs002_O.class);
 
 			Mvc002ResDto resDto = modelMapper.map(mockResponseData, Mvc002ResDto.class);
 			ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -136,7 +137,7 @@ public class GrmAdapterController {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
-			IfMcCs003_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs003_O.class);
+			IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs003_O.class);
 
 			Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
 			ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -173,7 +174,7 @@ public class GrmAdapterController {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
-			IfMcCs005_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs005_O.class);
+			IfMcCs005_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs005_O.class);
 
 			Mvc005ResDto resDto = modelMapper.map(mockResponseData, Mvc005ResDto.class);
 			ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -210,7 +211,7 @@ public class GrmAdapterController {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
-			IfMcCs006_O mockResponseData = getMockResponseData(thisMethodName, IfMcCs006_O.class);
+			IfMcCs006_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs006_O.class);
 
 			Mvc006ResDto resDto = modelMapper.map(mockResponseData, Mvc006ResDto.class);
 			ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -272,7 +273,7 @@ public class GrmAdapterController {
 
 								Class<?> parameterType = parameter.getType();
 								
-								Object mockRequestDataObject = getMockRequestData(methodName, parameterType);
+								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType);
 								Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject, new TypeReference<Map<String, Object>>() {});
 								mockRequestDataMap.put("emnb", "1077123");
 								mockRequestDataMap.put("useMockResponseYn", "Y");
@@ -354,73 +355,24 @@ public class GrmAdapterController {
 	}
 	*/
 
-	private <O> O getMockRequestData(String thisMethodName, Class<O> requestDtoClass) throws IOException {
-		String mockResponseDataFileName = "req.log";
-		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName);
-	}
-
-	private <O> O getMockResponseData(String thisMethodName, Class<O> responseDtoClass) throws IOException {
-		String mockResponseDataFileName = "res.log";
-		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName);
-	}
-
-	private <O> O getMockData(String thisMethodName, Class<O> outputClass, String mockDataFileName)
-			throws IOException {
-		String mockDataRootPath = "/assets/mockData/";
-		String mockDataDetailPath = mockDataRootPath + thisMethodName;
-
-		File mockResponseDataFile = new File(mockDataDetailPath, mockDataFileName);
-
-		ClassPathResource resource = new ClassPathResource(mockResponseDataFile.toString());
-		Path path = Paths.get(resource.getURI());
-
-		List<String> lines = Files.readAllLines(path);
-
-		List<String> filteredLines = new ArrayList<>();
-		for (String line : lines) {
-			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
-					|| line.contains("subTrnmSysType")) {
-				continue;
-			} else if (line.contains("msgeStackTrace") && line.endsWith(",")) {
-				line = line.replaceAll(",$", "");
+	
+	/*
+	public static void main(String[] args) {
+		Method[] declaredMethods = GrmAdapterController.class.getDeclaredMethods();
+		for (Method declaredMethod : declaredMethods) {
+			if("itfcIdcdScan".equals(declaredMethod.getName())) {
+				Parameter[] parameters = declaredMethod.getParameters();
+				for (Parameter parameter : parameters) {
+					RequestBody requestBody = parameter.getAnnotation(RequestBody.class);
+					System.out.println(parameter.getType());
+					System.out.println(requestBody == null);
+				}
 			}
-			filteredLines.add(line);
 		}
-
-		String delimiter = " ";
-		String jsonData = String.join(delimiter, filteredLines);
-
-		String patternFrom = ".*(data=)";
-		String patternTo = ", encrypt=false]\\s*$";
-		jsonData = jsonData.replaceAll(patternFrom, "");
-		jsonData = jsonData.replaceAll(patternTo, "");
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, Map.class);
-		IfTelegram<Map> responseTelegram = null;
-		responseTelegram = objectMapper.readValue(jsonData, javaType);
-		Map<String, Object> payload = responseTelegram.getPayload();
-		
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		O o = objectMapper.convertValue(payload, outputClass);
-		
-		return o;
-		
-		
-		/*
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputClass);
-		IfTelegram<O> responseTelegram = null;
-		responseTelegram = objectMapper.readValue(jsonData, javaType);
-		
-		O payload = responseTelegram.getPayload();
-		
-		return payload;
-		*/		
 	}
+	*/
 	
-	
-	
+	/*
 	public static void main(String[] args) throws ClassNotFoundException {
 		GrmAdapterController grmAdapterController = new GrmAdapterController();
 		Class<? extends GrmAdapterController> class1 = grmAdapterController.getClass();
@@ -461,7 +413,7 @@ public class GrmAdapterController {
 			}
 		}
 	}
-	
+	*/
 	
 	
 	/*
