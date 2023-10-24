@@ -20,7 +20,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
-import com.gooroomee.gooroomeeadapter.util.IfAdapter;
+import com.gooroomee.gooroomeeadapter.util.IfUtil;
 
 @Service
 public class GrmAdapterServiceImpl implements GrmAdapterService {
@@ -67,7 +67,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		IfUtil ifAdapter = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
@@ -87,7 +87,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		IfUtil ifAdapter = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
@@ -106,7 +106,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		IfUtil ifAdapter = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
@@ -125,7 +125,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
 		
-		IfAdapter ifAdapter = new IfAdapter(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		IfUtil ifAdapter = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		

@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Slf4j
-public class IfAdapter {
+public class IfUtil {
 	
 	/** 송신 시스템 코드 */
 	private static final String TRNM_SYS_CODE = IfConstant.TRNM_SYS_CODE;
@@ -66,7 +66,7 @@ public class IfAdapter {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
-	public IfAdapter(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
+	public IfUtil(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
 		super();
 		this.restTemplate = restTemplate;
 		this.enmb = enmb;

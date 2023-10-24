@@ -63,7 +63,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
-import com.gooroomee.gooroomeeadapter.util.IfAdapter;
+import com.gooroomee.gooroomeeadapter.util.IfUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -211,7 +211,7 @@ public class IfTest {
         
         
         
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
 
@@ -282,7 +282,7 @@ public class IfTest {
 
         IfMcCs002_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs002_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 
@@ -312,7 +312,7 @@ public class IfTest {
 
         inputPayload.setPushRcvrEmnb(EMNB); // 사번 overwrite
 
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
@@ -340,7 +340,7 @@ public class IfTest {
 
         IfMcCs005_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs005_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
 
@@ -369,7 +369,7 @@ public class IfTest {
 
         IfMcCs006_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs006_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
 
@@ -416,7 +416,7 @@ public class IfTest {
         IfMcCs007_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs007_I.class);
         System.out.println("---------- " +objectMapper.writeValueAsString(inputPayload));
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
     
@@ -454,7 +454,7 @@ public class IfTest {
         
         IfMcCs008_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs008_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs008;
     
@@ -484,7 +484,7 @@ public class IfTest {
 
         IfMcCs009_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs009_I.class);
 
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs009;
 
@@ -513,7 +513,7 @@ public class IfTest {
     
         IfMcCs010_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs010_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs010;
     
@@ -542,7 +542,7 @@ public class IfTest {
     
         IfMcCs011_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs011_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs011;
     
@@ -570,7 +570,7 @@ public class IfTest {
     
         IfMcCs012_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs012_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs012;
     
@@ -636,7 +636,7 @@ public class IfTest {
     
         IfMcCs015_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs015_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
@@ -675,7 +675,7 @@ public class IfTest {
     
         IfMcCs016_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs016_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
     
@@ -704,7 +704,7 @@ public class IfTest {
     
         IfMcCs017_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs017_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
     
@@ -734,7 +734,7 @@ public class IfTest {
     
         IfMcCs018_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs018_I.class);
     
-        IfAdapter ifAdapter = new IfAdapter(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifAdapter = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
     
