@@ -18,8 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
@@ -98,7 +103,7 @@ public class IfTest {
         
         
                 // XXX 실패
-//                ifTest.testIf001();
+                ifTest.testIf001();
                 
         
                 // XXX 성공
@@ -117,7 +122,7 @@ public class IfTest {
 //                ifTest.testIf006();
 
                 // XXX 실패
-                ifTest.testIf007();
+//                ifTest.testIf007();
 
                 // XXX 성공        
 //                ifTest.testIf008();
@@ -176,19 +181,19 @@ public class IfTest {
         File file = new File(ocrFilePath);
         Path path = file.toPath();
         
-        List<String> lines = Files.readAllLines(path);
+//        List<String> lines = Files.readAllLines(path);
         
         String delimiter = "";
-        String ocrData = String.join(delimiter, lines);
+//        String ocrData = String.join(delimiter, lines);
         
-        String refinedOcrData = ocrData.replaceAll("^data:image/png;base64,", "");
+//        String refinedOcrData = ocrData.replaceAll("^data:image/png;base64,", "");
         
-        logger.debug(refinedOcrData);
+//        logger.debug(refinedOcrData);
         
         Image image = new IfMcCs001_I.DataBody.Image();
         image.setName("test_idcard");
         image.setFormat("png");
-        image.setData(refinedOcrData);
+//        image.setData(refinedOcrData);
         
         List<Image> imageList = new ArrayList<>();
         imageList.add(image);
@@ -212,14 +217,49 @@ public class IfTest {
 
         IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode());
         
+		/*
+		IfTelegram<IfMcCs001_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.ESB, inputHeader, inputPayload, IfMcCs001_O.class);
+		
+		IfMcCs001_O outputPayload = outputTelegram.getPayload();
+		
+		logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
+		*/
         
-        IfTelegram<IfMcCs001_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.ESB, inputHeader, inputPayload, IfMcCs001_O.class);
+        IfTelegram<IfMcCs001_I> requestTelegram = new IfTelegram<IfMcCs001_I>();
+		requestTelegram.setHeader(inputHeader);
+		requestTelegram.setPayload(inputPayload);
         
-        IfMcCs001_O outputPayload = outputTelegram.getPayload();
-        
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
-       
-        
+		ObjectMapper mapper = new ObjectMapper();
+		
+//		mapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_SNAKE_CASE);
+		
+		
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES,
+        // true);
+        // mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN,
+        // true);
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        // mapper.registerModule(new JaxbAnnotationModule(new
+        // FieldBaseJaxbAnnotationIntrospector()));
+        SimpleModule module = new SimpleModule();
+        // module.addSerializer(Date.class, new DateJsonSerializer(null));
+        // module.addDeserializer(Date.class, new DateJsonDeserializer(null));
+        // module.addSerializer(Calendar.class, new CalendarJsonSerializer(null));
+        // module.addDeserializer(Calendar.class, new
+        // CalendarJsonDeserializer(null));
+        // module.addSerializer(Timestamp.class, new
+        // TimestampJsonSerializer(null));
+        // module.addDeserializer(Timestamp.class, new
+        // TimestampJsonDeserializer(null));
+        objectMapper.registerModule(module);
+		
+		
+		
+		
+		
+		String writeValueAsString = mapper.writeValueAsString(requestTelegram);
+		System.out.println(writeValueAsString);
     }
     
     

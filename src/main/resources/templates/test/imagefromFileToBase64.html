@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+
+    <title>Image From File To Base64</title>
+    <script>
+        function openTextFile() {
+            var input = document.createElement("input");
+
+            input.type = "file";
+            input.accept = "image/*";
+            input.id = "uploadInput";
+
+            input.click();
+            input.onchange = function (event) {
+                processFile(event.target.files[0]);
+            };
+
+        }
+
+        function processFile(file) {
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                var result = reader.result;
+                output.innerText = result
+                document.getElementById('tartgetImg').setAttribute('src', result);
+
+
+                console.log('[base64]', result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+    </script>
+</head>
+
+<body>
+    <button onclick="openTextFile()">Image File Open</button>
+
+    <br>
+    <hr><br>
+
+    <div>
+        <h1>Base64 Encode String</h1>
+        <div id='output'></div>
+    </div>
+
+    <br>
+    <hr><br>
+
+    <div>
+        <h1>Select Image</h1>
+        <img id="tartgetImg">
+    </div>
+
+</body>
+
+</html>
