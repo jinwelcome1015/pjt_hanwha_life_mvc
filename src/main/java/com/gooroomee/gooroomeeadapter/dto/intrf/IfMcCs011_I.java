@@ -75,6 +75,15 @@ public class IfMcCs011_I {
 
 		/** 인증전자서명구분값 */
 		private String op;
+		
+		/** 요청환경코드 */
+		private String deviceCode;
+
+		/** 요청브라우저타입 */
+		private String deviceBrowser;
+		
+		/** 채널코드 */
+		private String channel;
 
 		// XXX 확인
 		/** 전자서명 */
@@ -88,15 +97,9 @@ public class IfMcCs011_I {
 		@Setter
 		@ToString
 		public static class Sign {
-
 			/** 전자서명원문 */
 			private String contents;
-
-			/** 요청환경코드 */
-			private String deviceCode;
-
-			/** 요청브라우저타입 */
-			private String deviceBrowser;
+			
 		}
 
 		@Getter
@@ -115,9 +118,6 @@ public class IfMcCs011_I {
 
 			/** 모바일OS */
 			private String mobileOs;
-
-			/** 채널코드 */
-			private String channel;
 		}
 	}
 }

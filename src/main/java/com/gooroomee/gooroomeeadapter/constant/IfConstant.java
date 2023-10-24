@@ -128,35 +128,35 @@ public class IfConstant {
 	/** 인터페이스 명세 */
 	public enum IfSpec {
 		/** 인터페이스 명세 : 신분증OCR요청 */
-		IfMcCs001("HLIMVC00001", "hcsIdcdOcrRqst", "HCS"),
+		IfMcCs001("HLIMVC00016", "hcsIdcdOcrRqst", "HCS"),
 		/** 인터페이스 명세 : 진위확인결과조회 */
-		IfMcCs002("HLIMVC00003", "icsTrflCnfmPSI002r", "ICS"),
+		IfMcCs002("HLIMVC00017", "icsTrflCnfmPSI002r", "ICS"),
 		/** 인터페이스 명세 : 신분증스캔후처리 */
-		IfMcCs003("HLIMVC00002", "comItfcIdcdScanPSI001c", "COM"),
+		IfMcCs003("HLIMVC00018", "comItfcIdcdScanPSI001c", "COM"),
 		/** 인터페이스 명세 : SSO대체로그인인증 */
-		IfMcCs005("HLIMVC00004", "comItfcUserCtfnPSI001c", "COM"),
+		IfMcCs005("HLIMVC00019", "comItfcUserCtfnPSI001c", "COM"),
 		/** 인터페이스 명세 : 사원목록조회 */
-		IfMcCs006("HLIMVC00005", "comEmpeInqyPSI001r", "COM"),
+		IfMcCs006("HLIMVC00020", "comEmpeInqyPSI001r", "COM"),
 		/** 인터페이스 명세 : 고객계약정보조회 */
-		IfMcCs007("HLIMVC00006", "icsIntgCustInqyMgmtPSI001r", "ICS"),
+		IfMcCs007("HLIMVC00023", "icsIntgCustInqyMgmtPSI001r", "ICS"),
 		/** 인터페이스 명세 : 고객계좌목록조회 */
-		IfMcCs008("HLIMVC00007", "icsIntgCustPSI008r", "ICS"),
+		IfMcCs008("HLIMVC00024", "icsIntgCustPSI008r", "ICS"),
 		/** 인터페이스 명세 : 개인정보유출노출여부조회 */
-		IfMcCs009("HLIMVC00008", "icsPrsnInfoLeakMgmtPSI005r", "ICS"),
+		IfMcCs009("HLIMVC00025", "icsPrsnInfoLeakMgmtPSI005r", "ICS"),
 		/** 인터페이스 명세 : 간편인증 토큰발급 */
-		IfMcCs010("HLIMVC00009", "hcsInitechToken", "HCS"),
+		IfMcCs010("HLIMVC00027", "hcsInitechToken", "HCS"),
 		/** 인터페이스 명세 : 간편인증 요청 */
-		IfMcCs011("HLIMVC00010", "hcsInitechRequest", "HCS"),
+		IfMcCs011("HLIMVC00028", "hcsInitechRequest", "HCS"),
 		/** 인터페이스 명세 : 간편인증 상태 조회 */
-		IfMcCs012("HLIMVC00011", "hcsInitechStatus", "HCS"),
+		IfMcCs012("HLIMVC00029", "hcsInitechStatus", "HCS"),
 		/** 인터페이스 명세 : 알림톡전송 */
-		IfMcCs015("HLIMVC00012", "iniUmsSendMgmtPSI004c", "INI"),
+		IfMcCs015("HLIMVC00030", "iniUmsSendMgmtPSI004c", "INI"),
 		/** 인터페이스 명세 : 대체키별연락처저장 */
-		IfMcCs016("HLIMVC00013", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),
+		IfMcCs016("HLIMVC00031", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),
 		/** 인터페이스 명세 : 대체키별연락처조회 */
-		IfMcCs017("HLIMVC00014", "icmCnplSbsnKeyMgmtPSI002r", "ICM"),
+		IfMcCs017("HLIMVC00032", "icmCnplSbsnKeyMgmtPSI002r", "ICM"),
 		/** 인터페이스 명세 : 우편번호조회 */
-		IfMcCs018("HLIMVC00015", "icmAddrMgmtPSI001r", "ICM");
+		IfMcCs018("HLIMVC00033", "icmAddrMgmtPSI001r", "ICM");
 
 		private final String itfcId;
 		private final String rcveSrvcId;
