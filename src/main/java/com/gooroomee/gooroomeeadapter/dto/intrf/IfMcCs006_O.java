@@ -1,5 +1,6 @@
 package com.gooroomee.gooroomeeadapter.dto.intrf;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import lombok.Getter;
@@ -45,7 +46,7 @@ public class IfMcCs006_O {
 		private String tlphExno;
 
 		/** 주민등록번호통합식별자SUID */
-		private long rrnoInidSuid;
+		private BigInteger rrnoInidSuid;
 
 		/** 고객ID */
 		private String custId;

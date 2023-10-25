@@ -13,7 +13,7 @@ import lombok.ToString;
 public class IfMcCs007_O {
 
 	/** 총건수 */
-	private long totCont;
+	private int totCont;
 
 	/** 다음페이지여부 */
 	private String nextPageYn;
@@ -27,7 +27,7 @@ public class IfMcCs007_O {
 	@ToString
 	public static class CustCntcInfoInqyRslt {
 		/** 적용이율 */
-		private long aplyIrrt;
+		private double aplyIrrt;
 
 		/** 보험기간 */
 		private int isrnTerm;
@@ -89,10 +89,10 @@ public class IfMcCs007_O {
 		private int lmttPycn;
 
 		/** 청구보험료 */
-		private long bingPrem;
+		private double bingPrem;
 
 		/** 수금보험료 */
-		private long cltnPrem;
+		private double cltnPrem;
 
 		/** 납입주기코드 */
 		private String paymCyclCode;

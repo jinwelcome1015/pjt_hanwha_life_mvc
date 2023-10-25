@@ -1,5 +1,6 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import lombok.Getter;
@@ -44,7 +45,7 @@ public class Mvc006ResDto {
 		private String tlphExno;
 
 		/** 주민등록번호통합식별자SUID */
-		private long rrnoInidSuid;
+		private BigInteger rrnoInidSuid;
 
 		/** 고객ID */
 		private String custId;

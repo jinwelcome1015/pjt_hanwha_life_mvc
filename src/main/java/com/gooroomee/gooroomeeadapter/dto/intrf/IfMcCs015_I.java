@@ -85,6 +85,38 @@ public class IfMcCs015_I {
 	// XXX 확인
 	/** 발송항목목록 */
 	private List<SendItm> sendItmList;
+	
+	/** 메시지제목명 */
+	private String msgeTitlNm;
+
+	/** 알림톡버튼내용 */
+	private String nttkButnCntn;
+
+	// XXX 확인
+	/** 발송예약일시 */
+	private Timestamp sendRsvtDttm;
+
+	/** 관리번호구분코드 */
+	private String mgmtNoDvsnCode;
+
+	/** 참조업무번호 */
+	private String rfrnBwno;
+
+	/** 단체고객ID */
+	private String grouCustId;
+
+	/** 수금기관코드 */
+	private String cltnOrgnCode;
+
+	/** 수금인사원번호 */
+	private String aentEmnb;
+
+	// XXX 확인
+	/** 기준통화소수자리수 */
+	private int stndCrnyDcmlPsitCnt;
+
+	/** 통화코드 */
+	private String crnyCode;
 
 	@Getter
 	@Setter
@@ -96,38 +128,6 @@ public class IfMcCs015_I {
 
 		/** UMS항목값 */
 		private String umsItmVal;
-
-		/** 메시지제목명 */
-		private String msgeTitlNm;
-
-		/** 알림톡버튼내용 */
-		private String nttkButnCntn;
-
-		// XXX 확인
-		/** 발송예약일시 */
-		private Timestamp sendRsvtDttm;
-
-		/** 관리번호구분코드 */
-		private String mgmtNoDvsnCode;
-
-		/** 참조업무번호 */
-		private String rfrnBwno;
-
-		/** 단체고객ID */
-		private String grouCustId;
-
-		/** 수금기관코드 */
-		private String cltnOrgnCode;
-
-		/** 수금인사원번호 */
-		private String aentEmnb;
-
-		// XXX 확인
-		/** 기준통화소수자리수 */
-		private int stndCrnyDcmlPsitCnt;
-
-		/** 통화코드 */
-		private String crnyCode;
 	}
 
 }

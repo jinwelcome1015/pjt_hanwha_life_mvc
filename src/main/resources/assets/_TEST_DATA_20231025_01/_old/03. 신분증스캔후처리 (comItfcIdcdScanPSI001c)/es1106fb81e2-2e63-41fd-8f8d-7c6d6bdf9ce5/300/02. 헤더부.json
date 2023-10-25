@@ -1,0 +1,17 @@
+{
+    "rspnDvsnCode": "R",
+    "rndmNo": "0664",
+    "trnmSysCode": "IMA",
+    "rcveSrvcId": "comItfcIdcdScanPSI001c",
+    "ipAddr": "010010025023",
+    "rcveSysCode": "COM",
+    "ogtsTrnnNo": "",
+    "prsnInfoIncsYn": "N",
+    "mciSesnId": "",
+    "serverType": "P",
+    "tlgrCretDttm": "20231013143715664",
+    "ctfnTokn": "",
+    "itfcId": "HLIIMA00013",
+    "hsno": "2",
+    "mciNodeNo": ""
+}
