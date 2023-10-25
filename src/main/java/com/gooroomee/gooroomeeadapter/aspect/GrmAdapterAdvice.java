@@ -30,9 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class GrmAdapterAdvice {
-	
+	/*
 	@Around("execution(* com.gooroomee.gooroomeeadapter.service.*.*(..))")
-    public Object responseWithMockData(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+	public Object responseWithMockData(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		
 		Class<? extends Object> targetClass = proceedingJoinPoint.getTarget().getClass();
 		MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
@@ -55,16 +55,17 @@ public class GrmAdapterAdvice {
 				String useMockResponseYn = (String) map.get("useMockResponseYn");
 				System.out.println("useMockResponseYn : " + useMockResponseYn);
 				if("Y".equalsIgnoreCase(useMockResponseYn)) {
-//					Method thisMethod = new Object() {
-//					}.getClass().getEnclosingMethod();
-//					String thisMethodName = method.getName();
+	//					Method thisMethod = new Object() {
+	//					}.getClass().getEnclosingMethod();
+	//					String thisMethodName = method.getName();
 					
 					Type genericReturnType = method.getGenericReturnType();
 					genericReturnType.getClass().getTypeParameters();
 					
+					// XXX 로직 수정
 					IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(method.getName(), IfMcCs003_O.class);
-
-					Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
+	
+	//					Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
 					ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 					return responseDto;
 				}
@@ -72,31 +73,10 @@ public class GrmAdapterAdvice {
 		}
 		
 		
-		/*
-		String targetMethodName = proceedingJoinPoint.getSignature().getName();
-		Method[] targetClassMethods = targetClass.getMethods();
-		for (Method targetClassMethod : targetClassMethods) {
-			if(targetClassMethod.getName().equals(targetMethodName)) {
-				RequestMapping requestMapping = targetClassMethod.getAnnotation(RequestMapping.class);
-				if(requestMapping != null) {
-					String[] paths = requestMapping.path();
-					for (String path : paths) {
-						if(path.startsWith(GrmAdapterController.API_URL_TOKEN)) {
-							proceedingJoinPoint.getTarget()
-							Object[] args = proceedingJoinPoint.getArgs();
-							for (Object arg : args) {
-		//								RequestBody.class.
-							}
-						}
-					}
-				}
-			}
-		}
 		
-		Object[] args = proceedingJoinPoint.getArgs();
-		*/
 		Object proceed = proceedingJoinPoint.proceed();
-        return proceed;
-        
-    }
+	    return proceed;
+	    
+	}
+	*/
 }

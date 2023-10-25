@@ -14,7 +14,13 @@
 			/* width: 80%; */
 		}
 
-		textarea {
+		textarea.httpHeader {
+			width: 100%;
+			height: 3rem;
+			resize: none;
+		}
+
+		textarea.httpBody {
 			width: 100%;
 			height: 20rem;
 			resize: none;
@@ -24,6 +30,7 @@
 	<script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
 	<script type="text/javascript">
 
+		const nJsonStringifySpace = 5;
 
 		document.addEventListener('DOMContentLoaded', (event) => {
 			const sApiAuthKey = document.querySelector('#apiAuthKey').value;
@@ -32,15 +39,20 @@
 			const nIndex = sLocation.indexOf(sContextPath);
 			const sBaseUrl = sLocation.substr(0, (nIndex + sContextPath.length));
 
-			document.querySelector('#apiPath').addEventListener('change', async (event) => {
-				document.querySelector('#requestJson').value = '';
-				document.querySelector('#responseJson').value = '';
+			const oHttpRequestHeader = {
+				'X-API-Key': sApiAuthKey,
+				'Content-Type': 'application/json'
+			}
 
+			document.querySelector('#apiPath').addEventListener('change', async (event) => {
+				document.querySelector('#requestHeader').value = '';
+				document.querySelector('#requestBody').value = '';
+				document.querySelector('#responseBody').value = '';
 
 				if (event.target.value === '') {
 					document.querySelector('#btnForRequest').disabled = true;
 					return;
-				}else {
+				} else {
 					document.querySelector('#btnForRequest').disabled = false;
 				}
 
@@ -48,13 +60,13 @@
 				const sUrlForRequestMockData = document.querySelector('#urlForRequestMockData').value;
 
 				const sUrl = sBaseUrl + sUrlForRequestMockData;
-				
+
 
 				const res = await axios({
 					url: sUrl,
 					method: 'GET',
 					headers: {
-						'X-API-Key': sApiAuthKey
+						// 'X-API-Key': sApiAuthKey
 					},
 					params: {
 						[sParamNameForRequestMockData]: event.target.value
@@ -66,8 +78,8 @@
 
 				const resJson = JSON.stringify(res.data, null, 5);
 
-				document.querySelector('#requestJson').value = resJson;
-
+				document.querySelector('#requestBody').value = resJson;
+				document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
 			});
 
 
@@ -75,26 +87,24 @@
 				event.preventDefault();
 				const apiPath = document.querySelector('#apiPath').value;
 				const sUrl = sBaseUrl + apiPath;
-				
-				const requestJson = document.querySelector('#requestJson').value;
-				// const oParam = JSON.parse(requestJson);
-				
+
+				const requestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+				const requestBody = document.querySelector('#requestBody').value;
+				// const oParam = JSON.parse(requestBody);
+
 				const res = await axios({
 					url: sUrl,
 					method: 'POST',
-					headers: {
-						'X-API-Key': sApiAuthKey,
-						'Content-Type': 'application/json'
-					},
-					data: requestJson,
+					headers: requestHeader,
+					data: requestBody,
 					responseType: 'json'
 				});
 
 				console.log('response for [API-RESPONSE]', res);
 
-				const resJson = JSON.stringify(res.data, null, 5);
+				const resJson = JSON.stringify(res.data, null, nJsonStringifySpace);
 
-				document.querySelector('#responseJson').value = resJson;
+				document.querySelector('#responseBody').value = resJson;
 			});
 
 		});
@@ -113,6 +123,7 @@
 				th:value="${urlForRequestMockData}">
 			<input type="hidden" name="paramNameForRequestMockData" id="paramNameForRequestMockData"
 				th:value="${paramNameForRequestMockData}">
+			<input type="hidden" name="apiAuthKey" id="apiAuthKey" th:value="${apiAuthKey}">
 
 
 			<fieldset>
@@ -134,17 +145,17 @@
 					<input type="text" name="apiAuthEnabled" id="apiAuthEnabled" th:value="${apiAuthEnabled}"
 						disabled="disabled">
 				</div>
-				<div>
-					<label for="apiAuthKey">apiAuthKey</label>
-					<input type="text" name="apiAuthKey" id="apiAuthKey" th:value="${apiAuthKey}">
-				</div>
 			</fieldset>
 			<br>
 			<fieldset>
 				<legend>API-REQUEST</legend>
 				<div>
-					<label for="requestJson">requestJson</label>
-					<textarea name="requestJson" id="requestJson"></textarea>
+					<label for="requestHeader">requestHeader</label>
+					<textarea name="requestHeader" id="requestHeader" class="httpHeader"></textarea>
+				</div>
+				<div>
+					<label for="requestBody">requestBody</label>
+					<textarea name="requestBody" id="requestBody" class="httpBody"></textarea>
 				</div>
 				<div>
 					<button id="btnForRequest" disabled="disabled">요청</button>
@@ -154,8 +165,8 @@
 			<fieldset>
 				<legend>API-RESPONSE</legend>
 				<div>
-					<label for="responseJson">responseJson</label>
-					<textarea name="responseJson" id="responseJson"></textarea>
+					<label for="responseBody">responseBody</label>
+					<textarea name="responseBody" id="responseBody" class="httpBody"></textarea>
 				</div>
 			</fieldset>
 		</form>
