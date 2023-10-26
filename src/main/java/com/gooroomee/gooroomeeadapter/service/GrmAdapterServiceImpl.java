@@ -18,6 +18,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.IfUtil;
@@ -132,6 +134,25 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
         IfTelegram<IfMcCs006_O> outputEnvelop = ifAdapter.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
         IfMcCs006_O ifOutputDto = outputEnvelop.getPayload();
+		
+		return ifOutputDto;
+	}
+	
+	
+	@Override
+	public IfMcCs007_O ifmccs007(String emnb, IfMcCs007_I ifInputDto) throws JsonProcessingException, URISyntaxException {
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
+
+		Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
+		
+		IfUtil ifAdapter = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+        IfTelegram<IfMcCs007_O> outputEnvelop = ifAdapter.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+
+        IfMcCs007_O ifOutputDto = outputEnvelop.getPayload();
 		
 		return ifOutputDto;
 	}

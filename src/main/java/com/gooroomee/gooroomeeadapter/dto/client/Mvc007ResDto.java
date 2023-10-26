@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O.CustCntcInfoInqyRslt;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import lombok.ToString;
 public class Mvc007ResDto extends ResSuperDto {
 
 	/** 총건수 */
-	private long totCont;
+	private int totCont;
 
 	/** 다음페이지여부 */
 	private String nextPageYn;
@@ -29,7 +30,7 @@ public class Mvc007ResDto extends ResSuperDto {
 	@ToString
 	public static class CustCntcInfoInqyRslt {
 		/** 적용이율 */
-		private long aplyIrrt;
+		private double aplyIrrt;
 
 		/** 보험기간 */
 		private int isrnTerm;
@@ -91,10 +92,10 @@ public class Mvc007ResDto extends ResSuperDto {
 		private int lmttPycn;
 
 		/** 청구보험료 */
-		private long bingPrem;
+		private double bingPrem;
 
 		/** 수금보험료 */
-		private long cltnPrem;
+		private double cltnPrem;
 
 		/** 납입주기코드 */
 		private String paymCyclCode;

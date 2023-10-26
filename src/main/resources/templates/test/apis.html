@@ -76,9 +76,7 @@
 
 				console.log('response for [API-REQUEST]', res);
 
-				const resJson = JSON.stringify(res.data, null, 5);
-
-				document.querySelector('#requestBody').value = resJson;
+				document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);;
 				document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
 			});
 
@@ -140,7 +138,7 @@
 					<label for="apiPath">apiPath</label>
 					<select name="apiPath" id="apiPath">
 						<option value="">&lt;선택&gt;</option>
-						<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}" th:text="${apiInfo.name}">
+						<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}" th:text="${apiInfo.name} + ' ' + '( ' + ${apiInfo.path} + ' )'">
 						</option>
 					</select>
 				</div>

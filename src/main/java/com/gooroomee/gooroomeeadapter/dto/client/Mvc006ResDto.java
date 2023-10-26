@@ -44,14 +44,14 @@ public class Mvc006ResDto {
 		/** 전화내선번호 */
 		private String tlphExno;
 
-		/** 주민등록번호통합식별자SUID */
-		private BigInteger rrnoInidSuid;
+//		/** 주민등록번호통합식별자SUID */
+//		private BigInteger rrnoInidSuid;
 
 		/** 고객ID */
 		private String custId;
 
-		/** 주민등록번호 */
-		private String rrno;
+//		/** 주민등록번호 */
+//		private String rrno;
 
 		/** 직급코드 */
 		private String clpsCode;

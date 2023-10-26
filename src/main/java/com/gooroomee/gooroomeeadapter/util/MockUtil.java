@@ -14,17 +14,26 @@ import org.springframework.core.io.ClassPathResource;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 
 public class MockUtil {
+	
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+			.registerModule(new SimpleModule())
+			;
+	
 	public static <O> O getMockRequestData(String thisMethodName, Class<O> requestDtoClass) throws IOException {
-		String mockResponseDataFileName = "req.log";
+		String mockResponseDataFileName = "req.json";
 		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName);
 	}
 
 	public static <O> O getMockResponseData(String thisMethodName, Class<O> responseDtoClass) throws IOException {
-		String mockResponseDataFileName = "res.log";
+		String mockResponseDataFileName = "res.json";
 		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName);
 	}
 
@@ -39,7 +48,7 @@ public class MockUtil {
 		Path path = Paths.get(resource.getURI());
 
 		List<String> lines = Files.readAllLines(path);
-
+		/*
 		List<String> filteredLines = new ArrayList<>();
 		for (String line : lines) {
 			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
@@ -50,24 +59,29 @@ public class MockUtil {
 			}
 			filteredLines.add(line);
 		}
-
+		
 		String delimiter = " ";
 		String jsonData = String.join(delimiter, filteredLines);
-
+		
 		String patternFrom = ".*(data=)";
 		String patternTo = ", encrypt=false]\\s*$";
 		jsonData = jsonData.replaceAll(patternFrom, "");
 		jsonData = jsonData.replaceAll(patternTo, "");
-
-		ObjectMapper objectMapper = new ObjectMapper();
+		*/
+		
+		String delimiter = " ";
+		String jsonData = String.join(delimiter, lines);
+		
+//		ObjectMapper objectMapper = new ObjectMapper();
+		
+		
 		
 		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, Map.class);
 		IfTelegram<Map> responseTelegram = null;
-		responseTelegram = objectMapper.readValue(jsonData, javaType);
+		responseTelegram = OBJECT_MAPPER.readValue(jsonData, javaType);
 		Map<String, Object> payload = responseTelegram.getPayload();
 		
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		O o = objectMapper.convertValue(payload, outputClass);
+		O o = OBJECT_MAPPER.convertValue(payload, outputClass);
 		
 		return o;
 		

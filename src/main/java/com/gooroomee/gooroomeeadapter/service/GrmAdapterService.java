@@ -11,6 +11,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
 
 public interface GrmAdapterService {
 
@@ -21,5 +23,7 @@ public interface GrmAdapterService {
 	IfMcCs005_O ifmccs005(String emnb, IfMcCs005_I ifInputDto) throws JsonProcessingException, URISyntaxException;
 
 	IfMcCs006_O ifmccs006(String emnb, IfMcCs006_I ifInputDto) throws JsonProcessingException, URISyntaxException;
+
+	IfMcCs007_O ifmccs007(String emnb, IfMcCs007_I ifInputDto) throws JsonProcessingException, URISyntaxException;
 
 }

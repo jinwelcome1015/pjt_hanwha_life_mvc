@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
@@ -43,6 +44,8 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc005ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc005ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc007ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc007ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
@@ -53,6 +56,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.MockUtil;
@@ -84,6 +89,7 @@ public class GrmAdapterController {
 	private static final String PARAM_NAME_FOR_REQUEST_MOCK_DATA = "apiPath";
 
 	/**
+	 * [02]
 	 * 진위확인결과조회
 	 * 
 	 * @param reqDto
@@ -121,6 +127,7 @@ public class GrmAdapterController {
 	}
 
 	/**
+	 * [03]
 	 * 신분증스캔후처리
 	 * 
 	 * @param reqDto
@@ -158,6 +165,7 @@ public class GrmAdapterController {
 	}
 
 	/**
+	 * [05]
 	 * SSO대체로그인인증
 	 * 
 	 * @param reqDto
@@ -195,6 +203,7 @@ public class GrmAdapterController {
 	}
 
 	/**
+	 * [06]
 	 * 사원목록조회
 	 * 
 	 * @param reqDto
@@ -217,7 +226,7 @@ public class GrmAdapterController {
 			ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		
 		IfMcCs006_I cs006_I = modelMapper.map(reqDto, IfMcCs006_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -230,6 +239,46 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	/**
+	 * [07]
+	 * 고객계약정보조회
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/intgCustInqyMgmt") }, method = { RequestMethod.POST }, name = "고객계약정보조회")
+	public @ResponseBody ResponseDto<Mvc007ResDto> empeInqy(@RequestBody Mvc007ReqDto reqDto)
+			throws URISyntaxException, IOException {
+
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {
+			}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs007_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs007_O.class);
+
+			Mvc007ResDto resDto = modelMapper.map(mockResponseData, Mvc007ResDto.class);
+			ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
+		
+		IfMcCs007_I cs007_I = modelMapper.map(reqDto, IfMcCs007_I.class);
+
+		String emnb = reqDto.getEmnb();
+
+		IfMcCs007_O cs007_O = gooroomeeAdapterService.ifmccs007(emnb, cs007_I);
+
+		Mvc007ResDto resDto = modelMapper.map(cs007_O, Mvc007ResDto.class);
+
+		ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
 
 	/**
 	 * API 테스트 화면

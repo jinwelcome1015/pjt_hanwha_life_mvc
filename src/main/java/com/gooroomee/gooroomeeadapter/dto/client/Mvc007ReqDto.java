@@ -11,6 +11,12 @@ import lombok.ToString;
 @ToString
 public class Mvc007ReqDto extends ReqSuperDto {
 	
+	/** mock 응답 사용여부 */
+	public String useMockResponseYn;
+
+	/** 사원번호 */
+	public String emnb;
+	
 	/** 고객ID */
 	private String custId;
 	
@@ -18,9 +24,15 @@ public class Mvc007ReqDto extends ReqSuperDto {
 	private String polyNo;
 	
 	/** 계약구분코드 */
-	private String cntcDvsnCode;
+//	private String cntcDvsnCode;
 	
 	/** 고객구분코드 */
-	private String custDvsnCode;
+//	private String custDvsnCode;
+
+	/** nextKey */
+//    private String nextKey;
+    
+    /** pageSize */
+//    private int pageSize;
 
 }
