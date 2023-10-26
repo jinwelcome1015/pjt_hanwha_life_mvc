@@ -1,5 +1,7 @@
 package com.gooroomee.gooroomeeadapter.dto.intrf;
 
+import java.math.BigInteger;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +19,6 @@ public class IfMcCs015_O {
 
 	// XXX 확인
 	/** 안내장발송기초SUID */
-	private long ntfcSendBacsSuid;
+	private BigInteger ntfcSendBacsSuid;
 
 }

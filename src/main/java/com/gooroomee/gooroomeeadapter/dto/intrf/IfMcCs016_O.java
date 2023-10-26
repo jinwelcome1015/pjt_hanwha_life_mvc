@@ -1,5 +1,7 @@
 package com.gooroomee.gooroomeeadapter.dto.intrf;
 
+import java.math.BigInteger;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,6 +13,6 @@ public class IfMcCs016_O {
 	
 	// XXX 확인
 	/** 대체키SUID */
-	private long sbsnKeySuid;
+	private BigInteger sbsnKeySuid;
 	
 }

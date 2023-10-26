@@ -1,5 +1,6 @@
 package com.gooroomee.gooroomeeadapter.dto.intrf;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -40,7 +41,7 @@ public class IfMcCs015_I {
 
 	// XXX 확인
 	/** 발신자전화번호연락처SUID */
-	private long sndeTlnoCnplSuid;
+	private BigInteger sndeTlnoCnplSuid;
 
 	/** 발신자전화지역번호 */
 	private String sndeTlphArcd;
@@ -53,7 +54,7 @@ public class IfMcCs015_I {
 
 	// XXX 확인
 	/** 수령자이동전화연락처SUID */
-	private long rpntMvmnTlphCnplSuid;
+	private BigInteger rpntMvmnTlphCnplSuid;
 
 	/** 전화식별코드 */
 	private String tlphIdnfCode;
@@ -124,7 +125,7 @@ public class IfMcCs015_I {
 	public static class SendItm {
 		// XXX 확인
 		/** 순번 */
-		private long sqnb;
+		private BigInteger sqnb;
 
 		/** UMS항목값 */
 		private String umsItmVal;

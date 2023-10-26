@@ -125,7 +125,15 @@
 				th:value="${paramNameForRequestMockData}">
 			<input type="hidden" name="apiAuthKey" id="apiAuthKey" th:value="${apiAuthKey}">
 
-
+			<fieldset>
+				<legend>API-AUTH</legend>
+				<div>
+					<label for="apiAuthEnabled">apiAuthEnabled</label>
+					<input type="text" name="apiAuthEnabled" id="apiAuthEnabled" th:value="${apiAuthEnabled}"
+						disabled="disabled">
+				</div>
+			</fieldset>
+			<br>
 			<fieldset>
 				<legend>API-IO</legend>
 				<div>
@@ -135,15 +143,6 @@
 						<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}" th:text="${apiInfo.name}">
 						</option>
 					</select>
-				</div>
-			</fieldset>
-			<br>
-			<fieldset>
-				<legend>API-AUTH</legend>
-				<div>
-					<label for="apiAuthEnabled">apiAuthEnabled</label>
-					<input type="text" name="apiAuthEnabled" id="apiAuthEnabled" th:value="${apiAuthEnabled}"
-						disabled="disabled">
 				</div>
 			</fieldset>
 			<br>
