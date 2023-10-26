@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        window.onload = function (ev) {
+            const file = document.querySelector(".local");
+            file.addEventListener("change", (event) => {
+                const selectedfile = event.target.files;
+                if (selectedfile.length > 0) {
+                    const [imageFile] = selectedfile;
+                    const fileReader = new FileReader();
+                    fileReader.onload = () => {
+                        const srcData = fileReader.result;
+                        console.log('base64:', srcData);
+                        const ima = document.querySelector("img");
+                        ima.src = srcData;
+                    };
+                    fileReader.readAsDataURL(imageFile);
+                }
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+    <input type="file" accept="image/*" class="local" />
+    <img src="" alt="" srcset="">
+</body>
+
+</html>

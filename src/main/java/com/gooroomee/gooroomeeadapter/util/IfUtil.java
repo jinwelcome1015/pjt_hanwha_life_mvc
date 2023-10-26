@@ -134,7 +134,7 @@ public class IfUtil {
 		return targetFullUrl;
 	}
 
-	public <I, O> IfTelegram<O> sendAndReceiveMessage(IfConstant.IfType ifType, IfTelegramHeader header,
+	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header,
 			I inputDto, Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
 		ObjectMapper objectMapper = OBJECT_MAPPER;
 

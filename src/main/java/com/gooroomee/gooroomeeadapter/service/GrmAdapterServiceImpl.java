@@ -71,7 +71,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs002_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs002_O> outputEnvelop = ifAdapter.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
         IfMcCs002_O ifOutputDto = outputEnvelop.getPayload();
 		
@@ -91,7 +91,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs003_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs003_O> outputEnvelop = ifAdapter.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
         IfMcCs003_O ifOutputDto = outputEnvelop.getPayload();
 		
@@ -110,7 +110,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs005_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs005_O> outputEnvelop = ifAdapter.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
         IfMcCs005_O ifOutputDto = outputEnvelop.getPayload();
 		
@@ -129,7 +129,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs006_O> outputEnvelop = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs006_O> outputEnvelop = ifAdapter.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
         IfMcCs006_O ifOutputDto = outputEnvelop.getPayload();
 		
