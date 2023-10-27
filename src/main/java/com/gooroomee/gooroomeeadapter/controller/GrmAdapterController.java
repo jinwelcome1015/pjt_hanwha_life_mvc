@@ -46,6 +46,8 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc007ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc007ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc008ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc008ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
@@ -58,6 +60,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.MockUtil;
@@ -152,6 +156,7 @@ public class GrmAdapterController {
 		}
 
 		IfMcCs003_I cs003_I = modelMapper.map(reqDto, IfMcCs003_I.class);
+		cs003_I.setPushRcvrEmnb(reqDto.getEmnb());
 
 		String emnb = reqDto.getEmnb();
 
@@ -251,7 +256,7 @@ public class GrmAdapterController {
 	 * @throws IOException
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/intgCustInqyMgmt") }, method = { RequestMethod.POST }, name = "고객계약정보조회")
-	public @ResponseBody ResponseDto<Mvc007ResDto> empeInqy(@RequestBody Mvc007ReqDto reqDto)
+	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto)
 			throws URISyntaxException, IOException {
 
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
@@ -267,6 +272,8 @@ public class GrmAdapterController {
 		}
 		
 		IfMcCs007_I cs007_I = modelMapper.map(reqDto, IfMcCs007_I.class);
+		cs007_I.setCntcDvsnCode(IfConstant.CNTC_DVSN_CODE);
+		cs007_I.setCustDvsnCode(IfConstant.CUST_DVSN_CODE);
 
 		String emnb = reqDto.getEmnb();
 
@@ -278,6 +285,47 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	/**
+	 * [08]
+	 * 고객계좌목록조회
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust") }, method = { RequestMethod.POST }, name = "고객계좌목록조회")
+	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto)
+			throws URISyntaxException, IOException {
+
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {
+			}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs008_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs008_O.class);
+
+			Mvc008ResDto resDto = modelMapper.map(mockResponseData, Mvc008ResDto.class);
+			ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
+		
+		IfMcCs008_I cs008_I = modelMapper.map(reqDto, IfMcCs008_I.class);
+
+		String emnb = reqDto.getEmnb();
+
+		IfMcCs008_O cs008_O = gooroomeeAdapterService.ifmccs008(emnb, cs008_I);
+
+		Mvc008ResDto resDto = modelMapper.map(cs008_O, Mvc008ResDto.class);
+
+		ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
 	
 
 	/**

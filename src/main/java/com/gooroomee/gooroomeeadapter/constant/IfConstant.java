@@ -13,6 +13,13 @@ public class IfConstant {
 	
 	/** DEFAULT_IP_ADDRESS */
 	public static final String DEFAULT_IP_ADDRESS = "127.0.0.1";
+	
+	/** 계약구분코드 */
+	public static final String CNTC_DVSN_CODE = "01";	// 01 : 보험
+	
+	/** 고객구분코드 */
+	public static final String CUST_DVSN_CODE = "1";	// 1 : 개인
+	
 
 	/** 채널유형코드 */
 	public enum IfChnlTypeCode {
@@ -150,7 +157,7 @@ public class IfConstant {
 		/** 인터페이스 명세 : 간편인증 상태 조회 */
 		IfMcCs012("HLIMVC00029", "hcsInitechStatus", "HCS"),
 		/** 인터페이스 명세 : 알림톡전송 */
-		IfMcCs015("HLIMVC00030", "iniUmsSendMgmtPSI004c", "INI"),
+		IfMcCs015("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "INI"),
 		/** 인터페이스 명세 : 대체키별연락처저장 */
 		IfMcCs016("HLIMVC00031", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),
 		/** 인터페이스 명세 : 대체키별연락처조회 */

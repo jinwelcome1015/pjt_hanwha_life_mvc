@@ -86,7 +86,15 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version>
 		</dependency>
-
+		
+		<!-- 외부 라이브러리 추가 -->
+		<dependency>
+			<groupId>korealife</groupId>
+			<artifactId>sha256cmcrypt</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${pom.basedir}/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
+		</dependency>
 
 	</dependencies>
 
@@ -96,6 +104,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<includeSystemScope>true</includeSystemScope>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

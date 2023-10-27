@@ -23,16 +23,16 @@ public class Mvc007ReqDto extends ReqSuperDto {
 	/** 증권번호 */
 	private String polyNo;
 	
-	/** 계약구분코드 */
+//	/** 계약구분코드 */
 //	private String cntcDvsnCode;
 	
-	/** 고객구분코드 */
+//	/** 고객구분코드 */
 //	private String custDvsnCode;
 
-	/** nextKey */
+//	/** nextKey */
 //    private String nextKey;
     
-    /** pageSize */
+//    /** pageSize */
 //    private int pageSize;
 
 }
