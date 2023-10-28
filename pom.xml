@@ -18,6 +18,7 @@
 	<description>adapter web appllication for gooroomee</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<!-- <webapp.lib>${basedir}/lib</webapp.lib> -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -88,14 +89,16 @@
 		</dependency>
 		
 		<!-- 외부 라이브러리 추가 -->
+		
 		<dependency>
 			<groupId>korealife</groupId>
 			<artifactId>sha256cmcrypt</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${pom.basedir}/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
+			<!-- <systemPath>${webapp.lib}/korealife-sha256cmcrypt-1.0.jar</systemPath> -->
 		</dependency>
-
+ 		
 	</dependencies>
 
 	<build>
@@ -104,6 +107,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!-- includeSystemScope : true -->
 					<includeSystemScope>true</includeSystemScope>
 					<excludes>
 						<exclude>
@@ -138,7 +142,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
+			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -147,7 +151,17 @@
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
-
+ 			 -->
+ 			 
+ 			 <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+			</plugin>
+ 			 
 		</plugins>
 	</build>
 	<repositories>

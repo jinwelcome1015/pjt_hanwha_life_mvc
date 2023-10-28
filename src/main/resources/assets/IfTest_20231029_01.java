@@ -10,22 +10,15 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
@@ -67,7 +60,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
-import com.gooroomee.gooroomeeadapter.util.IfUtil;
+import com.gooroomee.gooroomeeadapter.util.IfAdapter;
 import korealife.uv.com.cm.SHA256CmCrypt;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,14 +70,8 @@ public class IfTest {
 
     private static final Logger logger = LoggerFactory.getLogger(IfTest.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-    													.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    													.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-    													.registerModule(new SimpleModule())
-    													;
-    
-    
-    public static final RestTemplate REST_TEMPLATE = new RestTemplate();
+//    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = IfAdapter.objectMapper;
     
 
     public static final String EMNB = "1077593";
@@ -148,7 +135,7 @@ public class IfTest {
 //                ifTest.testIf009();
 
                 // XXX 성공
-//                ifTest.testIf010();
+                ifTest.testIf010();
         
 //                ifTest.testIf011();
 //                ifTest.testIf012();
@@ -184,7 +171,7 @@ public class IfTest {
 //                + "    \"drvnLcnsNo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
 //                + "    \"expyDate\" : \"\"\r\n" + "  }";
 //
-//        IfMcCs001_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs001_I.class);
+//        IfMcCs001_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs001_I.class);
         
         
         DataHeader dataHeader = new IfMcCs001_I.DataHeader();
@@ -234,18 +221,18 @@ public class IfTest {
         
         
         
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
 
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode());
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode());
         
         
-        IfTelegram<IfMcCs001_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs001_O.class);
+        IfTelegram<IfMcCs001_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs001_O.class);
         
         IfMcCs001_O outputPayload = outputTelegram.getPayload();
         
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
        
         
     }
@@ -268,21 +255,21 @@ public class IfTest {
                 + "    \"drvnLcnsNo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
                 + "    \"expyDate\" : \"\"\r\n" + "  }";
 
-        IfMcCs002_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs002_I.class);
+        IfMcCs002_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs002_I.class);
 
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs002_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs002_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs002_O.class);
 
         IfMcCs002_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
 
     /**
@@ -296,23 +283,23 @@ public class IfTest {
         String payloadJson = "{\r\n" + "    \"csnsYn\": \"Y\",\r\n" + "    \"pushRcvrEmnb\": \"2030205\",\r\n"
                 + "    \"custId\": \"1005132571\"\r\n" + "}";
 
-        IfMcCs003_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs003_I.class);
+        IfMcCs003_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs003_I.class);
 
         inputPayload.setPushRcvrEmnb(EMNB); // 사번 overwrite
 
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs003_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs003_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs003_O.class);
 
         IfMcCs003_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
 
     /**
@@ -355,9 +342,8 @@ public class IfTest {
                 "  }";
         */
         
-        
-        IfMcCs005_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs005_I.class);
-		String emnb = inputPayload.getEmnb();
+        IfMcCs005_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs005_I.class);
+        String emnb = inputPayload.getEmnb();
         String lognPswd = inputPayload.getLognPswd();
         String encString = SHA256CmCrypt.SHA256_getEncString(lognPswd);
         
@@ -371,19 +357,19 @@ public class IfTest {
         
         inputPayload.setLognPswd(encString);
 
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
 
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs005_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs005_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs005_O.class);
 
         IfMcCs005_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
 
     /**
@@ -398,21 +384,21 @@ public class IfTest {
                 + "    \"empeDvsnCode\" : \"\",\r\n" + "    \"wholEmpeInqyYn\" : \"N\",\r\n" + "    \"fpExlsYn\" : \"N\",\r\n"
                 + "    \"tnofDvsnCode\" : \"\"\r\n" + "  }";
 
-        IfMcCs006_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs006_I.class);
+        IfMcCs006_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs006_I.class);
 
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
 
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs006_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs006_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs006_O.class);
 
         IfMcCs006_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
 
     /**
@@ -463,22 +449,22 @@ public class IfTest {
                 "    }";
         */
         
-        IfMcCs007_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs007_I.class);
-        System.out.println("---------- " +OBJECT_MAPPER.writeValueAsString(inputPayload));
+        IfMcCs007_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs007_I.class);
+        System.out.println("---------- " +objectMapper.writeValueAsString(inputPayload));
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs007_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs007_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs007_O.class);
     
         IfMcCs007_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     /**
@@ -502,21 +488,21 @@ public class IfTest {
                 "    \"custId\": \"6068807976\"\r\n" + 
                 "}";
         
-        IfMcCs008_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs008_I.class);
+        IfMcCs008_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs008_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs008;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs008_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs008_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs008_O.class);
     
         IfMcCs008_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -532,21 +518,21 @@ public class IfTest {
                 "    \"custId\": \"3002220133\"\r\n" + 
                 "}";
 
-        IfMcCs009_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs009_I.class);
+        IfMcCs009_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs009_I.class);
 
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs009;
 
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs009_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs009_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs009_O.class);
 
         IfMcCs009_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
 
     
@@ -572,21 +558,21 @@ public class IfTest {
                 "    }\r\n" + 
                 "}";
     
-        IfMcCs010_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs010_I.class);
+        IfMcCs010_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs010_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs010;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs010_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs010_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs010_O.class);
     
         IfMcCs010_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -630,7 +616,7 @@ public class IfTest {
         
         
     
-        IfMcCs011_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs011_I.class);
+        IfMcCs011_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs011_I.class);
     
         IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
@@ -644,7 +630,7 @@ public class IfTest {
     
         IfMcCs011_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     */
     
@@ -660,21 +646,21 @@ public class IfTest {
     
         String payloadJson = "";
     
-        IfMcCs012_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs012_I.class);
+        IfMcCs012_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs012_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs012;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs012_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs012_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs012_O.class);
     
         IfMcCs012_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -718,13 +704,13 @@ public class IfTest {
         */
         
         String payloadJson = "{\r\n" + 
-                "    \"sendOrchOrgnCode\": \"00630\",\r\n" + 
-                "    \"aentEmnb\": \"1077593\",\r\n" + 
+                "    \"sendOrchOrgnCode\": \"00000\",\r\n" + 
+                "    \"aentEmnb\": \"22311515\",\r\n" + 
                 "    \"msgeInptYn\": \"Y\",\r\n" + 
                 "    \"tlphSbno\": \"****\",\r\n" + 
                 "    \"cltnOrgnCode\": \"13017\",\r\n" + 
                 "    \"tlphOfno\": \"3974\",\r\n" + 
-                "    \"rqsrEmnb\": \"22226213\",\r\n" + 
+                "    \"rqsrEmnb\": \"1077593\",\r\n" + 
                 "    \"rfrnBwno\": \"1\",\r\n" + 
                 "    \"isneTypeDvsnCode\": \"2\",\r\n" + 
                 "    \"custId\": \"8027263038\",\r\n" + 
@@ -747,21 +733,21 @@ public class IfTest {
                 "}";
         
     
-        IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
+        IfMcCs015_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs015_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs015_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs015_O.class);
     
         IfMcCs015_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -786,20 +772,20 @@ public class IfTest {
                 "    }\r\n" + 
                 "  }";
     
-        IfMcCs016_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs016_I.class);
+        IfMcCs016_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs016_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs016_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs016_O.class);
+        IfTelegram<IfMcCs016_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs016_O.class);
     
         IfMcCs016_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -815,20 +801,20 @@ public class IfTest {
                 "    \"sbsnKeySuid\" : 171766277056300198\r\n" + 
                 "  }";
     
-        IfMcCs017_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs017_I.class);
+        IfMcCs017_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs017_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs017_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs017_O.class);
+        IfTelegram<IfMcCs017_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs017_O.class);
     
         IfMcCs017_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -845,20 +831,20 @@ public class IfTest {
                 "    \"scwdNm\" : \"가로공원로 82길\"\r\n" + 
                 "  }";
     
-        IfMcCs018_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs018_I.class);
+        IfMcCs018_I inputPayload = objectMapper.readValue(payloadJson, IfMcCs018_I.class);
     
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
     
-        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs018_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs018_O.class);
+        IfTelegram<IfMcCs018_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs018_O.class);
     
         IfMcCs018_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + objectMapper.writeValueAsString(outputPayload));
     }
     
     
@@ -890,7 +876,10 @@ public class IfTest {
                 "            \"srvc_ID\": \"SVC028\"\r\n" + 
                 "        }";
         
-        TestDto readValue = OBJECT_MAPPER.readValue(json, TestDto.class);
+        
+//        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = IfAdapter.objectMapper;
+        TestDto readValue = objectMapper.readValue(json, TestDto.class);
         
         System.out.println(readValue);
         
@@ -970,9 +959,9 @@ public class IfTest {
             
         JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class,
                 IfMcCs001_I.class);
-        Object readValue = OBJECT_MAPPER.readValue(json, javaType);
+        Object readValue = objectMapper.readValue(json, javaType);
         System.out.println("*****");
-        System.out.println(OBJECT_MAPPER.writeValueAsString(readValue));
+        System.out.println(IfAdapter.objectMapper.writeValueAsString(readValue));
         System.out.println("*****");
     }
 }

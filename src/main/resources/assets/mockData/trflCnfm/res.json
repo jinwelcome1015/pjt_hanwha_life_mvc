@@ -1,4 +1,4 @@
-2023-10-18 16:46:29.511 catalina-exec-277  WARN [FRT.RES_MESSAGE] [MVC010252005065202310181646289701206] [icsTrflCnfmPSI002r] [198.18.22.108] hone.log.message [ 315] : [ICS198018017223202310181646294900038] BomRequestInfo[ICS198018017223202310181646294900038, UserId=1077593, ClientType=WEB, ClientId=null, TxCode=icsTrflCnfmPSI002r, ClientIP=198.18.22.108, AdditionalData={}, currentElapsedTime=21], requestURI=/ics/hlicp/ics/icsTrflCnfmPSI002r, requestURL=http://qaing.hanwhalife.com/ics/hlicp/ics/icsTrflCnfmPSI002rMessageLogData [data={
+{
   "header" : {
     "trnnNo" : "MVC010252005065202310181646289701206",
     "trnmSysCode" : "MVC",
@@ -55,4 +55,4 @@
     "custId" : "0052778800",
     "trnnUniqNo" : "7043697615189500636"
   }
-}, encrypt=false]
+}
