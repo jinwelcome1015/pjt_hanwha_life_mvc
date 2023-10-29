@@ -2,7 +2,9 @@ package test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
@@ -10,6 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -90,14 +93,14 @@ public class IfTest {
     public static final String EMNB = "1077593";
     //    public static final String EMNB = "1073818";
 
-    /*
+    
     public static final String ACTIVE_PROFILE = "qa";
     public static final String IF_ENDPOINT_URL = "https://qainf.hanwhalife.com:8713";
-    */
     
-    public static final String ACTIVE_PROFILE = "dev";
-    public static final String IF_ENDPOINT_URL = "http://devinf.hanwhalife.com:7711";
-    
+	/*
+	public static final String ACTIVE_PROFILE = "dev";
+	public static final String IF_ENDPOINT_URL = "http://devinf.hanwhalife.com:7711";
+	*/
 
     public static final String ORGN_CODE = "00630";
     
@@ -109,11 +112,31 @@ public class IfTest {
     
     public static final String SRVC_ID = "SVC028";
     
+    public final String AES_KEY;
+	public final String AES_IV;
+    
+    
+    
+    public IfTest() throws IOException {
+    	
+    	final String activeProfile = "qa"; 
+    	
+    	URL resource = this.getClass().getClassLoader().getResource("properties/" + activeProfile + ".properties");
+		
+		InputStream openStream = resource.openStream();
+		
+		Properties properties = new Properties();
+		properties.load(openStream);
+		
+		AES_KEY = properties.getProperty("interface.encrypt.aes-key");
+		AES_IV = properties.getProperty("interface.encrypt.aes-iv");
+	}
+    
     
 
     public static void main(String[] args) throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
                 IfTest ifTest = new IfTest();
-//                ifTest.doTest_00001();
+                ifTest.doTest_00001();
 //                ifTest.doTest_00002();
 //                ifTest.doTest_encryptDecrypt();
         
@@ -151,7 +174,7 @@ public class IfTest {
 //                ifTest.testIf010();
         
 //                ifTest.testIf011();
-//                ifTest.testIf012();
+                ifTest.testIf012();
         
                 // XXX 실패
 //                ifTest.testIf015();
@@ -368,9 +391,6 @@ public class IfTest {
         System.out.println("lognPswd : " + lognPswd);
         System.out.println("encString : " + inputPayload.getLognPswd());
         
-        
-        inputPayload.setLognPswd(encString);
-
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
@@ -563,7 +583,8 @@ public class IfTest {
                 "    \"dataHeader\": {\r\n" + 
                 "        \"SRVC_ID\": \"SVC028\",\r\n" + 
                 "        \"SCRN_ID\": \"화면 ID\",\r\n" + 
-                "        \"CRTF_RTCD\": \"\",\r\n" + 
+                "        \"CRTF_RTCD\": \"\",\r\n" +
+                "        \"DLRE_MSG\": \"\",\r\n" + 
                 "        \"ORGN_CODE\": \"00630\",\r\n" + 
                 "        \"USER_ID\": \"USER_001\"\r\n" + 
                 "    },\r\n" + 
@@ -597,56 +618,99 @@ public class IfTest {
      * 간편인증 요청
      * @throws JsonProcessingException
      * @throws URISyntaxException
+     * @throws InvalidAlgorithmParameterException 
+     * @throws BadPaddingException 
+     * @throws IllegalBlockSizeException 
+     * @throws NoSuchPaddingException 
+     * @throws NoSuchAlgorithmException 
+     * @throws InvalidKeyException 
      */
-    /*
-    public void testIf011() throws JsonProcessingException, URISyntaxException {
-        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-    
-        String payloadJson = "";
-        
-        
-        com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataHeader dataHeader = new IfMcCs011_I.DataHeader();
-        dataHeader.setSRVC_ID(SRVC_ID);
-        dataHeader.setSCRN_ID("화면 ID");
-        dataHeader.setORGN_CODE(ORGN_CODE);
-        dataHeader.setUSER_ID(USER_ID);
-        
-    
-        @JsonProperty("USER_ID")
-        private String USER_ID;
-        
-        
-        String userId = "USER001";
-        dataHeader.setUSER_ID(userId);
-    
-        
-        com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
-        
-        String initechOAuthToken 
-        dataBody.setInitechOAuthToken();
-        
-        Callback callback = new IfMcCs011_I.DataBody.Callback();
-        Sign sign = new IfMcCs011_I.DataBody.Sign();
-        
-        
-    
-        IfMcCs011_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs011_I.class);
-    
-        IfAdapter ifAdapter = new IfAdapter(EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
-    
+	
+	public void testIf011() throws JsonProcessingException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+	    String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+	
+	    String payloadJson_dataHeader = "{\r\n" + 
+	    		"    \"SRVC_ID\": \"SVC028\",\r\n" + 
+	    		"    \"SCRN_ID\": \"화면 ID\",\r\n" + 
+	    		"    \"CRTF_RTCD\": \"\",\r\n" + 
+	    		"    \"DLRE_MSG\": \"\",\r\n" + 
+	    		"    \"ORGN_CODE\": \"00630\",\r\n" + 
+	    		"    \"USER_ID\": \"USER_001\"\r\n" + 
+	    		"}";
+	    IfMcCs011_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, IfMcCs011_I.DataHeader.class);
+	
+	    
+	    
+	    IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
+	    
+	    String initechOAuthToken = "";
+	    dataBody.setInitechOAuthToken(initechOAuthToken);
+	    
+	    String ezCertSrvcId = IfConstant.EzCertSrvcId.EZ_KAKAOV2.getValue();
+	    dataBody.setPid(ezCertSrvcId);
+	    
+	    String name = "신용진";
+	    String uname = AesUtil.encrypt(name, AES_KEY, AES_IV);
+	    dataBody.setUname(uname);
+	    
+	    String birthday = "791015";
+	    String ubirthday = AesUtil.encrypt(birthday, AES_KEY, AES_IV);
+	    dataBody.setUbirthday(ubirthday);
+	    
+	    String gender = "1";
+	    String ugender = AesUtil.encrypt(gender, AES_KEY, AES_IV);
+	    dataBody.setUgender(ugender);
+	    
+	    String phone = "01028893661";
+	    String uphone = AesUtil.encrypt(phone, AES_KEY, AES_IV);
+	    dataBody.setUphone(uphone);
+	    
+	    String op = IfConstant.EzCertSrvcOp.auth.getValue();
+	    dataBody.setOp(op);
+	    
+	    IfMcCs011_I.DataBody.Sign sign = new IfMcCs011_I.DataBody.Sign();
+	    sign.setContents("");
+	    dataBody.setSign(sign);
+	    
+	    String deviceCode = IfConstant.EzCertSrvcDeviceCode.MOBILE.getValue();
+		dataBody.setDeviceCode(deviceCode);
+	    
+	    String deviceBrowser = IfConstant.EzCertSrvcDeviceBrowser.webBrowser.getValue();
+		dataBody.setDeviceBrowser(deviceBrowser);;
+	    
+	    Callback callback = new IfMcCs011_I.DataBody.Callback();
+	    callback.setFailCallbackUrl("");
+	    callback.setMobileOs("");
+	    callback.setSuccessCallbackUrl("");
+	    callback.setTelcoTycd("");
+	    dataBody.setCallback(callback);
+	    
+	    dataBody.setChannel("");
+	    
+	    
+	    
+	    IfMcCs011_I ifMcCs011_I = new IfMcCs011_I();
+	    ifMcCs011_I.setDataHeader(dataHeader);
+	    ifMcCs011_I.setDataBody(dataBody);
+	    
+	    String payloadJson = OBJECT_MAPPER.writeValueAsString(ifMcCs011_I);
+	    IfMcCs011_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs011_I.class);
+	
+	    IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+	    
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs011;
     
-        IfTelegramHeader inputHeader = ifAdapter.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs011_O> outputTelegram = ifAdapter.sendAndReceiveMessage(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs011_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs011_O.class);
     
         IfMcCs011_O outputPayload = outputTelegram.getPayload();
     
         logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
-    }
-    */
+	}
+	
     
     
     
@@ -658,9 +722,39 @@ public class IfTest {
     public void testIf012() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
     
-        String payloadJson = "";
+        
+        String payloadJson_dataHeader = "{\r\n" + 
+	    		"    \"SRVC_ID\": \"SVC028\",\r\n" + 
+	    		"    \"SCRN_ID\": \"화면 ID\",\r\n" + 
+	    		"    \"CRTF_RTCD\": \"\",\r\n" + 
+	    		"    \"DLRE_MSG\": \"\",\r\n" + 
+	    		"    \"ORGN_CODE\": \"00630\",\r\n" + 
+	    		"    \"USER_ID\": \"USER_001\"\r\n" + 
+	    		"}";
+	    com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataHeader.class);
+	
+	    
+	    
+	    com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
+	    
+	    
+	    String initechOAuthToken = "";
+		dataBody.setInitechOAuthToken(initechOAuthToken);
+		
+		String reqTxId = "";
+		dataBody.setReqTxId(reqTxId);
+
+		String op = IfConstant.EzCertSrvcOp.auth.getValue();
+		dataBody.setOp(op);
+        
+		
+		IfMcCs012_I ifMcCs012_I = new IfMcCs012_I();
+		ifMcCs012_I.setDataHeader(dataHeader);
+		ifMcCs012_I.setDataBody(dataBody);
+	    
+	    String payloadJson = OBJECT_MAPPER.writeValueAsString(ifMcCs012_I);
+	    IfMcCs012_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs012_I.class);
     
-        IfMcCs012_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs012_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     

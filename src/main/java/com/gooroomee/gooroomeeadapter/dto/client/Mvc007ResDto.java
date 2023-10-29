@@ -3,9 +3,6 @@ package com.gooroomee.gooroomeeadapter.dto.client;
 import java.sql.Date;
 import java.util.List;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O.CustCntcInfoInqyRslt;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Mvc007ResDto extends ResSuperDto {
+public class Mvc007ResDto {
 
 	/** 총건수 */
 	private int totCont;

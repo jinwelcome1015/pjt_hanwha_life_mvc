@@ -18,7 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthInterceptor implements HandlerInterceptor {
 
 	/** api auth token */
-	@Value(value = "#{propertiesFactoryBean['api.auth.key']}")
+//	@Value(value = "#{propertiesFactoryBean['api.auth.key']}")
+	@Value(value = "${api.auth.key}")
 	private String apiAuthKey;
 
 	@Override

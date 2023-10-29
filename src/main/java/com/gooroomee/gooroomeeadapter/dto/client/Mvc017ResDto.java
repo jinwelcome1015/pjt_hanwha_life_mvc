@@ -1,7 +1,5 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Mvc017ResDto extends ResSuperDto {
+public class Mvc017ResDto {
 
 	/** 연락처SUID */
 	private String cnplSuid;

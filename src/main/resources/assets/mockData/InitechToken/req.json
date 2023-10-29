@@ -38,16 +38,6 @@
         "msgeStackTrace": null
     },
     "payload": {
-        "dataHeader": {
-            "SRVC_ID": "SVC028",
-            "SCRN_ID": "화면 ID",
-            "CRTF_RTCD": "",
-            "DLRE_MSG": null,
-            "ORGN_CODE": "00630",
-            "USER_ID": "USER001"
-        },
-        "dataBody": {
-            "grant_type": "client_credentials"
-        }
+        "USER_ID": "USER001"
     }
 }

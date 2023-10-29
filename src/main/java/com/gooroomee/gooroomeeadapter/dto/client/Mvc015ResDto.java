@@ -1,15 +1,13 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
-public class Mvc015ResDto extends ResSuperDto {
+public class Mvc015ResDto {
 
 	/** 처리결과코드 */
 	private String prcsRsltCode;

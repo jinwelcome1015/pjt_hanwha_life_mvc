@@ -1,8 +1,5 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ReqSuperDto;
-import com.gooroomee.gooroomeeadapter.dto.client.common.ResSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,7 +7,7 @@ import lombok.ToString;
 @Getter 
 @Setter
 @ToString
-public class Mvc001ResDto extends ResSuperDto {
+public class Mvc001ResDto {
 	
 	// XXX 확인
 	/** 데이터헤더 */

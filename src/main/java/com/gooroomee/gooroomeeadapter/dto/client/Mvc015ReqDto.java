@@ -5,8 +5,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.gooroomee.gooroomeeadapter.dto.client.common.ReqSuperDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +12,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Mvc015ReqDto extends ReqSuperDto {
+public class Mvc015ReqDto {
+	
+	/** mock 응답 사용여부 */
+	public String useMockResponseYn;
+
+	/** 사원번호 */
+	public String emnb;
 
 	/** 안내장종류코드 */
 	private String ntfcKindCode;

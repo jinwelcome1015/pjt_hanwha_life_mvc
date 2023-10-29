@@ -13,7 +13,8 @@ import com.gooroomee.gooroomeeadapter.interceptor.MockDataInterceptor;
 public class WebMvcConfiguration implements WebMvcConfigurer {
 	
 	/** api auth enabled */
-	@Value(value = "#{propertiesFactoryBean['api.auth.enabled']}")
+//	@Value(value = "#{propertiesFactoryBean['api.auth.enabled']}")
+	@Value(value = "${api.auth.enabled}")
 	private String apiAuthEnabled;
 
 	@Autowired
