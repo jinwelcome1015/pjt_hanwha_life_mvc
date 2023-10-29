@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
@@ -85,16 +87,25 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	
 	
 	
+	
+	
+	
+	
+	
 	@Override
-	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
+	public IfMcCs001_O ifmccs001(String emnb, IfMcCs001_I ifInputDto) throws JsonProcessingException, URISyntaxException {
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
+
+		Class<IfMcCs001_O> ifOutputDtoClass = IfMcCs001_O.class;
 		
 		IfUtil ifUtil = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-	    IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
-	
-	    O ifOutputDto = outputTelegram.getPayload();
+        IfTelegram<IfMcCs001_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+
+        IfMcCs001_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -306,5 +317,19 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	}
 
 
+	
+	@Override
+	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
+		
+		IfUtil ifUtil = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+	    IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+	
+	    O ifOutputDto = outputTelegram.getPayload();
+		
+		return ifOutputDto;
+	}
 	
 }

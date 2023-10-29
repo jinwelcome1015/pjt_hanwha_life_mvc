@@ -415,4 +415,30 @@ public class IfConstant {
 			return this.value;
 		}
 	}
+	
+	/** OCR 신분증 타입 */
+	public enum OcrIdType{
+		
+		/** OCR 신분증 타입 : 주민등록증 */
+		IdCard("ID_Card"),
+		
+		/** OCR 신분증 타입 : 운전면허증 */
+		DriverLicense("Driver's_License"),
+		
+		/** OCR 신분증 타입 : 여권 */
+		Passport("Passport"),
+		
+		/** OCR 신분증 타입 : 외국인등록증 */
+		AlienRegistrationCard("Alien Registration Card");
+
+		private final String value;
+
+		private OcrIdType(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
+	}
 }

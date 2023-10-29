@@ -4,6 +4,8 @@ import java.net.URISyntaxException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
@@ -29,9 +31,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 
 public interface GrmAdapterService {
 	
-	<I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass)
-			throws JsonProcessingException, URISyntaxException;
 	
+	IfMcCs001_O ifmccs001(String emnb, IfMcCs001_I ifInputDto) throws JsonProcessingException, URISyntaxException;
+
 	IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I ifInputDto) throws JsonProcessingException, URISyntaxException;
 
 	IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I ifInputDto) throws JsonProcessingException, URISyntaxException;
@@ -53,7 +55,10 @@ public interface GrmAdapterService {
 	IfMcCs012_O ifmccs012(String emnb, IfMcCs012_I ifInputDto) throws JsonProcessingException, URISyntaxException;
 
 	IfMcCs016_O ifmccs016(String emnb, IfMcCs016_I ifInputDto) throws JsonProcessingException, URISyntaxException;
+
 	
+	<I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass)
+			throws JsonProcessingException, URISyntaxException;
 	
 
 }

@@ -34,6 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.EzCertSrvcId;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
@@ -62,6 +64,8 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
@@ -89,6 +93,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataBody;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataBody.Image;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
 import com.gooroomee.gooroomeeadapter.util.MockUtil;
@@ -101,25 +107,28 @@ import lombok.extern.slf4j.Slf4j;
 public class GrmAdapterController {
 
 	/** api auth enabled */
-//	@Value(value = "#{propertiesFactoryBean['api.auth.enabled']}")
 	@Value(value = "${api.auth.enabled}")
 	private String apiAuthEnabled;
 
 	/** api auth token */
-//	@Value(value = "#{propertiesFactoryBean['api.auth.key']}")
 	@Value(value = "${api.auth.key}")
 	private String apiAuthKey;
 
 	/** aes-key */
-//	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-key']}")
 	@Value(value = "${interface.encrypt.aes-key}")
 	private String aesKey;
 
 	/** aes-iv */
-//	@Value(value = "#{propertiesFactoryBean['interface.encrypt.aes-iv']}")
 	@Value(value = "${interface.encrypt.aes-iv}")
 	private String aesIv;
+	
+	/** ocr secret-key */
+	@Value(value = "${interface.ocr.secret-key}")
+	private String ocrSecretKey;
+	
 
+	
+	
 	@Autowired
 	private GrmAdapterService gooroomeeAdapterService;
 
@@ -131,6 +140,104 @@ public class GrmAdapterController {
 	private static final String URL_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
 
 	private static final String PARAM_NAME_FOR_REQUEST_MOCK_DATA = "apiPath";
+	
+	
+	
+	/**
+	 * [01] 신분증OCR요청
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst") }, method = { RequestMethod.POST }, name = "01. 신분증OCR요청")
+	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst(@RequestBody Mvc001ReqDto reqDto)
+			throws URISyntaxException, IOException {
+		/*
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {
+			}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs001_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs001_O.class);
+		
+			Mvc001ResDto resDto = modelMapper.map(mockResponseData, Mvc001ResDto.class);
+			ResponseDto<Mvc001ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
+		*/
+//		IfMcCs001_I cs001_I = modelMapper.map(reqDto, IfMcCs001_I.class);
+		
+		IfMcCs001_I.DataHeader dataHeader = new IfMcCs001_I.DataHeader();
+
+		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
+		
+		// TODO 확인 필요
+		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+		
+		dataHeader.setX_OCR_SECRET(ocrSecretKey);
+		
+//		dataHeader.setCRTF_RTCD("");
+		
+//		dataHeader.setDLRE_MSG("");
+		
+		
+		Image image = new IfMcCs001_I.DataBody.Image();
+		
+		String imageFormat = reqDto.getFormat();
+		image.setFormat(imageFormat);
+
+		String imageBase64Data = reqDto.getData();
+		String refinedImageBase64Data = imageBase64Data.replaceAll("^data:image/png;base64,", "");
+		image.setData(refinedImageBase64Data);
+		
+		String imageName = reqDto.getName();
+		image.setName(imageName);
+		
+		List<Image> imageList = new ArrayList<>();
+	    imageList.add(image);
+		
+		
+		
+		IfMcCs001_I.DataBody dataBody = new IfMcCs001_I.DataBody();
+		
+		dataBody.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
+		
+		String userId = reqDto.getUSER_ID();
+		dataBody.setUSER_ID(userId);
+		
+		dataBody.setImages(imageList);
+
+
+		IfMcCs001_I ifInputDto = new IfMcCs001_I();
+		ifInputDto.setDataHeader(dataHeader);
+		ifInputDto.setDataBody(dataBody);
+		
+		/*
+		String emnb = reqDto.getEmnb();
+		
+		IfMcCs001_O cs001_O = gooroomeeAdapterService.ifmccs001(emnb, cs001_I);
+		
+		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
+		*/
+		
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
+		Class<IfMcCs001_O> ifOutputDtoClass = IfMcCs001_O.class;
+		IfMcCs001_O cs001_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+	
+		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
+		
+
+		ResponseDto<Mvc001ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto; 
+		
+	}
+	
+	
+	
 
 	/**
 	 * [02] 진위확인결과조회
