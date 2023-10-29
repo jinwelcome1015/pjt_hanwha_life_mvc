@@ -56,6 +56,10 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc012ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc012ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc016ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc016ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc017ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc017ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
@@ -81,6 +85,10 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
 import com.gooroomee.gooroomeeadapter.util.MockUtil;
@@ -132,22 +140,22 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm") }, method = { RequestMethod.POST }, name = "진위확인결과조회")
+	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm") }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs002_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs002_O.class);
-
+		
 			Mvc002ResDto resDto = modelMapper.map(mockResponseData, Mvc002ResDto.class);
 			ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 		IfMcCs002_I cs002_I = modelMapper.map(reqDto, IfMcCs002_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -203,19 +211,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
 			throws URISyntaxException, IOException {
-	
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs003_O.class);
-	
-			Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
-			ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-	
+		
 		IfMcCs003_I ifInputDto = modelMapper.map(reqDto, IfMcCs003_I.class);
 		ifInputDto.setPushRcvrEmnb(reqDto.getEmnb());
 	
@@ -248,19 +244,19 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "05. SSO대체로그인인증")
 	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs005_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs005_O.class);
-
+		
 			Mvc005ResDto resDto = modelMapper.map(mockResponseData, Mvc005ResDto.class);
 			ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 //		IfMcCs005_I cs005_I = modelMapper.map(reqDto, IfMcCs005_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -296,19 +292,19 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/empeInqy") }, method = { RequestMethod.POST }, name = "06. 사원목록조회")
 	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs006_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs006_O.class);
-
+		
 			Mvc006ResDto resDto = modelMapper.map(mockResponseData, Mvc006ResDto.class);
 			ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 		IfMcCs006_I cs006_I = modelMapper.map(reqDto, IfMcCs006_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -338,19 +334,19 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "07. 고객계약정보조회")
 	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs007_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs007_O.class);
-
+		
 			Mvc007ResDto resDto = modelMapper.map(mockResponseData, Mvc007ResDto.class);
 			ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 		IfMcCs007_I cs007_I = modelMapper.map(reqDto, IfMcCs007_I.class);
 		cs007_I.setCntcDvsnCode(IfConstant.CNTC_DVSN_CODE);
 		cs007_I.setCustDvsnCode(IfConstant.CUST_DVSN_CODE);
@@ -381,19 +377,19 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust") }, method = { RequestMethod.POST }, name = "08. 고객계좌목록조회")
 	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs008_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs008_O.class);
-
+		
 			Mvc008ResDto resDto = modelMapper.map(mockResponseData, Mvc008ResDto.class);
 			ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 		IfMcCs008_I cs008_I = modelMapper.map(reqDto, IfMcCs008_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -423,19 +419,19 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "09. 개인정보유출노출여부조회")
 	public @ResponseBody ResponseDto<Mvc009ResDto> prsnInfoLeakMgmt(@RequestBody Mvc009ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs009_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs009_O.class);
-
+		
 			Mvc009ResDto resDto = modelMapper.map(mockResponseData, Mvc009ResDto.class);
 			ResponseDto<Mvc009ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 		IfMcCs009_I cs009_I = modelMapper.map(reqDto, IfMcCs009_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -465,19 +461,19 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "10. 간편인증 토큰발급")
 	public @ResponseBody ResponseDto<Mvc010ResDto> initechToken(@RequestBody Mvc010ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs010_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs010_O.class);
-
+		
 			Mvc010ResDto resDto = modelMapper.map(mockResponseData, Mvc010ResDto.class);
 			ResponseDto<Mvc010ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
 
 		IfMcCs010_I.DataHeader dataHeader = new IfMcCs010_I.DataHeader();
@@ -533,19 +529,19 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest") }, method = { RequestMethod.POST }, name = "11. 간편인증 요청")
 	public @ResponseBody ResponseDto<Mvc011ResDto> initechRequest(@RequestBody Mvc011ReqDto reqDto)
 			throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-	
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs011_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs011_O.class);
-	
+		
 			Mvc011ResDto resDto = modelMapper.map(mockResponseData, Mvc011ResDto.class);
 			ResponseDto<Mvc011ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-		
+		*/
 	//		IfMcCs011_I cs011_I = modelMapper.map(reqDto, IfMcCs011_I.class);
 		
 	/*
@@ -655,19 +651,19 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/initechStatus") }, method = { RequestMethod.POST }, name = "12. 간편인증 상태 조회")
 	public @ResponseBody ResponseDto<Mvc012ResDto> initechStatus(@RequestBody Mvc012ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+		/*
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs012_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs012_O.class);
-
+		
 			Mvc012ResDto resDto = modelMapper.map(mockResponseData, Mvc012ResDto.class);
 			ResponseDto<Mvc012ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+		*/
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
 
 		IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
@@ -734,35 +730,83 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/cnplSbsnKeyMgmt") }, method = { RequestMethod.POST }, name = "16. 대체키별연락처저장")
-	public @ResponseBody ResponseDto<Mvc016ResDto> cnplSbsnKeyMgmt(@RequestBody Mvc016ReqDto reqDto) throws URISyntaxException, IOException {
-
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs016_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs016_O.class);
-
-			Mvc016ResDto resDto = modelMapper.map(mockResponseData, Mvc016ResDto.class);
-			ResponseDto<Mvc016ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-
-		IfMcCs016_I cs016_I = modelMapper.map(reqDto, IfMcCs016_I.class);
-
+	@RequestMapping(path = { (API_URL_TOKEN + "/prsnCustMgmt") }, method = { RequestMethod.POST }, name = "16. 대체키별연락처저장")
+	public @ResponseBody ResponseDto<Mvc016ResDto> prsnCustMgmt(@RequestBody Mvc016ReqDto reqDto) throws URISyntaxException, IOException {
+		
+		IfMcCs016_I ifInputDto = modelMapper.map(reqDto, IfMcCs016_I.class);
+	
 		String emnb = reqDto.getEmnb();
-
-		IfMcCs016_O cs016_O = gooroomeeAdapterService.ifmccs016(emnb, cs016_I);
-
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
+		Class<IfMcCs016_O> ifOutputDtoClass = IfMcCs016_O.class;
+		IfMcCs016_O cs016_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+	
 		Mvc016ResDto resDto = modelMapper.map(cs016_O, Mvc016ResDto.class);
-
+	
 		ResponseDto<Mvc016ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-
+	
 		return responseDto;
 	}
 	
 	
+	/**
+	 * 
+	 * <pre>
+	 * [17]
+	 * 대체키별연락처조회
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/cnplSbsnKeyMgmt") }, method = { RequestMethod.POST }, name = "17. 대체키별연락처조회")
+	public @ResponseBody ResponseDto<Mvc017ResDto> cnplSbsnKeyMgmt(@RequestBody Mvc017ReqDto reqDto) throws URISyntaxException, IOException {
+		
+		IfMcCs017_I ifInputDto = modelMapper.map(reqDto, IfMcCs017_I.class);
+	
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
+		Class<IfMcCs017_O> ifOutputDtoClass = IfMcCs017_O.class;
+		IfMcCs017_O cs017_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+	
+		Mvc017ResDto resDto = modelMapper.map(cs017_O, Mvc017ResDto.class);
+	
+		ResponseDto<Mvc017ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+	
+		return responseDto;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * <pre>
+	 * [18]
+	 * 우편번호조회
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/addrMgmt") }, method = { RequestMethod.POST }, name = "18. 우편번호조회")
+	public @ResponseBody ResponseDto<Mvc018ResDto> addrMgmt(@RequestBody Mvc018ReqDto reqDto) throws URISyntaxException, IOException {
+		
+		IfMcCs018_I ifInputDto = modelMapper.map(reqDto, IfMcCs018_I.class);
+	
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
+		Class<IfMcCs018_O> ifOutputDtoClass = IfMcCs018_O.class;
+		IfMcCs018_O cs018_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+	
+		Mvc018ResDto resDto = modelMapper.map(cs018_O, Mvc018ResDto.class);
+	
+		ResponseDto<Mvc018ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+	
+		return responseDto;
+	}
 	
 	
 	

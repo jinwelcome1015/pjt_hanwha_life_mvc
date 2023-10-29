@@ -10,6 +10,8 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +32,16 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class GrmAdapterAdvice {
-	/*
-	@Around("execution(* com.gooroomee.gooroomeeadapter.service.*.*(..))")
+	
+	@Autowired
+	ModelMapper modelmapper;
+	
+	
+	@Around("execution(* com.gooroomee.gooroomeeadapter.controller.*.*(..))")
 	public Object responseWithMockData(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+		// com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I
+		final String interfaceOutputDtoPrefix = "com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs";
+		final String interfaceOutputDtoSuffix = "_O";
 		
 		Class<? extends Object> targetClass = proceedingJoinPoint.getTarget().getClass();
 		MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
@@ -45,38 +54,45 @@ public class GrmAdapterAdvice {
 			Parameter parameter = parameters[i];
 			Object arg = args[i];
 			if(parameter.isAnnotationPresent(RequestBody.class)) {
-				System.out.println("------");
-				System.out.println(parameter.getType());
-				System.out.println(arg);
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				Map<String, Object> map = objectMapper.convertValue(arg, new TypeReference<Map<String, Object>>() {
 				});
 				String useMockResponseYn = (String) map.get("useMockResponseYn");
-				System.out.println("useMockResponseYn : " + useMockResponseYn);
 				if("Y".equalsIgnoreCase(useMockResponseYn)) {
-	//					Method thisMethod = new Object() {
-	//					}.getClass().getEnclosingMethod();
-	//					String thisMethodName = method.getName();
 					
 					Type genericReturnType = method.getGenericReturnType();
-					genericReturnType.getClass().getTypeParameters();
+					String typeName = genericReturnType.getTypeName();								// "com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto<com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto>"
 					
-					// XXX 로직 수정
-					IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(method.getName(), IfMcCs003_O.class);
-	
-	//					Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
-					ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+					String dtoQualifiedName = typeName;
+					
+					String patternFrom = ".*\\<";
+					String patternTo = "\\>.*";
+					dtoQualifiedName = dtoQualifiedName.replaceAll(patternFrom, "");				// "com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto>"
+					dtoQualifiedName = dtoQualifiedName.replaceAll(patternTo, "");					// "com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto"
+					
+					Class<?> resDtoClass = Class.forName(dtoQualifiedName);
+
+					String responseDtoClassSimpleName = resDtoClass.getSimpleName();				// "Mvc003ResDto"
+					String dtoNumber = responseDtoClassSimpleName.replaceAll("\\D", "");			// "003"
+					
+					String interfaceOutputDtoQualifiedName = interfaceOutputDtoPrefix + dtoNumber + interfaceOutputDtoSuffix;
+					Class<?> interfaceOutputDtoClass = Class.forName(interfaceOutputDtoQualifiedName);
+					
+					Object interfaceOutputDto = MockUtil.getMockResponseData(method.getName(), interfaceOutputDtoClass);
+					
+					Object resDto = modelmapper.map(interfaceOutputDto, resDtoClass);
+					
+					ResponseDto<Object> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+					
 					return responseDto;
 				}
 			}
 		}
 		
-		
-		
 		Object proceed = proceedingJoinPoint.proceed();
 	    return proceed;
 	    
 	}
-	*/
+	
 }
