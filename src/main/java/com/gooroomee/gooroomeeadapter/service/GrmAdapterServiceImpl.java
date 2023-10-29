@@ -81,6 +81,26 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	@Value(value = "${interface.encrypt.aes-iv}")
 	private String encryptAesIv;
 	
+	
+	
+	
+	
+	@Override
+	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
+		
+		IfUtil ifUtil = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
+		
+		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		
+	    IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+	
+	    O ifOutputDto = outputTelegram.getPayload();
+		
+		return ifOutputDto;
+	}
+	
+	
+	
 	@Override
 	public IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I ifInputDto) throws JsonProcessingException, URISyntaxException {
 		
@@ -92,15 +112,15 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs002_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs002_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs002_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs002_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
 	
 	
-	/*
+	
 	@Override
 	public IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I ifInputDto) throws JsonProcessingException, URISyntaxException {
 		
@@ -112,29 +132,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-	    IfTelegram<IfMcCs003_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+	    IfTelegram<IfMcCs003_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 	
-	    IfMcCs003_O ifOutputDto = outputEnvelop.getPayload();
-		
-		return ifOutputDto;
-	}
-	*/
-	
-	
-	@Override
-	public IfMcCs003_O ifmccs003(String emnb, IfSpec ifSpec, IfMcCs003_I ifInputDto, Class<IfMcCs003_O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
-		
-//		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
-//	
-//		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
-		
-		IfUtil ifUtil = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
-		
-		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
-		
-	    IfTelegram<IfMcCs003_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
-	
-	    IfMcCs003_O ifOutputDto = outputEnvelop.getPayload();
+	    IfMcCs003_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -152,9 +152,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs005_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs005_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs005_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs005_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -171,9 +171,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs006_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs006_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs006_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs006_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -190,9 +190,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs007_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs007_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs007_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs007_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -209,9 +209,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs008_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs008_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs008_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs008_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -228,9 +228,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs009_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs009_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs009_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs009_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -246,9 +246,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs010_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs010_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs010_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs010_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -264,9 +264,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs011_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs011_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs011_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs011_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -281,9 +281,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs012_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs012_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs012_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs012_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
@@ -298,11 +298,13 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-        IfTelegram<IfMcCs016_O> outputEnvelop = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
+        IfTelegram<IfMcCs016_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
 
-        IfMcCs016_O ifOutputDto = outputEnvelop.getPayload();
+        IfMcCs016_O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;
 	}
+
+
 	
 }

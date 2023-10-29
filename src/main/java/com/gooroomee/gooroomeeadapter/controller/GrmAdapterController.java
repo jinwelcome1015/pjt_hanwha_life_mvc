@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.EzCertSrvcId;
+import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
@@ -168,36 +169,70 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "신분증스캔후처리")
+	/*
+	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
 			throws URISyntaxException, IOException {
-
+	
 		String useMockResponseYn = reqDto.getUseMockResponseYn();
 		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
 			Method thisMethod = new Object() {
 			}.getClass().getEnclosingMethod();
 			String thisMethodName = thisMethod.getName();
 			IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs003_O.class);
-
+	
 			Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
 			ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 			return responseDto;
 		}
-
+	
 		IfMcCs003_I cs003_I = modelMapper.map(reqDto, IfMcCs003_I.class);
 		cs003_I.setPushRcvrEmnb(reqDto.getEmnb());
-
+	
 		String emnb = reqDto.getEmnb();
-
+	
 		IfMcCs003_O cs003_O = gooroomeeAdapterService.ifmccs003(emnb, cs003_I);
-
+	
 		Mvc003ResDto resDto = modelMapper.map(cs003_O, Mvc003ResDto.class);
-
+	
 		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-
+	
 		return responseDto;
 	}
-
+	*/
+	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
+	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
+			throws URISyntaxException, IOException {
+	
+		String useMockResponseYn = reqDto.getUseMockResponseYn();
+		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
+			Method thisMethod = new Object() {
+			}.getClass().getEnclosingMethod();
+			String thisMethodName = thisMethod.getName();
+			IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs003_O.class);
+	
+			Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
+			ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+			return responseDto;
+		}
+	
+		IfMcCs003_I ifInputDto = modelMapper.map(reqDto, IfMcCs003_I.class);
+		ifInputDto.setPushRcvrEmnb(reqDto.getEmnb());
+	
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
+		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
+		IfMcCs003_O cs003_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+	
+		Mvc003ResDto resDto = modelMapper.map(cs003_O, Mvc003ResDto.class);
+	
+		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+	
+		return responseDto;
+	}
+	
+	
+	
 	/**
 	 * <pre>
 	 * [05]
