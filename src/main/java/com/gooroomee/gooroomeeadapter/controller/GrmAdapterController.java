@@ -189,7 +189,8 @@ public class GrmAdapterController {
 		image.setFormat(imageFormat);
 
 		String imageBase64Data = reqDto.getData();
-		String refinedImageBase64Data = imageBase64Data.replaceAll("^data:image/png;base64,", "");
+		String regexBase64prefix = "^.+\\,";
+		String refinedImageBase64Data = imageBase64Data.replaceAll(regexBase64prefix, "");
 		image.setData(refinedImageBase64Data);
 		
 		String imageName = reqDto.getName();

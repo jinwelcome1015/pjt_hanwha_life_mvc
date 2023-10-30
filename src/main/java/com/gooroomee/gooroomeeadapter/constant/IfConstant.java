@@ -399,6 +399,7 @@ public class IfConstant {
 		}
 	}
 	
+	
 	/** 간편인증서비스 권한부여유형 */
 	public enum EzCertSrvcGrantType{
 		
@@ -415,6 +416,29 @@ public class IfConstant {
 			return this.value;
 		}
 	}
+	
+	
+	/** 간편인증서비스 인증진행상태 코드*/
+	public enum EzCertSrvcStatus{
+		
+		/** 간편인증서비스 인증진행상태 코드 : IN_PROGRESS */
+		IN_PROGRESS("IN_PROGRESS"),
+		
+		/** 간편인증서비스 인증진행상태 코드 : COMPLETE */
+		COMPLETE("COMPLETE");
+		
+
+		private final String value;
+
+		private EzCertSrvcStatus(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
+	}
+	
 	
 	/** OCR 신분증 타입 */
 	public enum OcrIdType{

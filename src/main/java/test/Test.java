@@ -41,7 +41,8 @@ public class Test {
 
 		Test test = new Test();
 //		test.doTest();
-		test.doFilterClassName();
+//		test.doFilterClassName();
+		test.trimBase64prefix();
 
 	}
 
@@ -111,6 +112,16 @@ public class Test {
 		System.out.println(absolutePath);
 		System.out.println(file.listFiles());
 		*/
+		
+	}
+	
+	
+	public void trimBase64prefix() {
+		String string = "data:image/png;base64,12345";
+		String pattern = "^.+\\,";
+		
+		String replace = string.replaceAll(pattern, "");
+		System.out.println(replace);
 		
 	}
 }
