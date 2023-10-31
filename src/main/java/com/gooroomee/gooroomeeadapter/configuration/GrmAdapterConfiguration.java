@@ -73,7 +73,8 @@ public class GrmAdapterConfiguration {
 		modelMapper.getConfiguration()
 				.setFieldAccessLevel(AccessLevel.PRIVATE)
 				.setFieldMatchingEnabled(true)
-				.setMatchingStrategy(MatchingStrategies.LOOSE);
+//				.setMatchingStrategy(MatchingStrategies.LOOSE);
+				.setMatchingStrategy(MatchingStrategies.STRICT);
 
 		return modelMapper;
 	}
