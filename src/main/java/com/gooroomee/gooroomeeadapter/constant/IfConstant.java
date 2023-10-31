@@ -186,7 +186,10 @@ public class IfConstant {
 		IfMcCs012("HLIMVC00029", "hcsInitechStatus", "HCS"),
 		
 		/** 인터페이스 명세 : 알림톡전송 */
-		IfMcCs015("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "INI"),
+		IfMcCs015_1("HLIMVC00030", "iniUmsSendMgmtPSI004c", "INI"),
+		
+		/** 인터페이스 명세 : 카카오알림톡발송_챗버블 */
+		IfMcCs015_2("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "INI"),
 		
 		/** 인터페이스 명세 : 대체키별연락처저장 */
 		IfMcCs016("HLIMVC00031", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),

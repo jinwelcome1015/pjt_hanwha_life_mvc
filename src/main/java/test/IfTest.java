@@ -60,7 +60,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O2;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
@@ -112,31 +114,36 @@ public class IfTest {
     
     public static final String SRVC_ID = "SVC028";
     
-    public final String AES_KEY;
-	public final String AES_IV;
+    public static final String AES_KEY = "TzK5/8gFpMXmTKH5aYS6Uw9j2UwBGwGeju46fsJDwNE=";
+    public static final String AES_IV = "vxg7xjhMOVsLDmPU+Wfp5g==";
     
     
+    public static final String TOKEN_TYPE = "Bearer";
+    public static final String INITECH_O_AUTH_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXV0aC5pbmlodWIuYml6Iiwic3ViIjoiYWNjZXNzVG9rZW4iLCJleHAiOjE2OTg2NDQ4MzAsImp0aSI6ImdOOUNFTlZsUGFaRmdvWjY0a0dKIiwiY2xpZW50X2lkIjoiMDFlMjM4ZWYtODAyNS00MjgzLTk4M2YtOWY1ZDIyMWU4ODVlIn0.qZyF8Owy9t9t2V5K0t_3hkH5uAr5Pwpfi1tirOZgvjQlV8zkF2a_XAWMCwqpNnqiYRd-Ufn9ys9sncVCiTvxQ-yXmdR76A6et7O6MGw5r3wc-KiyICvGP7i_rjr-NaJsMhdmcykwzXAiw48eO5aqEx94BSI3JaUtWcvnoYUz-1octLzvrD1ocurCXnlcNrL9Z_r7--ZOEMrUlN8IRPN-FB7L5Tq2sGWsGjX-bV1ogXYuu7R4bt6So1DWkiThu1dlgw0FWci4Bll3hUaBY2DrncGE49mWXPH6yOxvSBq1lEIEK3KopAXxMcZF1PbknQaEFvaN7MHb0Q5kXXmv72X2fg";
+    public static final String REQ_TX_ID = "55df29e8-79b2-44d6-82b5-cb4c7cf9449f";
     
+    
+    /*
     public IfTest() throws IOException {
     	
     	final String activeProfile = "qa"; 
     	
     	URL resource = this.getClass().getClassLoader().getResource("properties/" + activeProfile + ".properties");
-		
-		InputStream openStream = resource.openStream();
-		
-		Properties properties = new Properties();
-		properties.load(openStream);
-		
-		AES_KEY = properties.getProperty("interface.encrypt.aes-key");
-		AES_IV = properties.getProperty("interface.encrypt.aes-iv");
-	}
-    
+    	
+    	InputStream openStream = resource.openStream();
+    	
+    	Properties properties = new Properties();
+    	properties.load(openStream);
+    	
+    	AES_KEY = properties.getProperty("interface.encrypt.aes-key");
+    	AES_IV = properties.getProperty("interface.encrypt.aes-iv");
+    }
+    */
     
 
     public static void main(String[] args) throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
                 IfTest ifTest = new IfTest();
-                ifTest.doTest_00001();
+//                ifTest.doTest_00001();
 //                ifTest.doTest_00002();
 //                ifTest.doTest_encryptDecrypt();
         
@@ -172,12 +179,18 @@ public class IfTest {
 
                 // XXX 성공
 //                ifTest.testIf010();
-        
+
+                // XXX 성공
 //                ifTest.testIf011();
-                ifTest.testIf012();
+                
+                // XXX 성공
+//                ifTest.testIf012();
         
                 // XXX 실패
-//                ifTest.testIf015();
+//                ifTest.testIf015_1();
+
+                // XXX 실패
+                ifTest.testIf015_2();
         
                 // XXX 성공
 //                ifTest.testIf016();
@@ -643,7 +656,9 @@ public class IfTest {
 	    
 	    IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
 	    
-	    String initechOAuthToken = "";
+	    String token_type = TOKEN_TYPE;
+	    String access_token = INITECH_O_AUTH_TOKEN;
+	    String initechOAuthToken = token_type + " " + access_token;
 	    dataBody.setInitechOAuthToken(initechOAuthToken);
 	    
 	    String ezCertSrvcId = IfConstant.EzCertSrvcId.EZ_KAKAOV2.getValue();
@@ -738,10 +753,14 @@ public class IfTest {
 	    com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
 	    
 	    
-	    String initechOAuthToken = "";
+	    // XXX
+	    String token_type = TOKEN_TYPE;
+        String access_token = INITECH_O_AUTH_TOKEN;
+        String initechOAuthToken = token_type + " " + access_token;
 		dataBody.setInitechOAuthToken(initechOAuthToken);
 		
-		String reqTxId = "";
+		// XXX
+		String reqTxId = REQ_TX_ID;
 		dataBody.setReqTxId(reqTxId);
 
 		String op = IfConstant.EzCertSrvcOp.auth.getValue();
@@ -777,8 +796,7 @@ public class IfTest {
      * @throws JsonProcessingException
      * @throws URISyntaxException
      */
-    
-    public void testIf015() throws JsonProcessingException, URISyntaxException {
+    public void testIf015_1() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
         /*
         String payloadJson = "{\r\n" + 
@@ -813,31 +831,85 @@ public class IfTest {
         
         String payloadJson = "{\r\n" + 
                 "    \"sendOrchOrgnCode\": \"00630\",\r\n" + 
+//                "    \"aentEmnb\": \"1940437\",\r\n" +
                 "    \"aentEmnb\": \"1077593\",\r\n" + 
-                "    \"msgeInptYn\": \"Y\",\r\n" + 
-                "    \"tlphSbno\": \"****\",\r\n" + 
-                "    \"cltnOrgnCode\": \"13017\",\r\n" + 
-                "    \"tlphOfno\": \"3974\",\r\n" + 
-                "    \"rqsrEmnb\": \"22226213\",\r\n" + 
-                "    \"rfrnBwno\": \"1\",\r\n" + 
-                "    \"isneTypeDvsnCode\": \"2\",\r\n" + 
-                "    \"custId\": \"8027263038\",\r\n" + 
-                "    \"ntfcRfdt\": \"20231025\",\r\n" + 
-                "    \"actlDatYn\": \"Y\",\r\n" + 
-                "    \"fileRqstCont\": 0,\r\n" + 
-                "    \"custNm\": \"장동준\",\r\n" + 
-                "    \"sndeTlphOfno\": \"1588\",\r\n" + 
-                "    \"ntfcKindCode\": \"ZZZ9001\",\r\n" + 
-                "    \"rpntMvmnTlphCnplSuid\": 9300000000005563838,\r\n" + 
+                "    \"msgeInptYn\": \"N\",\r\n" + 
+                "    \"ntfcKindCode\": \"SVP0412\",\r\n" + 
+                "    \"rpntMvmnTlphCnplSuid\": 9300000000015234179,\r\n" + 
+                "    \"sendItmList\": [\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"보험계약대출 지급완료안내\",\r\n" + 
+                "            \"sqnb\": 1\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"김수정\",\r\n" + 
+                "            \"sqnb\": 2\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"대출 지급완료를\",\r\n" + 
+                "            \"sqnb\": 3\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"2023-10-30\",\r\n" + 
+                "            \"sqnb\": 4\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"201824611\",\r\n" + 
+                "            \"sqnb\": 5\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"한화생명 e재테크 저축보험 무배당\",\r\n" + 
+                "            \"sqnb\": 6\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"200,000\",\r\n" + 
+                "            \"sqnb\": 7\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"■ 실수령금 : 200,000원\",\r\n" + 
+                "            \"sqnb\": 8\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"국민은행\",\r\n" + 
+                "            \"sqnb\": 9\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"4509010******3\",\r\n" + 
+                "            \"sqnb\": 10\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"변동형\",\r\n" + 
+                "            \"sqnb\": 11\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"4.25\",\r\n" + 
+                "            \"sqnb\": 12\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"2023-10-30\",\r\n" + 
+                "            \"sqnb\": 13\r\n" + 
+                "        },\r\n" + 
+                "        {\r\n" + 
+                "            \"umsItmVal\": \"2033-08-23\",\r\n" + 
+                "            \"sqnb\": 14\r\n" + 
+                "        }\r\n" + 
+                "    ],\r\n" + 
                 "    \"stndCrnyDcmlPsitCnt\": 0,\r\n" + 
+                "    \"sbsnMsgeCntn\": \"\",\r\n" + 
+                "    \"cltnOrgnCode\": \"08565\",\r\n" + 
                 "    \"mgmtNoDvsnCode\": \"5\",\r\n" + 
-                "    \"ntfcTmplCode\": \"AMA00013\",\r\n" + 
-                "    \"tlphIdnfCode\": \"010\",\r\n" + 
-                "    \"sndeTlphInno\": \"****\",\r\n" + 
-                "    \"sendOrchEmnb\": \"MCI0001\",\r\n" + 
-                "    \"rrno\": \"*************\",\r\n" + 
-                "    \"msgeTitlNm\": \"정보조회동의 처리 결과 안내\",\r\n" + 
-                "    \"msgeCntn\": \"장동준 고객님 안녕하십니까?\\\\n한화생명은 고객님의 소중한 정보보호를 위해\\\\n당사(케이금융파트너스서울지점 장선미FP)에 정보처리동의를 하신\\\\n고객님들께 동의에 대한 확인 및 감사 알림톡을 발송하고 있습니다.\\\\n소중한 고객님의 정보가 체계적으로 관리되도록 최선을 다하겠습니다.\\\\n항상 한화생명을 아껴주셔서 감사합니다.\\\\n궁금하신 사항은 지점 02-499-8531 또는 콜센터 1588-6363으로\\\\n문의 가능하십니다.\\\\n오늘도 좋은 하루 되십시요. 감사합니다.\\\\n\"\r\n" + 
+                "    \"ntfcTmplCode\": \"ASVP000008\",\r\n" + 
+                "    \"rqsrEmnb\": \"1484752\",\r\n" + 
+                "    \"rfrnBwno\": \"1029256771\",\r\n" + 
+                "    \"sendOrchEmnb\": \"1484752\",\r\n" + 
+                "    \"isneTypeDvsnCode\": \"1\",\r\n" + 
+                "    \"msgeTitlNm\": \"보험계약대출 신청 및 지급완료 안내\",\r\n" + 
+                "    \"msgeCntn\": \"\",\r\n" + 
+                "    \"custId\": \"1029256771\",\r\n" + 
+                "    \"ntfcRfdt\": \"20231030\",\r\n" + 
+                "    \"actlDatYn\": \"N\",\r\n" + 
+                "    \"crnyCode\": \"KRW\",\r\n" + 
+                "    \"fileRqstCont\": 0\r\n" + 
                 "}";
         
     
@@ -845,7 +917,7 @@ public class IfTest {
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_1;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
@@ -854,6 +926,65 @@ public class IfTest {
                 IfMcCs015_O.class);
     
         IfMcCs015_O outputPayload = outputTelegram.getPayload();
+    
+        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+    }
+    
+    
+    
+    /**
+     * 카카오알림톡발송_쳇버블
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    public void testIf015_2() throws JsonProcessingException, URISyntaxException {
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        
+        
+        String payloadJson = "{\r\n" + 
+                "    \"hpTlphSbno\": \"3661\",\r\n" + 
+                "    \"tmplCode\": \"FNC9001\",\r\n" + 
+                "    \"sndeTlno\": \"\",\r\n" + 
+                "    \"dutySendYn\": \"Y\",\r\n" + 
+                "    \"sndeDeptCode\": \"00320\",\r\n" + 
+                "    \"sendCont\": 1,\r\n" + 
+                "    \"btchPrcsYn\": \"1\",\r\n" + 
+                "    \"hpTlphTlcmNo\": \"010\",\r\n" + 
+                "    \"sbsnSendMsgeCntn\": \"최진원님 안녕하세요\\r\\n저희 한화생명보험 대출상품을 문의해 주셔서 감사합니다.\\r\\n「금융소비자보호에 관한 법률」 및 동 법 시행령에 따라 고객님이 문의하신 대출상품의 적합성\\/적정성 여부를 판단하기 위해 당사에 제공한 정보는 다음과 같습니다.\\r\\n\\r\\n■ [제공정보]\\r\\n취약금융소비자 구분: 해당없음\\r\\n대출용도: 주택자금\\r\\n변제계획: 근로소득\\r\\n연간소득: 5천만~1억원 미만\\r\\n부채: 1천만 미만\\r\\n고정지출: 1백만 미만\\r\\n신용점수: 800점 이상\\r\\n\\r\\n\\u203B제공하신 정보 및 기타 대출관련 문의사항은 한화생명 콜센터(☎ 1588-6363)을 이용해 주시기 바랍니다.\\r\\n감사합니다.\",\r\n" + 
+                "    \"nttkButnCntn\": \"Y\",\r\n" + 
+                "    \"custId\": \"1025835861\",\r\n" + 
+                "    \"hpTlphOfno\": \"2889\",\r\n" + 
+                "    \"rcvrTlno\": \"\",\r\n" + 
+                "    \"sndeTlphArcd\": \"\",\r\n" + 
+                "    \"sndeTlphOfno\": \"1588\",\r\n" + 
+                "    \"ntfcKindCode\": \"FNC9001\",\r\n" + 
+                "    \"trnnPrgmId\": \"SVfnact146in\",\r\n" + 
+                "    \"sbsnSendYn\": \"Y\",\r\n" + 
+                "    \"ntfcTmplCode\": \"AFNC000008\",\r\n" + 
+                "    \"jobMsgeCntn\": \"최진원님 안녕하세요\\r\\n저희 한화생명보험 대출상품을 문의해 주셔서 감사합니다.\\r\\n「금융소비자보호에 관한 법률」 및 동 법 시행령에 따라 고객님이 문의하신 대출상품의 적합성\\/적정성 여부를 판단하기 위해 당사에 제공한 정보는 다음과 같습니다.\\r\\n\\r\\n■ [제공정보]\\r\\n취약금융소비자 구분: 해당없음\\r\\n대출용도: 주택자금\\r\\n변제계획: 근로소득\\r\\n연간소득: 5천만~1억원 미만\\r\\n부채: 1천만 미만\\r\\n고정지출: 1백만 미만\\r\\n신용점수: 800점 이상\\r\\n\\r\\n\\u203B제공하신 정보 및 기타 대출관련 문의사항은 한화생명 콜센터(☎ 1588-6363)을 이용해 주시기 바랍니다.\\r\\n감사합니다.\",\r\n" + 
+                "    \"onlnBtchDvsnCode\": \"R\",\r\n" + 
+                "    \"sndeTlphInno\": \"****\",\r\n" + 
+                "    \"msgeTitlNm\": \"적정성\\/적합성 평가 결과안내\",\r\n" + 
+                "    \"butnDvsnCode\": \"Y\",\r\n" + 
+                "    \"ntfcMdiaDvsnCode\": \"LMS\",\r\n" + 
+                "    \"rcvrNm\": \"\"\r\n" + 
+                "}";
+        
+    
+        IfMcCs015_I2 inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I2.class);
+//        String hpTlphSbno = inputPayload.getHpTlphSbno();
+    
+        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+    
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_2;
+    
+        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+                ifSpec.getRcveSysCode());
+    
+        IfTelegram<IfMcCs015_O2> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+                IfMcCs015_O2.class);
+    
+        IfMcCs015_O2 outputPayload = outputTelegram.getPayload();
     
         logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
     }

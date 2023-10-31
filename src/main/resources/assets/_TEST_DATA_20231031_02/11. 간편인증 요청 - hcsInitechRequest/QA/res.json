@@ -1,0 +1,15 @@
+{
+    "dataHeader": {
+        "crtf_RTCD": null,
+        "dlre_MSG": null,
+        "scrn_ID": null,
+        "srvc_ID": null
+    },
+    "dataBody": {
+        "resCode": "1200",
+        "errorMessage": "",
+        "reqTxId": "55df29e8-79b2-44d6-82b5-cb4c7cf9449f",
+        "iosAppSchemeUrl": null,
+        "aosAppSchemeUrl": null
+    }
+}

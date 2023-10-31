@@ -1,0 +1,23 @@
+{
+    "dataHeader": {
+        "SRVC_ID": "SVC028",
+        "SCRN_ID": "화면 ID",
+        "CRTF_RTCD": "0000",
+        "DLRE_MSG": "정상"
+    },
+    "dataBody": {
+        "resCode": "1200",
+        "errorMessage": "",
+        "status": "COMPLETED",
+        "payload": {
+            "op": "auth",
+            "pid": "EZ_KAKAOV2",
+            "uname": "LVva7XH4ZI7/BxWrOgdUKw==",
+            "ubirthday": "4TLd2mkir0Q5Eg6uTSj5eg==",
+            "ugender": "Ez8/9YHcC/a4bOYSb9LEvA==",
+            "uphone": "9j9XRBQTvBoCEKyB3aCAAg==",
+            "uci": "RVDW3TVlZyVwZhJ1G5NLfd7XVMsvGAEX3l4zLtLwIA9bNAEIdnyA6QiuM+ZHFwuYjYbVysX1Ma5HJLHAmedNw1xl0fAwR4M53f6GR5qkkvAenhtuylQh60RqWcK24Q6i",
+            "signedData": null
+        }
+    }
+}
