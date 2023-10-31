@@ -40,9 +40,8 @@ public class GrmAdapterAdvice {
 		Method method = methodSignature.getMethod();
 		
 		Object[] args = proceedingJoinPoint.getArgs();
-		Parameter[] parameters = method.getParameters();
 		
-		for (int i = 0; i < parameters.length; i++) {
+		for (int i = 0; i < args.length; i++) {
 			
 			if(args[i] instanceof HttpServletRequest) {
 				HttpServletRequest request = (HttpServletRequest) args[i];

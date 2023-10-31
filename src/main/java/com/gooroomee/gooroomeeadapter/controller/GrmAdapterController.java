@@ -858,7 +858,6 @@ public class GrmAdapterController {
 										.convertValue(mockRequestDataObject, new TypeReference<Map<String, Object>>() {
 										});
 								mockRequestDataMap.put("emnb", "1077123");
-								mockRequestDataMap.put("useMockResponseYn", "Y");
 
 								mockData = objectMapper.writeValueAsString(mockRequestDataMap);
 							}

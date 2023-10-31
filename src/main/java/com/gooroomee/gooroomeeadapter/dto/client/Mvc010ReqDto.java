@@ -11,11 +11,12 @@ import lombok.ToString;
 @ToString
 public class Mvc010ReqDto {
 	
-	/** mock 응답 사용여부 */
-	public String useMockResponseYn;
-
 	/** 사원번호 */
 	public String emnb;
+	
+	/** 화면 ID */
+	@JsonProperty("SCRN_ID")
+	private String SCRN_ID;
 
 	/** 사용자ID */
 	@JsonProperty("USER_ID")

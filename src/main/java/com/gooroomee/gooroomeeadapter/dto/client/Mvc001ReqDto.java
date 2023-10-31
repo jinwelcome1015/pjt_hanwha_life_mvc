@@ -1,5 +1,7 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,11 +11,12 @@ import lombok.ToString;
 @ToString
 public class Mvc001ReqDto {
 	
-	/** mock 응답 사용여부 */
-	public String useMockResponseYn;
-
 	/** 사원번호 */
 	public String emnb;
+	
+	/** 화면 ID */
+	@JsonProperty("SCRN_ID")
+	private String SCRN_ID;
 	
 	/** 사용자 ID */
 	private String USER_ID;
