@@ -238,23 +238,44 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
+	/*
 	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-
+	
 		IfMcCs002_I cs002_I = modelMapper.map(reqDto, IfMcCs002_I.class);
-
+	
 		String emnb = reqDto.getEmnb();
-
+	
 		IfMcCs002_O cs002_O = gooroomeeAdapterService.ifmccs002(emnb, cs002_I);
-
+	
 		Mvc002ResDto resDto = modelMapper.map(cs002_O, Mvc002ResDto.class);
-
+	
 		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-
+	
 		return responseDto;
 	}
-
+	*/
+	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
+	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+	
+		IfMcCs002_I ifInputDto = modelMapper.map(reqDto, IfMcCs002_I.class);
+	
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
+		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
+		IfMcCs002_O cs002_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+	
+		Mvc002ResDto resDto = modelMapper.map(cs002_O, Mvc002ResDto.class);
+	
+		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+	
+		return responseDto;
+	}
+	
+	
+	
 	/**
 	 * [03] 신분증스캔후처리
 	 * 
@@ -264,7 +285,7 @@ public class GrmAdapterController {
 	 * @throws IOException
 	 */
 	/*
-	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
+	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan"), (API_URL_TOKEN + "/itfcIdcdScan" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
 			throws URISyntaxException, IOException {
 	
