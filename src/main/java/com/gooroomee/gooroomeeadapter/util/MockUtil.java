@@ -21,6 +21,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 
 public class MockUtil {
 	
+	public static final String URL_SUFFIX_FOR_MOCK = "/mock";
+	
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)

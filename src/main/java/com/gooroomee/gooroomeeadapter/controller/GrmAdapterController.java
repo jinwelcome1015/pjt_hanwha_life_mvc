@@ -15,10 +15,12 @@ import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -151,8 +153,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst") }, method = { RequestMethod.POST }, name = "01. 신분증OCR요청")
-	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst(@RequestBody Mvc001ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "01. 신분증OCR요청")
+	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst(@RequestBody Mvc001ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 //		IfMcCs001_I cs001_I = modelMapper.map(reqDto, IfMcCs001_I.class);
@@ -236,8 +238,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm") }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
-	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
+	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 
 		IfMcCs002_I cs002_I = modelMapper.map(reqDto, IfMcCs002_I.class);
@@ -280,8 +282,8 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 	*/
-	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
-	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan"), (API_URL_TOKEN + "/itfcIdcdScan" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
+	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 		IfMcCs003_I ifInputDto = modelMapper.map(reqDto, IfMcCs003_I.class);
@@ -312,9 +314,9 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/itfcUserCtfn") }, method = {
+	@RequestMapping(path = { (API_URL_TOKEN + "/itfcUserCtfn"), (API_URL_TOKEN + "/itfcUserCtfn" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "05. SSO대체로그인인증")
-	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto)
+	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 //		IfMcCs005_I cs005_I = modelMapper.map(reqDto, IfMcCs005_I.class);
@@ -349,8 +351,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/empeInqy") }, method = { RequestMethod.POST }, name = "06. 사원목록조회")
-	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/empeInqy"), (API_URL_TOKEN + "/empeInqy" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "06. 사원목록조회")
+	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 		IfMcCs006_I cs006_I = modelMapper.map(reqDto, IfMcCs006_I.class);
@@ -378,9 +380,9 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/intgCustInqyMgmt") }, method = {
+	@RequestMapping(path = { (API_URL_TOKEN + "/intgCustInqyMgmt"), (API_URL_TOKEN + "/intgCustInqyMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "07. 고객계약정보조회")
-	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto)
+	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 		IfMcCs007_I cs007_I = modelMapper.map(reqDto, IfMcCs007_I.class);
@@ -410,8 +412,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust") }, method = { RequestMethod.POST }, name = "08. 고객계좌목록조회")
-	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust"), (API_URL_TOKEN + "/intgCust" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "08. 고객계좌목록조회")
+	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 
 		IfMcCs008_I cs008_I = modelMapper.map(reqDto, IfMcCs008_I.class);
@@ -439,9 +441,9 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/prsnInfoLeakMgmt") }, method = {
+	@RequestMapping(path = { (API_URL_TOKEN + "/prsnInfoLeakMgmt"), (API_URL_TOKEN + "/prsnInfoLeakMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "09. 개인정보유출노출여부조회")
-	public @ResponseBody ResponseDto<Mvc009ResDto> prsnInfoLeakMgmt(@RequestBody Mvc009ReqDto reqDto)
+	public @ResponseBody ResponseDto<Mvc009ResDto> prsnInfoLeakMgmt(@RequestBody Mvc009ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 		IfMcCs009_I cs009_I = modelMapper.map(reqDto, IfMcCs009_I.class);
@@ -469,9 +471,9 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/initechToken") }, method = {
+	@RequestMapping(path = { (API_URL_TOKEN + "/initechToken"), (API_URL_TOKEN + "/initechToken" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "10. 간편인증 토큰발급")
-	public @ResponseBody ResponseDto<Mvc010ResDto> initechToken(@RequestBody Mvc010ReqDto reqDto)
+	public @ResponseBody ResponseDto<Mvc010ResDto> initechToken(@RequestBody Mvc010ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
@@ -526,8 +528,8 @@ public class GrmAdapterController {
 	 * @throws InvalidKeyException 
 	 */
 	
-	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest") }, method = { RequestMethod.POST }, name = "11. 간편인증 요청")
-	public @ResponseBody ResponseDto<Mvc011ResDto> initechRequest(@RequestBody Mvc011ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest"), (API_URL_TOKEN + "/initechRequest" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "11. 간편인증 요청")
+	public @ResponseBody ResponseDto<Mvc011ResDto> initechRequest(@RequestBody Mvc011ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
 		
 	//		IfMcCs011_I cs011_I = modelMapper.map(reqDto, IfMcCs011_I.class);
@@ -624,8 +626,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/initechStatus") }, method = { RequestMethod.POST }, name = "12. 간편인증 상태 조회")
-	public @ResponseBody ResponseDto<Mvc012ResDto> initechStatus(@RequestBody Mvc012ReqDto reqDto)
+	@RequestMapping(path = { (API_URL_TOKEN + "/initechStatus"), (API_URL_TOKEN + "/initechStatus" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "12. 간편인증 상태 조회")
+	public @ResponseBody ResponseDto<Mvc012ResDto> initechStatus(@RequestBody Mvc012ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
@@ -694,8 +696,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/prsnCustMgmt") }, method = { RequestMethod.POST }, name = "16. 대체키별연락처저장")
-	public @ResponseBody ResponseDto<Mvc016ResDto> prsnCustMgmt(@RequestBody Mvc016ReqDto reqDto) throws URISyntaxException, IOException {
+	@RequestMapping(path = { (API_URL_TOKEN + "/prsnCustMgmt"), (API_URL_TOKEN + "/prsnCustMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "16. 대체키별연락처저장")
+	public @ResponseBody ResponseDto<Mvc016ResDto> prsnCustMgmt(@RequestBody Mvc016ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 		IfMcCs016_I ifInputDto = modelMapper.map(reqDto, IfMcCs016_I.class);
 	
@@ -724,8 +726,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/cnplSbsnKeyMgmt") }, method = { RequestMethod.POST }, name = "17. 대체키별연락처조회")
-	public @ResponseBody ResponseDto<Mvc017ResDto> cnplSbsnKeyMgmt(@RequestBody Mvc017ReqDto reqDto) throws URISyntaxException, IOException {
+	@RequestMapping(path = { (API_URL_TOKEN + "/cnplSbsnKeyMgmt"), (API_URL_TOKEN + "/cnplSbsnKeyMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "17. 대체키별연락처조회")
+	public @ResponseBody ResponseDto<Mvc017ResDto> cnplSbsnKeyMgmt(@RequestBody Mvc017ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 		IfMcCs017_I ifInputDto = modelMapper.map(reqDto, IfMcCs017_I.class);
 	
@@ -755,8 +757,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/addrMgmt") }, method = { RequestMethod.POST }, name = "18. 우편번호조회")
-	public @ResponseBody ResponseDto<Mvc018ResDto> addrMgmt(@RequestBody Mvc018ReqDto reqDto) throws URISyntaxException, IOException {
+	@RequestMapping(path = { (API_URL_TOKEN + "/addrMgmt"), (API_URL_TOKEN + "/addrMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "18. 우편번호조회")
+	public @ResponseBody ResponseDto<Mvc018ResDto> addrMgmt(@RequestBody Mvc018ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 		IfMcCs018_I ifInputDto = modelMapper.map(reqDto, IfMcCs018_I.class);
 	
