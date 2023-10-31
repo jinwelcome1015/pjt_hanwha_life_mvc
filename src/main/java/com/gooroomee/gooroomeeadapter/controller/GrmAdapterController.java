@@ -154,19 +154,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst") }, method = { RequestMethod.POST }, name = "01. 신분증OCR요청")
 	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst(@RequestBody Mvc001ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs001_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs001_O.class);
 		
-			Mvc001ResDto resDto = modelMapper.map(mockResponseData, Mvc001ResDto.class);
-			ResponseDto<Mvc001ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 //		IfMcCs001_I cs001_I = modelMapper.map(reqDto, IfMcCs001_I.class);
 		
 		IfMcCs001_I.DataHeader dataHeader = new IfMcCs001_I.DataHeader();
@@ -251,19 +239,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm") }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs002_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs002_O.class);
-		
-			Mvc002ResDto resDto = modelMapper.map(mockResponseData, Mvc002ResDto.class);
-			ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
+
 		IfMcCs002_I cs002_I = modelMapper.map(reqDto, IfMcCs002_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -289,18 +265,6 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan") }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
 			throws URISyntaxException, IOException {
-	
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs003_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs003_O.class);
-	
-			Mvc003ResDto resDto = modelMapper.map(mockResponseData, Mvc003ResDto.class);
-			ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
 	
 		IfMcCs003_I cs003_I = modelMapper.map(reqDto, IfMcCs003_I.class);
 		cs003_I.setPushRcvrEmnb(reqDto.getEmnb());
@@ -352,19 +316,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "05. SSO대체로그인인증")
 	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs005_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs005_O.class);
 		
-			Mvc005ResDto resDto = modelMapper.map(mockResponseData, Mvc005ResDto.class);
-			ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 //		IfMcCs005_I cs005_I = modelMapper.map(reqDto, IfMcCs005_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -400,19 +352,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/empeInqy") }, method = { RequestMethod.POST }, name = "06. 사원목록조회")
 	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs006_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs006_O.class);
 		
-			Mvc006ResDto resDto = modelMapper.map(mockResponseData, Mvc006ResDto.class);
-			ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 		IfMcCs006_I cs006_I = modelMapper.map(reqDto, IfMcCs006_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -442,19 +382,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "07. 고객계약정보조회")
 	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs007_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs007_O.class);
 		
-			Mvc007ResDto resDto = modelMapper.map(mockResponseData, Mvc007ResDto.class);
-			ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 		IfMcCs007_I cs007_I = modelMapper.map(reqDto, IfMcCs007_I.class);
 		cs007_I.setCntcDvsnCode(IfConstant.CNTC_DVSN_CODE);
 		cs007_I.setCustDvsnCode(IfConstant.CUST_DVSN_CODE);
@@ -485,19 +413,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust") }, method = { RequestMethod.POST }, name = "08. 고객계좌목록조회")
 	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs008_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs008_O.class);
-		
-			Mvc008ResDto resDto = modelMapper.map(mockResponseData, Mvc008ResDto.class);
-			ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
+
 		IfMcCs008_I cs008_I = modelMapper.map(reqDto, IfMcCs008_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -527,19 +443,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "09. 개인정보유출노출여부조회")
 	public @ResponseBody ResponseDto<Mvc009ResDto> prsnInfoLeakMgmt(@RequestBody Mvc009ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs009_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs009_O.class);
 		
-			Mvc009ResDto resDto = modelMapper.map(mockResponseData, Mvc009ResDto.class);
-			ResponseDto<Mvc009ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 		IfMcCs009_I cs009_I = modelMapper.map(reqDto, IfMcCs009_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -569,19 +473,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "10. 간편인증 토큰발급")
 	public @ResponseBody ResponseDto<Mvc010ResDto> initechToken(@RequestBody Mvc010ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs010_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs010_O.class);
 		
-			Mvc010ResDto resDto = modelMapper.map(mockResponseData, Mvc010ResDto.class);
-			ResponseDto<Mvc010ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
 
 		IfMcCs010_I.DataHeader dataHeader = new IfMcCs010_I.DataHeader();
@@ -637,32 +529,8 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest") }, method = { RequestMethod.POST }, name = "11. 간편인증 요청")
 	public @ResponseBody ResponseDto<Mvc011ResDto> initechRequest(@RequestBody Mvc011ReqDto reqDto)
 			throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs011_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs011_O.class);
 		
-			Mvc011ResDto resDto = modelMapper.map(mockResponseData, Mvc011ResDto.class);
-			ResponseDto<Mvc011ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 	//		IfMcCs011_I cs011_I = modelMapper.map(reqDto, IfMcCs011_I.class);
-		
-	/*
-	String payloadJson_dataHeader = "{\r\n" + 
-			"    \"SRVC_ID\": \"SVC028\",\r\n" + 
-			"    \"SCRN_ID\": \"화면 ID\",\r\n" + 
-			"    \"CRTF_RTCD\": \"\",\r\n" + 
-			"    \"DLRE_MSG\": \"\",\r\n" + 
-			"    \"ORGN_CODE\": \"00630\",\r\n" + 
-			"    \"USER_ID\": \"USER_001\"\r\n" + 
-			"}";
-	IfMcCs011_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, IfMcCs011_I.DataHeader.class);
-	*/
 	    
 		IfMcCs011_I.DataHeader dataHeader = new IfMcCs011_I.DataHeader();
 	//		dataHeader.setCRTF_RTCD("");
@@ -759,19 +627,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { (API_URL_TOKEN + "/initechStatus") }, method = { RequestMethod.POST }, name = "12. 간편인증 상태 조회")
 	public @ResponseBody ResponseDto<Mvc012ResDto> initechStatus(@RequestBody Mvc012ReqDto reqDto)
 			throws URISyntaxException, IOException {
-		/*
-		String useMockResponseYn = reqDto.getUseMockResponseYn();
-		if ("Y".equalsIgnoreCase(useMockResponseYn)) {
-			Method thisMethod = new Object() {
-			}.getClass().getEnclosingMethod();
-			String thisMethodName = thisMethod.getName();
-			IfMcCs012_O mockResponseData = MockUtil.getMockResponseData(thisMethodName, IfMcCs012_O.class);
 		
-			Mvc012ResDto resDto = modelMapper.map(mockResponseData, Mvc012ResDto.class);
-			ResponseDto<Mvc012ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-			return responseDto;
-		}
-		*/
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
 
 		IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
@@ -923,8 +779,6 @@ public class GrmAdapterController {
 	
 	
 	
-	
-	
 	/**
 	 * 
 	 * <pre>
@@ -1047,207 +901,4 @@ public class GrmAdapterController {
 		return apiInfoList;
 	}
 
-	/*
-	private <O> O getMockResponseData(String thisMethodName, Class<O> outputClass) throws IOException {
-		String mockDataRootPath = "/assets/mockData/";
-		String mockDataDetailPath = mockDataRootPath + thisMethodName;
-		String mockResponseDataFileName = "res.log";
-		
-		File mockResponseDataFile = new File(mockDataDetailPath, mockResponseDataFileName);
-		
-		ClassPathResource resource = new ClassPathResource(mockResponseDataFile.toString());
-		Path path = Paths.get(resource.getURI());
-		
-		List<String> lines = Files.readAllLines(path);
-		
-		List<String> filteredLines = new ArrayList<>();
-		for (String line : lines) {
-			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
-					|| line.contains("subTrnmSysType")) {
-				continue;
-			} else if (line.contains("msgeStackTrace") && line.endsWith(",")) {
-				line = line.replaceAll(",$", "");
-			}
-			filteredLines.add(line);
-		}
-		
-		String delimiter = " ";
-		String jsonData = String.join(delimiter, filteredLines);
-		
-		String patternFrom = ".*(data=)";
-		String patternTo = ", encrypt=false]\\s*$";
-		jsonData = jsonData.replaceAll(patternFrom, "");
-		jsonData = jsonData.replaceAll(patternTo, "");
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputClass);
-		IfTelegram<O> responseTelegram = null;
-		responseTelegram = objectMapper.readValue(jsonData, javaType);
-		
-		
-		O payload = responseTelegram.getPayload();
-		
-		return payload;
-	}
-	*/
-
-	/*
-	public static void main(String[] args) {
-		Method[] declaredMethods = GrmAdapterController.class.getDeclaredMethods();
-		for (Method declaredMethod : declaredMethods) {
-			if("itfcIdcdScan".equals(declaredMethod.getName())) {
-				Parameter[] parameters = declaredMethod.getParameters();
-				for (Parameter parameter : parameters) {
-					RequestBody requestBody = parameter.getAnnotation(RequestBody.class);
-					System.out.println(parameter.getType());
-					System.out.println(requestBody == null);
-				}
-			}
-		}
-	}
-	*/
-
-	/*
-	public static void main(String[] args) throws ClassNotFoundException {
-		GrmAdapterController grmAdapterController = new GrmAdapterController();
-		Class<? extends GrmAdapterController> class1 = grmAdapterController.getClass();
-		Method[] declaredMethods = class1.getDeclaredMethods();
-		for (Method method : declaredMethods) {
-	//			System.out.println("====================== " + method.getName());
-			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-			if(requestMapping != null) {
-				if("trflCnfm".equals(method.getName())) {
-	//					System.out.println("method.getName() : " + method.getName());
-	//					System.out.println("method.getReturnType() : " + method.getReturnType());
-					System.out.println("method.getGenericReturnType() : " + method.getGenericReturnType());
-					System.out.println("method.getGenericReturnType().getTypeName() : " + method.getGenericReturnType().getTypeName());
-					Parameter[] parameters = method.getParameters();
-					for (Parameter parameter : parameters) {
-						RequestBody requestBody = parameter.getAnnotation(RequestBody.class);
-						if(requestBody != null) {
-							System.out.println("%%%%%%%%%%%%%%% " + parameter.getType().getName());
-						}
-					}
-					
-					String typeName = method.getGenericReturnType().getTypeName();
-					String s = typeName;
-					
-					String from = "^(.)+ResponseDto\\<";
-					String to = ">$";		
-					
-					s = s.replaceAll(from, "");
-					s = s.replaceAll(to, "");
-					
-					System.out.println("sss : " + s);
-					
-					Class<?> forName = Class.forName(s);
-					String simpleName = forName.getSimpleName();
-					System.out.println(simpleName);
-				}
-				
-			}
-		}
-	}
-	*/
-
-	/*
-	public static void main(String[] args) throws ClassNotFoundException {
-		GrmAdapterController grmAdapterController = new GrmAdapterController();
-		Class<? extends GrmAdapterController> class1 = grmAdapterController.getClass();
-		Method[] declaredMethods = class1.getDeclaredMethods();
-		for (Method method : declaredMethods) {
-	//			System.out.println("====================== " + method.getName());
-			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-			if(requestMapping != null) {
-				if("trflCnfm".equals(method.getName())) {
-	//					System.out.println("method.getName() : " + method.getName());
-	//					System.out.println("method.getReturnType() : " + method.getReturnType());
-					System.out.println("method.getGenericReturnType() : " + method.getGenericReturnType());
-					System.out.println("method.getGenericReturnType().getTypeName() : " + method.getGenericReturnType().getTypeName());
-					
-					
-					String typeName = method.getGenericReturnType().getTypeName();
-					String s = typeName;
-					
-					String from = "^(.)+ResponseDto\\<";
-					String to = ">$";		
-					
-					s = s.replaceAll(from, "");
-					s = s.replaceAll(to, "");
-					
-					System.out.println("sss : " + s);
-					
-					Class<?> forName = Class.forName(s);
-					String simpleName = forName.getSimpleName();
-					System.out.println(simpleName);
-				}
-				
-			}
-		}
-	}
-	*/
-	/*
-	public static void main(String[] args) throws IOException {
-		GrmAdapterController grmAdapterController = new GrmAdapterController();
-		Mvc003ReqDto mockRequestData = grmAdapterController.getMockRequestData("itfcIdcdScan", Mvc003ReqDto.class);
-		System.out.println(mockRequestData);
-	}
-	*/
-	/*
-	@PostMapping(path = "/test/doTest02")
-	public @ResponseBody String doTest02() throws IOException {
-		
-		UriComponents complexUrl = UriComponentsBuilder
-		        .fromUriString("https://jsonplaceholder.typicode.com/posts")
-		        .encode()
-		        .build(); 
-	
-		ResponseEntity<List<Map<String, String>>> exchange = restTemplate.exchange(complexUrl.toUri(), HttpMethod.GET,
-				null, new ParameterizedTypeReference<List<Map<String, String>>>() {
-				}
-		);
-		
-		String writeValueAsString = new ObjectMapper().writeValueAsString(exchange);
-		return writeValueAsString;
-	}
-	*/
-
-	/*
-	public static void main(String[] args) throws IOException {
-		ClassPathResource resource = new ClassPathResource("mockData/res.log");
-		Path path = Paths.get(resource.getURI());
-	
-		List<String> lines = Files.readAllLines(path);
-	
-		List<String> filteredLines = new ArrayList<>();
-		for (String line : lines) {
-			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
-					|| line.contains("subTrnmSysType")) {
-				continue;
-			} else if (line.contains("msgeStackTrace") && line.endsWith(",")) {
-				line = line.replaceAll(",$", "");
-			}
-			filteredLines.add(line);
-		}
-	
-		String delimiter = " ";
-		String jsonData = String.join(delimiter, filteredLines);
-	
-		String patternFrom = ".*(data=)";
-		String patternTo = ", encrypt=false]\\s*$";
-		jsonData = jsonData.replaceAll(patternFrom, "");
-		jsonData = jsonData.replaceAll(patternTo, "");
-	
-		System.out.println(jsonData);
-	
-		ObjectMapper objectMapper = new ObjectMapper();
-	
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, IfMcCs005_O.class);
-		IfTelegram<IfMcCs005_O> responseTelegram = null;
-		responseTelegram = objectMapper.readValue(jsonData, javaType);
-	
-		System.out.println(responseTelegram);
-	}
-	*/
 }
