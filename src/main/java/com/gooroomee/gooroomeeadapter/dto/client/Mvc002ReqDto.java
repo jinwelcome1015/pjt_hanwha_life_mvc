@@ -65,13 +65,13 @@ public class Mvc002ReqDto {
 	/** 만료일자 */
 	private Date expyDate;
 
-	/** 이미지관리번호 */
-	private String imgeMgmtNo;
+//	/** 이미지관리번호 */
+//	private String imgeMgmtNo;
 
-	/** 이미지종류코드 */
-	private String imgeKindCode;
+//	/** 이미지종류코드 */
+//	private String imgeKindCode;
 
-	/** 이미지파일ID */
-	private String imgeFileId;
+//	/** 이미지파일ID */
+//	private String imgeFileId;
 
 }

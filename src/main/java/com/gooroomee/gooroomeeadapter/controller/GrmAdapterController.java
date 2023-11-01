@@ -18,6 +18,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration.AccessLevel;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
@@ -31,13 +33,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.EzCertSrvcId;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto.DataHeader;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
@@ -86,6 +95,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
+import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
@@ -133,6 +143,9 @@ public class GrmAdapterController {
 	
 	@Autowired
 	private GrmAdapterService gooroomeeAdapterService;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -143,10 +156,125 @@ public class GrmAdapterController {
 
 	private static final String PARAM_NAME_FOR_REQUEST_MOCK_DATA = "apiPath";
 	
+	/*
+	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
+		final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		final ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration()
+				.setFieldAccessLevel(AccessLevel.PRIVATE)
+				.setFieldMatchingEnabled(true)
+				.setMatchingStrategy(MatchingStrategies.STRICT);
+		
+		
+		String responseBody = "{ \"header\": { \"trnmSysCode\": \"MVC\", \"ipAddr\": \"010252005065\", \"tlgrCretDttm\": \"20231026135528604\", \"rndmNo\": \"5825\", \"hsno\": 2, \"prsnInfoIncsYn\": \"N\", \"itfcId\": \"HLIMVC00016\", \"rcveSrvcId\": \"hcsIdcdOcrRqst\", \"rcveSysCode\": \"HCS\", \"mciNodeNo\": \"11\", \"serverType\": \"D\", \"rspnDvsnCode\": \"S\", \"emnb\": \"1077593\", \"belnOrgnCode\": \"00630\", \"chnlTypeCode\": \"SVR\", \"rqsrIp\": \"10.252.5.65\", \"totalCount\": 0, \"msgeListCont\": 0 }, \"payload\": { \"dataHeader\": { \"SRVC_ID\": \"SVC028\", \"SCRN_ID\": \"\", \"X_OCR_SECRET\": \"ckZJZ29HcG1OZFF5WXJ3TXBYSXZlbUJzWmhGbmx6Ylc=\", \"CRTF_RTCD\": \"0000\", \"DLRE_MSG\": \"SUCCESS\" }, \"dataBody\": { \"requestId\": \"3aa6f56f-35d2-4ec8-a3ff-705f08b65027\", \"version\": \"V2\", \"timestamp\": \"1698296134190\", \"images\": \"[{\\\"uid\\\":\\\"a513711d3b514f6fb11ad3dc3848df1f\\\",\\\"validationResult\\\":{\\\"result\\\":\\\"NO_REQUESTED\\\"},\\\"inferResult\\\":\\\"SUCCESS\\\",\\\"idCard\\\":{\\\"result\\\":{\\\"idtype\\\":\\\"ID Card\\\",\\\"rois\\\":[{\\\"vertices\\\":[{\\\"x\\\":3.1388545,\\\"y\\\":3.9956706},{\\\"x\\\":754.52325,\\\"y\\\":-5.092327},{\\\"x\\\":747.84045,\\\"y\\\":473.14856},{\\\"x\\\":2.264223,\\\"y\\\":474.4076}]}],\\\"ic\\\":{\\\"address\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":51.675,\\\"y\\\":235.1875},{\\\"x\\\":192.7875,\\\"y\\\":235.1875},{\\\"x\\\":192.7875,\\\"y\\\":272.2875},{\\\"x\\\":51.675,\\\"y\\\":272.2875}]},{\\\"vertices\\\":[{\\\"x\\\":53.6625,\\\"y\\\":268.3125},{\\\"x\\\":263.67496,\\\"y\\\":268.3125},{\\\"x\\\":263.67496,\\\"y\\\":304.0875},{\\\"x\\\":53.6625,\\\"y\\\":304.0875}]},{\\\"vertices\\\":[{\\\"x\\\":203.3875,\\\"y\\\":235.85},{\\\"x\\\":387.5625,\\\"y\\\":235.85},{\\\"x\\\":387.5625,\\\"y\\\":270.9625},{\\\"x\\\":203.3875,\\\"y\\\":270.9625}]},{\\\"vertices\\\":[{\\\"x\\\":271.625,\\\"y\\\":268.975},{\\\"x\\\":347.15,\\\"y\\\":268.975},{\\\"x\\\":347.15,\\\"y\\\":302.7625},{\\\"x\\\":271.625,\\\"y\\\":302.7625}]}],\\\"formatted\\\":{\\\"value\\\":\\\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\\\"},\\\"text\\\":\\\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\\\",\\\"maskingPolys\\\":[]}],\\\"authority\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":146.53316,\\\"y\\\":381.33884},{\\\"x\\\":326.93195,\\\"y\\\":383.12497},{\\\"x\\\":326.47778,\\\"y\\\":428.99695},{\\\"x\\\":146.07898,\\\"y\\\":427.21082}]},{\\\"vertices\\\":[{\\\"x\\\":343.17493,\\\"y\\\":382.92496},{\\\"x\\\":524.6999,\\\"y\\\":382.92496},{\\\"x\\\":524.6999,\\\"y\\\":427.31247},{\\\"x\\\":343.17493,\\\"y\\\":427.31247}]},{\\\"vertices\\\":[{\\\"x\\\":525.3625,\\\"y\\\":374.975},{\\\"x\\\":622.75,\\\"y\\\":374.975},{\\\"x\\\":622.75,\\\"y\\\":429.3},{\\\"x\\\":525.3625,\\\"y\\\":429.3}]}],\\\"formatted\\\":{\\\"value\\\":\\\"서울특별시 금천구청장\\\"},\\\"text\\\":\\\"서울특별시 금천구청장 청바\\\",\\\"maskingPolys\\\":[]}],\\\"name\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":72.2125,\\\"y\\\":116.6},{\\\"x\\\":367.6875,\\\"y\\\":116.6},{\\\"x\\\":367.6875,\\\"y\\\":165.625},{\\\"x\\\":72.2125,\\\"y\\\":165.625}]}],\\\"formatted\\\":{\\\"value\\\":\\\"홍길동\\\"},\\\"text\\\":\\\"홍길동\\\",\\\"maskingPolys\\\":[]}],\\\"personalNum\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":65.5875,\\\"y\\\":181.52498},{\\\"x\\\":363.71246,\\\"y\\\":181.52498},{\\\"x\\\":363.71246,\\\"y\\\":216.63748},{\\\"x\\\":65.5875,\\\"y\\\":216.63748}]}],\\\"formatted\\\":{\\\"value\\\":\\\"800101-2345678\\\"},\\\"text\\\":\\\"800101-2345678\\\",\\\"maskingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":211.13873,\\\"y\\\":178.01373},{\\\"x\\\":367.22372,\\\"y\\\":178.01373},{\\\"x\\\":367.22372,\\\"y\\\":220.14873},{\\\"x\\\":211.13873,\\\"y\\\":220.14873}]}]}],\\\"issueDate\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":242.475,\\\"y\\\":351.7875},{\\\"x\\\":374.3125,\\\"y\\\":351.7875},{\\\"x\\\":374.3125,\\\"y\\\":381.6},{\\\"x\\\":242.475,\\\"y\\\":381.6}]},{\\\"vertices\\\":[{\\\"x\\\":372.98746,\\\"y\\\":352.44995},{\\\"x\\\":422.01245,\\\"y\\\":352.44995},{\\\"x\\\":422.01245,\\\"y\\\":380.93747},{\\\"x\\\":372.98746,\\\"y\\\":380.93747}]}],\\\"formatted\\\":{\\\"month\\\":\\\"08\\\",\\\"year\\\":\\\"2020\\\",\\\"day\\\":\\\"16\\\"},\\\"text\\\":\\\"2020.08.16\\\",\\\"maskingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":239.52966,\\\"y\\\":349.0218},{\\\"x\\\":424.9578,\\\"y\\\":349.0217},{\\\"x\\\":424.9578,\\\"y\\\":384.3657},{\\\"x\\\":239.52968,\\\"y\\\":384.36578}]}]}]},\\\"isConfident\\\":true},\\\"meta\\\":{\\\"estimatedLanguage\\\":\\\"ko\\\"}},\\\"name\\\":\\\"test_idcard\\\",\\\"message\\\":\\\"SUCCESS\\\"}]\" } } }";
+		Class<?> outputDtoClass = IfMcCs001_O.class;
+		
+		IfTelegram<IfMcCs001_O> responseTelegram = null;
+		
+		if (responseBody != null) {
+			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputDtoClass);
+			responseTelegram = OBJECT_MAPPER.readValue(responseBody, javaType);
+		}
+		IfMcCs001_O cs001_O = responseTelegram.getPayload();
+		
+		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
+		com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto.DataBody dataBody = resDto.getDataBody();
+		String images = dataBody.getImages();
+		JsonNode ocrResultReadTree = OBJECT_MAPPER.readTree(images);
+		for (int i = 0; i < ocrResultReadTree.size(); i++) {
+			String idType = ocrResultReadTree.get(i).get("idCard").get("result").get("idtype").asText();
+			System.out.println("idType : " + idType);
+		}
+		
+	}
+	*/
 	
 	
 	/**
-	 * [01] 신분증OCR요청
+	 * [01, 02, 07, 08, 09, 03] 
+	 * 
+	 *	01.신분증OCR요청
+	 *	02.진위확인결과조회
+	 *	07.고객계약정보조회
+	 *	08.고객계좌목록조회
+	 *	09.개인정보유출노출여부조회
+	 *	03.신분증스캔후처리
+	 * 
+	 * @param mvc001ReqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/entry"), (API_URL_TOKEN + "/entry" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "00. 진입")
+	public @ResponseBody String entry(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+		
+		// [01] 신분증OCR요청
+		ResponseDto<Mvc001ResDto> idcdOcrRqst = this.idcdOcrRqst(mvc001ReqDto, request);
+		Mvc001ResDto mvc001ResDto = idcdOcrRqst.getData();
+		
+		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
+		Mvc001ResDto.DataBody mvc001ResDtoDataBody = mvc001ResDto.getDataBody();
+		
+		String ocrResultJson = mvc001ResDtoDataBody.getImages();
+		
+		JsonNode ocrResultReadTree = objectMapper.readTree(ocrResultJson);
+		for (int i = 0; i < ocrResultReadTree.size(); i++) {
+			
+			/**
+			 * ID Card
+			 * Driver's License
+			 * Passport
+			 * Alien Registration Card
+			 */
+			String idtype = ocrResultReadTree.get(i).get("idCard").get("result").get("idtype").asText();
+		
+			Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();
+			
+			mvc002ReqDto.setEmnb(mvc001ReqDto.getEmnb());
+			
+			mvc002ReqDto.setTrflCnfmDvsnCode(idtype);
+			mvc002ReqDto.setTrflCnfmBswrDvsnCode(idtype);
+			mvc002ReqDto.setTrflCnfmChnlCode(idtype);
+			
+			mvc002ReqDto.setPrcsBswrScrnId(mvc001ReqDto.getSCRN_ID());
+			
+			// XXX
+			mvc002ReqDto.setTrflCnfmJobCode(idtype);
+			
+			mvc002ReqDto.setCustId("");
+			
+			mvc002ReqDto.setMgmtNo(idtype);
+			mvc002ReqDto.setCustNm(idtype);
+			mvc002ReqDto.setIsncDate(null);
+			mvc002ReqDto.setBtdt(null);
+			mvc002ReqDto.setDrvnLcnsSqno(idtype);
+			mvc002ReqDto.setRrno(idtype);
+			mvc002ReqDto.setDrvnLcnsNo(idtype);
+			mvc002ReqDto.setFrnrRgstNo(idtype);
+			mvc002ReqDto.setPsprNo(idtype);
+			mvc002ReqDto.setExpyDate(null);
+		}
+		
+		
+		
+		/*
+		JsonNode ocrResultReadTree = new ObjectMapper().readTree(ocrResultJson);
+		String idType = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
+		return idType;
+		*/
+		
+		return null;
+	}
+	
+	
+	
+	
+	/**
+	 * <pre>
+	 * [01] 
+	 * 신분증OCR요청
+	 * </pre>
 	 * 
 	 * @param reqDto
 	 * @return
@@ -164,7 +292,8 @@ public class GrmAdapterController {
 		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
 		
 		// TODO 확인 필요
-		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+//		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
 		
 		dataHeader.setX_OCR_SECRET(ocrSecretKey);
 		
@@ -231,7 +360,10 @@ public class GrmAdapterController {
 	
 
 	/**
-	 * [02] 진위확인결과조회
+	 * <pre>
+	 * [02] 
+	 * 진위확인결과조회
+	 * </pre>
 	 * 
 	 * @param reqDto
 	 * @return
@@ -277,7 +409,10 @@ public class GrmAdapterController {
 	
 	
 	/**
-	 * [03] 신분증스캔후처리
+	 * <pre>
+	 * [03] 
+	 * 신분증스캔후처리
+	 * </pre>
 	 * 
 	 * @param reqDto
 	 * @return
@@ -505,7 +640,8 @@ public class GrmAdapterController {
 		dataHeader.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
 
 		// TODO 확인 필요
-		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+//		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
 
 		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
 
@@ -561,7 +697,8 @@ public class GrmAdapterController {
 		dataHeader.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
 	
 		// TODO 확인 필요
-		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+//		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
 		
 		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
 		
@@ -659,7 +796,8 @@ public class GrmAdapterController {
 		dataHeader.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
 
 		// TODO 확인 필요
-		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+//		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
 
 		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
 

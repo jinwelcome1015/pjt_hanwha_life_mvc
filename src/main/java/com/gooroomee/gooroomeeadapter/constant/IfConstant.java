@@ -1,5 +1,8 @@
 package com.gooroomee.gooroomeeadapter.constant;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class IfConstant {
 
 	/** 송신 시스템 코드 */ 
@@ -447,25 +450,38 @@ public class IfConstant {
 	public enum OcrIdType{
 		
 		/** OCR 신분증 타입 : 주민등록증 */
-		IdCard("ID_Card"),
+		IdCard("ID Card", "004"),
 		
+		
+		// XXX 확인 : 운전면허증(도로교통공단), 운전면허증(경찰청) 등등 진위확인구분코드 확인 필요
 		/** OCR 신분증 타입 : 운전면허증 */
-		DriverLicense("Driver's_License"),
+		DriverLicense("Driver's License", "011"),
 		
 		/** OCR 신분증 타입 : 여권 */
-		Passport("Passport"),
+		Passport("Passport", "911"),
 		
 		/** OCR 신분증 타입 : 외국인등록증 */
-		AlienRegistrationCard("Alien Registration Card");
+		AlienRegistrationCard("Alien Registration Card", "017");
+		
+		/** 신분증 타입 이름 */
+		private final String name;
+		
+		/** 신분증 타입 진위확인구분코드 */
+		private final String trflCnfmDvsnCode;
 
-		private final String value;
-
-		private OcrIdType(String value) {
-			this.value = value;
+		private OcrIdType(String name, String trflCnfmDvsnCode) {
+			this.name = name;
+			this.trflCnfmDvsnCode = trflCnfmDvsnCode;
 		}
 
-		public String getValue() {
-			return this.value;
+		public String getName() {
+			return name;
 		}
+
+		public String getTrflCnfmDvsnCode() {
+			return trflCnfmDvsnCode;
+		}
+		
 	}
+	
 }

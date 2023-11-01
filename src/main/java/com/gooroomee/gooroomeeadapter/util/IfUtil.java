@@ -63,7 +63,7 @@ public class IfUtil {
 	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
 	
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 
 	public IfUtil(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
@@ -136,7 +136,6 @@ public class IfUtil {
 
 	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header,
 			I inputDto, Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
-		ObjectMapper objectMapper = OBJECT_MAPPER;
 
 		IfTelegram<I> requestTelegram = new IfTelegram<I>();
 		requestTelegram.setHeader(header);
@@ -144,7 +143,7 @@ public class IfUtil {
 
 		IfTelegram<O> responseTelegram = null;
 
-		String requestJson = objectMapper.writeValueAsString(requestTelegram);
+		String requestJson = OBJECT_MAPPER.writeValueAsString(requestTelegram);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
@@ -160,7 +159,7 @@ public class IfUtil {
 		if (responseBody != null) {
 			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class,
 					outputDtoClass);
-			responseTelegram = objectMapper.readValue(responseBody, javaType);
+			responseTelegram = OBJECT_MAPPER.readValue(responseBody, javaType);
 		}
 
 		IfTelegramHeader responseTelegramHeader = responseTelegram.getHeader();
