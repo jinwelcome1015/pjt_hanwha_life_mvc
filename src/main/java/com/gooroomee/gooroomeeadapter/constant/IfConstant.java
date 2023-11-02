@@ -3,6 +3,10 @@ package com.gooroomee.gooroomeeadapter.constant;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 public class IfConstant {
 
 	/** 송신 시스템 코드 */ 
@@ -26,6 +30,8 @@ public class IfConstant {
 
 	
 	/** 채널유형코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfChnlTypeCode {
 
 		/** 채널유형코드 : PC */
@@ -37,19 +43,14 @@ public class IfConstant {
 		/** 채널유형코드 : DEFAULT */
 		DEFAULT("");
 
-		
 		private final String value;
-
-		private IfChnlTypeCode(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 
+	
+	
 	/** 당타발 구분코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfExtlDvsnCode {
 
 		/** 당타발 구분코드 : 타발 */
@@ -58,21 +59,14 @@ public class IfConstant {
 		/** 당타발 구분코드 : 당발 */
 		INWARD("2");
 
-		
 		private final String value;
-
-		private IfExtlDvsnCode(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 
 	/**
 	 * 처리결과구분코드
 	 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfPrcsRsltDvsnCode {
 
 		/** 처리결과구분코드 : 정상 */
@@ -81,19 +75,12 @@ public class IfConstant {
 		/** 처리결과구분코드 : 비정상 */
 		ABNORMAL("0");
 
-		
 		private final String value;
-
-		private IfPrcsRsltDvsnCode(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 
 	/** 요청 응답 구분 코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfRspnDvsnCode {
 
 		/** 요청응답 구분코드 : 요청 */
@@ -107,20 +94,14 @@ public class IfConstant {
 		
 		/** 요청응답 구분코드 : 응답 더미 응답 */
 		RECEIVE_DUMMY("P");
-		
 
 		private final String value;
-
-		private IfRspnDvsnCode(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 
+	
 	/** 서버유형 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfServerType {
 
 		/** 서버유형 : 로컬 */
@@ -141,19 +122,12 @@ public class IfConstant {
 		/** 서버유형 : etc */
 		ETC("");
 
-		
 		private final String value;
-
-		private IfServerType(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 
 	/** 인터페이스 명세 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfSpec {
 		/** 인터페이스 명세 : 신분증OCR요청 */
 		IfMcCs001("HLIMVC00016", "hcsIdcdOcrRqst", "HCS"),
@@ -202,32 +176,15 @@ public class IfConstant {
 		
 		/** 인터페이스 명세 : 우편번호조회 */
 		IfMcCs018("HLIMVC00033", "icmAddrMgmtPSI001r", "ICM");
-		
 
 		private final String itfcId;
 		private final String rcveSrvcId;
 		private final String rcveSysCode;
-
-		private IfSpec(String itfcId, String rcveSrvcId, String rcveSysCode) {
-			this.itfcId = itfcId;
-			this.rcveSrvcId = rcveSrvcId;
-			this.rcveSysCode = rcveSysCode;
-		}
-
-		public String getItfcId() {
-			return this.itfcId;
-		}
-
-		public String getRcveSrvcId() {
-			return this.rcveSrvcId;
-		}
-
-		public String getRcveSysCode() {
-			return this.rcveSysCode;
-		}
 	}
 
 	/** 인터페이스 타입 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfType {
 		/** 인터페이스 타입 : MCI */
 		MCI("MCI"),
@@ -237,21 +194,14 @@ public class IfConstant {
 		
 		/** 인터페이스 타입 : FEB */
 		FEB("FEB");
-
 		
 		private final String value;
-
-		private IfType(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-
 	}
 	
+	
 	/** 간편인증서비스ID */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcId{
 		
 		/** 간편인증서비스ID : EZ_KAKAOV2 */
@@ -273,22 +223,12 @@ public class IfConstant {
 		private final String value;
 		private final String name;
 
-		private EzCertSrvcId(String value, String name) {
-			this.value = value;
-			this.name = name;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-		
-		public String getName() {
-			return this.name;
-		}
 	}
 	
 	
 	/** 간편인증서비스OP */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcOp{
 		
 		/** 간편인증서비스OP : auth(인증) */
@@ -297,20 +237,14 @@ public class IfConstant {
 		/** 간편인증서비스OP : sign(전자서명) */
 		sign("sign");
 		
-
 		private final String value;
 
-		private EzCertSrvcOp(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 	
 	
 	/** 간편인증서비스 요청환경타입 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcDeviceCode {
 
 		/** 간편인증서비스 요청환경타입 : PC(PC) */
@@ -324,17 +258,12 @@ public class IfConstant {
 
 		private final String value;
 
-		private EzCertSrvcDeviceCode(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 
 	
 	/** 간편인증서비스 요청브라우저타입 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcDeviceBrowser{
 		
 		/** 간편인증서비스 요청브라우저타입 : WB(웹브라우저) */
@@ -345,21 +274,15 @@ public class IfConstant {
 		
 		/** 간편인증서비스 요청브라우저타입 : HY(하이브리드앱) */
 		hybridApp("HY");
-		
 
 		private final String value;
 
-		private EzCertSrvcDeviceBrowser(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 	
 	
 	/** 간편인증서비스 통신사 구분 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcTelcoTycd{
 		
 		/** 간편인증서비스 통신사 구분 : S(SKT) */
@@ -373,18 +296,12 @@ public class IfConstant {
 		
 
 		private final String value;
-
-		private EzCertSrvcTelcoTycd(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 	
 	
 	/** 간편인증서비스 모바일 OS 구분 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcMobileOS{
 		
 		/** 간편인증서비스 모바일 OS 구분 : ANDROID */
@@ -392,39 +309,27 @@ public class IfConstant {
 		
 		/** 간편인증서비스 모바일 OS 구분 : IOS */
 		IOS("IOS");
-		
 
 		private final String value;
 
-		private EzCertSrvcMobileOS(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 	
 	
 	/** 간편인증서비스 권한부여유형 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcGrantType{
 		
 		/** 간편인증서비스 권한부여유형 : client_credentials */
 		client_credentials("client_credentials");
 
 		private final String value;
-
-		private EzCertSrvcGrantType(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 	
 	
 	/** 간편인증서비스 인증진행상태 코드*/
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum EzCertSrvcStatus{
 		
 		/** 간편인증서비스 인증진행상태 코드 : IN_PROGRESS */
@@ -433,25 +338,17 @@ public class IfConstant {
 		/** 간편인증서비스 인증진행상태 코드 : COMPLETE */
 		COMPLETE("COMPLETE");
 		
-
 		private final String value;
-
-		private EzCertSrvcStatus(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
 	}
 	
 	
 	/** OCR 신분증 타입 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum OcrIdType{
 		
 		/** OCR 신분증 타입 : 주민등록증 */
 		IdCard("ID Card", "004"),
-		
 		
 		// XXX 확인 : 운전면허증(도로교통공단), 운전면허증(경찰청) 등등 진위확인구분코드 확인 필요
 		/** OCR 신분증 타입 : 운전면허증 */
@@ -466,22 +363,169 @@ public class IfConstant {
 		/** 신분증 타입 이름 */
 		private final String name;
 		
-		/** 신분증 타입 진위확인구분코드 */
+		/** 진위확인구분코드 */
 		private final String trflCnfmDvsnCode;
-
-		private OcrIdType(String name, String trflCnfmDvsnCode) {
-			this.name = name;
-			this.trflCnfmDvsnCode = trflCnfmDvsnCode;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public String getTrflCnfmDvsnCode() {
-			return trflCnfmDvsnCode;
-		}
 		
 	}
+	
+	
+	
+	/** 진위확인업무구분코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	public enum TrflCnfmBswrDvsnCode {
+		/** 진위확인업무구분코드 : 신계약 */
+		newContract("신계약", "01"),
+		
+		/** 진위확인업무구분코드 : 제지급 */
+		payment("제지급", "02"),
+		
+		/** 진위확인업무구분코드 : 신계약 */
+		deposit("신계약", "03"),
+		
+		/** 진위확인업무구분코드 : 사고 */
+		accident("사고", "04"),
+		
+		/** 진위확인업무구분코드 : 정정변경 */
+		changeCorrection("정정변경", "05"),
+		
+		/** 진위확인업무구분코드 : 융자 */
+		loan("융자", "11"),
+		
+		/** 진위확인업무구분코드 : 수익증권 */
+		beneficiaryCertificates("수익증권", "21"),
+		
+		/** 진위확인업무구분코드 : 신탁 */
+		trust("신탁", "31"),
+		
+		/** 진위확인업무구분코드 : 기타 */
+		other("기타", "99");
+		
+		
+		/** 이름 */
+		private final String name;
+
+		/** 진위확인업무구분코드 */
+		private final String code;
+	}
+	
+	
+	/** 진위확인채널코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	public enum TrflCnfmChnlCode {
+		
+		/** 진위확인채널코드 : 개인 */
+		INDIVIDUAL("개인", "01"),
+		
+		/** 진위확인채널코드 : 법인 */
+		CORPORATION("법인", "02"),
+		
+		/** 진위확인채널코드 : TM */
+		TM("TM", "03"),
+		
+		/** 진위확인채널코드 : CM */
+		CM("CM", "04"),
+		
+		/** 진위확인채널코드 : 방카 */
+		BANCASSURANCE("방카", "05"),
+		
+		/** 진위확인채널코드 : 온슈어 */
+		ONSURE("온슈어", "06"),
+		
+		/** 진위확인채널코드 : 융자 */
+		LOAN("융자", "07"),
+		
+		/** 진위확인채널코드 : 펀드 */
+		FUND("펀드", "08"),
+		
+		/** 진위확인채널코드 : 수익증권 */
+		BENEFICIARY_CERTIFICATES("수익증권", "09"),
+		
+		/** 진위확인채널코드 : 기타 */
+		ETC("기타", "99");
+		
+		
+		/** 이름 */
+		private final String name;
+
+		/** 진위확인업무구분코드 */
+		private final String code;
+	}
+	
+	
+	/** 신분증진위작업코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	public enum TrflCnfmJobCode {
+		
+		/** 신분증진위작업코드 : 고객신원확인 */
+		CUSTOMER_IDENTIFICATION("고객신원확인", "CS001"),
+		
+		/** 신분증진위작업코드 : 융자신용대출 */
+		CREDIT_LOAN("융자신용대출", "FN001"),
+		
+		/** 신분증진위작업코드 : FP대리접수 */
+		FP_PROXY_ACCEPTANCE("FP대리접수", "PA001");
+		
+		
+		/** 이름 */
+		private final String name;
+
+		/** 진위확인업무구분코드 */
+		private final String code;
+	}
+	
+	/** 고객구분코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	public enum CustomerDivisionCode {
+		
+		/** 고객구분코드 : 개인 */
+		INDIVIDUAL("개인", "01"),
+		
+		/** 고객구분코드 : 단체 */
+		GROUP("단체", "02");
+		
+		/** 이름 */
+		private final String name;
+
+		/** 고객구분코드 */
+		private final String code;
+		
+	}
+	
+	
+	/** 계약구분코드 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	public enum ContractClassificationCode {
+		
+		/** 계약구분코드 : 보험 */
+		INSURANCE("보험", "01"),
+		
+		/** 계약구분코드 : 융자 */
+		LOAN("융자", "02"),
+		
+		/** 계약구분코드 : 퇴직연금 */
+		RETIRING_PENSION("퇴직연금", "03"),
+		
+		/** 계약구분코드 : 펀드 */
+		FUND("펀드", "04"),
+		
+		/** 계약구분코드 : 신수탁 */
+		NEW_TRUSTEE("신수탁", "05"),
+		
+		/** 계약구분코드 : 기타 */
+		ETC("기타", "99");
+		
+		/** 이름 */
+		private final String name;
+
+		/** 계약구분코드 */
+		private final String code;
+		
+	}
+	
 	
 }

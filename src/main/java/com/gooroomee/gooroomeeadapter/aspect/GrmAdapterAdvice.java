@@ -49,16 +49,16 @@ public class GrmAdapterAdvice {
 				
 				if(requestURI.endsWith(MockUtil.URL_SUFFIX_FOR_MOCK)) {
 					Type genericReturnType = method.getGenericReturnType();
-					String typeName = genericReturnType.getTypeName();								// "com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto<com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto>"
+					String typeName = genericReturnType.getTypeName();
 					
 					String dtoQualifiedName = typeName;
 					
-					dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");			// "com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto"
+					dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
 					
 					Class<?> resDtoClass = Class.forName(dtoQualifiedName);
 			
-					String responseDtoClassSimpleName = resDtoClass.getSimpleName();				// "Mvc003ResDto"
-					String dtoNumber = responseDtoClassSimpleName.replaceAll("\\D", "");			// "003"
+					String responseDtoClassSimpleName = resDtoClass.getSimpleName();
+					String dtoNumber = responseDtoClassSimpleName.replaceAll("\\D", "");
 					
 					String interfaceOutputDtoQualifiedName = interfaceOutputDtoPrefix + dtoNumber + interfaceOutputDtoSuffix;
 					Class<?> interfaceOutputDtoClass = Class.forName(interfaceOutputDtoQualifiedName);
