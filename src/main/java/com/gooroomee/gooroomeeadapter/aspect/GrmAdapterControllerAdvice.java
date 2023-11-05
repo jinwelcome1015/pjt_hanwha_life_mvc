@@ -19,19 +19,19 @@ public class GrmAdapterControllerAdvice {
 	
 	
 	@ExceptionHandler(value = Exception.class)
-	public @ResponseBody ResponseDto<String> globalExceptionHandler(Exception e) {
+	public @ResponseBody ResponseDto<String> globalExceptionHandler(Exception exception) {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String stackTraceJson;
 		try {
-			stackTraceJson = objectMapper.writeValueAsString(e.getStackTrace());
-		} catch (JsonProcessingException e1) {
-			stackTraceJson = e.getMessage();
+			stackTraceJson = objectMapper.writeValueAsString(exception.getStackTrace());
+		} catch (JsonProcessingException jsonProcessingException) {
+			stackTraceJson = exception.getMessage();
 		}
 		
 		log.error(stackTraceJson);
 		
-		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
 
 	}
 }

@@ -17,6 +17,10 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import com.gooroomee.gooroomeeadapter.util.AesUtil;
+
+import korealife.uv.com.cm.SHA256CmCrypt;
+
 public class Test {
 
 	private ClassLoader classLoader;
@@ -42,7 +46,9 @@ public class Test {
 		Test test = new Test();
 //		test.doTest();
 //		test.doFilterClassName();
-		test.trimBase64prefix();
+//		test.trimBase64prefix();
+		
+		test.encrypt();
 
 	}
 
@@ -123,5 +129,21 @@ public class Test {
 		String replace = string.replaceAll(pattern, "");
 		System.out.println(replace);
 		
+	}
+	
+	public void encrypt() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+//		String plainText = "grm";
+//		String sha256_getEncString = SHA256CmCrypt.SHA256_getEncString(plainText);
+//		System.out.println(sha256_getEncString);
+		
+		String plain = "gooroomee";
+		String key = "TzK5/8gFpMXmTKH5aYS6Uw9j2UwBGwGeju46fsJDwNE=";
+		String iv = "vxg7xjhMOVsLDmPU+Wfp5g==";
+		String encrypt = AesUtil.encrypt(plain, key, iv);
+		String decrypt = AesUtil.decrypt(encrypt, key, iv);
+		
+		System.out.println(plain);
+		System.out.println(encrypt);
+		System.out.println(decrypt);
 	}
 }
