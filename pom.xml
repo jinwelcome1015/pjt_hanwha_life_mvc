@@ -12,8 +12,8 @@
 	<groupId>com.gooroomee</groupId>
 	<artifactId>gooroomee-adapter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<!--<packaging>jar</packaging> -->
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
+	<!-- <packaging>war</packaging> -->
 	<name>gooroomee-adapter</name>
 	<description>adapter web appllication for gooroomee</description>
 	<properties>
@@ -102,10 +102,10 @@
 			<artifactId>sha256cmcrypt</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<!--
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
-			-->
+			<!-- 
 			<systemPath>E:\_dev\_workspace\workspace-spring-tool-suite4\pjt_hanwha_life_mvc\src\main\webapp\WEB-INF\lib\korealife-sha256cmcrypt-1.0.jar</systemPath>
+			 -->
 		</dependency>
 	</dependencies>
 	<build>

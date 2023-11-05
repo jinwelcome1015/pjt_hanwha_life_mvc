@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
-import com.gooroomee.gooroomeeadapter.interceptor.RestTemplateLoggingRequestInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +48,7 @@ public class GrmAdapterConfiguration {
 	
 	
 	@Autowired
-	RestTemplateLoggingRequestInterceptor restTemplateLoggingRequestInterceptor;
+	ClientHttpRequestInterceptorForLogging restTemplateLoggingRequestInterceptor;
 
 	@Value(value = "${spring.profiles.active}")
 	private String springProfilesActive;
@@ -117,13 +117,4 @@ public class GrmAdapterConfiguration {
 		return restTemplate;
 	}
 
-	/*
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder
-				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
-				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
-				.build();
-	}
-	*/
 }

@@ -50,6 +50,7 @@ import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.OcrIdType;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.TrflCnfmBswrDvsnCode;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.TrflCnfmJobCode;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc000ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto.DataHeader;
@@ -102,6 +103,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.gooroomeeadapter.exception.IfException;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
@@ -155,7 +157,11 @@ public class GrmAdapterController {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	public static final String EXCEPTION_CONTROLLER_PATH = "/exception";
 
+	public static final String EXCEPTION_ATTRIBUTE_NAME = "exception";
+	
 	public static final String API_URL_TOKEN = "/intrf";
 
 	private static final String URL_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
@@ -236,8 +242,6 @@ public class GrmAdapterController {
 	
 	
 	private String getIsncDate(JsonNode ocrResultReadTree) {
-		String btdt = null;
-		
 		String issueDate = null;
 		
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
@@ -268,24 +272,14 @@ public class GrmAdapterController {
 	}
 	
 	
-	/**
-	 * 주민등록번호 앞, 뒷자리를 입력받아 YYYYMMDD형식으로 생년월일 return
-	 * str1 : 주민번호 앞자리, str2 : 주민번호 뒷자리
-	 * @param str1
-	 * @param str2
-	 * @return
-	 */
-	public static String getBirthDayFromPersonalNum(String str1, String str2) {
+	private String getBirthDayFromPersonalNum(String str1, String str2) {
 		int divisionCode = Integer.parseInt(str2.substring(0, 1));
 		String dateOfBirth = null;
 		if (divisionCode == 1 || divisionCode == 2 || divisionCode == 5 || divisionCode == 6) {
-			// 한국인 1900~, 외국인 1900~
 			dateOfBirth = "19" + str1;
 		} else if (divisionCode == 3 || divisionCode == 4 || divisionCode == 7 || divisionCode == 8) {
-			// 한국인 2000~, 외국인 2000~
 			dateOfBirth = "20" + str1;
 		} else if (divisionCode == 9 || divisionCode == 0) {
-			// 한국인 1800~
 			dateOfBirth = "18" + str1;
 		}
 		return dateOfBirth;
@@ -352,12 +346,14 @@ public class GrmAdapterController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/entry"), (API_URL_TOKEN + "/entry" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "00. 진입")
-	public @ResponseBody String entry(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request)
+	public @ResponseBody ResponseDto<Mvc000ResDto> entry(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException, ParseException {
 		
-		// [01] 신분증OCR요청
-		ResponseDto<Mvc001ResDto> idcdOcrRqst = this.idcdOcrRqst(mvc001ReqDto, request);
-		Mvc001ResDto mvc001ResDto = idcdOcrRqst.getData();
+		List<Mvc000ResDto> entryResultList = new ArrayList<>();
+		
+		// XXX [01] 신분증OCR요청
+		ResponseDto<Mvc001ResDto> response001dto = this.idcdOcrRqst(mvc001ReqDto, request);
+		Mvc001ResDto mvc001ResDto = response001dto.getData();
 		
 		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
 		Mvc001ResDto.DataBody mvc001ResDtoDataBody = mvc001ResDto.getDataBody();
@@ -365,7 +361,10 @@ public class GrmAdapterController {
 		String ocrResultJson = mvc001ResDtoDataBody.getImages();
 		
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
+		
 		for (int i = 0; i < ocrResultReadTrees.size(); i++) {
+			
+			Mvc000ResDto mvc000ResDto = new Mvc000ResDto();
 			
 			/**
 			 * ID Card
@@ -382,6 +381,7 @@ public class GrmAdapterController {
 			String btdt = this.getBtdt(ocrResultReadTree);
 			String isncDate = this.getIsncDate(ocrResultReadTree);
 			
+			// XXX [02] 진위확인결과조회
 			Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();
 			
 			mvc002ReqDto.setEmnb(mvc001ReqDto.getEmnb());
@@ -425,48 +425,71 @@ public class GrmAdapterController {
 				mvc002ReqDto.setFrnrRgstNo(alienRegistrationNumber);
 			}
 			
-			// [02] 진위확인결과조회
-			ResponseDto<Mvc002ResDto> trflCnfm = this.trflCnfm(mvc002ReqDto, request);
+			ResponseDto<Mvc002ResDto> response002dto = this.trflCnfm(mvc002ReqDto, request);
 			
-			Mvc002ResDto mvc002ResDto = trflCnfm.getData();
-			String csnsYn = mvc002ResDto.getCsnsYn();
-			String custId = mvc002ResDto.getCustId();
+			Mvc002ResDto mvc002ResDto = response002dto.getData();
 			
-			Mvc003ReqDto mvc003ReqDto = new Mvc003ReqDto();
-			mvc003ReqDto.setCsnsYn(csnsYn);
-			mvc003ReqDto.setCustId(custId);
-			mvc003ReqDto.setEmnb(mvc001ReqDto.getEmnb());
+			mvc000ResDto.setVerification(mvc002ResDto);
 			
 			
-			// [07] 고객계약정보조회
+			// XXX [07] 고객계약정보조회
 			Mvc007ReqDto mvc007ReqDto = new Mvc007ReqDto();
-			mvc007ReqDto.setCustId(custId);
 			mvc007ReqDto.setEmnb(mvc001ReqDto.getEmnb());
+			mvc007ReqDto.setCustId(mvc002ResDto.getCustId());
+			
+			ResponseDto<Mvc007ResDto> response007dto = this.intgCustInqyMgmt(mvc007ReqDto, request);
+			Mvc007ResDto mvc007ResDto = response007dto.getData();
+			
+			mvc000ResDto.setContract(mvc007ResDto);
 			
 			
+			// XXX [08] 고객계좌목록조회
+			Mvc008ReqDto mvc008ReqDto = new Mvc008ReqDto();
+			mvc008ReqDto.setEmnb(mvc001ReqDto.getEmnb());
+			mvc008ReqDto.setCustId(mvc002ResDto.getCustId());
 			
+			ResponseDto<Mvc008ResDto> response008dto = this.intgCust(mvc008ReqDto, request);
+			Mvc008ResDto mvc008ResDto = response008dto.getData();
 			
+			mvc000ResDto.setAccount(mvc008ResDto);
 			
+
+			// XXX [09] 개인정보유출노출여부조회
+			Mvc009ReqDto mvc009ReqDto = new Mvc009ReqDto();
+			mvc009ReqDto.setEmnb(mvc001ReqDto.getEmnb());
+			mvc009ReqDto.setCustId(mvc002ResDto.getCustId());
 			
+			ResponseDto<Mvc009ResDto> response009dto = this.prsnInfoLeakMgmt(mvc009ReqDto, request);
+			Mvc009ResDto mvc009ResDto = response009dto.getData();
 			
-//			 *	08.고객계좌목록조회
-//			 *	09.개인정보유출노출여부조회
-			
-			
-			
-			
-			
+			mvc000ResDto.setPersonalInfoLeak(mvc009ResDto);
 			
 			
 			// [03] 신분증스캔후처리
-			ResponseDto<Mvc003ResDto> itfcIdcdScan = this.itfcIdcdScan(mvc003ReqDto, request);
-			Mvc003ResDto mvc003ResDto = itfcIdcdScan.getData();
+			Mvc003ReqDto mvc003ReqDto = new Mvc003ReqDto();
+			mvc003ReqDto.setCsnsYn(mvc002ResDto.getCsnsYn());
+			mvc003ReqDto.setCustId(mvc002ResDto.getCustId());
+			mvc003ReqDto.setEmnb(mvc001ReqDto.getEmnb());
 			
-			String prcsSucsYn = mvc003ResDto.getPrcsSucsYn();
+			ResponseDto<Mvc003ResDto> response003dto = this.itfcIdcdScan(mvc003ReqDto, request);
+			Mvc003ResDto mvc003ResDto = response003dto.getData();
+			
+//			String prcsSucsYn = mvc003ResDto.getPrcsSucsYn();
+			
+			mvc000ResDto.setItfcIdcdScan(mvc003ResDto);
+			
+			entryResultList.add(mvc000ResDto);
 		}
 		
 		
-		return null;
+		if (entryResultList.size() == 1) {
+			Mvc000ResDto mvc000ResDto = entryResultList.get(0);
+			ResponseDto<Mvc000ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, mvc000ResDto);
+			return responseDto;
+		} else {
+			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", entryResultList.size());
+			throw new IfException(message);
+		}
 	}
 	
 	
@@ -885,7 +908,6 @@ public class GrmAdapterController {
 	 * @throws NoSuchAlgorithmException 
 	 * @throws InvalidKeyException 
 	 */
-	
 	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest"), (API_URL_TOKEN + "/initechRequest" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "11. 간편인증 요청")
 	public @ResponseBody ResponseDto<Mvc011ResDto> initechRequest(@RequestBody Mvc011ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
@@ -1136,7 +1158,11 @@ public class GrmAdapterController {
 	
 	
 	
-	
+	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
+	public void exception(HttpServletRequest request) throws Exception {
+		Exception exception = (Exception) request.getAttribute(EXCEPTION_ATTRIBUTE_NAME);
+		throw exception;
+	}
 	
 	
 	
@@ -1262,4 +1288,5 @@ public class GrmAdapterController {
 		return apiInfoList;
 	}
 
+	
 }

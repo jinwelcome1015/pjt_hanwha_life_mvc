@@ -6,19 +6,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
+import com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor;
 import com.gooroomee.gooroomeeadapter.interceptor.AuthInterceptor;
-import com.gooroomee.gooroomeeadapter.interceptor.MockDataInterceptor;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 	
 	/** api auth enabled */
-//	@Value(value = "#{propertiesFactoryBean['api.auth.enabled']}")
 	@Value(value = "${api.auth.enabled}")
 	private String apiAuthEnabled;
-
+	
 	@Autowired
-	MockDataInterceptor mockDataInterceptor;
+	ApiLoggingInterceptor apiLoggingInterceptor;
 	
 	@Autowired
 	AuthInterceptor authInterceptor;
@@ -26,12 +26,17 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		
-		registry.addInterceptor(mockDataInterceptor).addPathPatterns("/intrf/**");
+		registry
+			.addInterceptor(apiLoggingInterceptor)
+				.order(1)
+				.addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**")
+				.excludePathPatterns("/js/**");
 		
 		Boolean isApiAuthEnabled = Boolean.valueOf(apiAuthEnabled);
 		if(isApiAuthEnabled) {
 			registry
 				.addInterceptor(authInterceptor)
+					.order(2)
 					.addPathPatterns("/intrf/**");
 		}
 	}

@@ -15,34 +15,44 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class RestTemplateLoggingRequestInterceptor implements ClientHttpRequestInterceptor {
+public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
 
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 			throws IOException {
 		
-		traceRequest(request, body);
+		this.traceRequest(request, body);
 
 		ClientHttpResponse response = execution.execute(request, body);
 
 		URI uri = request.getURI();
-		traceResponse(response, uri);
+		this.traceResponse(response, uri);
 		return response;
 	}
 
 	private void traceRequest(HttpRequest request, byte[] body) {
-		StringBuilder reqLog = new StringBuilder();
-		reqLog.append("[REQUEST] ").append("Uri : ").append(request.getURI()).append(", Method : ")
-				.append(request.getMethod()).append(", Request Body : ")
-				.append(new String(body, StandardCharsets.UTF_8));
-		log.info(reqLog.toString());
+		String reqLog = new StringBuilder()
+				.append("[REQUEST]")
+				.append(" ")
+				.append("Uri : ").append(request.getURI())
+				.append(", ")
+				.append("Method : ").append(request.getMethod())
+				.append(", ")
+				.append("Request Body : ").append(new String(body, StandardCharsets.UTF_8))
+				.toString();
+		log.info(reqLog);
 	}
 
 	private void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
-		StringBuilder resLog = new StringBuilder();
-		resLog.append("[RESPONSE] ").append("Uri : ").append(uri).append(", Status code : ")
-				.append(response.getStatusCode()).append(", Response Body : ")
-				.append(StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8));
-		log.info(resLog.toString());
+		String resLog = new StringBuilder()
+				.append("[RESPONSE]")
+				.append(" ")
+				.append("Uri : ").append(uri)
+				.append(", ")
+				.append("Status code : ").append(response.getStatusCode())
+				.append(", ")
+				.append("Response Body : ").append(StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8))
+				.toString();
+		log.info(resLog);
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
 import com.gooroomee.gooroomeeadapter.exception.AuthException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,29 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthInterceptor implements HandlerInterceptor {
 
 	/** api auth token */
-//	@Value(value = "#{propertiesFactoryBean['api.auth.key']}")
 	@Value(value = "${api.auth.key}")
 	private String apiAuthKey;
-
-	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-			throws Exception {
-
-		String methodName = new Object() { }.getClass().getEnclosingMethod().getName();
-		log.debug("***" + methodName);
-
-		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
-	}
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-
-		String methodName = new Object() { }.getClass().getEnclosingMethod().getName();
-		log.debug("***" + methodName);
-
-		HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -48,12 +28,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 			String xApiKey =  StringUtils.defaultString(request.getHeader("X-API-Key"));
 			if (!xApiKey.equals(apiAuthKey)) {
-				log.debug("xApiKey : " + xApiKey);
-				throw new AuthException("X-API-Key 헤더 인증 에러");
+				request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, new AuthException("X-API-Key 헤더 인증 에러"));
+				request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
 			}
-
-		String methodName = new Object() { }.getClass().getEnclosingMethod().getName();
-		log.debug("***" + methodName);
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
