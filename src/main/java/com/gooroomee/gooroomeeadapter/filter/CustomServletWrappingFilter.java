@@ -45,7 +45,7 @@ public class CustomServletWrappingFilter implements Filter {
 		String resContent = new String(cachingResponse.getContentAsByteArray());
 		*/
         
-        cachingResponse.copyBodyToResponse(); //다시한번 더 바디를 채워준다.
+        cachingResponse.copyBodyToResponse();
         
 		/*
 		log.info("[{}] [Request Body] : {}", requestURI, reqContent);
