@@ -1,13 +1,18 @@
 package com.gooroomee.gooroomeeadapter.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -47,9 +52,13 @@ public class MockUtil {
 		File mockResponseDataFile = new File(mockDataDetailPath, mockDataFileName);
 
 		ClassPathResource resource = new ClassPathResource(mockResponseDataFile.toString());
+		
+		/*
 		Path path = Paths.get(resource.getURI());
-
-		List<String> lines = Files.readAllLines(path);
+		List<String> lineList = Files.readAllLines(path);
+		*/
+		Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
+		List<String> lineList = lineStream.collect(Collectors.toList());
 		/*
 		List<String> filteredLines = new ArrayList<>();
 		for (String line : lines) {
@@ -72,7 +81,7 @@ public class MockUtil {
 		*/
 		
 		String delimiter = " ";
-		String jsonData = String.join(delimiter, lines);
+		String jsonData = String.join(delimiter, lineList);
 		
 //		ObjectMapper objectMapper = new ObjectMapper();
 		

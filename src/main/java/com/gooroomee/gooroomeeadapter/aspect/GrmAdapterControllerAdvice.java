@@ -1,5 +1,8 @@
 package com.gooroomee.gooroomeeadapter.aspect;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,22 +19,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrmAdapterControllerAdvice {
 	
-	
-	
 	@ExceptionHandler(value = Exception.class)
 	public @ResponseBody ResponseDto<String> globalExceptionHandler(Exception exception) {
-		
 		ObjectMapper objectMapper = new ObjectMapper();
+		
+		Map<String, Object> exceptionMap = new HashMap<>();
+		
+		String message = exception.getMessage();
+		StackTraceElement[] stackTrace = exception.getStackTrace();
+		exceptionMap.put("message", message);
+		exceptionMap.put("stackTrace", stackTrace);
+		
+		String exceptionInfoString;
+		
 		String stackTraceJson;
 		try {
-			stackTraceJson = objectMapper.writeValueAsString(exception.getStackTrace());
+			exceptionInfoString = objectMapper.writeValueAsString(exceptionMap);
 		} catch (JsonProcessingException jsonProcessingException) {
-			stackTraceJson = exception.getMessage();
+			log.error("[EXCEPTION] : {}", jsonProcessingException.getMessage());
+			exceptionInfoString = message;
 		}
 		
-		log.error(stackTraceJson);
+		log.error("[EXCEPTION] : {}", exceptionInfoString);
 		
-		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, message);
 
 	}
 }

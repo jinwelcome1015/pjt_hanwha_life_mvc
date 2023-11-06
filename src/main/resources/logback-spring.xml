@@ -45,8 +45,7 @@
     </appender>
 
 	 <!--local-->
-    <!-- <springProfile name="local"> -->
-    <springProfile name="local, qa">
+    <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
@@ -62,21 +61,22 @@
             <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
+        	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
     </springProfile>
     
     <!--qa-->
-    <!-- 
     <springProfile name="qa">
         <root level="INFO">
             <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
+        	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
     </springProfile>
-     -->
+    
      
     <!--prod, dr-->
     <springProfile name="prod, dr">
