@@ -49,6 +49,15 @@ public class Mvc000ResDto {
 		/** API 호출 Timestamp 값 */
 		private String timestamp;
 		
+		/** 신분증 타입 */
+		/*
+		IdCard("ID Card", "004"),
+		DriverLicense("Driver's License", "011"),
+		Passport("Passport", "911"),
+		AlienRegistrationCard("Alien Registration Card", "017");
+		*/
+		private String idType;
+		
 		/** 고객명 */
 		private String custNm;
 

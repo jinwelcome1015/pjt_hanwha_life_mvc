@@ -83,6 +83,6 @@ Thumbs.db
 *.wmv
 
 # External library
-!src/main/webapp/WEB-INF/lib/*.jar
+!lib/*.jar
 
 
