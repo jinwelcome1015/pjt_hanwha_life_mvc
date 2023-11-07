@@ -277,22 +277,6 @@ public class GrmAdapterController {
 		return issueDate;
 	}
 	
-	
-	private String getBirthDayFromPersonalNum(String str1, String str2) {
-		int divisionCode = Integer.parseInt(str2.substring(0, 1));
-		String dateOfBirth = null;
-		if (divisionCode == 1 || divisionCode == 2 || divisionCode == 5 || divisionCode == 6) {
-			dateOfBirth = "19" + str1;
-		} else if (divisionCode == 3 || divisionCode == 4 || divisionCode == 7 || divisionCode == 8) {
-			dateOfBirth = "20" + str1;
-		} else if (divisionCode == 9 || divisionCode == 0) {
-			dateOfBirth = "18" + str1;
-		}
-		return dateOfBirth;
-	}
-	
-	
-	
 	private String getBtdt(JsonNode ocrResultReadTree) {
 		String btdt = null;
 		
@@ -300,22 +284,71 @@ public class GrmAdapterController {
 		
 		if(idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
-			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-			btdt = this.getBirthDayFromPersonalNum(personalNumberTokens[0], personalNumberTokens[1]);
+			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
 		}else if(idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
-			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-			btdt = this.getBirthDayFromPersonalNum(personalNumberTokens[0], personalNumberTokens[1]);
+			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
 		}else if(idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
 			String birthDateYear = ocrResultReadTree.get("idCard").get("result").get("pp").get("birthDate").get(0).get("formatted").get("year").asText();
 			String birthDateMonth = ocrResultReadTree.get("idCard").get("result").get("pp").get("birthDate").get(0).get("formatted").get("month").asText();
 			String birthDateDay = ocrResultReadTree.get("idCard").get("result").get("pp").get("birthDate").get(0).get("formatted").get("day").asText();
 			btdt = birthDateYear + birthDateMonth + birthDateDay;
 		}else if(idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
-			btdt = "";
+			String alienRegNum = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
+			String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
+			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
 		}
 		
 		return btdt;
+	}
+	
+	private String getFirst2digitsOfBirthYearFromRegNumFirst1digit(String regNumFirst1digit) {
+		String first2digitsOfBirthYear = "";
+		
+		switch (regNumFirst1digit) {
+		case "9":
+		case "0":
+			first2digitsOfBirthYear = "18";
+		case "1":
+		case "2":
+		case "5":
+		case "6":
+			first2digitsOfBirthYear = "19";
+			break;
+		case "3":
+		case "4":
+		case "7":
+		case "8":
+			first2digitsOfBirthYear = "20";
+			break;
+		default:
+			break;
+		}
+		return first2digitsOfBirthYear;
+	}
+	
+	private String getSex(JsonNode ocrResultReadTree) {
+		String sex = null;
+		
+		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
+		
+		if(idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
+			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
+			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F"; 
+		}else if(idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			String personalNum = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
+			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
+		}else if(idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
+			sex = ocrResultReadTree.get("idCard").get("result").get("pp").get("sex").get(0).get("text").asText();
+		}else if(idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+			sex = ocrResultReadTree.get("idCard").get("result").get("ac").get("sex").get(0).get("text").asText();
+		}
+		
+		return sex;
 	}
 	
 	
@@ -381,10 +414,12 @@ public class GrmAdapterController {
 		String custNm = this.getCustNm(ocrResultReadTree);
 		String btdt = this.getBtdt(ocrResultReadTree);
 		String isncDate = this.getIsncDate(ocrResultReadTree);
+		String sex = this.getSex(ocrResultReadTree);
 
 		mvc000ResDto.setCustBirthDate(btdt);
 		mvc000ResDto.setCustNm(custNm);
 		mvc000ResDto.setIdType(idType);
+		mvc000ResDto.setSex(sex);
 
 		// XXX [02] 진위확인결과조회
 		Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();
@@ -486,6 +521,9 @@ public class GrmAdapterController {
 	
 	
 	
+	
+
+
 	/**
 	 * <pre>
 	 * [01] 

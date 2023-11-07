@@ -49,7 +49,14 @@ public class Test {
 //		test.trimBase64prefix();
 		
 //		test.encrypt();
-		test.regex();
+//		test.regex();
+		test.sex();
+	}
+
+	private void sex() {
+		String[] personalNumberTokens = {"791015", "3055429"};
+		String sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
+		System.out.println(sex);
 	}
 
 	public void doTest() throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,

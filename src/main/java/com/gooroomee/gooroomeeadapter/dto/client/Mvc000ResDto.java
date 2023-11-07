@@ -17,13 +17,15 @@ public class Mvc000ResDto {
 	/** 사원번호 */
     public String emnb;
     
-    /** 신분증 타입 */
-	/*
-	"ID Card" 
-	"Driver's License"
-	"Passport"
-	"Alien Registration Card"
-	*/
+    /** 
+     * 신분증 타입 
+     * <pre>
+     * "ID Card"
+     * "Driver's License"
+     * "Passport"
+     * "Alien Registration Card"
+     * </pre>
+     */
     private String idType;
     
     /** 고객명 */
@@ -31,6 +33,15 @@ public class Mvc000ResDto {
     
     /** 고객생년월일 */
     private String custBirthDate;
+    
+    /** 
+     * <pre>
+     * 고객성별 
+     * 	남 : "M"
+     * 	녀 : "F"
+     * </pre> 
+     */
+    private String sex;
     
     /** 고객ID */
     private String custId;
