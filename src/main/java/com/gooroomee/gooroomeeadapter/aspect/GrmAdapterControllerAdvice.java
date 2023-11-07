@@ -26,16 +26,22 @@ public class GrmAdapterControllerAdvice {
 		Map<String, Object> exceptionMap = new HashMap<>();
 		
 		String message = exception.getMessage();
+		
+		StackTraceElement[] stackTrace = exception.getStackTrace();
+		exceptionMap.put("message", message);
+		exceptionMap.put("stackTrace", stackTrace);
+		
+		String exceptionInfoString;
+		
 		String stackTraceJson;
 		try {
-			stackTraceJson = objectMapper.writeValueAsString(exception.getStackTrace());
-			exceptionMap.put("message", message);
-			exceptionMap.put("stackTraceJson", stackTraceJson);
+			exceptionInfoString = objectMapper.writeValueAsString(exceptionMap);
 		} catch (JsonProcessingException jsonProcessingException) {
-			exceptionMap.put("message", message);
+			log.error("[EXCEPTION] : {}", jsonProcessingException.getMessage());
+			exceptionInfoString = message;
 		}
 		
-		log.error("[EXCEPTION] : {}", exceptionMap);
+		log.error("[EXCEPTION] : {}", exceptionInfoString);
 		
 		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, message);
 
