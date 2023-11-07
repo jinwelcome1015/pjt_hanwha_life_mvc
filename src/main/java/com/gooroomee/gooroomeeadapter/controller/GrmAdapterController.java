@@ -110,7 +110,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
@@ -987,83 +989,7 @@ public class GrmAdapterController {
 	
 	
 	
-	/**
-	 * 
-	 * <pre>
-	 * [12]
-	 * 간편인증 상태 조회
-	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
-	 * @throws URISyntaxException
-	 * @throws IOException
-	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt"), (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "12. 간편인증 상태 조회")
-	public @ResponseBody ResponseDto<Mvc015ResDto> cspdDvlmUmsSendMgmt(@RequestBody Mvc015ReqDto reqDto, HttpServletRequest request)
-			throws URISyntaxException, IOException {
-		
-		String jobMsgeCntn = String.format(IfConstant.JOB_MSGE_CNTN, reqDto.getRcvrNm());
-		
-		IfMcCs015_I.NttkButnCntn.Button button = new IfMcCs015_I.NttkButnCntn.Button();
-		button.setName(IfConstant.NTTK_BUTN_CNTN_BUTTON_NAME);
-		button.setTarget(IfConstant.NTTK_BUTN_CNTN_BUTTON_TARGET);
-		button.setType(IfConstant.NTTK_BUTN_CNTN_BUTTON_TYPE);
-		button.setUrl_mobile(reqDto.getUrl_mobile());
-		bu
-		
-		IfMcCs015_I cs015_I = new IfMcCs015_I();
-		cs015_I.setBtchPrcsYn("1");		// (1:Y), (7:N)
-		cs015_I.setButnDvsnCode("2");	// (1:Fomrmat String, 2:JSON, 3:XML)
-		cs015_I.setCustId(reqDto.getCustId());
-		cs015_I.setDutySendYn("Y");
-		cs015_I.setHpTlphOfno(reqDto.getHpTlphOfno());
-		cs015_I.setHpTlphSbno(reqDto.getHpTlphSbno());
-		cs015_I.setHpTlphTlcmNo(reqDto.getHpTlphTlcmNo());
-		cs015_I.setJobMsgeCntn(jobMsgeCntn);
-		cs015_I.setMsgeTitlNm(IfConstant.MSGE_TITL_NM);
-		cs015_I.setNtfcKindCode(IfConstant.NTFC_KIND_CODE);
-		cs015_I.setNtfcMdiaDvsnCode(IfConstant.NTFC_MDIA_DVSN_CODE);
-		cs015_I.setNtfcTmplCode(IfConstant.NTFC_TMPL_CODE);
-		cs015_I.setNttkButnCntn(nttkButnCntn);
-//		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
-
-		IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
-//		dataHeader.setCRTF_RTCD("");
-//		dataHeader.setDLRE_MSG("");
-		dataHeader.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
-
-		// TODO 확인 필요
-//		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
-		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
-
-		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
-
-		// TODO 확인 필요
-		dataHeader.setUSER_ID(reqDto.getUSER_ID());
-
-		IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
-		
-	    String initechOAuthToken = reqDto.getInitechOAuthToken();
-		dataBody.setInitechOAuthToken(initechOAuthToken);
-		
-		String reqTxId = reqDto.getReqTxId();
-		dataBody.setReqTxId(reqTxId);
-
-		IfMcCs012_I cs012_I = new IfMcCs012_I();
-		cs012_I.setDataHeader(dataHeader);
-		cs012_I.setDataBody(dataBody);
-
-		String emnb = reqDto.getEmnb();
-
-		IfMcCs012_O cs012_O = gooroomeeAdapterService.ifmccs012(emnb, cs012_I);
-
-		Mvc012ResDto resDto = modelMapper.map(cs012_O, Mvc012ResDto.class);
-
-		ResponseDto<Mvc012ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-
-		return responseDto;
-	}
+	
 	
 	
 
@@ -1126,7 +1052,87 @@ public class GrmAdapterController {
 	
 	
 	
+	/**
+	 * 
+	 * <pre>
+	 * [15]
+	 * 카카오알림톡발송_챗버블
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt"), (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "15. 카카오알림톡발송_챗버블")
+	public @ResponseBody ResponseDto<Mvc015ResDto> cspdDvlmUmsSendMgmt(@RequestBody Mvc015ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+		
+		String rcvrNm = reqDto.getRcvrNm();
+		
+		String url_mobile = reqDto.getUrl_mobile();
+//		url_mobile = "https://" + url_mobile.replaceAll("^http://|^https://", "");
+		
+		String jobMsgeCntn = String.format(IfConstant.JOB_MSGE_CNTN, rcvrNm);
+		String sbsnSendMsgeCntn = String.format(IfConstant.SBSN_SEND_MSGE_CNTN, rcvrNm, url_mobile);
+		
+		IfMcCs015_I.NttkButnCntn.Button button = new IfMcCs015_I.NttkButnCntn.Button();
+		
+		button.setName(IfConstant.NTTK_BUTN_CNTN_BUTTON_NAME);
+		button.setTarget(IfConstant.NTTK_BUTN_CNTN_BUTTON_TARGET);
+		button.setType(IfConstant.NTTK_BUTN_CNTN_BUTTON_TYPE);
+		
+		button.setUrl_mobile(url_mobile);
+		button.setUrl_pc("");
+		
+		List<Button> buttonList = new ArrayList<>();
+		buttonList.add(button);
+		
+		IfMcCs015_I.NttkButnCntn nttkButnCntn = new IfMcCs015_I.NttkButnCntn();
+		nttkButnCntn.setButton(buttonList);
+		
+		IfMcCs015_I ifInputDto = new IfMcCs015_I();
+		ifInputDto.setBtchPrcsYn("1");		// (1:Y), (7:N)
+		ifInputDto.setButnDvsnCode("2");	// (1:Fomrmat String, 2:JSON, 3:XML)
+		ifInputDto.setCustId(reqDto.getCustId());
+		ifInputDto.setDutySendYn("Y");
+		ifInputDto.setHpTlphOfno(reqDto.getHpTlphOfno());
+		ifInputDto.setHpTlphSbno(reqDto.getHpTlphSbno());
+		ifInputDto.setHpTlphTlcmNo(reqDto.getHpTlphTlcmNo());
+		ifInputDto.setJobMsgeCntn(jobMsgeCntn);
+		ifInputDto.setMsgeTitlNm(IfConstant.MSGE_TITL_NM);
+		ifInputDto.setNtfcKindCode(IfConstant.NTFC_KIND_CODE);
+		ifInputDto.setNtfcMdiaDvsnCode(IfConstant.NTFC_MDIA_DVSN_CODE);
+		ifInputDto.setNtfcTmplCode(IfConstant.NTFC_TMPL_CODE);
+		ifInputDto.setNttkButnCntn(nttkButnCntn);
+		ifInputDto.setOnlnBtchDvsnCode(IfConstant.ONLN_BTCH_DVSN_CODE);
+		ifInputDto.setRcvrNm(rcvrNm);
+		ifInputDto.setRcvrTlno("");
+		ifInputDto.setSbsnSendMsgeCntn(sbsnSendMsgeCntn);
+		ifInputDto.setSbsnSendYn("Y");
+		ifInputDto.setSendCont(1);
+		ifInputDto.setSendRsvtDttm(null);
+		ifInputDto.setSndeDeptCode(IfConstant.BELN_ORGN_CODE);
+		ifInputDto.setSndeTlno("");
+		ifInputDto.setSndeTlphArcd("");
+		ifInputDto.setSndeTlphOfno("1588");
+		ifInputDto.setSndeTlphInno("6363");
+		ifInputDto.setTmplCode("");
+		ifInputDto.setTrnnPrgmId(null);
+
+		String emnb = reqDto.getEmnb();
+
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
+		Class<IfMcCs015_O> ifOutputDtoClass = IfMcCs015_O.class;
+		IfMcCs015_O cs015_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
+		Mvc015ResDto resDto = modelMapper.map(cs015_O, Mvc015ResDto.class);
+		
+
+		ResponseDto<Mvc015ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
 	
 	
 	

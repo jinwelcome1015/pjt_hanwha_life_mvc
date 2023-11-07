@@ -2,9 +2,7 @@ package test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
@@ -12,7 +10,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -55,15 +52,11 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Sign;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
@@ -75,6 +68,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
 import com.gooroomee.gooroomeeadapter.util.IfUtil;
+
 import korealife.uv.com.cm.SHA256CmCrypt;
 import lombok.Getter;
 import lombok.Setter;
@@ -956,7 +950,7 @@ public class IfTest {
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_1;
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
@@ -1215,7 +1209,7 @@ public class IfTest {
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_2;
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());

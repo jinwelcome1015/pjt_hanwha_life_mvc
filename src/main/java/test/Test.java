@@ -48,8 +48,8 @@ public class Test {
 //		test.doFilterClassName();
 //		test.trimBase64prefix();
 		
-		test.encrypt();
-
+//		test.encrypt();
+		test.regex();
 	}
 
 	public void doTest() throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
@@ -146,4 +146,14 @@ public class Test {
 		System.out.println(encrypt);
 		System.out.println(decrypt);
 	}
+	
+	
+	public void regex() {
+//		String url = "https://abc.com";
+		String url = "http://abc.com";
+		String regex = "^http://|^https://";
+		
+		System.out.println(url.replaceAll(regex, ""));
+	}
+	
 }

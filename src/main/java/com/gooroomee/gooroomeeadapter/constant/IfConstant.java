@@ -51,6 +51,20 @@ public class IfConstant {
             "\r\n" + 
             "* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.";
 	
+	
+	public static final String SBSN_SEND_MSGE_CNTN = "[한화생명] 모바일 화상상담 서비스 사용 안내\r\n" + 
+            "\r\n" + 
+            "%s 고객님 안녕하세요. \r\n" + 
+            "모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \r\n" + 
+            "하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \r\n" + 
+            "\r\n" + 
+            "주소링크 : %s \r\n" +
+            "\r\n" + 
+            "서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \r\n" + 
+            "감사합니다.\r\n" + 
+            "\r\n" + 
+            "* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.";
+	
 	/** [카카오알림톡발송_쳇버블] 알림톡 버튼 텍스트 */
 	public static final String NTTK_BUTN_CNTN_BUTTON_NAME = "모바일 화상상담 바로가기";
 	
@@ -59,6 +73,9 @@ public class IfConstant {
 	
 	/** [카카오알림톡발송_쳇버블] 알림톡 버튼 TARGET */
 	public static final String NTTK_BUTN_CNTN_BUTTON_TARGET = "out";
+	
+	/** [카카오알림톡발송_쳇버블] 온라인배치구분코드 */
+	public static final String ONLN_BTCH_DVSN_CODE = "R";
 	
 	
 	/** 채널유형코드 */
@@ -194,11 +211,8 @@ public class IfConstant {
 		/** 인터페이스 명세 : 간편인증 상태 조회 */
 		IfMcCs012("HLIMVC00029", "hcsInitechStatus", "HCS"),
 		
-		/** 인터페이스 명세 : 알림톡전송 */
-		IfMcCs015_1("HLIMVC00030", "iniUmsSendMgmtPSI004c", "INI"),
-		
 		/** 인터페이스 명세 : 카카오알림톡발송_챗버블 */
-		IfMcCs015_2("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "INI"),
+		IfMcCs015("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "INI"),
 		
 		/** 인터페이스 명세 : 대체키별연락처저장 */
 		IfMcCs016("HLIMVC00031", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),
