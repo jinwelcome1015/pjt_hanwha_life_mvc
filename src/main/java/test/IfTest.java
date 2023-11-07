@@ -60,9 +60,11 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O2;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
@@ -281,8 +283,8 @@ public class IfTest {
         
         IfMcCs001_O outputPayload = outputTelegram.getPayload();
         
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
-       
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
         
     }
     
@@ -295,7 +297,9 @@ public class IfTest {
      */
     public void testIf002() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-
+        
+        /*
+        // custId 있음
         String payloadJson = "{\r\n" + "    \"trflCnfmDvsnCode\" : \"011\",\r\n" + "    \"trflCnfmBswrDvsnCode\" : \"01\",\r\n"
                 + "    \"trflCnfmChnlCode\" : \"01\",\r\n" + "    \"prcsBswrScrnId\" : \"MSESTEP05\",\r\n"
                 + "    \"trflCnfmJobCode\" : \"CS001\",\r\n" + "    \"custId\" : \"0052778800\",\r\n"
@@ -303,7 +307,32 @@ public class IfTest {
                 + "    \"drvnLcnsSqno\" : \"\",\r\n" + "    \"rrno\" : \"8810221229923\",\r\n"
                 + "    \"drvnLcnsNo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
                 + "    \"expyDate\" : \"\"\r\n" + "  }";
-
+        */
+        
+        // custId 없음
+        String payloadJson = "{\r\n" + "    \"trflCnfmDvsnCode\" : \"011\",\r\n" + "    \"trflCnfmBswrDvsnCode\" : \"01\",\r\n"
+                + "    \"trflCnfmChnlCode\" : \"01\",\r\n" + "    \"prcsBswrScrnId\" : \"MSESTEP05\",\r\n"
+                + "    \"trflCnfmJobCode\" : \"CS001\",\r\n" + "    \"custId\" : \"\",\r\n"
+                + "    \"custNm\" : \"최주열\",\r\n" + "    \"isncDate\" : \"\",\r\n" + "    \"btdt\" : \"19881022\",\r\n"
+                + "    \"drvnLcnsSqno\" : \"\",\r\n" + "    \"rrno\" : \"8810221229923\",\r\n"
+                + "    \"drvnLcnsNㅓo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
+                + "    \"expyDate\" : \"\"\r\n" + "  }";
+        
+        
+        
+        /*
+        // custId, btdt 없음 >>> 에러
+        String payloadJson = "{\r\n" + "    \"trflCnfmDvsnCode\" : \"011\",\r\n" + "    \"trflCnfmBswrDvsnCode\" : \"01\",\r\n"
+                + "    \"trflCnfmChnlCode\" : \"01\",\r\n" + "    \"prcsBswrScrnId\" : \"MSESTEP05\",\r\n"
+                + "    \"trflCnfmJobCode\" : \"CS001\",\r\n" + "    \"custId\" : \"\",\r\n"
+                + "    \"custNm\" : \"최주열\",\r\n" + "    \"isncDate\" : \"\",\r\n" + "    \"btdt\" : \"\",\r\n"
+                + "    \"drvnLcnsSqno\" : \"\",\r\n" + "    \"rrno\" : \"8810221229923\",\r\n"
+                + "    \"drvnLcnsNo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
+                + "    \"expyDate\" : \"\"\r\n" + "  }";
+        
+        */
+        
+        
         IfMcCs002_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs002_I.class);
 
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
@@ -318,7 +347,8 @@ public class IfTest {
 
         IfMcCs002_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
 
     /**
@@ -348,7 +378,8 @@ public class IfTest {
 
         IfMcCs003_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
 
     /**
@@ -416,7 +447,8 @@ public class IfTest {
 
         IfMcCs005_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
 
     /**
@@ -445,7 +477,8 @@ public class IfTest {
 
         IfMcCs006_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
 
     /**
@@ -511,7 +544,8 @@ public class IfTest {
     
         IfMcCs007_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     /**
@@ -549,7 +583,8 @@ public class IfTest {
     
         IfMcCs008_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -579,7 +614,8 @@ public class IfTest {
 
         IfMcCs009_O outputPayload = outputTelegram.getPayload();
 
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
 
     
@@ -620,7 +656,8 @@ public class IfTest {
     
         IfMcCs010_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -723,7 +760,8 @@ public class IfTest {
     
         IfMcCs011_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
 	}
 	
     
@@ -787,7 +825,8 @@ public class IfTest {
     
         IfMcCs012_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -927,7 +966,8 @@ public class IfTest {
     
         IfMcCs015_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -940,7 +980,13 @@ public class IfTest {
     public void testIf015_2() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
         
+//        [tmplCode]
+//        FNC9001
+//        INM0009
+//        INM9001 
         
+        
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"hpTlphSbno\": \"3661\",\r\n" + 
                 "    \"tmplCode\": \"FNC9001\",\r\n" + 
@@ -969,10 +1015,203 @@ public class IfTest {
                 "    \"ntfcMdiaDvsnCode\": \"LMS\",\r\n" + 
                 "    \"rcvrNm\": \"\"\r\n" + 
                 "}";
+        */ 
         
-    
-        IfMcCs015_I2 inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I2.class);
+        /*
+        // [템플릿명]
+              모바일 화상상담 서비스 사용 안내
+        */
+        
+        /*
+        // [템플릿내용]
+        "[한화생명] 모바일 화상상담 서비스 사용 안내\r\n" + 
+        "\r\n" + 
+        "#{고객명} 고객님 안녕하세요. \r\n" + 
+        "모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \r\n" + 
+        "하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \r\n" + 
+        "\r\n" + 
+        "서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \r\n" + 
+        "감사합니다.\r\n" + 
+        "\r\n" + 
+        "* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.";
+        */
+        
+//        "[한화생명] 모바일 화상상담 서비스 사용 안내\r\n\r\n신용진 고객님 안녕하세요. \r\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \r\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \r\n\r\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \r\n감사합니다.\r\n\r\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다."
+        
+        /*
+        String payloadJson = "{\r\n" + 
+                "    \"hpTlphSbno\": \"3661\",\r\n" + 
+                "    \"tmplCode\": \"INM9001\",\r\n" + 
+                "    \"sndeTlno\": \"\",\r\n" + 
+                "    \"dutySendYn\": \"Y\",\r\n" + 
+                "    \"sndeDeptCode\": \"00630\",\r\n" + 
+                "    \"sendCont\": 1,\r\n" + 
+                "    \"btchPrcsYn\": \"1\",\r\n" + 
+                "    \"hpTlphTlcmNo\": \"010\",\r\n" + 
+                "    \"sbsnSendMsgeCntn\": \"\",\r\n" + 
+                "    \"nttkButnCntn\": \"Y\",\r\n" + 
+                "    \"custId\": \"1025835861\",\r\n" + 
+                "    \"hpTlphOfno\": \"2889\",\r\n" + 
+                "    \"rcvrTlno\": \"\",\r\n" + 
+                "    \"sndeTlphArcd\": \"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+                "    \"sndeTlphOfno\": \"1588\",\r\n" + 
+                "    \"ntfcKindCode\": \"INM9001\",\r\n" + 
+                "    \"trnnPrgmId\": \"SVfnact146in\",\r\n" + 
+                "    \"sbsnSendYn\": \"Y\",\r\n" + 
+                "    \"ntfcTmplCode\": \"AZAU000001\",\r\n" + 
+                "    \"jobMsgeCntn\": \"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+                "    \"onlnBtchDvsnCode\": \"R\",\r\n" + 
+                "    \"sndeTlphInno\": \"****\",\r\n" + 
+                "    \"msgeTitlNm\": \"모바일 화상상담 서비스 사용 안내\",\r\n" + 
+                "    \"butnDvsnCode\": \"Y\",\r\n" + 
+                "    \"ntfcMdiaDvsnCode\": \"LMS\",\r\n" + 
+                "    \"rcvrNm\": \"\"\r\n" + 
+                "}";
+        */ 
+        /*
+        String payloadJson = "{\r\n" + 
+                "        \"btchPrcsYn\":\"1\",\r\n" + 
+                "        \"butnDvsnCode\":\"\",\r\n" + 
+                "        \"custId\":\"5019808635\",\r\n" + 
+                "        \"dutySendYn\":\"Y\",\r\n" + 
+                "        \"hpTlphOfno\":\"2800\",\r\n" + 
+                "        \"hpTlphSbno\":\"6889\",\r\n" + 
+                "        \"hpTlphTlcmNo\":\"010\",\r\n" + 
+                "        \"jobMsgeCntn\":\"[한화생명] 보험 계약자 변경 접수 안내\\n\\n윤회자 고객님 안녕하세요.\\n한화생명 앱을 통해 요청하신 계약자 변경이 아래와 같이 접수 되었습니다.\\n\\n□  증권번호 : 1****8646\\n□  상품명  :   (무)트리플케어종신\\n□  변경 사항  : \\n  변경 전 계약자 및 만기(생존)수익자: 윤회자\\n  변경 후 계약자 및 만기(생존)수익자: 심인순\\n\\n※ 변경 후 계약자 심인순님의 동의가 바로 진행될 수 있도록 안내해 주세요.\\n\\n※ 변경 후 계약자의 동의는 당일 23시 30분 까지만 가능 합니다.(미동의 시 자동 취소)\\n\\n※ 본인이 신청 하지 않은 경우 한화생명 콜센터(1588-6363)로 즉시 고객 정보 유출 신고를 진행하시기 바랍니다.\\n \\n※ 기타 궁금하신 사항은 한화생명 콜센터(1588-6363)로 문의 주시면 친절히 안내해 드리겠습니다.\",\r\n" + 
+                "        \"msgeTitlNm\":\"[계약변경] 한화생명 앱 계약자 변경접수(만기수익자 변경시)\",\r\n" + 
+                "        \"ntfcKindCode\":\"CTC0020\",\r\n" + 
+                "        \"ntfcMdiaDvsnCode\":\"MMS\",\r\n" + 
+                "        \"ntfcTmplCode\":\"ACTC000023\",\r\n" + 
+                "        \"nttkButnCntn\":\"\",\r\n" + 
+                "        \"onlnBtchDvsnCode\":\"R\",\r\n" + 
+                "        \"rcvrNm\":\"윤회자\",\r\n" + 
+                "        \"rcvrTlno\":\"\",\r\n" + 
+                "        \"sbsnSendMsgeCntn\":\"[한화생명] 보험 계약자 변경 접수 안내\\n\\n윤회자 고객님 안녕하세요.\\n한화생명 앱을 통해 요청하신 계약자 변경이 아래와 같이 접수 되었습니다.\\n\\n□  증권번호 : 1****8646\\n□  상품명  :   (무)트리플케어종신\\n□  변경 사항  : \\n  변경 전 계약자 및 만기(생존)수익자: 윤회자\\n  변경 후 계약자 및 만기(생존)수익자: 심인순\\n\\n※ 변경 후 계약자 심인순님의 동의가 바로 진행될 수 있도록 안내해 주세요.\\n\\n※ 변경 후 계약자의 동의는 당일 23시 30분 까지만 가능 합니다.(미동의 시 자동 취소)\\n\\n※ 본인이 신청 하지 않은 경우 한화생명 콜센터(1588-6363)로 즉시 고객 정보 유출 신고를 진행하시기 바랍니다.\\n \\n※ 기타 궁금하신 사항은 한화생명 콜센터(1588-6363)로 문의 주시면 친절히 안내해 드리겠습니다.\",\r\n" + 
+                "        \"sbsnSendYn\":\"Y\",\r\n" + 
+                "        \"sendCont\":1,\r\n" + 
+                "        \"sndeDeptCode\":\"00630\",\r\n" + 
+                "        \"sndeTlno\":\"\",\r\n" + 
+                "        \"sndeTlphArcd\":\"\",\r\n" + 
+                "        \"sndeTlphInno\":\"6363\",\r\n" + 
+                "        \"sndeTlphOfno\":\"1588\",\r\n" + 
+                "        \"tmplCode\":\"\"\r\n" + 
+                "    }";
+        */
+        /*
+        String payloadJson = "{\r\n" + 
+                "        \"btchPrcsYn\":\"1\",\r\n" + 
+                "        \"butnDvsnCode\":\"2\",\r\n" + 
+                "        \"custId\":\"5019808635\",\r\n" + 
+                "        \"dutySendYn\":\"Y\",\r\n" + 
+                "        \"hpTlphOfno\":\"2889\",\r\n" + 
+                "        \"hpTlphSbno\":\"3661\",\r\n" + 
+                "        \"hpTlphTlcmNo\":\"010\",\r\n" + 
+                "        \"jobMsgeCntn\":\"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+                "        \"msgeTitlNm\":\"모바일 화상상담 서비스 사용 안내\",\r\n" + 
+                "        \"ntfcKindCode\":\"ZAU0006\",\r\n" + 
+                "        \"ntfcMdiaDvsnCode\":\"LMS\",\r\n" + 
+                "        \"ntfcTmplCode\":\"AZAU000001\",\r\n" + 
+                "        \"nttkButnCntn\":\"\",\r\n" + 
+                "        \"onlnBtchDvsnCode\":\"R\",\r\n" + 
+                "        \"rcvrNm\":\"신용진\",\r\n" + 
+                "        \"rcvrTlno\":\"\",\r\n" + 
+                "        \"sbsnSendMsgeCntn\":\"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\\\r\\\\n주소링크 : https://googleg.com \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+                "        \"sbsnSendYn\":\"Y\",\r\n" + 
+                "        \"sendCont\":1,\r\n" + 
+                "        \"sndeDeptCode\":\"00630\",\r\n" + 
+                "        \"sndeTlno\":\"\",\r\n" + 
+                "        \"sndeTlphArcd\":\"\",\r\n" + 
+                "        \"sndeTlphInno\":\"6363\",\r\n" + 
+                "        \"sndeTlphOfno\":\"1588\",\r\n" + 
+                "        \"tmplCode\":\"\"\r\n" + 
+                "    }";
+        */
+        
+        
+        String jobMsgeCntn = "[한화생명] 모바일 화상상담 서비스 사용 안내\r\n" + 
+                "\r\n" + 
+                "%s 고객님 안녕하세요. \r\n" + 
+                "모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \r\n" + 
+                "하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \r\n" + 
+                "\r\n" + 
+                "서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \r\n" + 
+                "감사합니다.\r\n" + 
+                "\r\n" + 
+                "* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.";
+        
+        String custNm = "신용진";
+        
+        jobMsgeCntn = String.format(jobMsgeCntn, custNm);
+        
+        String msgeTitlNm = "모바일 화상상담 서비스 사용 안내";
+        
+        
+        
+        
+        String payloadJson = "{\r\n" + 
+                "        \"sendCont\": 1,\r\n" + 
+//                "        \"jobMsgeCntn\": \"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+//                "        \"jobMsgeCntn\": \"" + a + "\",\r\n" +
+                "        \"trnnPrgmId\": null,\r\n" + 
+                "        \"sndeDeptCode\": \"00630\",\r\n" + 
+                "        \"sendRsvtDttm\": null,\r\n" + 
+                "        \"ntfcTmplCode\": \"AZAU000001\",\r\n" + 
+                "        \"rcvrTlno\": \"\",\r\n" + 
+                "        \"btchPrcsYn\": \"1\",\r\n" + 
+//                "        \"msgeTitlNm\": \"모바일 화상상담 서비스 사용 안내\",\r\n" + 
+                "        \"sndeTlno\": \"\",\r\n" + 
+                "        \"sbsnSendYn\": \"Y\",\r\n" + 
+                "        \"onlnBtchDvsnCode\": \"R\",\r\n" + 
+                "        \"ntfcMdiaDvsnCode\": \"LMS\",\r\n" + 
+                "        \"custId\": \"5019808635\",\r\n" + 
+                "        \"tmplCode\": \"\",\r\n" + 
+                "        \"rcvrNm\": \"신용진\",\r\n" + 
+                "        \"sbsnSendMsgeCntn\": \"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n주소링크 : https://www.hanwhalife.com \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+                "        \"dutySendYn\": \"Y\",\r\n" + 
+                "        \"butnDvsnCode\": \"2\",\r\n" + 
+//                "        \"nttkButnCntn\": \"{\\\"button\\\":[{\\\"name\\\":\\\"한화 테스트 URL\\\",\\\"type\\\":\\\"WL\\\",\\\"url_pc\\\":\\\"https://www.hanwhalife.com\\\",\\\"url_mobile\\\":\\\"https://www.hanwhalife.com\\\",\\\"target\\\":\\\"out\\\"}]}\",\r\n" + 
+                "        \"sndeTlphArcd\": \"\",\r\n" + 
+                "        \"sndeTlphOfno\": \"1588\",\r\n" + 
+                "        \"sndeTlphInno\": \"6363\",\r\n" + 
+                "        \"hpTlphTlcmNo\": \"010\",\r\n" + 
+                "        \"hpTlphOfno\": \"2889\",\r\n" + 
+                "        \"hpTlphSbno\": \"3661\",\r\n" + 
+                "        \"ntfcKindCode\": \"ZAU0006\"\r\n" + 
+                "    }";
+        
+        
+        IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
 //        String hpTlphSbno = inputPayload.getHpTlphSbno();
+        
+        inputPayload.setJobMsgeCntn(jobMsgeCntn);
+        inputPayload.setMsgeTitlNm(msgeTitlNm);
+        
+        
+        IfMcCs015_I.NttkButnCntn.Button button = new IfMcCs015_I.NttkButnCntn.Button();
+        button.setName("모바일 화상상담 바로가기");
+        button.setType("WL");
+        button.setUrl_pc("");
+        button.setUrl_mobile("https://www.hanwhalife.com");
+        button.setTarget("out");
+        
+        List<Button> buttonList = new ArrayList<>();
+        buttonList.add(button);
+        
+        IfMcCs015_I.NttkButnCntn nttkButnCntn = new IfMcCs015_I.NttkButnCntn();
+        nttkButnCntn.setButton(buttonList);
+        
+        inputPayload.setNttkButnCntn(nttkButnCntn);
+        
+//        String nttkButnCntn = "{ \"button\": [ { \"name\": \"한화 테스트 URL\", \"type\": \"WL\", \"url_pc\": \"https://www.hanwhalife.com\", \"url_mobile\": \"https://www.hanwhalife.com\", \"target\": \"out\" } ] }";
+//        inputPayload.setNttkButnCntn(nttkButnCntn);
+        
+        
+        
+        
+        
+        
+        
+        
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
@@ -981,12 +1220,13 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs015_O2> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
-                IfMcCs015_O2.class);
+        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+                IfMcCs015_O.class);
     
-        IfMcCs015_O2 outputPayload = outputTelegram.getPayload();
+        IfMcCs015_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -1000,14 +1240,13 @@ public class IfTest {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
     
         String payloadJson = "{\r\n" + 
+                "    \"elctLoct\" : { },\r\n" + 
                 "    \"sns\" : { },\r\n" + 
                 "    \"addr\" : { },\r\n" + 
-                "    \"elctLoct\" : { },\r\n" + 
                 "    \"tlno\" : {\r\n" + 
-                "      \"cntyCode\" : \"\",\r\n" + 
-                "      \"tlphIdnfCode\" : \"\",\r\n" + 
-                "      \"tlphOfno\" : \"1588\",\r\n" + 
-                "      \"tlphSbno\" : \"6363\"\r\n" + 
+                "      \"tlphIdnfCode\" : \"010\",\r\n" + 
+                "      \"tlphSbno\" : \"5646\",\r\n" + 
+                "      \"tlphOfno\" : \"5209\"\r\n" + 
                 "    }\r\n" + 
                 "  }";
     
@@ -1024,7 +1263,8 @@ public class IfTest {
     
         IfMcCs016_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -1037,7 +1277,7 @@ public class IfTest {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
     
         String payloadJson = "{\r\n" + 
-                "    \"sbsnKeySuid\" : 171766277056300198\r\n" + 
+                "    \"sbsnKeySuid\" : 435468352206471303\r\n" + 
                 "  }";
     
         IfMcCs017_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs017_I.class);
@@ -1053,7 +1293,8 @@ public class IfTest {
     
         IfMcCs017_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     
@@ -1083,7 +1324,8 @@ public class IfTest {
     
         IfMcCs018_O outputPayload = outputTelegram.getPayload();
     
-        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
     
     

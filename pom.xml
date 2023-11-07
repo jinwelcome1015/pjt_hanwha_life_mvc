@@ -18,7 +18,9 @@
 	<description>adapter web appllication for gooroomee</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<!-- 
 		<project.lib.path>E:/_dev/_workspace/workspace-spring-tool-suite4/pjt_hanwha_life_mvc/lib</project.lib.path>
+		 -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -109,12 +111,12 @@
 			<!--
 			<systemPath>E:/_dev/_workspace/workspace-spring-tool-suite4/pjt_hanwha_life_mvc/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
 			-->
-			<!--
+			
 			<systemPath>${project.basedir}/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
-			-->
 			
+			<!-- 
 			<systemPath>${project.lib.path}/korealife-sha256cmcrypt-1.0.jar</systemPath>
-			
+			 -->
 			<!--
 			<systemPath>E:/_dev/_workspace/workspace-spring-tool-suite4/pjt_hanwha_life_mvc/src/main/resources/lib/korealife-sha256cmcrypt-1.0.jar</systemPath>
 			-->

@@ -27,7 +27,39 @@ public class IfConstant {
 	/** 고객구분코드 */
 	public static final String CUST_DVSN_CODE = "1";	// 1 : 개인
 	
-
+	/** [카카오알림톡발송_쳇버블] 안내장종류코드 */
+	public static final String NTFC_KIND_CODE = "ZAU0006";
+	
+	/** [카카오알림톡발송_쳇버블] 안내장템플릿코드 */
+	public static final String NTFC_TMPL_CODE = "AZAU000001";
+	
+	/** [카카오알림톡발송_쳇버블] 안내장매체구분코드 */
+	public static final String NTFC_MDIA_DVSN_CODE = "LMS";
+	
+	/** [카카오알림톡발송_쳇버블] 메시지제목명 */
+	public static final String MSGE_TITL_NM = "모바일 화상상담 서비스 사용 안내";
+	
+	/** [카카오알림톡발송_쳇버블] 작업메시지내용 */
+	public static final String JOB_MSGE_CNTN = "[한화생명] 모바일 화상상담 서비스 사용 안내\r\n" + 
+            "\r\n" + 
+            "%s 고객님 안녕하세요. \r\n" + 
+            "모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \r\n" + 
+            "하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \r\n" + 
+            "\r\n" + 
+            "서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \r\n" + 
+            "감사합니다.\r\n" + 
+            "\r\n" + 
+            "* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.";
+	
+	/** [카카오알림톡발송_쳇버블] 알림톡 버튼 텍스트 */
+	public static final String NTTK_BUTN_CNTN_BUTTON_NAME = "모바일 화상상담 바로가기";
+	
+	/** [카카오알림톡발송_쳇버블] 알림톡 버튼 텍스트 */
+	public static final String NTTK_BUTN_CNTN_BUTTON_TYPE = "WL";
+	
+	/** [카카오알림톡발송_쳇버블] 알림톡 버튼 TARGET */
+	public static final String NTTK_BUTN_CNTN_BUTTON_TARGET = "out";
+	
 	
 	/** 채널유형코드 */
 	@Getter

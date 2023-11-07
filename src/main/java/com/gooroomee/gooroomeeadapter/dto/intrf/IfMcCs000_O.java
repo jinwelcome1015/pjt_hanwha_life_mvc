@@ -1,6 +1,4 @@
-package com.gooroomee.gooroomeeadapter.dto.client;
-
-import java.sql.Date;
+package com.gooroomee.gooroomeeadapter.dto.intrf;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,10 +7,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-@Getter
+/**
+ * 실제로 인터페이스에 사용하지는 않는 dto.
+ * GrmAdapterAdvice의 responseWithMockData에서 mock 응답을 위한 로직의 통일성을 위해 
+ * 인터페이스에 사용하지 않음에도 만들어 놓음.
+ * @author T440s
+ *
+ */
+@Getter 
 @Setter
 @ToString
-public class Mvc000ResDto {
+public class IfMcCs000_O {
 	
 	/** 사원번호 */
     public String emnb;
@@ -55,6 +60,4 @@ public class Mvc000ResDto {
     
     /** 싱글뷰 오픈 메세지 push 성공 여부 */
     private String singleViewOpenMessagePushSuccessYn;
-    
-	
 }

@@ -1,7 +1,5 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import java.math.BigInteger;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -14,37 +12,33 @@ import lombok.ToString;
 @ToString
 public class Mvc015ReqDto {
 	
-	/** 사원번호 */
-	public String emnb;
+	
+	/** URL_PC */
+	private String url_pc;
 
-	/** 안내장종류코드 */
-	private String ntfcKindCode;
+	/** URL_MOBILE */
+	private String url_mobile;
 
-	/** 안내장템플릿코드 */
-	private String ntfcTmplCode;
+//	/** 거래프로그램ID */
+//	private String trnnPrgmId;
 
-	// XXX 확인
-	/** 안내장기준일자 */
-	private Date ntfcRfdt;
+	/** 발신자부서코드 */
+	private String sndeDeptCode;
 
-	/** 발송담당기관코드 */
-	private String sendOrchOrgnCode;
+//	/** 발송예약일시 */
+//	private Timestamp sendRsvtDttm;
 
-	/** 발송담당사원번호 */
-	private String sendOrchEmnb;
+	/** 발신자전화번호 */
+	private String sndeTlno;
 
-	/** 발행유형구분코드 */
-	private String isneTypeDvsnCode;
+	/** 고객ID */
+	private String custId;
 
-	/** 요청자사원번호 */
-	private String rqsrEmnb;
+	/** 수신자명 */
+	private String rcvrNm;
 
-	/** 실데이터여부 */
-	private String actlDatYn;
-
-	// XXX 확인
-	/** 발신자전화번호연락처SUID */
-	private long sndeTlnoCnplSuid;
+	/** 대체발송메시지내용 */
+	private String sbsnSendMsgeCntn;
 
 	/** 발신자전화지역번호 */
 	private String sndeTlphArcd;
@@ -55,83 +49,15 @@ public class Mvc015ReqDto {
 	/** 발신자전화개별번호 */
 	private String sndeTlphInno;
 
-	// XXX 확인
-	/** 수령자이동전화연락처SUID */
-	private BigInteger rpntMvmnTlphCnplSuid;
+	/** 휴대폰전화통신사번호 */
+	private String hpTlphTlcmNo;
 
-	/** 전화식별코드 */
-	private String tlphIdnfCode;
+	/** 휴대폰전화국번호 */
+	private String hpTlphOfno;
 
-	/** 전화국번호 */
-	private String tlphOfno;
+	/** 휴대폰전화가입자번호 */
+	private String hpTlphSbno;
 
-	/** 전화가입자번호 */
-	private String tlphSbno;
 
-	/** 고객ID */
-	private String custId;
-
-	/** 주민등록번호 */
-	private String rrno;
-
-	/** 고객명 */
-	private String custNm;
-
-	/** 메시지입력여부 */
-	private String msgeInptYn;
-
-	/** 메시지내용 */
-	private String msgeCntn;
-
-	/** 대체메시지내용 */
-	private String sbsnMsgeCntn;
-
-	// XXX 확인
-	/** 발송항목목록 */
-	private List<SendItm> sendItmList;
-
-	@Getter
-	@Setter
-	@ToString
-	public static class SendItm {
-		// XXX 확인
-		/** 순번 */
-		private long sqnb;
-
-		/** UMS항목값 */
-		private String umsItmVal;
-
-		/** 메시지제목명 */
-		private String msgeTitlNm;
-
-		/** 알림톡버튼내용 */
-		private String nttkButnCntn;
-
-		// XXX 확인
-		/** 발송예약일시 */
-		private Timestamp sendRsvtDttm;
-
-		/** 관리번호구분코드 */
-		private String mgmtNoDvsnCode;
-
-		/** 참조업무번호 */
-		private String rfrnBwno;
-
-		/** 단체고객ID */
-		private String grouCustId;
-
-		/** 수금기관코드 */
-		private String cltnOrgnCode;
-
-		/** 수금인사원번호 */
-		private String aentEmnb;
-
-		// XXX 확인
-		/** 기준통화소수자리수 */
-		private int stndCrnyDcmlPsitCnt;
-
-		/** 통화코드 */
-		private String crnyCode;
-	}
 
 }

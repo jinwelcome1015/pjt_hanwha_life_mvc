@@ -9,14 +9,27 @@ import lombok.ToString;
 @ToString
 public class Mvc015ResDto {
 
-	/** 처리결과코드 */
-	private String prcsRsltCode;
+	/**
+	 * SMS전송결과값
+	 * 성공 : 0 
+	 * 실패 : 음수(소수점 없음)
+	 */
+    private int smsTrnmRsltVal;
 
-	/** 처리결과내용 */
-	private String prcsRsltCntn;
-
-	// XXX 확인
-	/** 안내장발송기초SUID */
-	private long ntfcSendBacsSuid;
+    /** 처리결과내용 */
+    private String prcsRsltCntn;
+    
+    /** 요청서비스ID */
+    private String rqstSrvcId;
+    
+    /** 체크리스트내용 */
+    private String chekLstCntn;
+    
+    /**
+     * 구분결과값
+     * 성공 : 0.0
+     * 실패 : 음수(소수점 포함)
+     */
+    private double dvsnRsltVal;
 
 }
