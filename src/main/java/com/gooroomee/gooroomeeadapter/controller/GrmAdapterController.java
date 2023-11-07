@@ -419,7 +419,7 @@ public class GrmAdapterController {
 		mvc000ResDto.setCustBirthDate(btdt);
 		mvc000ResDto.setCustNm(custNm);
 		mvc000ResDto.setIdType(idType);
-		mvc000ResDto.setSex(sex);
+		mvc000ResDto.setCustSex(sex);
 
 		// XXX [02] 진위확인결과조회
 		Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();

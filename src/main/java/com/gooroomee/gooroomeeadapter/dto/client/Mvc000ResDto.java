@@ -41,7 +41,7 @@ public class Mvc000ResDto {
      * 	녀 : "F"
      * </pre> 
      */
-    private String sex;
+    private String custSex;
     
     /** 고객ID */
     private String custId;

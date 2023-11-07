@@ -46,7 +46,7 @@ public class IfMcCs000_O {
      * 	녀 : "F"
      * </pre> 
      */
-    private String sex;
+    private String custSex;
     
     /** 고객ID */
     private String custId;
