@@ -357,12 +357,14 @@ public class GrmAdapterController {
 	}
 	
 	/**
+	 * <pre>
 	 * [01, 02, 09, 03]
 	 * 
 	 *	01.신분증OCR요청
 	 *	02.진위확인결과조회
 	 *	09.개인정보유출노출여부조회
 	 *	03.신분증스캔후처리
+	 * </pre>
 	 * 
 	 * @param mvc001ReqDto
 	 * @return
