@@ -24,7 +24,7 @@
         "idType": "ID Card",
         "custNm": "홍길동",
         "custBirthDate": "19800101",
-        "custSex": "M",
+        "custGender": "M",
         "custId": "0052778800",
         "custInfoAuthenticityYn": "Y",
         "custInfoAuthenticityResultCode": "00000000",
