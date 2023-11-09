@@ -3,7 +3,10 @@ package com.gooroomee.gooroomeeadapter.interceptor;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -11,12 +14,22 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gooroomee.gooroomeeadapter.constant.IfConstant;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
 public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
 
+	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(ClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64);		// "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
+	
+	private ObjectMapper objectMapper = new ObjectMapper();
+	
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 			throws IOException {
@@ -30,7 +43,18 @@ public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequest
 		return response;
 	}
 
-	private void traceRequest(HttpRequest request, byte[] body) {
+	private void traceRequest(HttpRequest request, byte[] body) throws JsonMappingException, JsonProcessingException {
+		
+		
+		String requestBody = new String(body, StandardCharsets.UTF_8);
+		
+		Map<String, Object> requestBodyMap = objectMapper.readValue(requestBody, new TypeReference<Map<String, Object>>() { });
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> requestBodyHeaderMap = (Map<String, Object>) requestBodyMap.get("header");
+		
+		String rcveSrvcId = (String) requestBodyHeaderMap.get("rcveSrvcId");
+		
 		String reqLog = new StringBuilder()
 				.append("[REQUEST]")
 				.append(" ")
@@ -40,10 +64,27 @@ public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequest
 				.append(", ")
 				.append("Request Body : ").append(new String(body, StandardCharsets.UTF_8))
 				.toString();
-		log.info(reqLog);
+		
+		if(rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId()) ) {
+			loggerForBase64DataLogging.info(reqLog);
+		}else {
+			log.info(reqLog);
+		}
+		
+		
 	}
 
 	private void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
+		
+		String responseBody = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
+		
+		Map<String, Object> responseBodyMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() { });
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> responseBodyHeaderMap = (Map<String, Object>) responseBodyMap.get("header");
+		
+		String rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");;
+		
 		String resLog = new StringBuilder()
 				.append("[RESPONSE]")
 				.append(" ")
@@ -51,8 +92,13 @@ public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequest
 				.append(", ")
 				.append("Status code : ").append(response.getStatusCode())
 				.append(", ")
-				.append("Response Body : ").append(StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8))
+				.append("Response Body : ").append(responseBody)
 				.toString();
-		log.info(resLog);
+		
+		if(rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId()) ) {
+			loggerForBase64DataLogging.info(resLog);
+		}else {
+			log.info(resLog);
+		}
 	}
 }

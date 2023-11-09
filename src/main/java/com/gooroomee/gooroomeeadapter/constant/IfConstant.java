@@ -77,6 +77,9 @@ public class IfConstant {
 	/** [카카오알림톡발송_쳇버블] 온라인배치구분코드 */
 	public static final String ONLN_BTCH_DVSN_CODE = "R";
 	
+	/** base64 데이터 기록용 별도 logger의 이름을 위한 suffix */
+	public static final String LOGGER_NAME_SUFFIX_FOR_BASE64 = "._BASE64";
+	
 	
 	/** 채널유형코드 */
 	@Getter
@@ -574,4 +577,26 @@ public class IfConstant {
 	}
 	
 	
+	/** OCR 이미지 추론 결과 */
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	public enum OcrInferResult {
+		
+		/** OCR 이미지 추론 결과 : 이미지 인식 성공 */
+		SUCCESS("SUCCESS", "이미지 인식 성공"),
+		
+		/** OCR 이미지 추론 결과 : 이미지 인식 실패 */
+		FAILURE("FAILURE", "이미지 인식 실패"),
+		
+		/** OCR 이미지 추론 결과 : 이미지 인식 예외 사항 */
+		ERROR("ERROR", "이미지 인식 예외 사항");
+		
+		
+		/** 이름 */
+		private final String resultValue;
+
+		/** 계약구분코드 */
+		private final String resultMessage;
+		
+	}
 }

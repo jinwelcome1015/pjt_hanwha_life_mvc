@@ -29,6 +29,12 @@
 			height: 20rem;
 			resize: none;
 		}
+
+		img#imgForIdCard {
+			height: 10rem;
+			/* background-color: darkgrey; */
+			/* object-fit: scale-down; */
+		}
 	</style>
 
 	<script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
@@ -80,8 +86,16 @@
 
 				console.log('response for [API-REQUEST]', res);
 
-				document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);;
+				document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);
 				document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+
+				const sTargetText = event.target.options[event.target.selectedIndex].innerText;
+
+				if(/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText)){
+					document.querySelector('#fieldSetForIdCard').style.display = 'block';
+				}else{
+					document.querySelector('#fieldSetForIdCard').style.display = 'none';
+				}
 			});
 
 
@@ -109,7 +123,73 @@
 				document.querySelector('#responseBody').value = resJson;
 			});
 
+			document.querySelector('#idCardType').addEventListener('change', async (event) => {
+				console.log(event);
+				const regExData = /^data/;
+				const bIsImageBase64Data = regExData.test(event.target.value);
+				const oImgForIdCard = document.querySelector('#imgForIdCard');
+				if (bIsImageBase64Data) {
+					oImgForIdCard.setAttribute('src', event.target.value);
+					oImgForIdCard.setAttribute('alt', event.target.options[event.target.selectedIndex].innerText);
+				} else {
+					oImgForIdCard.setAttribute('src', '');
+					oImgForIdCard.setAttribute('alt', '');
+				}
+
+
+				const oIdCardImgFile = document.querySelector('#idCardImgFile');
+
+				if(event.target.value === 'directInput'){
+					oIdCardImgFile.disabled = false;
+				}else{
+					oIdCardImgFile.disabled = true;
+					if((navigator.appName === 'Netscape' && navigator.userAgent.search('Trident') !== -1) || /.*mise.*/i.test(navigator.userAgent)){
+						oIdCardImgFile.replaceWith(oIdCardImgFile.cloneNode(true));
+					}else{
+						oIdCardImgFile.value = '';
+					}
+				}
+			});
+
+			document.querySelector('#idCardImgFile').addEventListener('change', (event) => {
+                const aFiles = event.target.files;
+                if (aFiles.length === 1) {
+					const oFile = aFiles[0];
+					let bIsImageFile = fn_isImageFile(oFile);
+					if(!bIsImageFile){
+						const sMessage = '이미지 파일이 아닙니다.';
+						alert(sMessage);
+						throw new Error(sMessage);
+					}
+
+                    const oImageFile = oFile;
+                    const oFileReader = new FileReader();
+                    oFileReader.onload = () => {
+                        const sBase64Data = oFileReader.result;
+						
+						const jRequestBody = document.querySelector('#requestBody').value;
+						const oRequestBody = JSON.parse(jRequestBody);
+						oRequestBody.data = sBase64Data;
+						document.querySelector('#requestBody').value = JSON.stringify(oRequestBody, null, nJsonStringifySpace);
+
+						document.querySelector('#imgForIdCard').src = sBase64Data;
+					};
+                    oFileReader.readAsDataURL(oImageFile);
+                }else {
+					const sMessage = `파일이 1개가 아닙니다. (${aFiles.length} 개)`;
+					alert(sMessage);
+					throw new Error(sMessage);
+				}
+            });
 		});
+
+		function fn_isImageFile(oFile){
+			let bIsImageFile = false;
+			if(oFile){
+				bIsImageFile = oFile.type.split('/')[0] === 'image';
+			}
+			return bIsImageFile;
+		}
 
 
 	</script>
@@ -131,7 +211,8 @@
 				<legend>API-AUTH</legend>
 				<div>
 					<label for="apiAuthEnabled">apiAuthEnabled</label>
-					<input type="text" name="apiAuthEnabled" id="apiAuthEnabled" th:value="${apiAuthEnabled}" disabled="disabled">
+					<input type="text" name="apiAuthEnabled" id="apiAuthEnabled" th:value="${apiAuthEnabled}"
+						disabled="disabled">
 					<br>
 					<label for="apiAuthKey">apiAuthKey</label>
 					<input type="text" name="apiAuthKey" id="apiAuthKey" th:value="${apiAuthKey}" disabled="disabled">
@@ -144,9 +225,40 @@
 					<label for="apiPath">apiPath</label>
 					<select name="apiPath" id="apiPath">
 						<option value="">&lt;선택&gt;</option>
-						<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}" th:text="${apiInfo.name} + ' ' + '( ' + ${apiInfo.path} + ' )'">
+						<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}"
+							th:text="${apiInfo.name} + ' ' + '( ' + ${apiInfo.path} + ' )'">
 						</option>
 					</select>
+				</div>
+			</fieldset>
+			<br>
+			<fieldset id="fieldSetForIdCard" style="display: none;">
+				<legend>ID CARD</legend>
+				<div>
+					<label for="idCardType">ID CARD</label>
+					<select name="idCardType" id="idCardType">
+						<option value="">&lt;선택&gt;</option>
+						<option value="directInput">&lt;직접 입력&gt;</option>
+						<!-- <option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}" th:value="${idCardMockImageInfo.mockImageDataFileName}" th:text="${idCardMockImageInfo.mockImageName}"></option> -->
+						<option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}"
+							th:value="${idCardMockImageInfo.idCardMockImageBase64Data}"
+							th:text="${idCardMockImageInfo.mockImageName}"></option>
+
+
+						<!-- 
+						<option value="">주민등록증</option>
+						<option value="">자동차운전면허증</option>
+						<option value="">여권</option>
+						<option value="">외국인등록증</option>
+						 -->
+					</select>
+					<br>
+					<br>
+					<label for="idCardImgFile">FILE</label>
+					<input disabled="disabled" type="file" name="idCardImgFile" id="idCardImgFile" accept="image/*">
+					<br>
+					<br>
+					<img id="imgForIdCard" src="" alt="">
 				</div>
 			</fieldset>
 			<br>

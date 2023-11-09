@@ -1,6 +1,9 @@
 package com.gooroomee.gooroomeeadapter.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URISyntaxException;
@@ -11,18 +14,25 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -159,11 +169,19 @@ public class GrmAdapterController {
 	public static final String API_URL_TOKEN = "/intrf";
 
 	private static final String URL_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
+	
+//	private static final String URL_FOR_REQUEST_MOCK_IMAGE = "/test/api/mockImage/req";
 
 	private static final String PARAM_NAME_FOR_REQUEST_MOCK_DATA = "apiPath";
 	
+//	private static final String PARAM_NAME_FOR_REQUEST_MOCK_IMAGE = "imageName";
+	
 	private static final String PERSONAL_NUMBER_DELIMITER = "-";
 	private static final String DRIVER_LICENSE_NUMBER_DELIMITER = "-";
+	
+	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage/";
+	
+	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
 	
 	/*
 	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
@@ -356,6 +374,28 @@ public class GrmAdapterController {
 		return d;
 	}
 	
+	
+	/*
+	public static void main(String[] args) throws URISyntaxException, IOException, ParseException {
+		
+		GrmAdapterController grmAdapterController = new GrmAdapterController();
+		String ocrResultJson = "[{\"uid\":\"a513711d3b514f6fb11ad3dc3848df1f\",\"validationResult\":{\"result\":\"NO_REQUESTED\"},\"inferResult\":\"SUCCESS\",\"idCard\":{\"result\":{\"idtype\":\"ID Card\",\"rois\":[{\"vertices\":[{\"x\":3.1388545,\"y\":3.9956706},{\"x\":754.52325,\"y\":-5.092327},{\"x\":747.84045,\"y\":473.14856},{\"x\":2.264223,\"y\":474.4076}]}],\"ic\":{\"address\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":51.675,\"y\":235.1875},{\"x\":192.7875,\"y\":235.1875},{\"x\":192.7875,\"y\":272.2875},{\"x\":51.675,\"y\":272.2875}]},{\"vertices\":[{\"x\":53.6625,\"y\":268.3125},{\"x\":263.67496,\"y\":268.3125},{\"x\":263.67496,\"y\":304.0875},{\"x\":53.6625,\"y\":304.0875}]},{\"vertices\":[{\"x\":203.3875,\"y\":235.85},{\"x\":387.5625,\"y\":235.85},{\"x\":387.5625,\"y\":270.9625},{\"x\":203.3875,\"y\":270.9625}]},{\"vertices\":[{\"x\":271.625,\"y\":268.975},{\"x\":347.15,\"y\":268.975},{\"x\":347.15,\"y\":302.7625},{\"x\":271.625,\"y\":302.7625}]}],\"formatted\":{\"value\":\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\"},\"text\":\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\",\"maskingPolys\":[]}],\"authority\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":146.53316,\"y\":381.33884},{\"x\":326.93195,\"y\":383.12497},{\"x\":326.47778,\"y\":428.99695},{\"x\":146.07898,\"y\":427.21082}]},{\"vertices\":[{\"x\":343.17493,\"y\":382.92496},{\"x\":524.6999,\"y\":382.92496},{\"x\":524.6999,\"y\":427.31247},{\"x\":343.17493,\"y\":427.31247}]},{\"vertices\":[{\"x\":525.3625,\"y\":374.975},{\"x\":622.75,\"y\":374.975},{\"x\":622.75,\"y\":429.3},{\"x\":525.3625,\"y\":429.3}]}],\"formatted\":{\"value\":\"서울특별시 금천구청장\"},\"text\":\"서울특별시 금천구청장 청바\",\"maskingPolys\":[]}],\"name\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":72.2125,\"y\":116.6},{\"x\":367.6875,\"y\":116.6},{\"x\":367.6875,\"y\":165.625},{\"x\":72.2125,\"y\":165.625}]}],\"formatted\":{\"value\":\"홍길동\"},\"text\":\"홍길동\",\"maskingPolys\":[]}],\"personalNum\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":65.5875,\"y\":181.52498},{\"x\":363.71246,\"y\":181.52498},{\"x\":363.71246,\"y\":216.63748},{\"x\":65.5875,\"y\":216.63748}]}],\"formatted\":{\"value\":\"800101-2345678\"},\"text\":\"800101-2345678\",\"maskingPolys\":[{\"vertices\":[{\"x\":211.13873,\"y\":178.01373},{\"x\":367.22372,\"y\":178.01373},{\"x\":367.22372,\"y\":220.14873},{\"x\":211.13873,\"y\":220.14873}]}]}],\"issueDate\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":242.475,\"y\":351.7875},{\"x\":374.3125,\"y\":351.7875},{\"x\":374.3125,\"y\":381.6},{\"x\":242.475,\"y\":381.6}]},{\"vertices\":[{\"x\":372.98746,\"y\":352.44995},{\"x\":422.01245,\"y\":352.44995},{\"x\":422.01245,\"y\":380.93747},{\"x\":372.98746,\"y\":380.93747}]}],\"formatted\":{\"month\":\"08\",\"year\":\"2020\",\"day\":\"16\"},\"text\":\"2020.08.16\",\"maskingPolys\":[{\"vertices\":[{\"x\":239.52966,\"y\":349.0218},{\"x\":424.9578,\"y\":349.0217},{\"x\":424.9578,\"y\":384.3657},{\"x\":239.52968,\"y\":384.36578}]}]}]},\"isConfident\":true},\"meta\":{\"estimatedLanguage\":\"ko\"}},\"name\":\"test_idcard\",\"message\":\"SUCCESS\"}]";
+		JsonNode ocrResultReadTrees = new ObjectMapper().readTree(ocrResultJson);
+		
+		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
+		
+		String idType = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
+		String trflCnfmDvsnCode = grmAdapterController.getTrflCnfmDvsnCodeFromIdType(idType);
+	
+		String custNm = grmAdapterController.getCustNm(ocrResultReadTree);
+		String btdt = grmAdapterController.getBtdt(ocrResultReadTree);
+		String isncDate = grmAdapterController.getIsncDate(ocrResultReadTree);
+		String sex = grmAdapterController.getSex(ocrResultReadTree);
+		System.out.println("");
+	}
+	*/
+	
+	
 	/**
 	 * <pre>
 	 * [01, 02, 09, 03]
@@ -379,7 +419,7 @@ public class GrmAdapterController {
 		ResponseDto<Mvc001ResDto> response001dto = this.idcdOcrRqst(mvc001ReqDto, request);
 		Mvc001ResDto mvc001ResDto = response001dto.getData();
 
-		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
+//		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
 		Mvc001ResDto.DataBody mvc001ResDtoDataBody = mvc001ResDto.getDataBody();
 
 		String ocrResultJson = mvc001ResDtoDataBody.getImages();
@@ -392,6 +432,12 @@ public class GrmAdapterController {
 		}
 
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
+		
+		if(!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
+			String message = ocrResultReadTree.get("message").asText();
+			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
+			throw new IfException(message);
+		}
 
 		Mvc000ResDto mvc000ResDto = new Mvc000ResDto();
 
@@ -1308,14 +1354,16 @@ public class GrmAdapterController {
 	 * 
 	 * @param model
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping(path = { "/test/apis" }, method = { RequestMethod.GET })
-	public String getApiTestView(Model model) {
+	public String getApiTestView(Model model) throws IOException {
 
 		model.addAttribute("apiAuthEnabled", apiAuthEnabled);
 		model.addAttribute("apiAuthKey", apiAuthKey);
 		model.addAttribute("apiInfoList", this.getApiInfoList());
-
+		model.addAttribute("idCardMockImageInfoList", this.getIdCardMockImageInfoList());
+		
 		model.addAttribute("urlForRequestMockData", URL_FOR_REQUEST_MOCK_DATA);
 		model.addAttribute("paramNameForRequestMockData", PARAM_NAME_FOR_REQUEST_MOCK_DATA);
 
@@ -1394,5 +1442,56 @@ public class GrmAdapterController {
 		return apiInfoList;
 	}
 
+	
+	/*
+	@RequestMapping(path = { URL_FOR_REQUEST_MOCK_IMAGE }, method = { RequestMethod.GET })
+	public @ResponseBody String getApiTestRequestMockImage(@RequestParam MultiValueMap<String, String> map)
+			throws ClassNotFoundException, IOException {
+	
+		String firstParamValue = map.getFirst(PARAM_NAME_FOR_REQUEST_MOCK_DATA);
+		
+		return mockData;
+	}
+	*/
+	
+	public List<Map<String, String>> getIdCardMockImageInfoList() throws IOException {
+		List<Map<String, String>> idCardMockImageInfoList = new ArrayList<>();
+		
+		String mockImageRootPath = MOCK_IMAGE_ROOT_PATH;
+		File mockImageRootPathDirectory = new ClassPathResource(mockImageRootPath).getFile();
+		String[] mockImageDataFileNames = mockImageRootPathDirectory.list((dir, name) -> {
+			
+			boolean endsWith = name.endsWith(IMAGE_DATA_FILE_EXTENSION);
+			
+			return endsWith;
+		});
+		
+		List<String> mockImageDataFileNameList = Arrays.asList(mockImageDataFileNames);
+		mockImageDataFileNameList.sort(new Comparator<String>() {
+			@Override
+			public int compare(String mockImageDataFileName1, String mockImageDataFileName2) {
+				return mockImageDataFileName1.compareTo(mockImageDataFileName2);
+			}
+		});
+		
+		for (String mockImageDataFileName : mockImageDataFileNameList) {
+			File mockImageDataFile = new File(mockImageRootPath, mockImageDataFileName);
+			ClassPathResource resource = new ClassPathResource(mockImageDataFile.toString());
+			
+			Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
+			List<String> lineList = lineStream.collect(Collectors.toList());
+			String idCardMockImageBase64Data = String.join("", lineList);
+			
+			Map<String, String> idCardMockImageInfoMap = new HashMap<>();
+			String mockImageName = mockImageDataFileName.replaceAll("." + IMAGE_DATA_FILE_EXTENSION + "$", "");
+			idCardMockImageInfoMap.put("mockImageName", mockImageName);
+			idCardMockImageInfoMap.put("mockImageDataFileName", mockImageDataFileName);
+			idCardMockImageInfoMap.put("idCardMockImageBase64Data", idCardMockImageBase64Data);
+			
+			idCardMockImageInfoList.add(idCardMockImageInfoMap);
+		}
+		
+		return idCardMockImageInfoList;
+	}
 	
 }

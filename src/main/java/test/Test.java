@@ -17,11 +17,15 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.slf4j.Logger;
+
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
 
 import korealife.uv.com.cm.SHA256CmCrypt;
 
 public class Test {
+	
+//	private static final Logger logger = Test.class.getname
 
 	private ClassLoader classLoader;
 
@@ -50,7 +54,8 @@ public class Test {
 		
 //		test.encrypt();
 //		test.regex();
-		test.sex();
+//		test.sex();
+		test.log();
 	}
 
 	private void sex() {
@@ -161,6 +166,11 @@ public class Test {
 		String regex = "^http://|^https://";
 		
 		System.out.println(url.replaceAll(regex, ""));
+	}
+	
+	public void log() {
+		
+		System.out.println();
 	}
 	
 }

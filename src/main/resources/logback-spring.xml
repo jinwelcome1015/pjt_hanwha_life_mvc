@@ -27,7 +27,37 @@
         </rollingPolicy>
     </appender>
     
-     <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    
+    <appender name="FILE-INFO-OCR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./log/logback-dev-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+     <appender name="FILE-ERROR-OCR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>            
+        </filter>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./log/logback-prod-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
@@ -53,6 +83,12 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
     </springProfile>
 
     <!--dev-->
@@ -63,6 +99,12 @@
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
+        </logger>
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
     
@@ -75,6 +117,12 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
+        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
+        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
     </springProfile>
     
      
@@ -83,6 +131,12 @@
         <root level="ERROR">
             <appender-ref ref="FILE-ERROR"/>
         </root>
+        <logger level="ERROR" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
+        <logger level="ERROR" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
     </springProfile>
     
 </configuration>
