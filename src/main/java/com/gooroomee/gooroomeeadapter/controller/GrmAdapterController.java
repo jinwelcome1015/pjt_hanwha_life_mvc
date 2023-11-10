@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,11 +27,13 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -179,7 +180,7 @@ public class GrmAdapterController {
 	private static final String PERSONAL_NUMBER_DELIMITER = "-";
 	private static final String DRIVER_LICENSE_NUMBER_DELIMITER = "-";
 	
-	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage/";
+	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage";
 	
 	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
 	
@@ -481,8 +482,10 @@ public class GrmAdapterController {
 
 		mvc002ReqDto.setMgmtNo("");
 		mvc002ReqDto.setCustNm(custNm);
-		mvc002ReqDto.setBtdt(this.transformDate(btdt));
-		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
+//		mvc002ReqDto.setBtdt(this.transformDate(btdt));
+		mvc002ReqDto.setBtdt(btdt);
+//		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
+		mvc002ReqDto.setIsncDate(isncDate);
 		mvc002ReqDto.setExpyDate(null);
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
@@ -691,11 +694,11 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
 		IfMcCs002_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-		
+		/*
 		if (!"Y".equalsIgnoreCase(ifOutputDto.getCsnsYn())) {
 			throw new IfException(String.format("%s", ifOutputDto.getRsltMsgeCntn()));
 		}
-		
+		*/
 		Mvc002ResDto resDto = modelMapper.map(ifOutputDto, Mvc002ResDto.class);
 	
 		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -727,7 +730,12 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
 		IfMcCs003_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
+		/*
+		if (!"Y".equalsIgnoreCase(ifOutputDto.getPrcsSucsYn())) {
+			throw new IfException("싱글뷰 오픈 메세지 전송에 실패했습니다.");
+		}
+		*/
+		
 		Mvc003ResDto resDto = modelMapper.map(ifOutputDto, Mvc003ResDto.class);
 	
 		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -768,6 +776,12 @@ public class GrmAdapterController {
 		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
 		IfMcCs005_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 		
+		String rspnCodeVal = ifOutputDto.getRspnCodeVal();		// "00":오류, "01":정상
+		
+		if (!"01".equalsIgnoreCase(rspnCodeVal)) {
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto.getRspnMsgeCntn(), ifOutputDto.getRspnMsgeUniqId()));
+		}
+		
 		Mvc005ResDto resDto = modelMapper.map(ifOutputDto, Mvc005ResDto.class);
 
 		ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -775,6 +789,8 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
+	
+	
 	/**
 	 * 
 	 * <pre>
@@ -799,6 +815,10 @@ public class GrmAdapterController {
 		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
 		IfMcCs006_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		if(ifOutputDto.getEmpeInfoList() == null || ifOutputDto.getEmpeInfoList().size() == 0) {
+			throw new IfException("조회된 사원이 없습니다.");
+		}
+		
 		Mvc006ResDto resDto = modelMapper.map(ifOutputDto, Mvc006ResDto.class);
 
 		ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -806,6 +826,7 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
+	
 	/**
 	 * 
 	 * <pre>
@@ -826,6 +847,8 @@ public class GrmAdapterController {
 		IfMcCs007_I ifInputDto = modelMapper.map(reqDto, IfMcCs007_I.class);
 		ifInputDto.setCntcDvsnCode(IfConstant.ContractClassificationCode.INSURANCE.getCode());
 		ifInputDto.setCustDvsnCode(IfConstant.CustomerDivisionCode.INDIVIDUAL.getCode());
+		ifInputDto.setNextKey("1");
+		ifInputDto.setPageSize(50);
 
 		String emnb = reqDto.getEmnb();
 		
@@ -833,6 +856,13 @@ public class GrmAdapterController {
 		Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
 		IfMcCs007_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		
+//		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0 || ifOutputDto.getTotCont() == 0) {
+		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0) {
+			throw new IfException("조회된 고객계약정보가 없습니다.");
+		}
+		
+		
 		Mvc007ResDto resDto = modelMapper.map(ifOutputDto, Mvc007ResDto.class);
 
 		ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -865,6 +895,10 @@ public class GrmAdapterController {
 		Class<IfMcCs008_O> ifOutputDtoClass = IfMcCs008_O.class;
 		IfMcCs008_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		if (ifOutputDto.getCustAcntListInqyList() == null || ifOutputDto.getCustAcntListInqyList().size() == 0) {
+			throw new IfException("조회된 고객계좌정보가 없습니다.");
+		}
+		
 		Mvc008ResDto resDto = modelMapper.map(ifOutputDto, Mvc008ResDto.class);
 
 		ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -952,6 +986,12 @@ public class GrmAdapterController {
 		Class<IfMcCs010_O> ifOutputDtoClass = IfMcCs010_O.class;
 		IfMcCs010_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD();		// 처리결과코드 ("0000":정상, 그외:실패)
+		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();		
+		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
+		}
+		
 		Mvc010ResDto resDto = modelMapper.map(ifOutputDto, Mvc010ResDto.class);
 
 		ResponseDto<Mvc010ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1059,6 +1099,19 @@ public class GrmAdapterController {
 		Class<IfMcCs011_O> ifOutputDtoClass = IfMcCs011_O.class;
 		IfMcCs011_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
+		
+		String resCode = ifOutputDto.getDataBody().getResCode();			// 응답코드 ("1200":성공, 그외:실퍠)
+		String errorMessage = ifOutputDto.getDataBody().getErrorMessage();	// 에러메세지
+		if (!"1200".equalsIgnoreCase(resCode)) {
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
+		}
+		
+		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD();		// 처리결과코드 ("0000":정상, 그외:실패)
+		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();		
+		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
+		}
+		
 		Mvc011ResDto resDto = modelMapper.map(ifOutputDto, Mvc011ResDto.class);
 	
 		ResponseDto<Mvc011ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1124,6 +1177,18 @@ public class GrmAdapterController {
 		Class<IfMcCs012_O> ifOutputDtoClass = IfMcCs012_O.class;
 		IfMcCs012_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		String resCode = ifOutputDto.getDataBody().getResCode();			// 응답코드 ("1200":성공, 그외:실퍠)
+		String errorMessage = ifOutputDto.getDataBody().getErrorMessage();	// 에러메세지
+		if (!"1200".equalsIgnoreCase(resCode)) {
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
+		}
+		
+		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD();		// 처리결과코드 ("0000":정상, 그외:실패)
+		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();		
+		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
+		}
+		
 		Mvc012ResDto resDto = modelMapper.map(ifOutputDto, Mvc012ResDto.class);
 
 		ResponseDto<Mvc012ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1208,9 +1273,17 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
 		Class<IfMcCs015_O> ifOutputDtoClass = IfMcCs015_O.class;
 		IfMcCs015_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
-		Mvc015ResDto resDto = modelMapper.map(ifOutputDto, Mvc015ResDto.class);
 		
+		double dvsnRsltVal = ifOutputDto.getDvsnRsltVal();
+		int smsTrnmRsltVal = ifOutputDto.getSmsTrnmRsltVal();
+		
+		if(0.0 != dvsnRsltVal) {
+			throw new IfException("알림톡 발송에 실패했습니다.");
+		}else if(0 != smsTrnmRsltVal) {
+			throw new IfException("SMS 발송에 실패했습니다.");
+		}
+		
+		Mvc015ResDto resDto = modelMapper.map(ifOutputDto, Mvc015ResDto.class);
 
 		ResponseDto<Mvc015ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -1279,6 +1352,10 @@ public class GrmAdapterController {
 		Class<IfMcCs017_O> ifOutputDtoClass = IfMcCs017_O.class;
 		IfMcCs017_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
+		if(ifOutputDto.getCnplSuid() == null) {
+			throw new IfException("조회된 연락처가 없습니다.");
+		}
+		
 		Mvc017ResDto resDto = modelMapper.map(ifOutputDto, Mvc017ResDto.class);
 	
 		ResponseDto<Mvc017ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1310,6 +1387,10 @@ public class GrmAdapterController {
 		Class<IfMcCs018_O> ifOutputDtoClass = IfMcCs018_O.class;
 		IfMcCs018_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
+		if(ifOutputDto.getPscdList() == null || ifOutputDto.getPscdList().size() == 0) {
+			throw new IfException("조회된 우편번호가 없습니다.");
+		}
+		
 		Mvc018ResDto resDto = modelMapper.map(ifOutputDto, Mvc018ResDto.class);
 	
 		ResponseDto<Mvc018ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1372,6 +1453,7 @@ public class GrmAdapterController {
 		model.addAttribute("apiAuthKey", apiAuthKey);
 		model.addAttribute("apiInfoList", this.getApiInfoList());
 		model.addAttribute("idCardMockImageInfoList", this.getIdCardMockImageInfoList());
+//		model.addAttribute("idCardMockImageInfoList", null);
 		
 		model.addAttribute("urlForRequestMockData", URL_FOR_REQUEST_MOCK_DATA);
 		model.addAttribute("paramNameForRequestMockData", PARAM_NAME_FOR_REQUEST_MOCK_DATA);
@@ -1467,6 +1549,7 @@ public class GrmAdapterController {
 		List<Map<String, String>> idCardMockImageInfoList = new ArrayList<>();
 		
 		String mockImageRootPath = MOCK_IMAGE_ROOT_PATH;
+		/*
 		File mockImageRootPathDirectory = new ClassPathResource(mockImageRootPath).getFile();
 		String[] mockImageDataFileNames = mockImageRootPathDirectory.list((dir, name) -> {
 			
@@ -1491,6 +1574,43 @@ public class GrmAdapterController {
 			List<String> lineList = lineStream.collect(Collectors.toList());
 			String idCardMockImageBase64Data = String.join("", lineList);
 			
+			Map<String, String> idCardMockImageInfoMap = new HashMap<>();
+			String mockImageName = mockImageDataFileName.replaceAll("." + IMAGE_DATA_FILE_EXTENSION + "$", "");
+			idCardMockImageInfoMap.put("mockImageName", mockImageName);
+			idCardMockImageInfoMap.put("mockImageDataFileName", mockImageDataFileName);
+			idCardMockImageInfoMap.put("idCardMockImageBase64Data", idCardMockImageBase64Data);
+			
+			idCardMockImageInfoList.add(idCardMockImageInfoMap);
+		}
+		
+		*/
+		
+		String cpth = "classpath*:" + MOCK_IMAGE_ROOT_PATH + "/*." + IMAGE_DATA_FILE_EXTENSION;
+		
+//		log.warn("**************************");
+//		log.warn("cpth : " + cpth);
+		
+		Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(new DefaultResourceLoader()).getResources(cpth);
+		
+//		log.warn("resources.length : " + resources.length);
+		
+		List<Resource> asList = Arrays.asList(resources);
+		asList.sort(new Comparator<Resource>() {
+			@Override
+			public int compare(Resource o1, Resource o2) {
+				return o1.getFilename().compareTo(o2.getFilename());
+			}
+		});
+		
+//		log.warn("asList : " + asList);
+//		log.warn("asList.size() : " + asList.size());
+		
+		for (Resource resource : asList) {
+			Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
+			List<String> lineList = lineStream.collect(Collectors.toList());
+			String idCardMockImageBase64Data = String.join("", lineList);
+			String mockImageDataFileName = resource.getFilename();
+//			log.warn("resource.getFilename() : " + resource.getFilename());
 			Map<String, String> idCardMockImageInfoMap = new HashMap<>();
 			String mockImageName = mockImageDataFileName.replaceAll("." + IMAGE_DATA_FILE_EXTENSION + "$", "");
 			idCardMockImageInfoMap.put("mockImageName", mockImageName);

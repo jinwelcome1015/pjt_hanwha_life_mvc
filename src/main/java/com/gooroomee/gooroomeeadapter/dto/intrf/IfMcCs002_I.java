@@ -37,11 +37,13 @@ public class IfMcCs002_I {
 	
 	// XXX 확인
 	/** 발급일자 */
-	private Date isncDate;
+//	private Date isncDate;
+	private String isncDate;
 
 	// XXX 확인
 	/** 생년월일 */
-	private Date btdt;
+//	private Date btdt;
+	private String btdt;
 	
 	/** 운전면허일련번호 */
 	private String drvnLcnsSqno;
@@ -60,7 +62,8 @@ public class IfMcCs002_I {
 	
 	// XXX 확인
 	/** 만료일자 */
-	private Date expyDate;
+//	private Date expyDate;
+	private String expyDate;
 	
 	/** 이미지관리번호 */
 	private String imgeMgmtNo;

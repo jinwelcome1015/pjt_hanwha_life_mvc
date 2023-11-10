@@ -12,8 +12,8 @@ import lombok.ToString;
 @ToString
 public class IfMcCs007_O {
 
-	/** 총건수 */
-	private int totCont;
+//	/** 총건수 */
+//	private int totCont;
 
 	/** 다음페이지여부 */
 	private String nextPageYn;
