@@ -323,10 +323,10 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfUtil ifUtil = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 		
-		IfTelegramHeader header = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
+		IfTelegramHeader inputTelegramHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode()); 
 		
-	    IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, header, ifInputDto, ifOutputDtoClass);
-	
+	    IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputTelegramHeader, ifInputDto, ifOutputDtoClass);
+	    
 	    O ifOutputDto = outputTelegram.getPayload();
 		
 		return ifOutputDto;

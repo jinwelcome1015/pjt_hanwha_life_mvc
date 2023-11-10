@@ -227,7 +227,7 @@ public class IfUtil {
 
 	private String getRandomNumber(int digits) {
 		if (digits < 1) {
-			throw new IllegalArgumentException("digits must be a positive number.");
+			throw new IllegalArgumentException("자리수는 양수값이어야 합니다.");
 		}
 
 		int exclusiveUpperBound = (int) Math.pow(10, digits);

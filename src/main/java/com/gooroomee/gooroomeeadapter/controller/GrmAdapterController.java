@@ -421,24 +421,28 @@ public class GrmAdapterController {
 
 //		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
 		Mvc001ResDto.DataBody mvc001ResDtoDataBody = mvc001ResDto.getDataBody();
-
+		
 		String ocrResultJson = mvc001ResDtoDataBody.getImages();
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
-
+		
+		/*
 		if (ocrResultReadTrees.size() != 1) {
 			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
 			throw new IfException(message);
 		}
-
+		*/
+		
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
 		
+		/*
 		if(!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
 			String message = ocrResultReadTree.get("message").asText();
 			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
 			throw new IfException(message);
 		}
-
+		*/
+		
 		Mvc000ResDto mvc000ResDto = new Mvc000ResDto();
 
 		String emnb = mvc001ReqDto.getEmnb();
@@ -457,6 +461,7 @@ public class GrmAdapterController {
 		mvc000ResDto.setIdType(idType);
 		mvc000ResDto.setCustGender(sex);
 
+		
 		// XXX [02] 진위확인결과조회
 		Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();
 
@@ -635,10 +640,26 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
 		Class<IfMcCs001_O> ifOutputDtoClass = IfMcCs001_O.class;
-		IfMcCs001_O cs001_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs001_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
+		String ocrResultJson = ifOutputDto.getDataBody().getImages();
+
+		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
+
+		if (ocrResultReadTrees.size() != 1) {
+			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
+			throw new IfException(message);
+		}
+
+		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
 		
+		if(!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
+			String message = ocrResultReadTree.get("message").asText();
+			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
+			throw new IfException(message);
+		}
+		
+		Mvc001ResDto resDto = modelMapper.map(ifOutputDto, Mvc001ResDto.class);
 
 		ResponseDto<Mvc001ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -660,24 +681,6 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	/*
-	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
-	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
-			throws URISyntaxException, IOException {
-	
-		IfMcCs002_I cs002_I = modelMapper.map(reqDto, IfMcCs002_I.class);
-	
-		String emnb = reqDto.getEmnb();
-	
-		IfMcCs002_O cs002_O = gooroomeeAdapterService.ifmccs002(emnb, cs002_I);
-	
-		Mvc002ResDto resDto = modelMapper.map(cs002_O, Mvc002ResDto.class);
-	
-		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
-		return responseDto;
-	}
-	*/
 	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
@@ -687,9 +690,13 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
-		IfMcCs002_O cs002_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
-		Mvc002ResDto resDto = modelMapper.map(cs002_O, Mvc002ResDto.class);
+		IfMcCs002_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		
+		if (!"Y".equalsIgnoreCase(ifOutputDto.getCsnsYn())) {
+			throw new IfException(String.format("%s", ifOutputDto.getRsltMsgeCntn()));
+		}
+		
+		Mvc002ResDto resDto = modelMapper.map(ifOutputDto, Mvc002ResDto.class);
 	
 		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 	
@@ -709,25 +716,6 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	/*
-	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan"), (API_URL_TOKEN + "/itfcIdcdScan" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
-	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto)
-			throws URISyntaxException, IOException {
-	
-		IfMcCs003_I cs003_I = modelMapper.map(reqDto, IfMcCs003_I.class);
-		cs003_I.setPushRcvrEmnb(reqDto.getEmnb());
-	
-		String emnb = reqDto.getEmnb();
-	
-		IfMcCs003_O cs003_O = gooroomeeAdapterService.ifmccs003(emnb, cs003_I);
-	
-		Mvc003ResDto resDto = modelMapper.map(cs003_O, Mvc003ResDto.class);
-	
-		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
-		return responseDto;
-	}
-	*/
 	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan"), (API_URL_TOKEN + "/itfcIdcdScan" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
@@ -738,9 +726,9 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
-		IfMcCs003_O cs003_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs003_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc003ResDto resDto = modelMapper.map(cs003_O, Mvc003ResDto.class);
+		Mvc003ResDto resDto = modelMapper.map(ifOutputDto, Mvc003ResDto.class);
 	
 		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 	
@@ -772,13 +760,15 @@ public class GrmAdapterController {
 		String lognPswd = reqDto.getLognPswd();
 		String encLognPswd = SHA256CmCrypt.SHA256_getEncString(lognPswd);
 
-		IfMcCs005_I cs005_I = new IfMcCs005_I();
-		cs005_I.setEmnb(emnb);
-		cs005_I.setLognPswd(encLognPswd);
+		IfMcCs005_I ifInputDto = new IfMcCs005_I();
+		ifInputDto.setEmnb(emnb);
+		ifInputDto.setLognPswd(encLognPswd);
 
-		IfMcCs005_O cs005_O = gooroomeeAdapterService.ifmccs005(emnb, cs005_I);
-
-		Mvc005ResDto resDto = modelMapper.map(cs005_O, Mvc005ResDto.class);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
+		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
+		IfMcCs005_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		
+		Mvc005ResDto resDto = modelMapper.map(ifOutputDto, Mvc005ResDto.class);
 
 		ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -801,13 +791,15 @@ public class GrmAdapterController {
 	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
-		IfMcCs006_I cs006_I = modelMapper.map(reqDto, IfMcCs006_I.class);
+		IfMcCs006_I ifInputDto = modelMapper.map(reqDto, IfMcCs006_I.class);
 
 		String emnb = reqDto.getEmnb();
 
-		IfMcCs006_O cs006_O = gooroomeeAdapterService.ifmccs006(emnb, cs006_I);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
+		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
+		IfMcCs006_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		Mvc006ResDto resDto = modelMapper.map(cs006_O, Mvc006ResDto.class);
+		Mvc006ResDto resDto = modelMapper.map(ifOutputDto, Mvc006ResDto.class);
 
 		ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -831,15 +823,17 @@ public class GrmAdapterController {
 	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
-		IfMcCs007_I cs007_I = modelMapper.map(reqDto, IfMcCs007_I.class);
-		cs007_I.setCntcDvsnCode(IfConstant.ContractClassificationCode.INSURANCE.getCode());
-		cs007_I.setCustDvsnCode(IfConstant.CustomerDivisionCode.INDIVIDUAL.getCode());
+		IfMcCs007_I ifInputDto = modelMapper.map(reqDto, IfMcCs007_I.class);
+		ifInputDto.setCntcDvsnCode(IfConstant.ContractClassificationCode.INSURANCE.getCode());
+		ifInputDto.setCustDvsnCode(IfConstant.CustomerDivisionCode.INDIVIDUAL.getCode());
 
 		String emnb = reqDto.getEmnb();
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
+		Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
+		IfMcCs007_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		IfMcCs007_O cs007_O = gooroomeeAdapterService.ifmccs007(emnb, cs007_I);
-
-		Mvc007ResDto resDto = modelMapper.map(cs007_O, Mvc007ResDto.class);
+		Mvc007ResDto resDto = modelMapper.map(ifOutputDto, Mvc007ResDto.class);
 
 		ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -862,13 +856,16 @@ public class GrmAdapterController {
 	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 
-		IfMcCs008_I cs008_I = modelMapper.map(reqDto, IfMcCs008_I.class);
+		IfMcCs008_I ifInputDto = modelMapper.map(reqDto, IfMcCs008_I.class);
 
 		String emnb = reqDto.getEmnb();
 
-		IfMcCs008_O cs008_O = gooroomeeAdapterService.ifmccs008(emnb, cs008_I);
+//		IfMcCs008_O cs008_O = gooroomeeAdapterService.ifmccs008(emnb, cs008_I);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs008;
+		Class<IfMcCs008_O> ifOutputDtoClass = IfMcCs008_O.class;
+		IfMcCs008_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		Mvc008ResDto resDto = modelMapper.map(cs008_O, Mvc008ResDto.class);
+		Mvc008ResDto resDto = modelMapper.map(ifOutputDto, Mvc008ResDto.class);
 
 		ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -892,13 +889,16 @@ public class GrmAdapterController {
 	public @ResponseBody ResponseDto<Mvc009ResDto> prsnInfoLeakMgmt(@RequestBody Mvc009ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
-		IfMcCs009_I cs009_I = modelMapper.map(reqDto, IfMcCs009_I.class);
+		IfMcCs009_I ifInputDto = modelMapper.map(reqDto, IfMcCs009_I.class);
 
 		String emnb = reqDto.getEmnb();
 
-		IfMcCs009_O cs009_O = gooroomeeAdapterService.ifmccs009(emnb, cs009_I);
+//		IfMcCs009_O cs009_O = gooroomeeAdapterService.ifmccs009(emnb, cs009_I);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs009;
+		Class<IfMcCs009_O> ifOutputDtoClass = IfMcCs009_O.class;
+		IfMcCs009_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		Mvc009ResDto resDto = modelMapper.map(cs009_O, Mvc009ResDto.class);
+		Mvc009ResDto resDto = modelMapper.map(ifOutputDto, Mvc009ResDto.class);
 
 		ResponseDto<Mvc009ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -941,15 +941,18 @@ public class GrmAdapterController {
 		IfMcCs010_I.DataBody dataBody = new IfMcCs010_I.DataBody();
 		dataBody.setGrant_type(IfConstant.EzCertSrvcGrantType.client_credentials.getValue());
 
-		IfMcCs010_I cs010_I = new IfMcCs010_I();
-		cs010_I.setDataHeader(dataHeader);
-		cs010_I.setDataBody(dataBody);
+		IfMcCs010_I ifInputDto = new IfMcCs010_I();
+		ifInputDto.setDataHeader(dataHeader);
+		ifInputDto.setDataBody(dataBody);
 
 		String emnb = reqDto.getEmnb();
 
-		IfMcCs010_O cs010_O = gooroomeeAdapterService.ifmccs010(emnb, cs010_I);
+//		IfMcCs010_O cs010_O = gooroomeeAdapterService.ifmccs010(emnb, cs010_I);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs010;
+		Class<IfMcCs010_O> ifOutputDtoClass = IfMcCs010_O.class;
+		IfMcCs010_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		Mvc010ResDto resDto = modelMapper.map(cs010_O, Mvc010ResDto.class);
+		Mvc010ResDto resDto = modelMapper.map(ifOutputDto, Mvc010ResDto.class);
 
 		ResponseDto<Mvc010ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -1044,16 +1047,19 @@ public class GrmAdapterController {
 	    
 	    
 	    
-	    IfMcCs011_I cs011_I = new IfMcCs011_I();
-	    cs011_I.setDataHeader(dataHeader);
-	    cs011_I.setDataBody(dataBody);
+	    IfMcCs011_I ifInputDto = new IfMcCs011_I();
+	    ifInputDto.setDataHeader(dataHeader);
+	    ifInputDto.setDataBody(dataBody);
 	    
 		
 		String emnb = reqDto.getEmnb();
 	
-		IfMcCs011_O cs011_O = gooroomeeAdapterService.ifmccs011(emnb, cs011_I);
+//		IfMcCs011_O cs011_O = gooroomeeAdapterService.ifmccs011(emnb, cs011_I);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs011;
+		Class<IfMcCs011_O> ifOutputDtoClass = IfMcCs011_O.class;
+		IfMcCs011_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc011ResDto resDto = modelMapper.map(cs011_O, Mvc011ResDto.class);
+		Mvc011ResDto resDto = modelMapper.map(ifOutputDto, Mvc011ResDto.class);
 	
 		ResponseDto<Mvc011ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 	
@@ -1107,15 +1113,18 @@ public class GrmAdapterController {
 		String reqTxId = reqDto.getReqTxId();
 		dataBody.setReqTxId(reqTxId);
 
-		IfMcCs012_I cs012_I = new IfMcCs012_I();
-		cs012_I.setDataHeader(dataHeader);
-		cs012_I.setDataBody(dataBody);
+		IfMcCs012_I ifInputDto = new IfMcCs012_I();
+		ifInputDto.setDataHeader(dataHeader);
+		ifInputDto.setDataBody(dataBody);
 
 		String emnb = reqDto.getEmnb();
 
-		IfMcCs012_O cs012_O = gooroomeeAdapterService.ifmccs012(emnb, cs012_I);
+//		IfMcCs012_O cs012_O = gooroomeeAdapterService.ifmccs012(emnb, cs012_I);
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs012;
+		Class<IfMcCs012_O> ifOutputDtoClass = IfMcCs012_O.class;
+		IfMcCs012_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		Mvc012ResDto resDto = modelMapper.map(cs012_O, Mvc012ResDto.class);
+		Mvc012ResDto resDto = modelMapper.map(ifOutputDto, Mvc012ResDto.class);
 
 		ResponseDto<Mvc012ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -1198,9 +1207,9 @@ public class GrmAdapterController {
 
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
 		Class<IfMcCs015_O> ifOutputDtoClass = IfMcCs015_O.class;
-		IfMcCs015_O cs015_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs015_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc015ResDto resDto = modelMapper.map(cs015_O, Mvc015ResDto.class);
+		Mvc015ResDto resDto = modelMapper.map(ifOutputDto, Mvc015ResDto.class);
 		
 
 		ResponseDto<Mvc015ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1238,9 +1247,9 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
 		Class<IfMcCs016_O> ifOutputDtoClass = IfMcCs016_O.class;
-		IfMcCs016_O cs016_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs016_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc016ResDto resDto = modelMapper.map(cs016_O, Mvc016ResDto.class);
+		Mvc016ResDto resDto = modelMapper.map(ifOutputDto, Mvc016ResDto.class);
 	
 		ResponseDto<Mvc016ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 	
@@ -1268,9 +1277,9 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
 		Class<IfMcCs017_O> ifOutputDtoClass = IfMcCs017_O.class;
-		IfMcCs017_O cs017_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs017_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc017ResDto resDto = modelMapper.map(cs017_O, Mvc017ResDto.class);
+		Mvc017ResDto resDto = modelMapper.map(ifOutputDto, Mvc017ResDto.class);
 	
 		ResponseDto<Mvc017ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 	
@@ -1299,9 +1308,9 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
 		Class<IfMcCs018_O> ifOutputDtoClass = IfMcCs018_O.class;
-		IfMcCs018_O cs018_O = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs018_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 	
-		Mvc018ResDto resDto = modelMapper.map(cs018_O, Mvc018ResDto.class);
+		Mvc018ResDto resDto = modelMapper.map(ifOutputDto, Mvc018ResDto.class);
 	
 		ResponseDto<Mvc018ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 	

@@ -122,10 +122,10 @@ public class IfConstant {
 	public enum IfPrcsRsltDvsnCode {
 
 		/** 처리결과구분코드 : 정상 */
-		NORMAL("1"),
+		NORMAL("0"),
 		
 		/** 처리결과구분코드 : 비정상 */
-		ABNORMAL("0");
+		ABNORMAL("1");
 
 		private final String value;
 	}
