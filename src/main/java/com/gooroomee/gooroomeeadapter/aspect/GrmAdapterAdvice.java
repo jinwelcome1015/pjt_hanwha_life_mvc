@@ -32,7 +32,7 @@ public class GrmAdapterAdvice {
 	
 	@Around("execution(* com.gooroomee.gooroomeeadapter.controller.*.*(..))")
 	public Object responseWithMockData(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		// com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I
+		
 		final String interfaceOutputDtoPrefix = "com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs";
 		final String interfaceOutputDtoSuffix = "_O";
 		
