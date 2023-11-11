@@ -30,35 +30,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 
 public interface GrmAdapterService {
-	
-	
-	IfMcCs001_O ifmccs001(String emnb, IfMcCs001_I ifInputDto) throws JsonProcessingException, URISyntaxException;
 
-	IfMcCs002_O ifmccs002(String emnb, IfMcCs002_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs003_O ifmccs003(String emnb, IfMcCs003_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs005_O ifmccs005(String emnb, IfMcCs005_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs006_O ifmccs006(String emnb, IfMcCs006_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs007_O ifmccs007(String emnb, IfMcCs007_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs008_O ifmccs008(String emnb, IfMcCs008_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs009_O ifmccs009(String emnb, IfMcCs009_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs010_O ifmccs010(String emnb, IfMcCs010_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs011_O ifmccs011(String emnb, IfMcCs011_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs012_O ifmccs012(String emnb, IfMcCs012_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	IfMcCs016_O ifmccs016(String emnb, IfMcCs016_I ifInputDto) throws JsonProcessingException, URISyntaxException;
-
-	
 	<I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass)
 			throws JsonProcessingException, URISyntaxException;
-	
 
 }

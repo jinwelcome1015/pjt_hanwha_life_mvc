@@ -41,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Slf4j
 public class IfUtil {
-	
+
 	/** 송신 시스템 코드 */
 	private static final String TRNM_SYS_CODE = IfConstant.TRNM_SYS_CODE;
 
@@ -50,7 +50,7 @@ public class IfUtil {
 
 	/** 소속 기관 코드 */
 	private static final String BELN_ORGN_CODE = IfConstant.BELN_ORGN_CODE;
-	
+
 	/** RestTemplate */
 	private RestTemplate restTemplate;
 
@@ -62,9 +62,9 @@ public class IfUtil {
 
 	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
-	
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	public IfUtil(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
 		super();
@@ -78,8 +78,7 @@ public class IfUtil {
 		return createHeader(itfcId, rcveSrvcId, rcveSysCode, "N");
 	}
 
-	public IfTelegramHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode,
-			String prsnInfoIncsYn) {
+	public IfTelegramHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode, String prsnInfoIncsYn) {
 		IfTelegramHeader header = new IfTelegramHeader();
 		header.setItfcId(itfcId);
 		header.setRcveSrvcId(rcveSrvcId);
@@ -134,8 +133,8 @@ public class IfUtil {
 		return targetFullUrl;
 	}
 
-	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header,
-			I inputDto, Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
+	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header, I inputDto,
+			Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
 
 		IfTelegram<I> requestTelegram = new IfTelegram<I>();
 		requestTelegram.setHeader(header);
@@ -157,8 +156,7 @@ public class IfUtil {
 		String responseBody = responseEntity.getBody();
 
 		if (responseBody != null) {
-			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class,
-					outputDtoClass);
+			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputDtoClass);
 			responseTelegram = OBJECT_MAPPER.readValue(responseBody, javaType);
 		}
 
@@ -177,17 +175,17 @@ public class IfUtil {
 
 		return responseTelegram;
 	}
-	
+
 	public String formatIpAddress(String ipAddress) {
 		String formattedIpAddrString = "";
-		
+
 		String[] ipAddressTokens = ipAddress.split("\\.");
 		for (String ipAddressToken : ipAddressTokens) {
 			Integer ipTokenDigit = Integer.valueOf(ipAddressToken);
 			String formattedToken = String.format("%03d", ipTokenDigit);
 			formattedIpAddrString += formattedToken;
 		}
-		
+
 		return formattedIpAddrString;
 	}
 
@@ -238,5 +236,5 @@ public class IfUtil {
 
 		return formattedRandomNumber;
 	}
-	
+
 }

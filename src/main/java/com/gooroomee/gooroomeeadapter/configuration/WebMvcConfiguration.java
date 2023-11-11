@@ -13,7 +13,6 @@ import com.gooroomee.gooroomeeadapter.interceptor.AuthInterceptor;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 	
-	/** api auth enabled */
 	@Value(value = "${api.auth.enabled}")
 	private String apiAuthEnabled;
 	

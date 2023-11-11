@@ -20,17 +20,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 public class CustomServletWrappingFilter extends OncePerRequestFilter {
-	
+
 	@Autowired
-	ObjectMapper objectMapper; 
+	ObjectMapper objectMapper;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
 		ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
 

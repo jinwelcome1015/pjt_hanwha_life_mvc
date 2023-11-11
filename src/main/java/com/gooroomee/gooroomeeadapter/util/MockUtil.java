@@ -25,15 +25,13 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 
 public class MockUtil {
-	
+
 	public static final String URL_SUFFIX_FOR_MOCK = "/mock";
-	
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-			.registerModule(new SimpleModule())
-			;
-	
+			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).registerModule(new SimpleModule());
+
 	public static <O> O getMockRequestData(String thisMethodName, Class<O> requestDtoClass) throws IOException {
 		String mockResponseDataFileName = "req.json";
 		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName);
@@ -52,59 +50,26 @@ public class MockUtil {
 		File mockResponseDataFile = new File(mockDataDetailPath, mockDataFileName);
 
 		ClassPathResource resource = new ClassPathResource(mockResponseDataFile.toString());
-		
+
 		/*
 		Path path = Paths.get(resource.getURI());
 		List<String> lineList = Files.readAllLines(path);
 		*/
-		Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
+		Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8"))
+				.lines();
 		List<String> lineList = lineStream.collect(Collectors.toList());
-		/*
-		List<String> filteredLines = new ArrayList<>();
-		for (String line : lines) {
-			if (line.contains("trnnNo") || line.contains("tscsRqstVal") || line.contains("postfixSysCode")
-					|| line.contains("subTrnmSysType")) {
-				continue;
-			} else if (line.contains("msgeStackTrace") && line.endsWith(",")) {
-				line = line.replaceAll(",$", "");
-			}
-			filteredLines.add(line);
-		}
-		
-		String delimiter = " ";
-		String jsonData = String.join(delimiter, filteredLines);
-		
-		String patternFrom = ".*(data=)";
-		String patternTo = ", encrypt=false]\\s*$";
-		jsonData = jsonData.replaceAll(patternFrom, "");
-		jsonData = jsonData.replaceAll(patternTo, "");
-		*/
-		
+
 		String delimiter = " ";
 		String jsonData = String.join(delimiter, lineList);
-		
-//		ObjectMapper objectMapper = new ObjectMapper();
-		
-		
-		
+
 		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, Map.class);
 		IfTelegram<Map> responseTelegram = null;
 		responseTelegram = OBJECT_MAPPER.readValue(jsonData, javaType);
 		Map<String, Object> payload = responseTelegram.getPayload();
-		
+
 		O o = OBJECT_MAPPER.convertValue(payload, outputClass);
-		
+
 		return o;
-		
-		
-		/*
-		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputClass);
-		IfTelegram<O> responseTelegram = null;
-		responseTelegram = objectMapper.readValue(jsonData, javaType);
-		
-		O payload = responseTelegram.getPayload();
-		
-		return payload;
-		*/		
+
 	}
 }

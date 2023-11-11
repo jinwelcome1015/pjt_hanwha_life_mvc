@@ -184,39 +184,6 @@ public class GrmAdapterController {
 	
 	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
 	
-	/*
-	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
-		final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		final ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration()
-				.setFieldAccessLevel(AccessLevel.PRIVATE)
-				.setFieldMatchingEnabled(true)
-				.setMatchingStrategy(MatchingStrategies.STRICT);
-		
-		
-		String responseBody = "{ \"header\": { \"trnmSysCode\": \"MVC\", \"ipAddr\": \"010252005065\", \"tlgrCretDttm\": \"20231026135528604\", \"rndmNo\": \"5825\", \"hsno\": 2, \"prsnInfoIncsYn\": \"N\", \"itfcId\": \"HLIMVC00016\", \"rcveSrvcId\": \"hcsIdcdOcrRqst\", \"rcveSysCode\": \"HCS\", \"mciNodeNo\": \"11\", \"serverType\": \"D\", \"rspnDvsnCode\": \"S\", \"emnb\": \"1077593\", \"belnOrgnCode\": \"00630\", \"chnlTypeCode\": \"SVR\", \"rqsrIp\": \"10.252.5.65\", \"totalCount\": 0, \"msgeListCont\": 0 }, \"payload\": { \"dataHeader\": { \"SRVC_ID\": \"SVC028\", \"SCRN_ID\": \"\", \"X_OCR_SECRET\": \"ckZJZ29HcG1OZFF5WXJ3TXBYSXZlbUJzWmhGbmx6Ylc=\", \"CRTF_RTCD\": \"0000\", \"DLRE_MSG\": \"SUCCESS\" }, \"dataBody\": { \"requestId\": \"3aa6f56f-35d2-4ec8-a3ff-705f08b65027\", \"version\": \"V2\", \"timestamp\": \"1698296134190\", \"images\": \"[{\\\"uid\\\":\\\"a513711d3b514f6fb11ad3dc3848df1f\\\",\\\"validationResult\\\":{\\\"result\\\":\\\"NO_REQUESTED\\\"},\\\"inferResult\\\":\\\"SUCCESS\\\",\\\"idCard\\\":{\\\"result\\\":{\\\"idtype\\\":\\\"ID Card\\\",\\\"rois\\\":[{\\\"vertices\\\":[{\\\"x\\\":3.1388545,\\\"y\\\":3.9956706},{\\\"x\\\":754.52325,\\\"y\\\":-5.092327},{\\\"x\\\":747.84045,\\\"y\\\":473.14856},{\\\"x\\\":2.264223,\\\"y\\\":474.4076}]}],\\\"ic\\\":{\\\"address\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":51.675,\\\"y\\\":235.1875},{\\\"x\\\":192.7875,\\\"y\\\":235.1875},{\\\"x\\\":192.7875,\\\"y\\\":272.2875},{\\\"x\\\":51.675,\\\"y\\\":272.2875}]},{\\\"vertices\\\":[{\\\"x\\\":53.6625,\\\"y\\\":268.3125},{\\\"x\\\":263.67496,\\\"y\\\":268.3125},{\\\"x\\\":263.67496,\\\"y\\\":304.0875},{\\\"x\\\":53.6625,\\\"y\\\":304.0875}]},{\\\"vertices\\\":[{\\\"x\\\":203.3875,\\\"y\\\":235.85},{\\\"x\\\":387.5625,\\\"y\\\":235.85},{\\\"x\\\":387.5625,\\\"y\\\":270.9625},{\\\"x\\\":203.3875,\\\"y\\\":270.9625}]},{\\\"vertices\\\":[{\\\"x\\\":271.625,\\\"y\\\":268.975},{\\\"x\\\":347.15,\\\"y\\\":268.975},{\\\"x\\\":347.15,\\\"y\\\":302.7625},{\\\"x\\\":271.625,\\\"y\\\":302.7625}]}],\\\"formatted\\\":{\\\"value\\\":\\\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\\\"},\\\"text\\\":\\\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\\\",\\\"maskingPolys\\\":[]}],\\\"authority\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":146.53316,\\\"y\\\":381.33884},{\\\"x\\\":326.93195,\\\"y\\\":383.12497},{\\\"x\\\":326.47778,\\\"y\\\":428.99695},{\\\"x\\\":146.07898,\\\"y\\\":427.21082}]},{\\\"vertices\\\":[{\\\"x\\\":343.17493,\\\"y\\\":382.92496},{\\\"x\\\":524.6999,\\\"y\\\":382.92496},{\\\"x\\\":524.6999,\\\"y\\\":427.31247},{\\\"x\\\":343.17493,\\\"y\\\":427.31247}]},{\\\"vertices\\\":[{\\\"x\\\":525.3625,\\\"y\\\":374.975},{\\\"x\\\":622.75,\\\"y\\\":374.975},{\\\"x\\\":622.75,\\\"y\\\":429.3},{\\\"x\\\":525.3625,\\\"y\\\":429.3}]}],\\\"formatted\\\":{\\\"value\\\":\\\"서울특별시 금천구청장\\\"},\\\"text\\\":\\\"서울특별시 금천구청장 청바\\\",\\\"maskingPolys\\\":[]}],\\\"name\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":72.2125,\\\"y\\\":116.6},{\\\"x\\\":367.6875,\\\"y\\\":116.6},{\\\"x\\\":367.6875,\\\"y\\\":165.625},{\\\"x\\\":72.2125,\\\"y\\\":165.625}]}],\\\"formatted\\\":{\\\"value\\\":\\\"홍길동\\\"},\\\"text\\\":\\\"홍길동\\\",\\\"maskingPolys\\\":[]}],\\\"personalNum\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":65.5875,\\\"y\\\":181.52498},{\\\"x\\\":363.71246,\\\"y\\\":181.52498},{\\\"x\\\":363.71246,\\\"y\\\":216.63748},{\\\"x\\\":65.5875,\\\"y\\\":216.63748}]}],\\\"formatted\\\":{\\\"value\\\":\\\"800101-2345678\\\"},\\\"text\\\":\\\"800101-2345678\\\",\\\"maskingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":211.13873,\\\"y\\\":178.01373},{\\\"x\\\":367.22372,\\\"y\\\":178.01373},{\\\"x\\\":367.22372,\\\"y\\\":220.14873},{\\\"x\\\":211.13873,\\\"y\\\":220.14873}]}]}],\\\"issueDate\\\":[{\\\"boundingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":242.475,\\\"y\\\":351.7875},{\\\"x\\\":374.3125,\\\"y\\\":351.7875},{\\\"x\\\":374.3125,\\\"y\\\":381.6},{\\\"x\\\":242.475,\\\"y\\\":381.6}]},{\\\"vertices\\\":[{\\\"x\\\":372.98746,\\\"y\\\":352.44995},{\\\"x\\\":422.01245,\\\"y\\\":352.44995},{\\\"x\\\":422.01245,\\\"y\\\":380.93747},{\\\"x\\\":372.98746,\\\"y\\\":380.93747}]}],\\\"formatted\\\":{\\\"month\\\":\\\"08\\\",\\\"year\\\":\\\"2020\\\",\\\"day\\\":\\\"16\\\"},\\\"text\\\":\\\"2020.08.16\\\",\\\"maskingPolys\\\":[{\\\"vertices\\\":[{\\\"x\\\":239.52966,\\\"y\\\":349.0218},{\\\"x\\\":424.9578,\\\"y\\\":349.0217},{\\\"x\\\":424.9578,\\\"y\\\":384.3657},{\\\"x\\\":239.52968,\\\"y\\\":384.36578}]}]}]},\\\"isConfident\\\":true},\\\"meta\\\":{\\\"estimatedLanguage\\\":\\\"ko\\\"}},\\\"name\\\":\\\"test_idcard\\\",\\\"message\\\":\\\"SUCCESS\\\"}]\" } } }";
-		Class<?> outputDtoClass = IfMcCs001_O.class;
-		
-		IfTelegram<IfMcCs001_O> responseTelegram = null;
-		
-		if (responseBody != null) {
-			JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, outputDtoClass);
-			responseTelegram = OBJECT_MAPPER.readValue(responseBody, javaType);
-		}
-		IfMcCs001_O cs001_O = responseTelegram.getPayload();
-		
-		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
-		com.gooroomee.gooroomeeadapter.dto.client.Mvc001ResDto.DataBody dataBody = resDto.getDataBody();
-		String images = dataBody.getImages();
-		JsonNode ocrResultReadTree = OBJECT_MAPPER.readTree(images);
-		for (int i = 0; i < ocrResultReadTree.size(); i++) {
-			String idType = ocrResultReadTree.get(i).get("idCard").get("result").get("idtype").asText();
-			System.out.println("idType : " + idType);
-		}
-		
-	}
-	*/
-	
 	/**
 	 * 
 	 * 
@@ -1453,8 +1420,6 @@ public class GrmAdapterController {
 		model.addAttribute("apiAuthKey", apiAuthKey);
 		model.addAttribute("apiInfoList", this.getApiInfoList());
 		model.addAttribute("idCardMockImageInfoList", this.getIdCardMockImageInfoList());
-//		model.addAttribute("idCardMockImageInfoList", null);
-		
 		model.addAttribute("urlForRequestMockData", URL_FOR_REQUEST_MOCK_DATA);
 		model.addAttribute("paramNameForRequestMockData", PARAM_NAME_FOR_REQUEST_MOCK_DATA);
 
@@ -1533,18 +1498,6 @@ public class GrmAdapterController {
 		return apiInfoList;
 	}
 
-	
-	/*
-	@RequestMapping(path = { URL_FOR_REQUEST_MOCK_IMAGE }, method = { RequestMethod.GET })
-	public @ResponseBody String getApiTestRequestMockImage(@RequestParam MultiValueMap<String, String> map)
-			throws ClassNotFoundException, IOException {
-	
-		String firstParamValue = map.getFirst(PARAM_NAME_FOR_REQUEST_MOCK_DATA);
-		
-		return mockData;
-	}
-	*/
-	
 	public List<Map<String, String>> getIdCardMockImageInfoList() throws IOException {
 		List<Map<String, String>> idCardMockImageInfoList = new ArrayList<>();
 		
@@ -1587,12 +1540,7 @@ public class GrmAdapterController {
 		
 		String cpth = "classpath*:" + MOCK_IMAGE_ROOT_PATH + "/*." + IMAGE_DATA_FILE_EXTENSION;
 		
-//		log.warn("**************************");
-//		log.warn("cpth : " + cpth);
-		
 		Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(new DefaultResourceLoader()).getResources(cpth);
-		
-//		log.warn("resources.length : " + resources.length);
 		
 		List<Resource> asList = Arrays.asList(resources);
 		asList.sort(new Comparator<Resource>() {
@@ -1602,21 +1550,16 @@ public class GrmAdapterController {
 			}
 		});
 		
-//		log.warn("asList : " + asList);
-//		log.warn("asList.size() : " + asList.size());
-		
 		for (Resource resource : asList) {
 			Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
 			List<String> lineList = lineStream.collect(Collectors.toList());
 			String idCardMockImageBase64Data = String.join("", lineList);
 			String mockImageDataFileName = resource.getFilename();
-//			log.warn("resource.getFilename() : " + resource.getFilename());
 			Map<String, String> idCardMockImageInfoMap = new HashMap<>();
 			String mockImageName = mockImageDataFileName.replaceAll("." + IMAGE_DATA_FILE_EXTENSION + "$", "");
 			idCardMockImageInfoMap.put("mockImageName", mockImageName);
 			idCardMockImageInfoMap.put("mockImageDataFileName", mockImageDataFileName);
 			idCardMockImageInfoMap.put("idCardMockImageBase64Data", idCardMockImageBase64Data);
-			
 			idCardMockImageInfoList.add(idCardMockImageInfoMap);
 		}
 		

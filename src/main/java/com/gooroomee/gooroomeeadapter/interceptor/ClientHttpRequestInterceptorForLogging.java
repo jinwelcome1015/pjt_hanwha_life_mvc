@@ -26,14 +26,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
 
-	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(ClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64);		// "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
-	
+	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(
+			ClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
+
 	private ObjectMapper objectMapper = new ObjectMapper();
-	
+
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 			throws IOException {
-		
+
 		this.traceRequest(request, body);
 
 		ClientHttpResponse response = execution.execute(request, body);
@@ -44,60 +45,50 @@ public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequest
 	}
 
 	private void traceRequest(HttpRequest request, byte[] body) throws JsonMappingException, JsonProcessingException {
-		
-		
+
 		String requestBody = new String(body, StandardCharsets.UTF_8);
-		
-		Map<String, Object> requestBodyMap = objectMapper.readValue(requestBody, new TypeReference<Map<String, Object>>() { });
-		
+
+		Map<String, Object> requestBodyMap = objectMapper.readValue(requestBody,
+				new TypeReference<Map<String, Object>>() {
+				});
+
 		@SuppressWarnings("unchecked")
 		Map<String, Object> requestBodyHeaderMap = (Map<String, Object>) requestBodyMap.get("header");
-		
+
 		String rcveSrvcId = (String) requestBodyHeaderMap.get("rcveSrvcId");
-		
-		String reqLog = new StringBuilder()
-				.append("[REQUEST]")
-				.append(" ")
-				.append("Uri : ").append(request.getURI())
-				.append(", ")
-				.append("Method : ").append(request.getMethod())
-				.append(", ")
-				.append("Request Body : ").append(new String(body, StandardCharsets.UTF_8))
-				.toString();
-		
-		if(rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId()) ) {
+
+		String reqLog = new StringBuilder().append("[REQUEST]").append(" ").append("Uri : ").append(request.getURI())
+				.append(", ").append("Method : ").append(request.getMethod()).append(", ").append("Request Body : ")
+				.append(new String(body, StandardCharsets.UTF_8)).toString();
+
+		if (rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId())) {
 			loggerForBase64DataLogging.info(reqLog);
-		}else {
+		} else {
 			log.info(reqLog);
 		}
-		
-		
+
 	}
 
 	private void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
-		
+
 		String responseBody = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
-		
-		Map<String, Object> responseBodyMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() { });
-		
+
+		Map<String, Object> responseBodyMap = objectMapper.readValue(responseBody,
+				new TypeReference<Map<String, Object>>() {
+				});
+
 		@SuppressWarnings("unchecked")
 		Map<String, Object> responseBodyHeaderMap = (Map<String, Object>) responseBodyMap.get("header");
-		
-		String rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");;
-		
-		String resLog = new StringBuilder()
-				.append("[RESPONSE]")
-				.append(" ")
-				.append("Uri : ").append(uri)
-				.append(", ")
-				.append("Status code : ").append(response.getStatusCode())
-				.append(", ")
-				.append("Response Body : ").append(responseBody)
-				.toString();
-		
-		if(rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId()) ) {
+
+		String rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");
+
+		String resLog = new StringBuilder().append("[RESPONSE]").append(" ").append("Uri : ").append(uri).append(", ")
+				.append("Status code : ").append(response.getStatusCode()).append(", ").append("Response Body : ")
+				.append(responseBody).toString();
+
+		if (rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId())) {
 			loggerForBase64DataLogging.info(resLog);
-		}else {
+		} else {
 			log.info(resLog);
 		}
 	}
