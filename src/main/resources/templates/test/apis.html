@@ -92,9 +92,9 @@
 				const sTargetText = event.target.options[event.target.selectedIndex].innerText;
 
 				if(/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText)){
-					document.querySelector('#fieldSetForIdCard').style.display = 'block';
+					document.querySelector('#divForIdCard').style.display = 'block';
 				}else{
-					document.querySelector('#fieldSetForIdCard').style.display = 'none';
+					document.querySelector('#divForIdCard').style.display = 'none';
 				}
 			});
 
@@ -232,36 +232,40 @@
 				</div>
 			</fieldset>
 			<br>
-			<fieldset id="fieldSetForIdCard" style="display: none;">
-				<legend>ID CARD</legend>
-				<div>
-					<label for="idCardType">ID CARD</label>
-					<select name="idCardType" id="idCardType">
-						<option value="">&lt;선택&gt;</option>
-						<option value="directInput">&lt;직접 입력&gt;</option>
-						<!-- <option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}" th:value="${idCardMockImageInfo.mockImageDataFileName}" th:text="${idCardMockImageInfo.mockImageName}"></option> -->
-						<option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}"
-							th:value="${idCardMockImageInfo.idCardMockImageBase64Data}"
-							th:text="${idCardMockImageInfo.mockImageName}"></option>
-
-
-						<!-- 
-						<option value="">주민등록증</option>
-						<option value="">자동차운전면허증</option>
-						<option value="">여권</option>
-						<option value="">외국인등록증</option>
-						 -->
-					</select>
-					<br>
-					<br>
-					<label for="idCardImgFile">FILE</label>
-					<input disabled="disabled" type="file" name="idCardImgFile" id="idCardImgFile" accept="image/*">
-					<br>
-					<br>
-					<img id="imgForIdCard" src="" alt="">
-				</div>
-			</fieldset>
-			<br>
+			<div id="divForIdCard" style="display: none;">
+				<!-- <fieldset id="fieldSetForIdCard" style="display: none;"> -->
+				<fieldset>
+					<legend>ID CARD</legend>
+					<div>
+						<label for="idCardType">ID CARD</label>
+						<select name="idCardType" id="idCardType">
+							<option value="">&lt;선택&gt;</option>
+							<option value="directInput">&lt;직접 입력&gt;</option>
+							<!-- <option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}" th:value="${idCardMockImageInfo.mockImageDataFileName}" th:text="${idCardMockImageInfo.mockImageName}"></option> -->
+							<option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}"
+								th:value="${idCardMockImageInfo.idCardMockImageBase64Data}"
+								th:text="${idCardMockImageInfo.mockImageName}"></option>
+	
+	
+							<!-- 
+							<option value="">주민등록증</option>
+							<option value="">자동차운전면허증</option>
+							<option value="">여권</option>
+							<option value="">외국인등록증</option>
+							 -->
+						</select>
+						<br>
+						<br>
+						<label for="idCardImgFile">FILE</label>
+						<input disabled="disabled" type="file" name="idCardImgFile" id="idCardImgFile" accept="image/*">
+						<br>
+						<br>
+						<img id="imgForIdCard" src="" alt="">
+					</div>
+				</fieldset>
+				<br>
+			</div>
+			
 			<fieldset>
 				<legend>API-REQUEST</legend>
 				<div>
