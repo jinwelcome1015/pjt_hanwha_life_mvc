@@ -28,7 +28,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		
 		registry
 			.addInterceptor(apiLoggingInterceptor)
-				.order(2)
+				.order(1)
 				.addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**")
 				.excludePathPatterns("/js/**");
 		
@@ -36,7 +36,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		if(isApiAuthEnabled) {
 			registry
 				.addInterceptor(authInterceptor)
-					.order(1)
+					.order(2)
 					.addPathPatterns("/intrf/**");
 		}
 	}

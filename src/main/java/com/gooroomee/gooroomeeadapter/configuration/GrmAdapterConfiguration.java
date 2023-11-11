@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -27,8 +28,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
+import com.gooroomee.gooroomeeadapter.filter.CustomServletWrappingFilter;
 import com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +69,14 @@ public class GrmAdapterConfiguration {
 		return propertiesFactoryBean;
 	}
 	*/
+	
+	@Bean
+	public FilterRegistrationBean<CustomServletWrappingFilter> filterRegistrationBean(){
+		FilterRegistrationBean<CustomServletWrappingFilter> filterRegistrationBean = new FilterRegistrationBean<>(new CustomServletWrappingFilter());
+//		filterRegistrationBean.addUrlPatterns(GrmAdapterController.API_URL_TOKEN + "/*");
+		filterRegistrationBean.addUrlPatterns("/*");
+		return filterRegistrationBean;
+	}
 	
 	@Bean
 	public ModelMapper modelMapper() {

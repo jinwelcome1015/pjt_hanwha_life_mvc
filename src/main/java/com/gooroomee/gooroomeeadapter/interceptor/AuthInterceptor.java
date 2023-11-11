@@ -30,6 +30,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			if (!xApiKey.equals(apiAuthKey)) {
 				request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, new AuthException("X-API-Key 헤더 인증 에러"));
 				request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
+				return false;
 			}
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);
