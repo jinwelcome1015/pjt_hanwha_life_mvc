@@ -1,8 +1,5 @@
 package com.gooroomee.gooroomeeadapter.constant;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -599,4 +596,5 @@ public class IfConstant {
 		private final String resultMessage;
 		
 	}
+	
 }

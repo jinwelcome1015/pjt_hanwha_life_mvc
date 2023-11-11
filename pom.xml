@@ -94,7 +94,15 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
 		</dependency>
-
+		
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<!-- 
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.1.2-jre</version>
+		</dependency>
+		 -->
 
 		<!-- 외부 라이브러리 추가 -->
 		<!-- <dependency> <groupId>korealife</groupId> <artifactId>sha256cmcrypt</artifactId> 
