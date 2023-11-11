@@ -34,23 +34,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 	
 	private static final String TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2 = "idcdOcrRqst";
 	
-
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-
-		final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-		JsonNode jsonNode = objectMapper.readTree(cachingRequest.getContentAsByteArray());
-		
-		if (request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_1) || request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2)) {
-			loggerForBase64DataLogging.info("[{}] [Request Body] : {}", request.getRequestURI(), jsonNode);
-		} else {
-			log.info("[{}] [Request Body] : {}", request.getRequestURI(), jsonNode);
-		}
-
-		return HandlerInterceptor.super.preHandle(request, response, handler);
-	}
-
+	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception exception) throws Exception {
@@ -59,14 +43,24 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 			request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, exception);
 			request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
 		}
+		
+		final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+		JsonNode requestJsonNode = objectMapper.readTree(cachingRequest.getContentAsByteArray());
+		
+		if (request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_1) || request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2)) {
+			loggerForBase64DataLogging.info("[{}] [Request Body] : {}", request.getRequestURI(), requestJsonNode);
+		} else {
+			log.info("[{}] [Request Body] : {}", request.getRequestURI(), requestJsonNode);
+		}
+		
 
 		final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
-		JsonNode jsonNode = objectMapper.readTree(cachingResponse.getContentAsByteArray());
+		JsonNode responseJsonNode = objectMapper.readTree(cachingResponse.getContentAsByteArray());
 
 		if (request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_1) || request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2)) {
-			loggerForBase64DataLogging.info("[{}] [Response Body] : {}", request.getRequestURI(), jsonNode);
+			loggerForBase64DataLogging.info("[{}] [Response Body] : {}", request.getRequestURI(), responseJsonNode);
 		} else {
-			log.info("[{}] [Response Body] : {}", request.getRequestURI(), jsonNode);
+			log.info("[{}] [Response Body] : {}", request.getRequestURI(), responseJsonNode);
 		}
 
 		HandlerInterceptor.super.afterCompletion(request, response, handler, exception);

@@ -1,6 +1,6 @@
 package com.gooroomee.gooroomeeadapter.aspect;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class GrmAdapterControllerAdvice {
 	public @ResponseBody ResponseDto<String> globalExceptionHandler(Exception exception) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		Map<String, Object> exceptionMap = new HashMap<>();
+		Map<String, Object> exceptionMap = new LinkedHashMap<String, Object>();
 		
 		String message = exception.getMessage();
 		
@@ -33,11 +33,10 @@ public class GrmAdapterControllerAdvice {
 		
 		String exceptionInfoString;
 		
-		String stackTraceJson;
 		try {
 			exceptionInfoString = objectMapper.writeValueAsString(exceptionMap);
 		} catch (JsonProcessingException jsonProcessingException) {
-			log.error("[EXCEPTION] : {}", jsonProcessingException.getMessage());
+			log.error("[JsonProcessingException] : {}", jsonProcessingException.getMessage());
 			exceptionInfoString = message;
 		}
 		
