@@ -35,16 +35,11 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 		final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
 		JsonNode jsonNode = objectMapper.readTree(cachingRequest.getContentAsByteArray());
 
-//		if (cachingRequest.getContentType() != null && cachingRequest.getContentType().contains("application/json")) {
-//		    if (cachingRequest.getContentAsByteArray() != null && cachingRequest.getContentAsByteArray().length != 0){
 		if (request.getRequestURI().contains("entry") || request.getRequestURI().contains("idcdOcrRqst")) {
 			loggerForBase64DataLogging.info("[{}] [Request Body] : {}", request.getRequestURI(), jsonNode);
 		} else {
 			log.info("[{}] [Request Body] : {}", request.getRequestURI(), jsonNode);
 		}
-
-//		    }
-//		}
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
@@ -61,15 +56,11 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 		final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
 		JsonNode jsonNode = objectMapper.readTree(cachingResponse.getContentAsByteArray());
 
-//        if (cachingResponse.getContentType() != null && cachingResponse.getContentType().contains("application/json")) {
-//            if (cachingResponse.getContentAsByteArray() != null && cachingResponse.getContentAsByteArray().length != 0) {
 		if (request.getRequestURI().contains("entry") || request.getRequestURI().contains("idcdOcrRqst")) {
 			loggerForBase64DataLogging.info("[{}] [Response Body] : {}", request.getRequestURI(), jsonNode);
 		} else {
 			log.info("[{}] [Response Body] : {}", request.getRequestURI(), jsonNode);
 		}
-//            }
-//        }
 
 		HandlerInterceptor.super.afterCompletion(request, response, handler, exception);
 	}
