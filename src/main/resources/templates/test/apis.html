@@ -71,31 +71,37 @@
 
 				const sUrl = sBaseUrl + sUrlForRequestMockData;
 
+				try {
+					fn_a();
+					const res = await axios({
+						url: sUrl,
+						method: 'GET',
+						headers: {
+							// 'X-API-Key': sApiAuthKey
+						},
+						params: {
+							[sParamNameForRequestMockData]: event.target.value
+						},
+						responseType: 'json'
+					});
 
-				const res = await axios({
-					url: sUrl,
-					method: 'GET',
-					headers: {
-						// 'X-API-Key': sApiAuthKey
-					},
-					params: {
-						[sParamNameForRequestMockData]: event.target.value
-					},
-					responseType: 'json'
-				});
+					console.log('response for [API-REQUEST]', res);
 
-				console.log('response for [API-REQUEST]', res);
+					document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);
+					document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
 
-				document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);
-				document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+					const sTargetText = event.target.options[event.target.selectedIndex].innerText;
 
-				const sTargetText = event.target.options[event.target.selectedIndex].innerText;
-
-				if(/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText)){
-					document.querySelector('#divForIdCard').style.display = 'block';
-				}else{
-					document.querySelector('#divForIdCard').style.display = 'none';
+					if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText)) {
+						document.querySelector('#divForIdCard').style.display = 'block';
+					} else {
+						document.querySelector('#divForIdCard').style.display = 'none';
+					}
+				} catch (error) {
+					alert(`[error name] : ${error.name}\n[error message] : ${error.message}`);
+					throw error;
 				}
+
 			});
 
 
@@ -108,19 +114,24 @@
 				const requestBody = document.querySelector('#requestBody').value;
 				// const oParam = JSON.parse(requestBody);
 
-				const res = await axios({
-					url: sUrl,
-					method: 'POST',
-					headers: requestHeader,
-					data: requestBody,
-					responseType: 'json'
-				});
+				try {
+					const res = await axios({
+						url: sUrl,
+						method: 'POST',
+						headers: requestHeader,
+						data: requestBody,
+						responseType: 'json'
+					});
 
-				console.log('response for [API-RESPONSE]', res);
+					console.log('response for [API-RESPONSE]', res);
 
-				const resJson = JSON.stringify(res.data, null, nJsonStringifySpace);
+					const resJson = JSON.stringify(res.data, null, nJsonStringifySpace);
 
-				document.querySelector('#responseBody').value = resJson;
+					document.querySelector('#responseBody').value = resJson;	
+				} catch (error) {
+					alert(`[error name] : ${error.name}\n[error message] : ${error.message}`);
+					throw error;
+				}
 			});
 
 			document.querySelector('#idCardType').addEventListener('change', async (event) => {
@@ -139,34 +150,34 @@
 
 				const oIdCardImgFile = document.querySelector('#idCardImgFile');
 
-				if(event.target.value === 'directInput'){
+				if (event.target.value === 'directInput') {
 					oIdCardImgFile.disabled = false;
-				}else{
+				} else {
 					oIdCardImgFile.disabled = true;
-					if((navigator.appName === 'Netscape' && navigator.userAgent.search('Trident') !== -1) || /.*mise.*/i.test(navigator.userAgent)){
+					if ((navigator.appName === 'Netscape' && navigator.userAgent.search('Trident') !== -1) || /.*mise.*/i.test(navigator.userAgent)) {
 						oIdCardImgFile.replaceWith(oIdCardImgFile.cloneNode(true));
-					}else{
+					} else {
 						oIdCardImgFile.value = '';
 					}
 				}
 			});
 
 			document.querySelector('#idCardImgFile').addEventListener('change', (event) => {
-                const aFiles = event.target.files;
-                if (aFiles.length === 1) {
+				const aFiles = event.target.files;
+				if (aFiles.length === 1) {
 					const oFile = aFiles[0];
 					let bIsImageFile = fn_isImageFile(oFile);
-					if(!bIsImageFile){
+					if (!bIsImageFile) {
 						const sMessage = '이미지 파일이 아닙니다.';
 						alert(sMessage);
 						throw new Error(sMessage);
 					}
 
-                    const oImageFile = oFile;
-                    const oFileReader = new FileReader();
-                    oFileReader.onload = () => {
-                        const sBase64Data = oFileReader.result;
-						
+					const oImageFile = oFile;
+					const oFileReader = new FileReader();
+					oFileReader.onload = () => {
+						const sBase64Data = oFileReader.result;
+
 						const jRequestBody = document.querySelector('#requestBody').value;
 						const oRequestBody = JSON.parse(jRequestBody);
 						oRequestBody.data = sBase64Data;
@@ -174,18 +185,18 @@
 
 						document.querySelector('#imgForIdCard').src = sBase64Data;
 					};
-                    oFileReader.readAsDataURL(oImageFile);
-                }else {
+					oFileReader.readAsDataURL(oImageFile);
+				} else {
 					const sMessage = `파일이 1개가 아닙니다. (${aFiles.length} 개)`;
 					alert(sMessage);
 					throw new Error(sMessage);
 				}
-            });
+			});
 		});
 
-		function fn_isImageFile(oFile){
+		function fn_isImageFile(oFile) {
 			let bIsImageFile = false;
-			if(oFile){
+			if (oFile) {
 				bIsImageFile = oFile.type.split('/')[0] === 'image';
 			}
 			return bIsImageFile;
@@ -245,8 +256,8 @@
 							<option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}"
 								th:value="${idCardMockImageInfo.idCardMockImageBase64Data}"
 								th:text="${idCardMockImageInfo.mockImageName}"></option>
-	
-	
+
+
 							<!-- 
 							<option value="">주민등록증</option>
 							<option value="">자동차운전면허증</option>
@@ -265,7 +276,7 @@
 				</fieldset>
 				<br>
 			</div>
-			
+
 			<fieldset>
 				<legend>API-REQUEST</legend>
 				<div>
