@@ -55,6 +55,8 @@
 			}
 
 			document.querySelector('#apiPath').addEventListener('change', async (event) => {
+				fn_initDivForIdCard();
+
 				document.querySelector('#requestHeader').value = '';
 				document.querySelector('#requestBody').value = '';
 				document.querySelector('#responseBody').value = '';
@@ -201,6 +203,20 @@
 			return bIsImageFile;
 		}
 
+		function fn_initDivForIdCard() {
+			document.querySelector('#idCardType').selectedIndex = 0;
+			const oImgForIdCard = document.querySelector('#imgForIdCard');
+			oImgForIdCard.setAttribute('src', '');
+			oImgForIdCard.setAttribute('alt', '');
+
+			const oIdCardImgFile = document.querySelector('#idCardImgFile');
+			oIdCardImgFile.disabled = true;
+			if ((navigator.appName === 'Netscape' && navigator.userAgent.search('Trident') !== -1) || /.*mise.*/i.test(navigator.userAgent)) {
+				oIdCardImgFile.replaceWith(oIdCardImgFile.cloneNode(true));
+			} else {
+				oIdCardImgFile.value = '';
+			}
+		}
 
 	</script>
 </head>
@@ -243,14 +259,13 @@
 			</fieldset>
 			<br>
 			<div id="divForIdCard" style="display: none;">
-				<!-- <fieldset id="fieldSetForIdCard" style="display: none;"> -->
 				<fieldset>
 					<legend>ID CARD</legend>
 					<div>
 						<label for="idCardType">ID CARD</label>
 						<select name="idCardType" id="idCardType">
 							<option value="">&lt;선택&gt;</option>
-							<option value="directInput">&lt;직접 입력&gt;</option>
+							<option value="directInput">00.직접 입력</option>
 							<!-- <option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}" th:value="${idCardMockImageInfo.mockImageDataFileName}" th:text="${idCardMockImageInfo.mockImageName}"></option> -->
 							<option th:each="idCardMockImageInfo : ${idCardMockImageInfoList}"
 								th:value="${idCardMockImageInfo.idCardMockImageBase64Data}"
