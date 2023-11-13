@@ -10,24 +10,24 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc011ReqDto {
-	
+
 	/** 사원번호 */
 	public String emnb;
-	
+
 	/** 화면 ID */
 	@JsonProperty("SCRN_ID")
 	private String SCRN_ID;
-	
+
 	/** 사용자ID */
 	@JsonProperty("USER_ID")
 	private String USER_ID;
-	
+
 	/** 이니텍인증토큰 */
 	private String initechOAuthToken;
-	
+
 	/** 인증서비스ID */
 	private String pid;
-	
+
 	/** 사용자이름 */
 	private String uname;
 
@@ -39,11 +39,11 @@ public class Mvc011ReqDto {
 
 	/** 사용자휴대폰번호 */
 	private String uphone;
-	
+
 	/** 요청환경코드 */
 	private String deviceCode;
 
 	/** 요청브라우저타입 */
 	private String deviceBrowser;
-	
+
 }

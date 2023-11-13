@@ -27,8 +27,7 @@ public class CustomServletWrappingFilter extends OncePerRequestFilter {
 	ObjectMapper objectMapper;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 		ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
 		ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);

@@ -8,10 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc015ReqDto {
-	
+
 	/** 사원번호 */
 	public String emnb;
-	
+
 	/** URL_MOBILE */
 	private String url_mobile;
 

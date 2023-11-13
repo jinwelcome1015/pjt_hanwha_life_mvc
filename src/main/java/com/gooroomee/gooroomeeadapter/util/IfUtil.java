@@ -63,8 +63,7 @@ public class IfUtil {
 	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	public IfUtil(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
 		super();
@@ -133,8 +132,8 @@ public class IfUtil {
 		return targetFullUrl;
 	}
 
-	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header, I inputDto,
-			Class<O> outputDtoClass) throws JsonProcessingException, URISyntaxException {
+	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header, I inputDto, Class<O> outputDtoClass)
+			throws JsonProcessingException, URISyntaxException {
 
 		IfTelegram<I> requestTelegram = new IfTelegram<I>();
 		requestTelegram.setHeader(header);
@@ -149,8 +148,7 @@ public class IfUtil {
 
 		String targetFullUrl = getTargetFullUrl(ifType);
 
-		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST,
-				new URI(targetFullUrl));
+		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
 
 		ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 		String responseBody = responseEntity.getBody();
@@ -205,8 +203,7 @@ public class IfUtil {
 
 				while (inetAddresses.hasMoreElements()) {
 					InetAddress inetAddress = (InetAddress) inetAddresses.nextElement();
-					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()
-							&& inetAddress.isSiteLocalAddress()) {
+					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
 						return inetAddress.getHostAddress();
 					}
 

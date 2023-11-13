@@ -76,16 +76,13 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	@Value(value = "${interface.encrypt.aes-iv}")
 	private String encryptAesIv;
 
-	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass)
-			throws JsonProcessingException, URISyntaxException {
+	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
 
 		IfUtil ifUtil = new IfUtil(restTemplate, emnb, activeProfile, ifEndpointUrl);
 
-		IfTelegramHeader inputTelegramHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
-				ifSpec.getRcveSysCode());
+		IfTelegramHeader inputTelegramHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode());
 
-		IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputTelegramHeader,
-				ifInputDto, ifOutputDtoClass);
+		IfTelegram<O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputTelegramHeader, ifInputDto, ifOutputDtoClass);
 
 		O ifOutputDto = outputTelegram.getPayload();
 

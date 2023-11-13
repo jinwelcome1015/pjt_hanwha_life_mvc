@@ -45,8 +45,6 @@ public class GrmAdapterConfiguration {
 	private static final int MAXIMUM_TOTAL_CONNECTION = 50;
 	private static final int MAXIMUM_CONNECTION_PER_ROUTE = 20;
 
-	
-	
 	@Autowired
 	ClientHttpRequestInterceptorForLogging restTemplateLoggingRequestInterceptor;
 
@@ -54,55 +52,42 @@ public class GrmAdapterConfiguration {
 	private String springProfilesActive;
 
 	@Bean
-	public FilterRegistrationBean<CustomServletWrappingFilter> filterRegistrationBean(){
+	public FilterRegistrationBean<CustomServletWrappingFilter> filterRegistrationBean() {
 		FilterRegistrationBean<CustomServletWrappingFilter> filterRegistrationBean = new FilterRegistrationBean<>(new CustomServletWrappingFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
 		return filterRegistrationBean;
 	}
-	
+
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration()
-				.setFieldAccessLevel(AccessLevel.PRIVATE)
-				.setFieldMatchingEnabled(true)
-				.setMatchingStrategy(MatchingStrategies.STRICT);
+		modelMapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE).setFieldMatchingEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
 
 		return modelMapper;
 	}
 
 	@Bean
 	public ObjectMapper objectMapper() {
-		ObjectMapper objectMapper = new ObjectMapper()
-				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-				.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-				.registerModule(new SimpleModule())
-				;
+		ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+				.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).registerModule(new SimpleModule());
 		return objectMapper;
 	}
-		
-	
+
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
 
-		HttpClient httpClient = HttpClientBuilder.create()
-				.setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION)
-				.setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE)
-				.build();
+		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION).setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE).build();
 
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		factory.setHttpClient(httpClient);
 
-		RestTemplate restTemplate = restTemplateBuilder
-				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
+		RestTemplate restTemplate = restTemplateBuilder.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
 				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
 				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
-				.additionalInterceptors(restTemplateLoggingRequestInterceptor)
-				.build();
+				.additionalInterceptors(restTemplateLoggingRequestInterceptor).build();
 
 		if (log.isDebugEnabled()) {
-			ClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(
-					new SimpleClientHttpRequestFactory());
+			ClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
 			restTemplate.setRequestFactory(clientHttpRequestFactory);
 			return restTemplate;
 		}

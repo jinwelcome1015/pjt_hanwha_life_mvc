@@ -35,8 +35,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 	private static final String TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2 = "idcdOcrRqst";
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-			Exception exception) throws Exception {
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
 
 		if (exception != null) {
 			request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, exception);

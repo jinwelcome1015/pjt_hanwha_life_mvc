@@ -16,9 +16,8 @@ import org.apache.commons.codec.binary.Base64;
 
 public class AesUtil {
 
-	public static String encrypt(String plain, String key, String iv)
-			throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-			InvalidKeyException, InvalidAlgorithmParameterException {
+	public static String encrypt(String plain, String key, String iv) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(Base64.decodeBase64(key.getBytes()), "AES"),
 				new IvParameterSpec(Base64.decodeBase64(iv.getBytes())));
@@ -27,8 +26,7 @@ public class AesUtil {
 		return new String(Base64.encodeBase64(bytes));
 	}
 
-	public static String decrypt(String encrypted, String key, String iv)
-			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+	public static String decrypt(String encrypted, String key, String iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
 			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Base64.decodeBase64(key.getBytes()), "AES"),
@@ -36,5 +34,5 @@ public class AesUtil {
 		byte[] bytes = cipher.doFinal(Base64.decodeBase64(encrypted.getBytes()));
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
-	
+
 }

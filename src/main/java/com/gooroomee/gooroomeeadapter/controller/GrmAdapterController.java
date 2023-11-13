@@ -15,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,44 +145,41 @@ public class GrmAdapterController {
 	/** aes-iv */
 	@Value(value = "${interface.encrypt.aes-iv}")
 	private String aesIv;
-	
+
 	/** ocr secret-key */
 	@Value(value = "${interface.ocr.secret-key}")
 	private String ocrSecretKey;
-	
 
-	
-	
 	@Autowired
 	private GrmAdapterService gooroomeeAdapterService;
-	
+
 	@Autowired
 	private ObjectMapper objectMapper;
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	public static final String EXCEPTION_CONTROLLER_PATH = "/exception";
 
 	public static final String EXCEPTION_ATTRIBUTE_NAME = "exception";
-	
+
 	public static final String API_URL_TOKEN = "/intrf";
 
 	private static final String URL_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
-	
+
 //	private static final String URL_FOR_REQUEST_MOCK_IMAGE = "/test/api/mockImage/req";
 
 	private static final String PARAM_NAME_FOR_REQUEST_MOCK_DATA = "apiPath";
-	
+
 //	private static final String PARAM_NAME_FOR_REQUEST_MOCK_IMAGE = "imageName";
-	
+
 	private static final String PERSONAL_NUMBER_DELIMITER = "-";
 	private static final String DRIVER_LICENSE_NUMBER_DELIMITER = "-";
-	
+
 	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage";
-	
+
 	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
-	
+
 	/**
 	 * 
 	 * 
@@ -194,93 +190,91 @@ public class GrmAdapterController {
 		String trflCnfmDvsnCode = null;
 		OcrIdType[] ocrIdTypes = IfConstant.OcrIdType.values();
 		for (OcrIdType ocrIdType : ocrIdTypes) {
-			if(ocrIdType.getName().equals(idType)) {
+			if (ocrIdType.getName().equals(idType)) {
 				trflCnfmDvsnCode = ocrIdType.getTrflCnfmDvsnCode();
 				break;
 			}
 		}
 		return trflCnfmDvsnCode;
 	}
-	
-	
+
 	private String getCustNm(JsonNode ocrResultReadTree) {
 		String custNm = null;
-		
+
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		
-		if(idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
+
+		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("ic").get("name").get(0).get("text").asText();
-		}else if(idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("dl").get("name").get(0).get("text").asText();
-		}else if(idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("pp").get("fullNameKor").get(0).get("text").asText();
-		}else if(idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("ac").get("name").get(0).get("text").asText();
 		}
 		return custNm;
 	}
-	
-	
+
 	private String getIsncDate(JsonNode ocrResultReadTree) {
 		String issueDate = null;
-		
+
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		
-		if(idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
+
+		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String issueYear = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("year").asText();
 			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("month").asText();
 			String issueDay = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("day").asText();
 			issueDate = issueYear + issueMonth + issueDay;
-		}else if(idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
 			String issueYear = ocrResultReadTree.get("idCard").get("result").get("dl").get("issueDate").get(0).get("formatted").get("year").asText();
 			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("dl").get("issueDate").get(0).get("formatted").get("month").asText();
 			String issueDay = ocrResultReadTree.get("idCard").get("result").get("dl").get("issueDate").get(0).get("formatted").get("day").asText();
 			issueDate = issueYear + issueMonth + issueDay;
-		}else if(idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
 			String issueYear = ocrResultReadTree.get("idCard").get("result").get("pp").get("issueDate").get(0).get("formatted").get("year").asText();
 			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("pp").get("issueDate").get(0).get("formatted").get("month").asText();
 			String issueDay = ocrResultReadTree.get("idCard").get("result").get("pp").get("issueDate").get(0).get("formatted").get("day").asText();
 			issueDate = issueYear + issueMonth + issueDay;
-		}else if(idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			String issueYear = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("year").asText();
 			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("month").asText();
 			String issueDay = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("day").asText();
 			issueDate = issueYear + issueMonth + issueDay;
 		}
-		
+
 		return issueDate;
 	}
-	
+
 	private String getBtdt(JsonNode ocrResultReadTree) {
 		String btdt = null;
-		
+
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		
-		if(idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
+
+		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
 			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
 			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
-		}else if(idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
 			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
 			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
-		}else if(idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
 			String birthDateYear = ocrResultReadTree.get("idCard").get("result").get("pp").get("birthDate").get(0).get("formatted").get("year").asText();
 			String birthDateMonth = ocrResultReadTree.get("idCard").get("result").get("pp").get("birthDate").get(0).get("formatted").get("month").asText();
 			String birthDateDay = ocrResultReadTree.get("idCard").get("result").get("pp").get("birthDate").get(0).get("formatted").get("day").asText();
 			btdt = birthDateYear + birthDateMonth + birthDateDay;
-		}else if(idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			String alienRegNum = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
 			String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
 			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
 		}
-		
+
 		return btdt;
 	}
-	
+
 	private String getFirst2digitsOfBirthYearFromRegNumFirst1digit(String regNumFirst1digit) {
 		String first2digitsOfBirthYear = "";
-		
+
 		switch (regNumFirst1digit) {
 		case "9":
 		case "0":
@@ -302,30 +296,29 @@ public class GrmAdapterController {
 		}
 		return first2digitsOfBirthYear;
 	}
-	
+
 	private String getSex(JsonNode ocrResultReadTree) {
 		String sex = null;
-		
+
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		
-		if(idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
+
+		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
 			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F"; 
-		}else if(idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
+		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
 			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
 			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
-		}else if(idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
 			sex = ocrResultReadTree.get("idCard").get("result").get("pp").get("sex").get(0).get("text").asText();
-		}else if(idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			sex = ocrResultReadTree.get("idCard").get("result").get("ac").get("sex").get(0).get("text").asText();
 		}
-		
+
 		return sex;
 	}
-	
-	
+
 	public Date transformDate(String date) throws ParseException {
 		SimpleDateFormat beforeFormat = new SimpleDateFormat("yyyymmdd");
 
@@ -341,29 +334,7 @@ public class GrmAdapterController {
 
 		return d;
 	}
-	
-	
-	/*
-	public static void main(String[] args) throws URISyntaxException, IOException, ParseException {
-		
-		GrmAdapterController grmAdapterController = new GrmAdapterController();
-		String ocrResultJson = "[{\"uid\":\"a513711d3b514f6fb11ad3dc3848df1f\",\"validationResult\":{\"result\":\"NO_REQUESTED\"},\"inferResult\":\"SUCCESS\",\"idCard\":{\"result\":{\"idtype\":\"ID Card\",\"rois\":[{\"vertices\":[{\"x\":3.1388545,\"y\":3.9956706},{\"x\":754.52325,\"y\":-5.092327},{\"x\":747.84045,\"y\":473.14856},{\"x\":2.264223,\"y\":474.4076}]}],\"ic\":{\"address\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":51.675,\"y\":235.1875},{\"x\":192.7875,\"y\":235.1875},{\"x\":192.7875,\"y\":272.2875},{\"x\":51.675,\"y\":272.2875}]},{\"vertices\":[{\"x\":53.6625,\"y\":268.3125},{\"x\":263.67496,\"y\":268.3125},{\"x\":263.67496,\"y\":304.0875},{\"x\":53.6625,\"y\":304.0875}]},{\"vertices\":[{\"x\":203.3875,\"y\":235.85},{\"x\":387.5625,\"y\":235.85},{\"x\":387.5625,\"y\":270.9625},{\"x\":203.3875,\"y\":270.9625}]},{\"vertices\":[{\"x\":271.625,\"y\":268.975},{\"x\":347.15,\"y\":268.975},{\"x\":347.15,\"y\":302.7625},{\"x\":271.625,\"y\":302.7625}]}],\"formatted\":{\"value\":\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\"},\"text\":\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\",\"maskingPolys\":[]}],\"authority\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":146.53316,\"y\":381.33884},{\"x\":326.93195,\"y\":383.12497},{\"x\":326.47778,\"y\":428.99695},{\"x\":146.07898,\"y\":427.21082}]},{\"vertices\":[{\"x\":343.17493,\"y\":382.92496},{\"x\":524.6999,\"y\":382.92496},{\"x\":524.6999,\"y\":427.31247},{\"x\":343.17493,\"y\":427.31247}]},{\"vertices\":[{\"x\":525.3625,\"y\":374.975},{\"x\":622.75,\"y\":374.975},{\"x\":622.75,\"y\":429.3},{\"x\":525.3625,\"y\":429.3}]}],\"formatted\":{\"value\":\"서울특별시 금천구청장\"},\"text\":\"서울특별시 금천구청장 청바\",\"maskingPolys\":[]}],\"name\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":72.2125,\"y\":116.6},{\"x\":367.6875,\"y\":116.6},{\"x\":367.6875,\"y\":165.625},{\"x\":72.2125,\"y\":165.625}]}],\"formatted\":{\"value\":\"홍길동\"},\"text\":\"홍길동\",\"maskingPolys\":[]}],\"personalNum\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":65.5875,\"y\":181.52498},{\"x\":363.71246,\"y\":181.52498},{\"x\":363.71246,\"y\":216.63748},{\"x\":65.5875,\"y\":216.63748}]}],\"formatted\":{\"value\":\"800101-2345678\"},\"text\":\"800101-2345678\",\"maskingPolys\":[{\"vertices\":[{\"x\":211.13873,\"y\":178.01373},{\"x\":367.22372,\"y\":178.01373},{\"x\":367.22372,\"y\":220.14873},{\"x\":211.13873,\"y\":220.14873}]}]}],\"issueDate\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":242.475,\"y\":351.7875},{\"x\":374.3125,\"y\":351.7875},{\"x\":374.3125,\"y\":381.6},{\"x\":242.475,\"y\":381.6}]},{\"vertices\":[{\"x\":372.98746,\"y\":352.44995},{\"x\":422.01245,\"y\":352.44995},{\"x\":422.01245,\"y\":380.93747},{\"x\":372.98746,\"y\":380.93747}]}],\"formatted\":{\"month\":\"08\",\"year\":\"2020\",\"day\":\"16\"},\"text\":\"2020.08.16\",\"maskingPolys\":[{\"vertices\":[{\"x\":239.52966,\"y\":349.0218},{\"x\":424.9578,\"y\":349.0217},{\"x\":424.9578,\"y\":384.3657},{\"x\":239.52968,\"y\":384.36578}]}]}]},\"isConfident\":true},\"meta\":{\"estimatedLanguage\":\"ko\"}},\"name\":\"test_idcard\",\"message\":\"SUCCESS\"}]";
-		JsonNode ocrResultReadTrees = new ObjectMapper().readTree(ocrResultJson);
-		
-		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
-		
-		String idType = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		String trflCnfmDvsnCode = grmAdapterController.getTrflCnfmDvsnCodeFromIdType(idType);
-	
-		String custNm = grmAdapterController.getCustNm(ocrResultReadTree);
-		String btdt = grmAdapterController.getBtdt(ocrResultReadTree);
-		String isncDate = grmAdapterController.getIsncDate(ocrResultReadTree);
-		String sex = grmAdapterController.getSex(ocrResultReadTree);
-		System.out.println("");
-	}
-	*/
-	
-	
+
 	/**
 	 * <pre>
 	 * [01, 02, 09, 03]
@@ -378,10 +349,12 @@ public class GrmAdapterController {
 	 * @return
 	 * @throws URISyntaxException
 	 * @throws IOException
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/entry"), (API_URL_TOKEN + "/entry" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "00. 진입")
-	public @ResponseBody ResponseDto<Mvc000ResDto> entry(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request) throws URISyntaxException, IOException, ParseException {
+	@RequestMapping(path = { (API_URL_TOKEN + "/entry"), (API_URL_TOKEN + "/entry" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "00. 진입")
+	public @ResponseBody ResponseDto<Mvc000ResDto> entry(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException, ParseException {
 
 		// XXX [01] 신분증OCR요청
 		ResponseDto<Mvc001ResDto> response001dto = this.idcdOcrRqst(mvc001ReqDto, request);
@@ -389,20 +362,20 @@ public class GrmAdapterController {
 
 //		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
 		Mvc001ResDto.DataBody mvc001ResDtoDataBody = mvc001ResDto.getDataBody();
-		
+
 		String ocrResultJson = mvc001ResDtoDataBody.getImages();
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
-		
+
 		/*
 		if (ocrResultReadTrees.size() != 1) {
 			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
 			throw new IfException(message);
 		}
 		*/
-		
+
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
-		
+
 		/*
 		if(!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
 			String message = ocrResultReadTree.get("message").asText();
@@ -410,7 +383,7 @@ public class GrmAdapterController {
 			throw new IfException(message);
 		}
 		*/
-		
+
 		Mvc000ResDto mvc000ResDto = new Mvc000ResDto();
 
 		String emnb = mvc001ReqDto.getEmnb();
@@ -429,7 +402,6 @@ public class GrmAdapterController {
 		mvc000ResDto.setIdType(idType);
 		mvc000ResDto.setCustGender(sex);
 
-		
 		// XXX [02] 진위확인결과조회
 		Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();
 
@@ -456,26 +428,22 @@ public class GrmAdapterController {
 		mvc002ReqDto.setExpyDate(null);
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
-			String rrno = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text")
-					.asText();
+			String rrno = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
 			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
 
 			mvc002ReqDto.setRrno(rrno);
 		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
-			String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0)
-					.get("text").asText();
+			String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
 			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
 
 			mvc002ReqDto.setDrvnLcnsSqno("");
 			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
 		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
-			String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0)
-					.get("text").asText();
+			String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0).get("text").asText();
 
 			mvc002ReqDto.setPsprNo(passportNumber);
 		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
-			String alienRegistrationNumber = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum")
-					.get(0).get("text").asText();
+			String alienRegistrationNumber = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
 
 			mvc002ReqDto.setFrnrRgstNo(alienRegistrationNumber);
 		}
@@ -495,7 +463,6 @@ public class GrmAdapterController {
 
 		String custId = mvc002ResDto.getCustId();
 		mvc000ResDto.setCustId(custId);
-
 
 		// XXX [09] 개인정보유출노출여부조회
 		Mvc009ReqDto mvc009ReqDto = new Mvc009ReqDto();
@@ -529,11 +496,6 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
-	
-	
-	
-	
-
 
 	/**
 	 * <pre>
@@ -546,29 +508,29 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "01. 신분증OCR요청")
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "01. 신분증OCR요청")
 	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst(@RequestBody Mvc001ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 //		IfMcCs001_I cs001_I = modelMapper.map(reqDto, IfMcCs001_I.class);
-		
+
 		IfMcCs001_I.DataHeader dataHeader = new IfMcCs001_I.DataHeader();
 
 		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
-		
+
 		// TODO 확인 필요
 //		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
 		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
-		
+
 		dataHeader.setX_OCR_SECRET(ocrSecretKey);
-		
+
 //		dataHeader.setCRTF_RTCD("");
-		
+
 //		dataHeader.setDLRE_MSG("");
-		
-		
+
 		Image image = new IfMcCs001_I.DataBody.Image();
-		
+
 		String imageFormat = reqDto.getFormat();
 		image.setFormat(imageFormat);
 
@@ -576,29 +538,26 @@ public class GrmAdapterController {
 		String regexBase64prefix = "^.+\\,";
 		String refinedImageBase64Data = imageBase64Data.replaceAll(regexBase64prefix, "");
 		image.setData(refinedImageBase64Data);
-		
+
 		String imageName = reqDto.getName();
 		image.setName(imageName);
-		
+
 		List<Image> imageList = new ArrayList<>();
-	    imageList.add(image);
-		
-		
-		
+		imageList.add(image);
+
 		IfMcCs001_I.DataBody dataBody = new IfMcCs001_I.DataBody();
-		
+
 		dataBody.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
-		
+
 		String userId = reqDto.getUSER_ID();
 		dataBody.setUSER_ID(userId);
-		
-		dataBody.setImages(imageList);
 
+		dataBody.setImages(imageList);
 
 		IfMcCs001_I ifInputDto = new IfMcCs001_I();
 		ifInputDto.setDataHeader(dataHeader);
 		ifInputDto.setDataBody(dataBody);
-		
+
 		/*
 		String emnb = reqDto.getEmnb();
 		
@@ -606,12 +565,12 @@ public class GrmAdapterController {
 		
 		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
 		*/
-		
+
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
 		Class<IfMcCs001_O> ifOutputDtoClass = IfMcCs001_O.class;
 		IfMcCs001_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
+
 		String ocrResultJson = ifOutputDto.getDataBody().getImages();
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
@@ -622,23 +581,20 @@ public class GrmAdapterController {
 		}
 
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
-		
-		if(!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
+
+		if (!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
 			String message = ocrResultReadTree.get("message").asText();
 			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
 			throw new IfException(message);
 		}
-		
+
 		Mvc001ResDto resDto = modelMapper.map(ifOutputDto, Mvc001ResDto.class);
 
 		ResponseDto<Mvc001ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
-		return responseDto; 
-		
+		return responseDto;
+
 	}
-	
-	
-	
 
 	/**
 	 * <pre>
@@ -651,12 +607,13 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "02. 진위확인결과조회")
+	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "02. 진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-	
+
 		IfMcCs002_I ifInputDto = modelMapper.map(reqDto, IfMcCs002_I.class);
-	
+
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
@@ -667,14 +624,12 @@ public class GrmAdapterController {
 		}
 		*/
 		Mvc002ResDto resDto = modelMapper.map(ifOutputDto, Mvc002ResDto.class);
-	
+
 		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
+
 		return responseDto;
 	}
-	
-	
-	
+
 	/**
 	 * <pre>
 	 * [03] 
@@ -686,13 +641,14 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan"), (API_URL_TOKEN + "/itfcIdcdScan" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "03. 신분증스캔후처리")
+	@RequestMapping(path = { (API_URL_TOKEN + "/itfcIdcdScan"), (API_URL_TOKEN + "/itfcIdcdScan" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "03. 신분증스캔후처리")
 	public @ResponseBody ResponseDto<Mvc003ResDto> itfcIdcdScan(@RequestBody Mvc003ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 		IfMcCs003_I ifInputDto = modelMapper.map(reqDto, IfMcCs003_I.class);
 		ifInputDto.setPushRcvrEmnb(reqDto.getEmnb());
-	
+
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
@@ -702,16 +658,14 @@ public class GrmAdapterController {
 			throw new IfException("싱글뷰 오픈 메세지 전송에 실패했습니다.");
 		}
 		*/
-		
+
 		Mvc003ResDto resDto = modelMapper.map(ifOutputDto, Mvc003ResDto.class);
-	
+
 		ResponseDto<Mvc003ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
+
 		return responseDto;
 	}
-	
-	
-	
+
 	/**
 	 * <pre>
 	 * [05]
@@ -727,7 +681,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "05. SSO대체로그인인증")
 	public @ResponseBody ResponseDto<Mvc005ResDto> itfcUserCtfn(@RequestBody Mvc005ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 //		IfMcCs005_I cs005_I = modelMapper.map(reqDto, IfMcCs005_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -742,13 +696,13 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
 		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
 		IfMcCs005_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-		
-		String rspnCodeVal = ifOutputDto.getRspnCodeVal();		// "00":오류, "01":정상
-		
+
+		String rspnCodeVal = ifOutputDto.getRspnCodeVal(); // "00":오류, "01":정상
+
 		if (!"01".equalsIgnoreCase(rspnCodeVal)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto.getRspnMsgeCntn(), ifOutputDto.getRspnMsgeUniqId()));
 		}
-		
+
 		Mvc005ResDto resDto = modelMapper.map(ifOutputDto, Mvc005ResDto.class);
 
 		ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -756,8 +710,6 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
-	
-	
 	/**
 	 * 
 	 * <pre>
@@ -770,10 +722,11 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/empeInqy"), (API_URL_TOKEN + "/empeInqy" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "06. 사원목록조회")
+	@RequestMapping(path = { (API_URL_TOKEN + "/empeInqy"), (API_URL_TOKEN + "/empeInqy" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "06. 사원목록조회")
 	public @ResponseBody ResponseDto<Mvc006ResDto> empeInqy(@RequestBody Mvc006ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 		IfMcCs006_I ifInputDto = modelMapper.map(reqDto, IfMcCs006_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -782,10 +735,10 @@ public class GrmAdapterController {
 		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
 		IfMcCs006_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		if(ifOutputDto.getEmpeInfoList() == null || ifOutputDto.getEmpeInfoList().size() == 0) {
+		if (ifOutputDto.getEmpeInfoList() == null || ifOutputDto.getEmpeInfoList().size() == 0) {
 			throw new IfException("조회된 사원이 없습니다.");
 		}
-		
+
 		Mvc006ResDto resDto = modelMapper.map(ifOutputDto, Mvc006ResDto.class);
 
 		ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -793,7 +746,6 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 
-	
 	/**
 	 * 
 	 * <pre>
@@ -810,7 +762,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "07. 고객계약정보조회")
 	public @ResponseBody ResponseDto<Mvc007ResDto> intgCustInqyMgmt(@RequestBody Mvc007ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 		IfMcCs007_I ifInputDto = modelMapper.map(reqDto, IfMcCs007_I.class);
 		ifInputDto.setCntcDvsnCode(IfConstant.ContractClassificationCode.INSURANCE.getCode());
 		ifInputDto.setCustDvsnCode(IfConstant.CustomerDivisionCode.INDIVIDUAL.getCode());
@@ -818,18 +770,16 @@ public class GrmAdapterController {
 		ifInputDto.setPageSize(50);
 
 		String emnb = reqDto.getEmnb();
-		
+
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
 		Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
 		IfMcCs007_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		
 //		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0 || ifOutputDto.getTotCont() == 0) {
 		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0) {
 			throw new IfException("조회된 고객계약정보가 없습니다.");
 		}
-		
-		
+
 		Mvc007ResDto resDto = modelMapper.map(ifOutputDto, Mvc007ResDto.class);
 
 		ResponseDto<Mvc007ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -849,7 +799,8 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust"), (API_URL_TOKEN + "/intgCust" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "08. 고객계좌목록조회")
+	@RequestMapping(path = { (API_URL_TOKEN + "/intgCust"), (API_URL_TOKEN + "/intgCust" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "08. 고객계좌목록조회")
 	public @ResponseBody ResponseDto<Mvc008ResDto> intgCust(@RequestBody Mvc008ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 
@@ -865,7 +816,7 @@ public class GrmAdapterController {
 		if (ifOutputDto.getCustAcntListInqyList() == null || ifOutputDto.getCustAcntListInqyList().size() == 0) {
 			throw new IfException("조회된 고객계좌정보가 없습니다.");
 		}
-		
+
 		Mvc008ResDto resDto = modelMapper.map(ifOutputDto, Mvc008ResDto.class);
 
 		ResponseDto<Mvc008ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -889,7 +840,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "09. 개인정보유출노출여부조회")
 	public @ResponseBody ResponseDto<Mvc009ResDto> prsnInfoLeakMgmt(@RequestBody Mvc009ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 		IfMcCs009_I ifInputDto = modelMapper.map(reqDto, IfMcCs009_I.class);
 
 		String emnb = reqDto.getEmnb();
@@ -922,7 +873,7 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "10. 간편인증 토큰발급")
 	public @ResponseBody ResponseDto<Mvc010ResDto> initechToken(@RequestBody Mvc010ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
 
 		IfMcCs010_I.DataHeader dataHeader = new IfMcCs010_I.DataHeader();
@@ -953,12 +904,12 @@ public class GrmAdapterController {
 		Class<IfMcCs010_O> ifOutputDtoClass = IfMcCs010_O.class;
 		IfMcCs010_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD();		// 처리결과코드 ("0000":정상, 그외:실패)
-		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();		
+		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
+		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
 		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
 		}
-		
+
 		Mvc010ResDto resDto = modelMapper.map(ifOutputDto, Mvc010ResDto.class);
 
 		ResponseDto<Mvc010ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -977,121 +928,110 @@ public class GrmAdapterController {
 	 * @return
 	 * @throws URISyntaxException
 	 * @throws IOException
-	 * @throws InvalidAlgorithmParameterException 
-	 * @throws BadPaddingException 
-	 * @throws IllegalBlockSizeException 
-	 * @throws NoSuchPaddingException 
-	 * @throws NoSuchAlgorithmException 
-	 * @throws InvalidKeyException 
+	 * @throws InvalidAlgorithmParameterException
+	 * @throws BadPaddingException
+	 * @throws IllegalBlockSizeException
+	 * @throws NoSuchPaddingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeyException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest"), (API_URL_TOKEN + "/initechRequest" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "11. 간편인증 요청")
+	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest"), (API_URL_TOKEN + "/initechRequest" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "11. 간편인증 요청")
 	public @ResponseBody ResponseDto<Mvc011ResDto> initechRequest(@RequestBody Mvc011ReqDto reqDto, HttpServletRequest request)
-			throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-		
-	//		IfMcCs011_I cs011_I = modelMapper.map(reqDto, IfMcCs011_I.class);
-	    
+			throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException, InvalidAlgorithmParameterException {
+
+		// IfMcCs011_I cs011_I = modelMapper.map(reqDto, IfMcCs011_I.class);
+
 		IfMcCs011_I.DataHeader dataHeader = new IfMcCs011_I.DataHeader();
-	//		dataHeader.setCRTF_RTCD("");
-	//		dataHeader.setDLRE_MSG("");
+		// dataHeader.setCRTF_RTCD("");
+		// dataHeader.setDLRE_MSG("");
 		dataHeader.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
-	
+
 		// TODO 확인 필요
 //		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
 		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
-		
+
 		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
-		
+
 		// TODO 확인 필요
 		dataHeader.setUSER_ID(reqDto.getUSER_ID());
-		
-		
-	    
-	    IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
-	    
-	    String initechOAuthToken = reqDto.getInitechOAuthToken();
-	    dataBody.setInitechOAuthToken(initechOAuthToken);
-	    
-	    String pid = reqDto.getPid();
-	    dataBody.setPid(pid);
-	    
-	    String uname = reqDto.getUname();
-	    uname = AesUtil.encrypt(uname, aesKey, aesIv);
-	    dataBody.setUname(uname);
-	    
-	    String ubirthday = reqDto.getUbirthday();
-	    ubirthday = AesUtil.encrypt(ubirthday, aesKey, aesIv);
-	    dataBody.setUbirthday(ubirthday);
-	    
-	    String ugender = reqDto.getUgender();
-	    ugender = AesUtil.encrypt(ugender, aesKey, aesIv);
-	    dataBody.setUgender(ugender);
-	    
-	    String uphone = reqDto.getUphone();
-	    uphone = AesUtil.encrypt(uphone, aesKey, aesIv);
-	    dataBody.setUphone(uphone);
-	    
-	    String op = IfConstant.EzCertSrvcOp.auth.getValue();
-	    dataBody.setOp(op);
-	    
-	    IfMcCs011_I.DataBody.Sign sign = new IfMcCs011_I.DataBody.Sign();
-	    sign.setContents("");
-	    dataBody.setSign(sign);
-	    
-	    String deviceCode = IfConstant.EzCertSrvcDeviceCode.MOBILE.getValue();
+
+		IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
+
+		String initechOAuthToken = reqDto.getInitechOAuthToken();
+		dataBody.setInitechOAuthToken(initechOAuthToken);
+
+		String pid = reqDto.getPid();
+		dataBody.setPid(pid);
+
+		String uname = reqDto.getUname();
+		uname = AesUtil.encrypt(uname, aesKey, aesIv);
+		dataBody.setUname(uname);
+
+		String ubirthday = reqDto.getUbirthday();
+		ubirthday = AesUtil.encrypt(ubirthday, aesKey, aesIv);
+		dataBody.setUbirthday(ubirthday);
+
+		String ugender = reqDto.getUgender();
+		ugender = AesUtil.encrypt(ugender, aesKey, aesIv);
+		dataBody.setUgender(ugender);
+
+		String uphone = reqDto.getUphone();
+		uphone = AesUtil.encrypt(uphone, aesKey, aesIv);
+		dataBody.setUphone(uphone);
+
+		String op = IfConstant.EzCertSrvcOp.auth.getValue();
+		dataBody.setOp(op);
+
+		IfMcCs011_I.DataBody.Sign sign = new IfMcCs011_I.DataBody.Sign();
+		sign.setContents("");
+		dataBody.setSign(sign);
+
+		String deviceCode = IfConstant.EzCertSrvcDeviceCode.MOBILE.getValue();
 		dataBody.setDeviceCode(deviceCode);
-	    
-	    String deviceBrowser = IfConstant.EzCertSrvcDeviceBrowser.webBrowser.getValue();
-		dataBody.setDeviceBrowser(deviceBrowser);;
-	    
-	    Callback callback = new IfMcCs011_I.DataBody.Callback();
-	    callback.setFailCallbackUrl("");
-	    callback.setMobileOs("");
-	    callback.setSuccessCallbackUrl("");
-	    callback.setTelcoTycd("");
-	    dataBody.setCallback(callback);
-	    
-	    dataBody.setChannel("");
-	    
-	    
-	    
-	    IfMcCs011_I ifInputDto = new IfMcCs011_I();
-	    ifInputDto.setDataHeader(dataHeader);
-	    ifInputDto.setDataBody(dataBody);
-	    
-		
+
+		String deviceBrowser = IfConstant.EzCertSrvcDeviceBrowser.webBrowser.getValue();
+		dataBody.setDeviceBrowser(deviceBrowser);
+
+		Callback callback = new IfMcCs011_I.DataBody.Callback();
+		callback.setFailCallbackUrl("");
+		callback.setMobileOs("");
+		callback.setSuccessCallbackUrl("");
+		callback.setTelcoTycd("");
+		dataBody.setCallback(callback);
+
+		dataBody.setChannel("");
+
+		IfMcCs011_I ifInputDto = new IfMcCs011_I();
+		ifInputDto.setDataHeader(dataHeader);
+		ifInputDto.setDataBody(dataBody);
+
 		String emnb = reqDto.getEmnb();
-	
+
 //		IfMcCs011_O cs011_O = gooroomeeAdapterService.ifmccs011(emnb, cs011_I);
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs011;
 		Class<IfMcCs011_O> ifOutputDtoClass = IfMcCs011_O.class;
 		IfMcCs011_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
-		
-		String resCode = ifOutputDto.getDataBody().getResCode();			// 응답코드 ("1200":성공, 그외:실퍠)
-		String errorMessage = ifOutputDto.getDataBody().getErrorMessage();	// 에러메세지
+
+		String resCode = ifOutputDto.getDataBody().getResCode(); // 응답코드 ("1200":성공, 그외:실퍠)
+		String errorMessage = ifOutputDto.getDataBody().getErrorMessage(); // 에러메세지
 		if (!"1200".equalsIgnoreCase(resCode)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
 		}
-		
-		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD();		// 처리결과코드 ("0000":정상, 그외:실패)
-		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();		
+
+		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
+		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
 		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
 		}
-		
+
 		Mvc011ResDto resDto = modelMapper.map(ifOutputDto, Mvc011ResDto.class);
-	
+
 		ResponseDto<Mvc011ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
+
 		return responseDto;
 	}
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * 
@@ -1105,10 +1045,11 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/initechStatus"), (API_URL_TOKEN + "/initechStatus" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "12. 간편인증 상태 조회")
+	@RequestMapping(path = { (API_URL_TOKEN + "/initechStatus"), (API_URL_TOKEN + "/initechStatus" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "12. 간편인증 상태 조회")
 	public @ResponseBody ResponseDto<Mvc012ResDto> initechStatus(@RequestBody Mvc012ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 //		IfMcCs010_I cs010_I = modelMapper.map(reqDto, IfMcCs010_I.class);
 
 		IfMcCs012_I.DataHeader dataHeader = new IfMcCs012_I.DataHeader();
@@ -1126,10 +1067,10 @@ public class GrmAdapterController {
 		dataHeader.setUSER_ID(reqDto.getUSER_ID());
 
 		IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
-		
-	    String initechOAuthToken = reqDto.getInitechOAuthToken();
+
+		String initechOAuthToken = reqDto.getInitechOAuthToken();
 		dataBody.setInitechOAuthToken(initechOAuthToken);
-		
+
 		String reqTxId = reqDto.getReqTxId();
 		dataBody.setReqTxId(reqTxId);
 
@@ -1144,29 +1085,25 @@ public class GrmAdapterController {
 		Class<IfMcCs012_O> ifOutputDtoClass = IfMcCs012_O.class;
 		IfMcCs012_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
-		String resCode = ifOutputDto.getDataBody().getResCode();			// 응답코드 ("1200":성공, 그외:실퍠)
-		String errorMessage = ifOutputDto.getDataBody().getErrorMessage();	// 에러메세지
+		String resCode = ifOutputDto.getDataBody().getResCode(); // 응답코드 ("1200":성공, 그외:실퍠)
+		String errorMessage = ifOutputDto.getDataBody().getErrorMessage(); // 에러메세지
 		if (!"1200".equalsIgnoreCase(resCode)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
 		}
-		
-		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD();		// 처리결과코드 ("0000":정상, 그외:실패)
-		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();		
+
+		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
+		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
 		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
 		}
-		
+
 		Mvc012ResDto resDto = modelMapper.map(ifOutputDto, Mvc012ResDto.class);
 
 		ResponseDto<Mvc012ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 		return responseDto;
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * 
 	 * <pre>
@@ -1179,36 +1116,37 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt"), (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "15. 카카오알림톡발송_챗버블")
+	@RequestMapping(path = { (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt"), (API_URL_TOKEN + "/cspdDvlmUmsSendMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "15. 카카오알림톡발송_챗버블")
 	public @ResponseBody ResponseDto<Mvc015ResDto> cspdDvlmUmsSendMgmt(@RequestBody Mvc015ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
+
 		String rcvrNm = reqDto.getRcvrNm();
-		
+
 		String url_mobile = reqDto.getUrl_mobile();
 //		url_mobile = "https://" + url_mobile.replaceAll("^http://|^https://", "");
-		
+
 		String jobMsgeCntn = String.format(IfConstant.JOB_MSGE_CNTN, rcvrNm);
 		String sbsnSendMsgeCntn = String.format(IfConstant.SBSN_SEND_MSGE_CNTN, rcvrNm, url_mobile);
-		
+
 		IfMcCs015_I.NttkButnCntn.Button button = new IfMcCs015_I.NttkButnCntn.Button();
-		
+
 		button.setName(IfConstant.NTTK_BUTN_CNTN_BUTTON_NAME);
 		button.setTarget(IfConstant.NTTK_BUTN_CNTN_BUTTON_TARGET);
 		button.setType(IfConstant.NTTK_BUTN_CNTN_BUTTON_TYPE);
-		
+
 		button.setUrl_mobile(url_mobile);
 		button.setUrl_pc("");
-		
+
 		List<Button> buttonList = new ArrayList<>();
 		buttonList.add(button);
-		
+
 		IfMcCs015_I.NttkButnCntn nttkButnCntn = new IfMcCs015_I.NttkButnCntn();
 		nttkButnCntn.setButton(buttonList);
-		
+
 		IfMcCs015_I ifInputDto = new IfMcCs015_I();
-		ifInputDto.setBtchPrcsYn("1");		// (1:Y), (7:N)
-		ifInputDto.setButnDvsnCode("2");	// (1:Fomrmat String, 2:JSON, 3:XML)
+		ifInputDto.setBtchPrcsYn("1"); // (1:Y), (7:N)
+		ifInputDto.setButnDvsnCode("2"); // (1:Fomrmat String, 2:JSON, 3:XML)
 		ifInputDto.setCustId(reqDto.getCustId());
 		ifInputDto.setDutySendYn("Y");
 		ifInputDto.setHpTlphOfno(reqDto.getHpTlphOfno());
@@ -1240,33 +1178,23 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
 		Class<IfMcCs015_O> ifOutputDtoClass = IfMcCs015_O.class;
 		IfMcCs015_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-		
+
 		double dvsnRsltVal = ifOutputDto.getDvsnRsltVal();
 		int smsTrnmRsltVal = ifOutputDto.getSmsTrnmRsltVal();
-		
-		if(0.0 != dvsnRsltVal) {
+
+		if (0.0 != dvsnRsltVal) {
 			throw new IfException("알림톡 발송에 실패했습니다.");
-		}else if(0 != smsTrnmRsltVal) {
+		} else if (0 != smsTrnmRsltVal) {
 			throw new IfException("SMS 발송에 실패했습니다.");
 		}
-		
+
 		Mvc015ResDto resDto = modelMapper.map(ifOutputDto, Mvc015ResDto.class);
 
 		ResponseDto<Mvc015ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 		return responseDto;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * 
 	 * <pre>
@@ -1279,24 +1207,25 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/prsnCustMgmt"), (API_URL_TOKEN + "/prsnCustMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "16. 대체키별연락처저장")
-	public @ResponseBody ResponseDto<Mvc016ResDto> prsnCustMgmt(@RequestBody Mvc016ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException {
-		
+	@RequestMapping(path = { (API_URL_TOKEN + "/prsnCustMgmt"), (API_URL_TOKEN + "/prsnCustMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "16. 대체키별연락처저장")
+	public @ResponseBody ResponseDto<Mvc016ResDto> prsnCustMgmt(@RequestBody Mvc016ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+
 		IfMcCs016_I ifInputDto = modelMapper.map(reqDto, IfMcCs016_I.class);
-	
+
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
 		Class<IfMcCs016_O> ifOutputDtoClass = IfMcCs016_O.class;
 		IfMcCs016_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
+
 		Mvc016ResDto resDto = modelMapper.map(ifOutputDto, Mvc016ResDto.class);
-	
+
 		ResponseDto<Mvc016ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
+
 		return responseDto;
 	}
-	
-	
+
 	/**
 	 * 
 	 * <pre>
@@ -1309,29 +1238,29 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/cnplSbsnKeyMgmt"), (API_URL_TOKEN + "/cnplSbsnKeyMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "17. 대체키별연락처조회")
-	public @ResponseBody ResponseDto<Mvc017ResDto> cnplSbsnKeyMgmt(@RequestBody Mvc017ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException {
-		
+	@RequestMapping(path = { (API_URL_TOKEN + "/cnplSbsnKeyMgmt"), (API_URL_TOKEN + "/cnplSbsnKeyMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "17. 대체키별연락처조회")
+	public @ResponseBody ResponseDto<Mvc017ResDto> cnplSbsnKeyMgmt(@RequestBody Mvc017ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+
 		IfMcCs017_I ifInputDto = modelMapper.map(reqDto, IfMcCs017_I.class);
-	
+
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
 		Class<IfMcCs017_O> ifOutputDtoClass = IfMcCs017_O.class;
 		IfMcCs017_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
-		if(ifOutputDto.getCnplSuid() == null) {
+
+		if (ifOutputDto.getCnplSuid() == null) {
 			throw new IfException("조회된 연락처가 없습니다.");
 		}
-		
+
 		Mvc017ResDto resDto = modelMapper.map(ifOutputDto, Mvc017ResDto.class);
-	
+
 		ResponseDto<Mvc017ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
+
 		return responseDto;
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * <pre>
@@ -1344,38 +1273,35 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/addrMgmt"), (API_URL_TOKEN + "/addrMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = { RequestMethod.POST }, name = "18. 우편번호조회")
-	public @ResponseBody ResponseDto<Mvc018ResDto> addrMgmt(@RequestBody Mvc018ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException {
-		
+	@RequestMapping(path = { (API_URL_TOKEN + "/addrMgmt"), (API_URL_TOKEN + "/addrMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "18. 우편번호조회")
+	public @ResponseBody ResponseDto<Mvc018ResDto> addrMgmt(@RequestBody Mvc018ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+
 		IfMcCs018_I ifInputDto = modelMapper.map(reqDto, IfMcCs018_I.class);
-	
+
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
 		Class<IfMcCs018_O> ifOutputDtoClass = IfMcCs018_O.class;
 		IfMcCs018_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-	
-		if(ifOutputDto.getPscdList() == null || ifOutputDto.getPscdList().size() == 0) {
+
+		if (ifOutputDto.getPscdList() == null || ifOutputDto.getPscdList().size() == 0) {
 			throw new IfException("조회된 우편번호가 없습니다.");
 		}
-		
+
 		Mvc018ResDto resDto = modelMapper.map(ifOutputDto, Mvc018ResDto.class);
-	
+
 		ResponseDto<Mvc018ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-	
+
 		return responseDto;
 	}
-	
-	
-	
+
 	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
 	public void exception(HttpServletRequest request) throws Exception {
 		Exception exception = (Exception) request.getAttribute(EXCEPTION_ATTRIBUTE_NAME);
 		throw exception;
 	}
-	
-	
-	
-	
+
 	/**
 	 * 
 	 * <pre>
@@ -1388,9 +1314,9 @@ public class GrmAdapterController {
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/pids") }, method = { RequestMethod.POST }, name = "A. 인증서비스ID")
 	public @ResponseBody List<Map<String, String>> getPids() {
-		
+
 		List<Map<String, String>> ezCertSrvcIdList = new ArrayList<Map<String, String>>();
-		
+
 		EzCertSrvcId[] ezCertSrvcIds = IfConstant.EzCertSrvcId.values();
 		for (EzCertSrvcId ezCertSrvcId : ezCertSrvcIds) {
 			Map<String, String> map = new HashMap<>();
@@ -1401,17 +1327,13 @@ public class GrmAdapterController {
 
 		return ezCertSrvcIdList;
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * API 테스트 화면
 	 * 
 	 * @param model
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping(path = { "/test/apis" }, method = { RequestMethod.GET })
 	public String getApiTestView(Model model) throws IOException {
@@ -1427,8 +1349,7 @@ public class GrmAdapterController {
 	}
 
 	@RequestMapping(path = { URL_FOR_REQUEST_MOCK_DATA }, method = { RequestMethod.GET })
-	public @ResponseBody String getApiTestRequestMockData(@RequestParam MultiValueMap<String, String> map)
-			throws ClassNotFoundException, IOException {
+	public @ResponseBody String getApiTestRequestMockData(@RequestParam MultiValueMap<String, String> map) throws ClassNotFoundException, IOException {
 		String mockData = null;
 
 		String firstParamValue = map.getFirst(PARAM_NAME_FOR_REQUEST_MOCK_DATA);
@@ -1450,8 +1371,8 @@ public class GrmAdapterController {
 								Class<?> parameterType = parameter.getType();
 
 								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType);
-								Map<String, Object> mockRequestDataMap = objectMapper
-										.convertValue(mockRequestDataObject, new TypeReference<Map<String, Object>>() {
+								Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
+										new TypeReference<Map<String, Object>>() {
 										});
 								mockRequestDataMap.put("emnb", "1077123");
 
@@ -1500,9 +1421,9 @@ public class GrmAdapterController {
 
 	public List<Map<String, String>> getIdCardMockImageInfoList() throws IOException {
 		List<Map<String, String>> idCardMockImageInfoList = new ArrayList<>();
-		
-		String mockImageRootPath = MOCK_IMAGE_ROOT_PATH;
+
 		/*
+		String mockImageRootPath = MOCK_IMAGE_ROOT_PATH;
 		File mockImageRootPathDirectory = new ClassPathResource(mockImageRootPath).getFile();
 		String[] mockImageDataFileNames = mockImageRootPathDirectory.list((dir, name) -> {
 			
@@ -1535,21 +1456,15 @@ public class GrmAdapterController {
 			
 			idCardMockImageInfoList.add(idCardMockImageInfoMap);
 		}
-		
 		*/
-		
+
 		String cpth = "classpath*:" + MOCK_IMAGE_ROOT_PATH + "/*." + IMAGE_DATA_FILE_EXTENSION;
-		
+
 		Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(new DefaultResourceLoader()).getResources(cpth);
-		
+
 		List<Resource> asList = Arrays.asList(resources);
-		asList.sort(new Comparator<Resource>() {
-			@Override
-			public int compare(Resource o1, Resource o2) {
-				return o1.getFilename().compareTo(o2.getFilename());
-			}
-		});
-		
+		asList.sort((o1, o2) -> o1.getFilename().compareTo(o2.getFilename()));
+
 		for (Resource resource : asList) {
 			Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
 			List<String> lineList = lineStream.collect(Collectors.toList());
@@ -1562,8 +1477,8 @@ public class GrmAdapterController {
 			idCardMockImageInfoMap.put("idCardMockImageBase64Data", idCardMockImageBase64Data);
 			idCardMockImageInfoList.add(idCardMockImageInfoMap);
 		}
-		
+
 		return idCardMockImageInfoList;
 	}
-	
+
 }

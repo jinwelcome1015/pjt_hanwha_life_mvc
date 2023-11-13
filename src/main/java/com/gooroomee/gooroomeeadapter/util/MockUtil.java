@@ -28,8 +28,7 @@ public class MockUtil {
 
 	public static final String URL_SUFFIX_FOR_MOCK = "/mock";
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).registerModule(new SimpleModule());
 
 	public static <O> O getMockRequestData(String thisMethodName, Class<O> requestDtoClass) throws IOException {
@@ -42,8 +41,7 @@ public class MockUtil {
 		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName);
 	}
 
-	public static <O> O getMockData(String thisMethodName, Class<O> outputClass, String mockDataFileName)
-			throws IOException {
+	public static <O> O getMockData(String thisMethodName, Class<O> outputClass, String mockDataFileName) throws IOException {
 		String mockDataRootPath = "/assets/mockData/";
 		String mockDataDetailPath = mockDataRootPath + thisMethodName;
 
@@ -55,8 +53,8 @@ public class MockUtil {
 		Path path = Paths.get(resource.getURI());
 		List<String> lineList = Files.readAllLines(path);
 		*/
-		Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8"))
-				.lines();
+		
+		Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
 		List<String> lineList = lineStream.collect(Collectors.toList());
 
 		String delimiter = " ";

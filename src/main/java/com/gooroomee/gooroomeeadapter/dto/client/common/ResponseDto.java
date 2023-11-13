@@ -1,7 +1,5 @@
 package com.gooroomee.gooroomeeadapter.dto.client.common;
 
-import java.sql.Date;
-
 import org.springframework.http.HttpStatus;
 
 import lombok.AccessLevel;

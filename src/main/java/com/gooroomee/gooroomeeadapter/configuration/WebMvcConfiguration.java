@@ -12,31 +12,24 @@ import com.gooroomee.gooroomeeadapter.interceptor.AuthInterceptor;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
-	
+
 	@Value(value = "${api.auth.enabled}")
 	private String apiAuthEnabled;
-	
+
 	@Autowired
 	ApiLoggingInterceptor apiLoggingInterceptor;
-	
+
 	@Autowired
 	AuthInterceptor authInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		
-		registry
-			.addInterceptor(apiLoggingInterceptor)
-				.order(2)
-				.addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**")
-				.excludePathPatterns("/js/**");
-		
+
+		registry.addInterceptor(apiLoggingInterceptor).order(2).addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**").excludePathPatterns("/js/**");
+
 		Boolean isApiAuthEnabled = Boolean.valueOf(apiAuthEnabled);
-		if(isApiAuthEnabled) {
-			registry
-				.addInterceptor(authInterceptor)
-					.order(1)
-					.addPathPatterns("/intrf/**");
+		if (isApiAuthEnabled) {
+			registry.addInterceptor(authInterceptor).order(1).addPathPatterns("/intrf/**");
 		}
 	}
 }

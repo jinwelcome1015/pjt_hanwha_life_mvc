@@ -10,10 +10,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc010ReqDto {
-	
+
 	/** 사원번호 */
 	public String emnb;
-	
+
 	/** 화면 ID */
 	@JsonProperty("SCRN_ID")
 	private String SCRN_ID;

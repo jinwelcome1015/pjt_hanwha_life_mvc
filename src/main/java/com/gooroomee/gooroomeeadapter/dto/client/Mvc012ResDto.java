@@ -4,64 +4,58 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
-@Getter 
+@Getter
 @Setter
 @ToString
 public class Mvc012ResDto {
-	
+
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
 
 	/** 데이터바디 */
 	private DataBody dataBody;
 
-	
-	
-	@Getter 
+	@Getter
 	@Setter
 	@ToString
 	public static class DataHeader {
 
 		/** 서비스ID */
 		private String SRVC_ID;
-		
+
 		/** 화면ID */
 		private String SCRN_ID;
-		
+
 		/** 처리코드 */
 		private String CRTF_RTCD;
-		
+
 		/** 처리결과메세지 */
 		private String DLRE_MSG;
 
 	}
 
-	
-	
-	@Getter 
+	@Getter
 	@Setter
 	@ToString
 	public static class DataBody {
-		
+
 		/** 응답코드 */
 		private String resCode;
 
 		/** 오류메시지 */
 		private String errorMessage;
-		
+
 		/** 인증진행상태코드 */
 		private String status;
 
 		/** 페이로드 */
 		private Payload payload;
 
-
-		@Getter 
+		@Getter
 		@Setter
 		@ToString
 		public static class Payload {
-			
+
 			/** 인증서명구분 */
 			private String op;
 
@@ -82,10 +76,10 @@ public class Mvc012ResDto {
 
 			/** 사용자CI */
 			private String uci;
-			
+
 			/** 전자서명데이터 */
 			private String signedData;
 
 		}
-	}	
+	}
 }

@@ -4,15 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter 
+@Getter
 @Setter
 @ToString
 public class Mvc009ReqDto {
-	
+
 	/** 사원번호 */
 	public String emnb;
-	
+
 	/** 고객ID */
 	private String custId;
-	
+
 }

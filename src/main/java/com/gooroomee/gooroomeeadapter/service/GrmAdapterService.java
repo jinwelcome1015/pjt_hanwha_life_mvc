@@ -31,7 +31,6 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 
 public interface GrmAdapterService {
 
-	<I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass)
-			throws JsonProcessingException, URISyntaxException;
+	<I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException;
 
 }

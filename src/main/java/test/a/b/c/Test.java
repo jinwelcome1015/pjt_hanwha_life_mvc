@@ -7,7 +7,7 @@ public class Test {
 	}
 
 	private void name() {
-		
+
 		Class<?> testClass = Test.class;
 		System.out.println(testClass.getCanonicalName());
 		System.out.println(testClass.getSimpleName());

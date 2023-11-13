@@ -23,13 +23,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 	private String apiAuthKey;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 		String xApiKey = StringUtils.defaultString(request.getHeader("X-API-Key"));
 		if (!xApiKey.equals(apiAuthKey)) {
-			request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME,
-					new AuthException("X-API-Key 헤더 인증 에러"));
+			request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, new AuthException("X-API-Key 헤더 인증 에러"));
 			request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
 			return false;
 		}

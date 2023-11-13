@@ -10,17 +10,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc001ReqDto {
-	
+
 	/** 사원번호 */
 	public String emnb;
-	
+
 	/** 화면 ID */
 	@JsonProperty("SCRN_ID")
 	private String SCRN_ID;
-	
+
 	/** 사용자 ID */
 	private String USER_ID;
-	
+
 	/** 이미지 포맷 */
 	private String format;
 
@@ -29,5 +29,5 @@ public class Mvc001ReqDto {
 
 	/** 이미지 이름 */
 	private String name;
-	
+
 }

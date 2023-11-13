@@ -8,6 +8,6 @@ public class GooroomeeAdapterApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GooroomeeAdapterApplication.class, args);
-	} 
+	}
 
 }
