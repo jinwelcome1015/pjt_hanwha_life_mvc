@@ -1,5 +1,10 @@
 package com.gooroomee.gooroomeeadapter.dto.intrf;
 
+import java.sql.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -37,7 +42,10 @@ public class IfMcCs000_O {
     private String custNm;
     
     /** 고객생년월일 */
-    private String custBirthDate;
+    @JsonFormat(pattern = "yyyyMMdd")
+	@DateTimeFormat(pattern = "yyyyMMdd")
+    private Date custBirthDate;
+//    private String custBirthDate;
     
     /** 
      * <pre>

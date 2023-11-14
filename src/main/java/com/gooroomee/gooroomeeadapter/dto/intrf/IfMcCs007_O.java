@@ -3,6 +3,10 @@ package com.gooroomee.gooroomeeadapter.dto.intrf;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -64,10 +68,14 @@ public class IfMcCs007_O {
 
 		// XXX 확인
 		/** 계약일자 */
+		@JsonFormat(pattern = "yyyyMMdd")
+		@DateTimeFormat(pattern = "yyyyMMdd")
 		private Date ctdt;
 
 		// XXX 확인
 		/** 만기일자 */
+		@JsonFormat(pattern = "yyyyMMdd")
+		@DateTimeFormat(pattern = "yyyyMMdd")
 		private Date mtrtDate;
 
 		/** 보험만기구분값 */

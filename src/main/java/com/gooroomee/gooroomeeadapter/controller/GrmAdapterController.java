@@ -43,7 +43,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
@@ -198,11 +200,38 @@ public class GrmAdapterController {
 		return trflCnfmDvsnCode;
 	}
 
+	private String getIdTypeFieldNameFromIdType(String idType) {
+		String fieldName = null;
+		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
+			fieldName = "ic";
+		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			fieldName = "dl";
+		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
+			fieldName = "pp";
+		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+			fieldName = "ac";
+		}
+		return fieldName;
+	}
+	
 	private String getCustNm(JsonNode ocrResultReadTree) {
 		String custNm = null;
-
+		
+		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
+		JsonNode resultJsonNode = idCardJsonNode.get("result");
+		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
+		String idType = idTypeJsonNode.asText();
+		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
+		
+		JsonNode nameListJsonNode = idTypeFieldJsonNode.get("name");
+		JsonNode firstNameJsonNode = nameListJsonNode.get(0);
+		JsonNode firstNameTextJsonNode = firstNameJsonNode.get("text");
+		custNm = firstNameTextJsonNode.asText();
+		
+		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-
+		
 		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("ic").get("name").get(0).get("text").asText();
 		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
@@ -212,14 +241,38 @@ public class GrmAdapterController {
 		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("ac").get("name").get(0).get("text").asText();
 		}
+		*/		
 		return custNm;
 	}
 
 	private String getIsncDate(JsonNode ocrResultReadTree) {
 		String issueDate = null;
-
+		
+		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
+		JsonNode resultJsonNode = idCardJsonNode.get("result");
+		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
+		String idType = idTypeJsonNode.asText();
+		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
+		
+		JsonNode issueDateListJsonNode = idTypeFieldJsonNode.get("issueDate");
+		JsonNode firstIssueDateJsonNode = issueDateListJsonNode.get(0);
+		JsonNode firstIssueDateFromattedJsonNode = firstIssueDateJsonNode.get("formatted");
+		
+		JsonNode yearJsonNode = firstIssueDateFromattedJsonNode.get("year");
+		String issueYear = yearJsonNode.asText();
+		
+		JsonNode monthJsonNode = firstIssueDateFromattedJsonNode.get("month");
+		String issueMonth = monthJsonNode.asText();
+		
+		JsonNode dayJsonNode = firstIssueDateFromattedJsonNode.get("day");
+		String issueDay = dayJsonNode.asText();
+		
+		issueDate = issueYear + issueMonth + issueDay;
+		
+		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-
+		
 		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String issueYear = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("year").asText();
 			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("month").asText();
@@ -241,15 +294,57 @@ public class GrmAdapterController {
 			String issueDay = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("day").asText();
 			issueDate = issueYear + issueMonth + issueDay;
 		}
-
+		*/
 		return issueDate;
 	}
 
 	private String getBtdt(JsonNode ocrResultReadTree) {
 		String btdt = null;
-
+		
+		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
+		JsonNode resultJsonNode = idCardJsonNode.get("result");
+		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
+		String idType = idTypeJsonNode.asText();
+		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
+		
+		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
+			JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
+			JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
+			JsonNode firstPersonalNumTextJsonNode = firstPersonalNumJsonNode.get("text");
+			String personalNum = firstPersonalNumTextJsonNode.asText();
+			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
+		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
+			JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
+			JsonNode firstPersonalNumTextJsonNode = firstPersonalNumJsonNode.get("text");
+			String personalNum = firstPersonalNumTextJsonNode.asText();
+			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
+		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
+			JsonNode birthDateJsonNode = idTypeFieldJsonNode.get("birthDate");
+			JsonNode firstBirthDateJsonNode = birthDateJsonNode.get(0);
+			JsonNode firstBirthDateFormattedJsonNode = firstBirthDateJsonNode.get("formatted");
+			JsonNode birthDateYearJsonNode = firstBirthDateFormattedJsonNode.get("year");
+			JsonNode birthDateMonthJsonNode = firstBirthDateFormattedJsonNode.get("month");
+			JsonNode birthDateDayJsonNode = firstBirthDateFormattedJsonNode.get("day");
+			String birthDateYear = birthDateYearJsonNode.asText();
+			String birthDateMonth = birthDateMonthJsonNode.asText();
+			String birthDateDay = birthDateDayJsonNode.asText();
+			btdt = birthDateYear + birthDateMonth + birthDateDay;
+		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+			JsonNode alienRegNumListJsonNode = idTypeFieldJsonNode.get("alienRegNum");
+			JsonNode firstAlienRegNumJsonNode = alienRegNumListJsonNode.get(0);
+			JsonNode firstAlienRegNumTextJsonNode = firstAlienRegNumJsonNode.get("text");
+			String alienRegNum = firstAlienRegNumTextJsonNode.asText();
+			String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
+			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
+		}
+		
+		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-
+		
 		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
 			String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
@@ -268,7 +363,7 @@ public class GrmAdapterController {
 			String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
 			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
 		}
-
+		*/
 		return btdt;
 	}
 
@@ -299,9 +394,44 @@ public class GrmAdapterController {
 
 	private String getSex(JsonNode ocrResultReadTree) {
 		String sex = null;
-
+		
+		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
+		JsonNode resultJsonNode = idCardJsonNode.get("result");
+		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
+		String idType = idTypeJsonNode.asText();
+		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
+		
+		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
+			JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
+			JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
+			JsonNode firstPersonalNumTextJsonNode = firstPersonalNumJsonNode.get("text");
+			String personalNum = firstPersonalNumTextJsonNode.asText();
+			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
+		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
+			JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
+			JsonNode firstPersonalNumTextJsonNode = firstPersonalNumJsonNode.get("text");
+			String personalNum = firstPersonalNumTextJsonNode.asText();
+			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
+			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
+		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
+			JsonNode sexListjsonNode = idTypeFieldJsonNode.get("sex");
+			JsonNode firstSexjsonNode = sexListjsonNode.get(0);
+			JsonNode firstSexTextJsonNode = firstSexjsonNode.get("text");
+			sex = firstSexTextJsonNode.asText();
+		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+			JsonNode sexListjsonNode = idTypeFieldJsonNode.get("sex");
+			JsonNode firstSexjsonNode = sexListjsonNode.get(0);
+			JsonNode firstSexTextJsonNode = firstSexjsonNode.get("text");
+			sex = firstSexTextJsonNode.asText();
+		}
+		
+		
+		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-
+		
 		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
 			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
@@ -315,7 +445,7 @@ public class GrmAdapterController {
 		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			sex = ocrResultReadTree.get("idCard").get("result").get("ac").get("sex").get(0).get("text").asText();
 		}
-
+		*/
 		return sex;
 	}
 
@@ -335,6 +465,20 @@ public class GrmAdapterController {
 		return d;
 	}
 
+	/*	
+		public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
+			GrmAdapterController grmAdapterController = new GrmAdapterController();
+	
+			ObjectMapper objectMapper = new ObjectMapper();
+			String ocrResultJson = "[{\"uid\":\"a513711d3b514f6fb11ad3dc3848df1f\",\"validationResult\":{\"result\":\"NO_REQUESTED\"},\"inferResult\":\"SUCCESS\",\"idCard\":{\"result\":{\"idtype\":\"ID Card\",\"rois\":[{\"vertices\":[{\"x\":3.1388545,\"y\":3.9956706},{\"x\":754.52325,\"y\":-5.092327},{\"x\":747.84045,\"y\":473.14856},{\"x\":2.264223,\"y\":474.4076}]}],\"ic\":{\"address\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":51.675,\"y\":235.1875},{\"x\":192.7875,\"y\":235.1875},{\"x\":192.7875,\"y\":272.2875},{\"x\":51.675,\"y\":272.2875}]},{\"vertices\":[{\"x\":53.6625,\"y\":268.3125},{\"x\":263.67496,\"y\":268.3125},{\"x\":263.67496,\"y\":304.0875},{\"x\":53.6625,\"y\":304.0875}]},{\"vertices\":[{\"x\":203.3875,\"y\":235.85},{\"x\":387.5625,\"y\":235.85},{\"x\":387.5625,\"y\":270.9625},{\"x\":203.3875,\"y\":270.9625}]},{\"vertices\":[{\"x\":271.625,\"y\":268.975},{\"x\":347.15,\"y\":268.975},{\"x\":347.15,\"y\":302.7625},{\"x\":271.625,\"y\":302.7625}]}],\"formatted\":{\"value\":\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\"},\"text\":\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\",\"maskingPolys\":[]}],\"authority\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":146.53316,\"y\":381.33884},{\"x\":326.93195,\"y\":383.12497},{\"x\":326.47778,\"y\":428.99695},{\"x\":146.07898,\"y\":427.21082}]},{\"vertices\":[{\"x\":343.17493,\"y\":382.92496},{\"x\":524.6999,\"y\":382.92496},{\"x\":524.6999,\"y\":427.31247},{\"x\":343.17493,\"y\":427.31247}]},{\"vertices\":[{\"x\":525.3625,\"y\":374.975},{\"x\":622.75,\"y\":374.975},{\"x\":622.75,\"y\":429.3},{\"x\":525.3625,\"y\":429.3}]}],\"formatted\":{\"value\":\"서울특별시 금천구청장\"},\"text\":\"서울특별시 금천구청장 청바\",\"maskingPolys\":[]}],\"name\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":72.2125,\"y\":116.6},{\"x\":367.6875,\"y\":116.6},{\"x\":367.6875,\"y\":165.625},{\"x\":72.2125,\"y\":165.625}]}],\"formatted\":{\"value\":\"홍길동\"},\"text\":\"홍길동\",\"maskingPolys\":[]}],\"personalNum\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":65.5875,\"y\":181.52498},{\"x\":363.71246,\"y\":181.52498},{\"x\":363.71246,\"y\":216.63748},{\"x\":65.5875,\"y\":216.63748}]}],\"formatted\":{\"value\":\"800101-2345678\"},\"text\":\"800101-2345678\",\"maskingPolys\":[{\"vertices\":[{\"x\":211.13873,\"y\":178.01373},{\"x\":367.22372,\"y\":178.01373},{\"x\":367.22372,\"y\":220.14873},{\"x\":211.13873,\"y\":220.14873}]}]}],\"issueDate\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":242.475,\"y\":351.7875},{\"x\":374.3125,\"y\":351.7875},{\"x\":374.3125,\"y\":381.6},{\"x\":242.475,\"y\":381.6}]},{\"vertices\":[{\"x\":372.98746,\"y\":352.44995},{\"x\":422.01245,\"y\":352.44995},{\"x\":422.01245,\"y\":380.93747},{\"x\":372.98746,\"y\":380.93747}]}],\"formatted\":{\"month\":\"08\",\"year\":\"2020\",\"day\":\"16\"},\"text\":\"2020.08.16\",\"maskingPolys\":[{\"vertices\":[{\"x\":239.52966,\"y\":349.0218},{\"x\":424.9578,\"y\":349.0217},{\"x\":424.9578,\"y\":384.3657},{\"x\":239.52968,\"y\":384.36578}]}]}]},\"isConfident\":true},\"meta\":{\"estimatedLanguage\":\"ko\"}},\"name\":\"test_idcard\",\"message\":\"SUCCESS\"}]";
+			JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
+			JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
+	
+			String isncDate = grmAdapterController.getIsncDate(ocrResultReadTree);
+			System.out.println(isncDate);
+	
+		}	
+	*/	
 	/**
 	 * <pre>
 	 * [01, 02, 09, 03]
@@ -399,7 +543,8 @@ public class GrmAdapterController {
 		String isncDate = this.getIsncDate(ocrResultReadTree);
 		String sex = this.getSex(ocrResultReadTree);
 
-		mvc000ResDto.setCustBirthDate(btdt);
+//		mvc000ResDto.setCustBirthDate(btdt);
+		mvc000ResDto.setCustBirthDate(this.transformDate(btdt));
 		mvc000ResDto.setCustNm(custNm);
 		mvc000ResDto.setIdType(idType);
 		mvc000ResDto.setCustGender(sex);
@@ -423,10 +568,10 @@ public class GrmAdapterController {
 
 		mvc002ReqDto.setMgmtNo("");
 		mvc002ReqDto.setCustNm(custNm);
-//		mvc002ReqDto.setBtdt(this.transformDate(btdt));
-		mvc002ReqDto.setBtdt(btdt);
-//		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
-		mvc002ReqDto.setIsncDate(isncDate);
+		mvc002ReqDto.setBtdt(this.transformDate(btdt));
+//		mvc002ReqDto.setBtdt(btdt);
+		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
+//		mvc002ReqDto.setIsncDate(isncDate);
 		mvc002ReqDto.setExpyDate(null);
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
@@ -574,6 +719,7 @@ public class GrmAdapterController {
 		IfMcCs001_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		String ocrResultJson = ifOutputDto.getDataBody().getImages();
+		log.info("[OCR RESULT] : {}", ocrResultJson);
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
 
