@@ -1,7 +1,6 @@
 package com.gooroomee.gooroomeeadapter.controller;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -26,10 +25,10 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -43,9 +42,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
@@ -261,12 +258,24 @@ public class GrmAdapterController {
 		
 		JsonNode yearJsonNode = firstIssueDateFromattedJsonNode.get("year");
 		String issueYear = yearJsonNode.asText();
+		// XXX OCR 인식불량 보완 로직
+		if ("".equals(StringUtils.trimToEmpty(issueYear))) {
+			issueYear = "2021";
+		}
 		
 		JsonNode monthJsonNode = firstIssueDateFromattedJsonNode.get("month");
 		String issueMonth = monthJsonNode.asText();
+		// XXX OCR 인식불량 보완 로직
+		if ("".equals(StringUtils.trimToEmpty(issueMonth))) {
+			issueMonth = "01";
+		}
 		
 		JsonNode dayJsonNode = firstIssueDateFromattedJsonNode.get("day");
 		String issueDay = dayJsonNode.asText();
+		// XXX OCR 인식불량 보완 로직
+		if("".equals(StringUtils.trimToEmpty(issueDay))) {
+			issueDay = "01";
+		}
 		
 		issueDate = issueYear + issueMonth + issueDay;
 		
@@ -1443,6 +1452,13 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
 	public void exception(HttpServletRequest request) throws Exception {
@@ -1628,5 +1644,5 @@ public class GrmAdapterController {
 
 		return idCardMockImageInfoList;
 	}
-
+	
 }
