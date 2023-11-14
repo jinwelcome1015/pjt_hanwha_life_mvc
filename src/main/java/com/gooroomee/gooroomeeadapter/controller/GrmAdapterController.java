@@ -367,22 +367,24 @@ public class GrmAdapterController {
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
 		
-		/* */
+		/*
+		// [01] 신분증OCR요청 으로 로직 이동
 		if (ocrResultReadTrees.size() != 1) {
 			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
 			throw new IfException(message);
 		}
-		/* */
+		*/
 
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
 
-		/* */
+		/*
+		// [01] 신분증OCR요청 으로 로직 이동
 		if(!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
 			String message = ocrResultReadTree.get("message").asText();
 			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
 			throw new IfException(message);
 		}
-		/* */
+		*/
 
 		Mvc000ResDto mvc000ResDto = new Mvc000ResDto();
 

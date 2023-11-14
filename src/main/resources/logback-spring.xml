@@ -11,12 +11,14 @@
     
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
+        	<charset>UTF-8</charset>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
     
     <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
+        	<charset>UTF-8</charset>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -30,6 +32,7 @@
     
     <appender name="FILE-INFO-OCR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
+        	<charset>UTF-8</charset>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -47,6 +50,7 @@
             <onMismatch>DENY</onMismatch>            
         </filter>
         <encoder>
+        	<charset>UTF-8</charset>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -64,6 +68,7 @@
             <onMismatch>DENY</onMismatch>            
         </filter>
         <encoder>
+        	<charset>UTF-8</charset>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
