@@ -25,7 +25,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +41,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
@@ -178,6 +179,8 @@ public class GrmAdapterController {
 	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage";
 
 	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
+	
+	private static final SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
 
 	/**
 	 * 
@@ -254,6 +257,21 @@ public class GrmAdapterController {
 		
 		JsonNode issueDateListJsonNode = idTypeFieldJsonNode.get("issueDate");
 		JsonNode firstIssueDateJsonNode = issueDateListJsonNode.get(0);
+		
+		JsonNode firstIssueDateTextJsonNode = firstIssueDateJsonNode.get("text");
+		issueDate = firstIssueDateTextJsonNode.asText();
+		issueDate = issueDate.replaceAll("\\D", "");
+		
+		try {
+			Date transformDate = this.transformDate(issueDate);
+			issueDate = DATE_FORMAT_YYYYMMDD.format(transformDate);
+		} catch (ParseException e) {
+			log.warn(e.getMessage());
+			issueDate = "20220101";
+		}
+		
+		
+		/*
 		JsonNode firstIssueDateFromattedJsonNode = firstIssueDateJsonNode.get("formatted");
 		
 		JsonNode yearJsonNode = firstIssueDateFromattedJsonNode.get("year");
@@ -278,7 +296,7 @@ public class GrmAdapterController {
 		}
 		
 		issueDate = issueYear + issueMonth + issueDay;
-		
+		*/
 		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
 		
@@ -335,6 +353,9 @@ public class GrmAdapterController {
 			JsonNode birthDateJsonNode = idTypeFieldJsonNode.get("birthDate");
 			JsonNode firstBirthDateJsonNode = birthDateJsonNode.get(0);
 			JsonNode firstBirthDateFormattedJsonNode = firstBirthDateJsonNode.get("formatted");
+			if(firstBirthDateFormattedJsonNode == null) {
+				throw new IfException("[OCR 실패] idCard.result.pp.birthDate[0].formatted 가 없습니다. ");
+			}
 			JsonNode birthDateYearJsonNode = firstBirthDateFormattedJsonNode.get("year");
 			JsonNode birthDateMonthJsonNode = firstBirthDateFormattedJsonNode.get("month");
 			JsonNode birthDateDayJsonNode = firstBirthDateFormattedJsonNode.get("day");
@@ -474,20 +495,20 @@ public class GrmAdapterController {
 		return d;
 	}
 
-	/*	
-		public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
-			GrmAdapterController grmAdapterController = new GrmAdapterController();
+	/*
+	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
+		GrmAdapterController grmAdapterController = new GrmAdapterController();
 	
-			ObjectMapper objectMapper = new ObjectMapper();
-			String ocrResultJson = "[{\"uid\":\"a513711d3b514f6fb11ad3dc3848df1f\",\"validationResult\":{\"result\":\"NO_REQUESTED\"},\"inferResult\":\"SUCCESS\",\"idCard\":{\"result\":{\"idtype\":\"ID Card\",\"rois\":[{\"vertices\":[{\"x\":3.1388545,\"y\":3.9956706},{\"x\":754.52325,\"y\":-5.092327},{\"x\":747.84045,\"y\":473.14856},{\"x\":2.264223,\"y\":474.4076}]}],\"ic\":{\"address\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":51.675,\"y\":235.1875},{\"x\":192.7875,\"y\":235.1875},{\"x\":192.7875,\"y\":272.2875},{\"x\":51.675,\"y\":272.2875}]},{\"vertices\":[{\"x\":53.6625,\"y\":268.3125},{\"x\":263.67496,\"y\":268.3125},{\"x\":263.67496,\"y\":304.0875},{\"x\":53.6625,\"y\":304.0875}]},{\"vertices\":[{\"x\":203.3875,\"y\":235.85},{\"x\":387.5625,\"y\":235.85},{\"x\":387.5625,\"y\":270.9625},{\"x\":203.3875,\"y\":270.9625}]},{\"vertices\":[{\"x\":271.625,\"y\":268.975},{\"x\":347.15,\"y\":268.975},{\"x\":347.15,\"y\":302.7625},{\"x\":271.625,\"y\":302.7625}]}],\"formatted\":{\"value\":\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\"},\"text\":\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\",\"maskingPolys\":[]}],\"authority\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":146.53316,\"y\":381.33884},{\"x\":326.93195,\"y\":383.12497},{\"x\":326.47778,\"y\":428.99695},{\"x\":146.07898,\"y\":427.21082}]},{\"vertices\":[{\"x\":343.17493,\"y\":382.92496},{\"x\":524.6999,\"y\":382.92496},{\"x\":524.6999,\"y\":427.31247},{\"x\":343.17493,\"y\":427.31247}]},{\"vertices\":[{\"x\":525.3625,\"y\":374.975},{\"x\":622.75,\"y\":374.975},{\"x\":622.75,\"y\":429.3},{\"x\":525.3625,\"y\":429.3}]}],\"formatted\":{\"value\":\"서울특별시 금천구청장\"},\"text\":\"서울특별시 금천구청장 청바\",\"maskingPolys\":[]}],\"name\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":72.2125,\"y\":116.6},{\"x\":367.6875,\"y\":116.6},{\"x\":367.6875,\"y\":165.625},{\"x\":72.2125,\"y\":165.625}]}],\"formatted\":{\"value\":\"홍길동\"},\"text\":\"홍길동\",\"maskingPolys\":[]}],\"personalNum\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":65.5875,\"y\":181.52498},{\"x\":363.71246,\"y\":181.52498},{\"x\":363.71246,\"y\":216.63748},{\"x\":65.5875,\"y\":216.63748}]}],\"formatted\":{\"value\":\"800101-2345678\"},\"text\":\"800101-2345678\",\"maskingPolys\":[{\"vertices\":[{\"x\":211.13873,\"y\":178.01373},{\"x\":367.22372,\"y\":178.01373},{\"x\":367.22372,\"y\":220.14873},{\"x\":211.13873,\"y\":220.14873}]}]}],\"issueDate\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":242.475,\"y\":351.7875},{\"x\":374.3125,\"y\":351.7875},{\"x\":374.3125,\"y\":381.6},{\"x\":242.475,\"y\":381.6}]},{\"vertices\":[{\"x\":372.98746,\"y\":352.44995},{\"x\":422.01245,\"y\":352.44995},{\"x\":422.01245,\"y\":380.93747},{\"x\":372.98746,\"y\":380.93747}]}],\"formatted\":{\"month\":\"08\",\"year\":\"2020\",\"day\":\"16\"},\"text\":\"2020.08.16\",\"maskingPolys\":[{\"vertices\":[{\"x\":239.52966,\"y\":349.0218},{\"x\":424.9578,\"y\":349.0217},{\"x\":424.9578,\"y\":384.3657},{\"x\":239.52968,\"y\":384.36578}]}]}]},\"isConfident\":true},\"meta\":{\"estimatedLanguage\":\"ko\"}},\"name\":\"test_idcard\",\"message\":\"SUCCESS\"}]";
-			JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
-			JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String ocrResultJson = "[{\"uid\":\"a513711d3b514f6fb11ad3dc3848df1f\",\"validationResult\":{\"result\":\"NO_REQUESTED\"},\"inferResult\":\"SUCCESS\",\"idCard\":{\"result\":{\"idtype\":\"ID Card\",\"rois\":[{\"vertices\":[{\"x\":3.1388545,\"y\":3.9956706},{\"x\":754.52325,\"y\":-5.092327},{\"x\":747.84045,\"y\":473.14856},{\"x\":2.264223,\"y\":474.4076}]}],\"ic\":{\"address\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":51.675,\"y\":235.1875},{\"x\":192.7875,\"y\":235.1875},{\"x\":192.7875,\"y\":272.2875},{\"x\":51.675,\"y\":272.2875}]},{\"vertices\":[{\"x\":53.6625,\"y\":268.3125},{\"x\":263.67496,\"y\":268.3125},{\"x\":263.67496,\"y\":304.0875},{\"x\":53.6625,\"y\":304.0875}]},{\"vertices\":[{\"x\":203.3875,\"y\":235.85},{\"x\":387.5625,\"y\":235.85},{\"x\":387.5625,\"y\":270.9625},{\"x\":203.3875,\"y\":270.9625}]},{\"vertices\":[{\"x\":271.625,\"y\":268.975},{\"x\":347.15,\"y\":268.975},{\"x\":347.15,\"y\":302.7625},{\"x\":271.625,\"y\":302.7625}]}],\"formatted\":{\"value\":\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\"},\"text\":\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\",\"maskingPolys\":[]}],\"authority\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":146.53316,\"y\":381.33884},{\"x\":326.93195,\"y\":383.12497},{\"x\":326.47778,\"y\":428.99695},{\"x\":146.07898,\"y\":427.21082}]},{\"vertices\":[{\"x\":343.17493,\"y\":382.92496},{\"x\":524.6999,\"y\":382.92496},{\"x\":524.6999,\"y\":427.31247},{\"x\":343.17493,\"y\":427.31247}]},{\"vertices\":[{\"x\":525.3625,\"y\":374.975},{\"x\":622.75,\"y\":374.975},{\"x\":622.75,\"y\":429.3},{\"x\":525.3625,\"y\":429.3}]}],\"formatted\":{\"value\":\"서울특별시 금천구청장\"},\"text\":\"서울특별시 금천구청장 청바\",\"maskingPolys\":[]}],\"name\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":72.2125,\"y\":116.6},{\"x\":367.6875,\"y\":116.6},{\"x\":367.6875,\"y\":165.625},{\"x\":72.2125,\"y\":165.625}]}],\"formatted\":{\"value\":\"홍길동\"},\"text\":\"홍길동\",\"maskingPolys\":[]}],\"personalNum\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":65.5875,\"y\":181.52498},{\"x\":363.71246,\"y\":181.52498},{\"x\":363.71246,\"y\":216.63748},{\"x\":65.5875,\"y\":216.63748}]}],\"formatted\":{\"value\":\"800101-2345678\"},\"text\":\"800101-2345678\",\"maskingPolys\":[{\"vertices\":[{\"x\":211.13873,\"y\":178.01373},{\"x\":367.22372,\"y\":178.01373},{\"x\":367.22372,\"y\":220.14873},{\"x\":211.13873,\"y\":220.14873}]}]}],\"issueDate\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":242.475,\"y\":351.7875},{\"x\":374.3125,\"y\":351.7875},{\"x\":374.3125,\"y\":381.6},{\"x\":242.475,\"y\":381.6}]},{\"vertices\":[{\"x\":372.98746,\"y\":352.44995},{\"x\":422.01245,\"y\":352.44995},{\"x\":422.01245,\"y\":380.93747},{\"x\":372.98746,\"y\":380.93747}]}],\"formatted\":{\"month\":\"08\",\"year\":\"2020\",\"day\":\"16\"},\"text\":\"2020.08.16\",\"maskingPolys\":[{\"vertices\":[{\"x\":239.52966,\"y\":349.0218},{\"x\":424.9578,\"y\":349.0217},{\"x\":424.9578,\"y\":384.3657},{\"x\":239.52968,\"y\":384.36578}]}]}]},\"isConfident\":true},\"meta\":{\"estimatedLanguage\":\"ko\"}},\"name\":\"test_idcard\",\"message\":\"SUCCESS\"}]";
+		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
+		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
+		String isncDate = grmAdapterController.getIsncDate(ocrResultReadTree);
+		System.out.println(isncDate);
+	}	
+	*/
 	
-			String isncDate = grmAdapterController.getIsncDate(ocrResultReadTree);
-			System.out.println(isncDate);
 	
-		}	
-	*/	
 	/**
 	 * <pre>
 	 * [01, 02, 09, 03]
