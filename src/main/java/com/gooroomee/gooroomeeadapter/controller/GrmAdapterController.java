@@ -150,6 +150,10 @@ public class GrmAdapterController {
 	@Value(value = "${interface.ocr.secret-key}")
 	private String ocrSecretKey;
 
+	/** mvc.entry-uri-issue-service.uri */
+	@Value(value = "${mvc.entry-uri-issue-service.uri}")
+	private String uriOfMvcEntryUriIssueService;
+
 	@Autowired
 	private GrmAdapterService gooroomeeAdapterService;
 
@@ -179,7 +183,7 @@ public class GrmAdapterController {
 	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage";
 
 	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
-	
+
 	private static final SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
 
 	/**
@@ -213,22 +217,22 @@ public class GrmAdapterController {
 		}
 		return fieldName;
 	}
-	
+
 	private String getCustNm(JsonNode ocrResultReadTree) {
 		String custNm = null;
-		
+
 		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
 		JsonNode resultJsonNode = idCardJsonNode.get("result");
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
-		
+
 		JsonNode nameListJsonNode = idTypeFieldJsonNode.get("name");
 		JsonNode firstNameJsonNode = nameListJsonNode.get(0);
 		JsonNode firstNameTextJsonNode = firstNameJsonNode.get("text");
 		custNm = firstNameTextJsonNode.asText();
-		
+
 		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
 		
@@ -241,27 +245,27 @@ public class GrmAdapterController {
 		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
 			custNm = ocrResultReadTree.get("idCard").get("result").get("ac").get("name").get(0).get("text").asText();
 		}
-		*/		
+		*/
 		return custNm;
 	}
 
 	private String getIsncDate(JsonNode ocrResultReadTree) {
 		String issueDate = null;
-		
+
 		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
 		JsonNode resultJsonNode = idCardJsonNode.get("result");
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
-		
+
 		JsonNode issueDateListJsonNode = idTypeFieldJsonNode.get("issueDate");
 		JsonNode firstIssueDateJsonNode = issueDateListJsonNode.get(0);
-		
+
 		JsonNode firstIssueDateTextJsonNode = firstIssueDateJsonNode.get("text");
 		issueDate = firstIssueDateTextJsonNode.asText();
 		issueDate = issueDate.replaceAll("\\D", "");
-		
+
 		try {
 			Date transformDate = this.transformDate(issueDate);
 			issueDate = DATE_FORMAT_YYYYMMDD.format(transformDate);
@@ -269,8 +273,7 @@ public class GrmAdapterController {
 			log.warn(e.getMessage());
 			issueDate = "20220101";
 		}
-		
-		
+
 		/*
 		JsonNode firstIssueDateFromattedJsonNode = firstIssueDateJsonNode.get("formatted");
 		
@@ -327,14 +330,14 @@ public class GrmAdapterController {
 
 	private String getBtdt(JsonNode ocrResultReadTree) {
 		String btdt = null;
-		
+
 		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
 		JsonNode resultJsonNode = idCardJsonNode.get("result");
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
-		
+
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
 			JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
@@ -353,8 +356,8 @@ public class GrmAdapterController {
 			JsonNode birthDateJsonNode = idTypeFieldJsonNode.get("birthDate");
 			JsonNode firstBirthDateJsonNode = birthDateJsonNode.get(0);
 			JsonNode firstBirthDateFormattedJsonNode = firstBirthDateJsonNode.get("formatted");
-			if(firstBirthDateFormattedJsonNode == null) {
-				throw new IfException("[OCR 실패] idCard.result.pp.birthDate[0].formatted 가 없습니다. ");
+			if (firstBirthDateFormattedJsonNode == null) {
+				throw new IfException("[OCR 실패] idCard.result.pp.birthDate[0].formatted 가 없습니다.");
 			}
 			JsonNode birthDateYearJsonNode = firstBirthDateFormattedJsonNode.get("year");
 			JsonNode birthDateMonthJsonNode = firstBirthDateFormattedJsonNode.get("month");
@@ -371,7 +374,7 @@ public class GrmAdapterController {
 			String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
 			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
 		}
-		
+
 		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
 		
@@ -424,14 +427,14 @@ public class GrmAdapterController {
 
 	private String getSex(JsonNode ocrResultReadTree) {
 		String sex = null;
-		
+
 		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
 		JsonNode resultJsonNode = idCardJsonNode.get("result");
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
-		
+
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
 			JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
 			JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
@@ -457,8 +460,7 @@ public class GrmAdapterController {
 			JsonNode firstSexTextJsonNode = firstSexjsonNode.get("text");
 			sex = firstSexTextJsonNode.asText();
 		}
-		
-		
+
 		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
 		
@@ -480,7 +482,7 @@ public class GrmAdapterController {
 	}
 
 	public Date transformDate(String date) throws ParseException {
-		SimpleDateFormat beforeFormat = new SimpleDateFormat("yyyymmdd");
+		SimpleDateFormat beforeFormat = DATE_FORMAT_YYYYMMDD;
 
 		SimpleDateFormat afterFormat = new SimpleDateFormat("yyyy-mm-dd");
 
@@ -507,8 +509,7 @@ public class GrmAdapterController {
 		System.out.println(isncDate);
 	}	
 	*/
-	
-	
+
 	/**
 	 * <pre>
 	 * [01, 02, 09, 03]
@@ -540,7 +541,7 @@ public class GrmAdapterController {
 		String ocrResultJson = mvc001ResDtoDataBody.getImages();
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
-		
+
 		/*
 		// [01] 신분증OCR요청 으로 로직 이동
 		if (ocrResultReadTrees.size() != 1) {
@@ -797,6 +798,7 @@ public class GrmAdapterController {
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
 		IfMcCs002_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 		/*
+		// 체크하지 않아야만 함. 이 서비스 호출의 목적은 진위확인을 하는 것이 아니라, custId 를 받아오는 것이기 때문에.
 		if (!"Y".equalsIgnoreCase(ifOutputDto.getCsnsYn())) {
 			throw new IfException(String.format("%s", ifOutputDto.getRsltMsgeCntn()));
 		}
@@ -913,8 +915,14 @@ public class GrmAdapterController {
 		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
 		IfMcCs006_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		/*
 		if (ifOutputDto.getEmpeInfoList() == null || ifOutputDto.getEmpeInfoList().size() == 0) {
 			throw new IfException("조회된 사원이 없습니다.");
+		}
+		*/
+
+		if (ifOutputDto.getEmpeInfoList() == null) {
+			ifOutputDto.setEmpeInfoList(new ArrayList<>());
 		}
 
 		Mvc006ResDto resDto = modelMapper.map(ifOutputDto, Mvc006ResDto.class);
@@ -954,8 +962,13 @@ public class GrmAdapterController {
 		IfMcCs007_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 //		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0 || ifOutputDto.getTotCont() == 0) {
+		/*
 		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0) {
 			throw new IfException("조회된 고객계약정보가 없습니다.");
+		}
+		*/
+		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null) {
+			ifOutputDto.setCustCntcInfoInqyRsltList(new ArrayList<>());
 		}
 
 		Mvc007ResDto resDto = modelMapper.map(ifOutputDto, Mvc007ResDto.class);
@@ -991,8 +1004,13 @@ public class GrmAdapterController {
 		Class<IfMcCs008_O> ifOutputDtoClass = IfMcCs008_O.class;
 		IfMcCs008_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		/*
 		if (ifOutputDto.getCustAcntListInqyList() == null || ifOutputDto.getCustAcntListInqyList().size() == 0) {
 			throw new IfException("조회된 고객계좌정보가 없습니다.");
+		}
+		*/
+		if (ifOutputDto.getCustAcntListInqyList() == null) {
+			ifOutputDto.setCustAcntListInqyList(new ArrayList<>());
 		}
 
 		Mvc008ResDto resDto = modelMapper.map(ifOutputDto, Mvc008ResDto.class);
@@ -1427,11 +1445,11 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
 		Class<IfMcCs017_O> ifOutputDtoClass = IfMcCs017_O.class;
 		IfMcCs017_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-
+		/*
 		if (ifOutputDto.getCnplSuid() == null) {
 			throw new IfException("조회된 연락처가 없습니다.");
 		}
-
+		*/
 		Mvc017ResDto resDto = modelMapper.map(ifOutputDto, Mvc017ResDto.class);
 
 		ResponseDto<Mvc017ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1463,8 +1481,14 @@ public class GrmAdapterController {
 		Class<IfMcCs018_O> ifOutputDtoClass = IfMcCs018_O.class;
 		IfMcCs018_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
+		/*
 		if (ifOutputDto.getPscdList() == null || ifOutputDto.getPscdList().size() == 0) {
 			throw new IfException("조회된 우편번호가 없습니다.");
+		}
+		*/
+
+		if (ifOutputDto.getPscdList() == null) {
+			ifOutputDto.setPscdList(new ArrayList<>());
 		}
 
 		Mvc018ResDto resDto = modelMapper.map(ifOutputDto, Mvc018ResDto.class);
@@ -1473,13 +1497,6 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
-	
-	
-	
-	
-	
-	
-	
 
 	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
 	public void exception(HttpServletRequest request) throws Exception {
@@ -1665,5 +1682,5 @@ public class GrmAdapterController {
 
 		return idCardMockImageInfoList;
 	}
-	
+
 }
