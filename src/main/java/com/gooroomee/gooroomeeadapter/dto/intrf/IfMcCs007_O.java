@@ -68,15 +68,17 @@ public class IfMcCs007_O {
 
 		// XXX 확인
 		/** 계약일자 */
-		@JsonFormat(pattern = "yyyyMMdd")
-		@DateTimeFormat(pattern = "yyyyMMdd")
-		private Date ctdt;
+//		@JsonFormat(pattern = "yyyyMMdd")
+//		@DateTimeFormat(pattern = "yyyyMMdd")
+//		private Date ctdt;
+		private String ctdt;
 
 		// XXX 확인
 		/** 만기일자 */
-		@JsonFormat(pattern = "yyyyMMdd")
-		@DateTimeFormat(pattern = "yyyyMMdd")
-		private Date mtrtDate;
+//		@JsonFormat(pattern = "yyyyMMdd")
+//		@DateTimeFormat(pattern = "yyyyMMdd")
+//		private Date mtrtDate;
+		private String mtrtDate;
 
 		/** 보험만기구분값 */
 		private String isrnMtrtDvsnVal;

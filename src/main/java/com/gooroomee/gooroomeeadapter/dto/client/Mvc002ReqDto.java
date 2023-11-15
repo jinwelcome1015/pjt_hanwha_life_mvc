@@ -44,17 +44,17 @@ public class Mvc002ReqDto {
 
 	// XXX 확인
 	/** 발급일자 */
-	@JsonFormat(pattern = "yyyyMMdd")
-	@DateTimeFormat(pattern = "yyyyMMdd")
-	private Date isncDate;
-//	private String isncDate;
+//	@JsonFormat(pattern = "yyyyMMdd")
+//	@DateTimeFormat(pattern = "yyyyMMdd")
+//	private Date isncDate;
+	private String isncDate;
 
 	// XXX 확인
 	/** 생년월일 */
-	@JsonFormat(pattern = "yyyyMMdd")
-	@DateTimeFormat(pattern = "yyyyMMdd")
-	private Date btdt;
-//	private String btdt;
+//	@JsonFormat(pattern = "yyyyMMdd")
+//	@DateTimeFormat(pattern = "yyyyMMdd")
+//	private Date btdt;
+	private String btdt;
 
 	/** 운전면허일련번호 */
 	private String drvnLcnsSqno;
@@ -73,10 +73,10 @@ public class Mvc002ReqDto {
 
 	// XXX 확인
 	/** 만료일자 */
-	@JsonFormat(pattern = "yyyyMMdd")
-	@DateTimeFormat(pattern = "yyyyMMdd")
-	private Date expyDate;
-//	private String expyDate;
+//	@JsonFormat(pattern = "yyyyMMdd")
+//	@DateTimeFormat(pattern = "yyyyMMdd")
+//	private Date expyDate;
+	private String expyDate;
 
 //	/** 이미지관리번호 */
 //	private String imgeMgmtNo;

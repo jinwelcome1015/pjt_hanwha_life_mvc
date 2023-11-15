@@ -42,10 +42,10 @@ public class IfMcCs000_O {
     private String custNm;
     
     /** 고객생년월일 */
-    @JsonFormat(pattern = "yyyyMMdd")
-	@DateTimeFormat(pattern = "yyyyMMdd")
-    private Date custBirthDate;
-//    private String custBirthDate;
+//    @JsonFormat(pattern = "yyyyMMdd")
+//	@DateTimeFormat(pattern = "yyyyMMdd")
+//    private Date custBirthDate;
+    private String custBirthDate;
     
     /** 
      * <pre>

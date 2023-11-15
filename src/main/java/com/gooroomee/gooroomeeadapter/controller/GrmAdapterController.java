@@ -25,6 +25,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -266,7 +267,7 @@ public class GrmAdapterController {
 		JsonNode firstIssueDateTextJsonNode = firstIssueDateJsonNode.get("text");
 		issueDate = firstIssueDateTextJsonNode.asText();
 		issueDate = issueDate.replaceAll("\\D", "");
-
+		/*
 		try {
 			Date transformDate = this.transformDate(issueDate);
 			issueDate = DATE_FORMAT_YYYYMMDD.format(transformDate);
@@ -274,8 +275,8 @@ public class GrmAdapterController {
 			log.warn(e.getMessage());
 			issueDate = "20220101";
 		}
-
-		/*
+		*/
+		/* */
 		JsonNode firstIssueDateFromattedJsonNode = firstIssueDateJsonNode.get("formatted");
 		
 		JsonNode yearJsonNode = firstIssueDateFromattedJsonNode.get("year");
@@ -300,7 +301,7 @@ public class GrmAdapterController {
 		}
 		
 		issueDate = issueYear + issueMonth + issueDay;
-		*/
+		/* */
 		/*
 		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
 		
@@ -575,8 +576,8 @@ public class GrmAdapterController {
 		String isncDate = this.getIsncDate(ocrResultReadTree);
 		String sex = this.getSex(ocrResultReadTree);
 
-//		mvc000ResDto.setCustBirthDate(btdt);
-		mvc000ResDto.setCustBirthDate(this.transformDate(btdt));
+		mvc000ResDto.setCustBirthDate(btdt);
+//		mvc000ResDto.setCustBirthDate(this.transformDate(btdt));
 		mvc000ResDto.setCustNm(custNm);
 		mvc000ResDto.setIdType(idType);
 		mvc000ResDto.setCustGender(sex);
@@ -600,10 +601,11 @@ public class GrmAdapterController {
 
 		mvc002ReqDto.setMgmtNo("");
 		mvc002ReqDto.setCustNm(custNm);
-		mvc002ReqDto.setBtdt(this.transformDate(btdt));
-//		mvc002ReqDto.setBtdt(btdt);
-		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
-//		mvc002ReqDto.setIsncDate(isncDate);
+//		mvc002ReqDto.setBtdt(this.transformDate(btdt));
+		mvc002ReqDto.setBtdt(btdt);
+		
+//		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
+		mvc002ReqDto.setIsncDate(isncDate);
 		mvc002ReqDto.setExpyDate(null);
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
@@ -615,8 +617,18 @@ public class GrmAdapterController {
 			String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
 			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
 
-			mvc002ReqDto.setDrvnLcnsSqno("");
+			String driverLicenseSequenceNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("code").get(0).get("text").asText();
+			
+//			mvc002ReqDto.setDrvnLcnsSqno("");
+			mvc002ReqDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
 			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
+			
+			
+			String rrno = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
+			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+
+			mvc002ReqDto.setRrno(rrno);
+			
 		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
 			String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0).get("text").asText();
 
