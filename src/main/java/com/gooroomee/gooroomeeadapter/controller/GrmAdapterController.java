@@ -118,6 +118,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.exception.IfException;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
@@ -1504,6 +1505,14 @@ public class GrmAdapterController {
 		throw exception;
 	}
 
+	// XXX 
+	@RequestMapping(path = { "/counselling/otp" })
+	public @ResponseBody IfTelegram<Mvc003ResDto> counsellingOtp(@RequestBody IfTelegram<Mvc003ReqDto> inputTelegram) {
+		System.out.println("*** counsellingOtp ***");
+		return null;
+	}
+	
+	
 	/**
 	 * 
 	 * <pre>
