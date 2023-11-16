@@ -58,7 +58,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 		Map<String, Object> requestBodyHeaderMap = (Map<String, Object>) requestBodyMap.get("header");
 		
 		String rcveSrvcId = null;
-		if((requestBodyHeaderMap != null) && (requestBodyHeaderMap.get("rcveSrvcId") != null)) {
+		if(requestBodyHeaderMap != null && requestBodyHeaderMap.get("rcveSrvcId") != null) {
 			rcveSrvcId = (String) requestBodyHeaderMap.get("rcveSrvcId");
 		}
 		
@@ -85,7 +85,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 
 		
 		String rcveSrvcId = null;
-		if((responseBodyHeaderMap != null) && (responseBodyHeaderMap.get("rcveSrvcId") != null)) {
+		if(responseBodyHeaderMap != null && responseBodyHeaderMap.get("rcveSrvcId") != null) {
 			rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");
 		}
 
