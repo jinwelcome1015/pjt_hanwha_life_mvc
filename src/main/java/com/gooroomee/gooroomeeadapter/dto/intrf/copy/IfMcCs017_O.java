@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.dto.client;
+package com.gooroomee.gooroomeeadapter.dto.intrf.copy;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,17 +7,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Mvc016ReqDto {
-	
-	/** 사원번호 */
-	private String emnb;
+public class IfMcCs017_O {
+
+	/** 연락처SUID */
+	private String cnplSuid;
+	/** 연락처구분코드 */
+	private String cnplDvsnCode;
+	/** 연락처참조SUID */
+	private String cnplRfrnSuid;
 
 	// XXX 확인
 	/** SNS */
 	private Sns sns;
 
-	/** 전화번호 */
 	// XXX 확인
+	/** 전화번호 */
 	private Tlno tlno;
 
 	// XXX 확인
@@ -33,8 +37,8 @@ public class Mvc016ReqDto {
 	@ToString
 	public static class Sns {
 
-		/** 연락처SUID */
-		private String cnplSuid;
+		/** SNS_SUID */
+		private String snsSuid;
 
 		/** SNS값 */
 		private String snsVal;
@@ -47,8 +51,8 @@ public class Mvc016ReqDto {
 	@Setter
 	@ToString
 	public static class Tlno {
-		/** 연락처SUID */
-		private String cnplSuid;
+		/** 전화번호SUID */
+		private String tlnoSuid;
 
 		/** 국가코드 */
 		private String cntyCode;
@@ -73,8 +77,9 @@ public class Mvc016ReqDto {
 	@Setter
 	@ToString
 	public static class Addr {
-		/** 연락처SUID */
-		private String cnplSuid;
+
+		/** 주소SUID */
+		private String addrSuid;
 
 		/** 국가코드 */
 		private String cntyCode;
@@ -118,8 +123,8 @@ public class Mvc016ReqDto {
 	@Setter
 	@ToString
 	public static class ElctLoct {
-		/** 연락처SUID */
-		private String cnplSuid;
+		/** 전자위치SUID */
+		private String elctLoctSuid;
 
 		/** 전자위치구분코드 */
 		private String elctLoctDvsnCode;
@@ -133,4 +138,5 @@ public class Mvc016ReqDto {
 		/** 전자위치비고내용 */
 		private String elctLoctRmrkCntn;
 	}
+
 }

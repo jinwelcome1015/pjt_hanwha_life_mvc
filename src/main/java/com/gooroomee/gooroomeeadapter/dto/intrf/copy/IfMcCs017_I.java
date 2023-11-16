@@ -1,0 +1,17 @@
+package com.gooroomee.gooroomeeadapter.dto.intrf.copy;
+
+import java.math.BigInteger;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class IfMcCs017_I {
+
+	// XXX 확인
+	/** 대체키SUID */
+	private BigInteger sbsnKeySuid;
+}

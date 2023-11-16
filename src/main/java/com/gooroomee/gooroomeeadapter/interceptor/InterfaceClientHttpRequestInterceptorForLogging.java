@@ -24,14 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
+public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
 	
 	public static void main(String[] args) {
 		System.out.println(loggerForBase64DataLogging);
 	}
 
 	private static final Logger loggerForBase64DataLogging = LoggerFactory
-			.getLogger(ClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
+			.getLogger(InterfaceClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -56,13 +56,16 @@ public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequest
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> requestBodyHeaderMap = (Map<String, Object>) requestBodyMap.get("header");
-
-		String rcveSrvcId = (String) requestBodyHeaderMap.get("rcveSrvcId");
-
+		
+		String rcveSrvcId = null;
+		if((requestBodyHeaderMap != null) && (requestBodyHeaderMap.get("rcveSrvcId") != null)) {
+			rcveSrvcId = (String) requestBodyHeaderMap.get("rcveSrvcId");
+		}
+		
 		String reqLog = new StringBuilder().append("[REQUEST]").append(" ").append("Uri : ").append(request.getURI()).append(", ").append("Method : ")
 				.append(request.getMethod()).append(", ").append("Request Body : ").append(new String(body, StandardCharsets.UTF_8)).toString();
-
-		if (rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId())) {
+		
+		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
 			loggerForBase64DataLogging.info(reqLog);
 		} else {
 			log.info(reqLog);
@@ -80,12 +83,16 @@ public class ClientHttpRequestInterceptorForLogging implements ClientHttpRequest
 		@SuppressWarnings("unchecked")
 		Map<String, Object> responseBodyHeaderMap = (Map<String, Object>) responseBodyMap.get("header");
 
-		String rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");
+		
+		String rcveSrvcId = null;
+		if((responseBodyHeaderMap != null) && (responseBodyHeaderMap.get("rcveSrvcId") != null)) {
+			rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");
+		}
 
 		String resLog = new StringBuilder().append("[RESPONSE]").append(" ").append("Uri : ").append(uri).append(", ").append("Status code : ")
 				.append(response.getStatusCode()).append(", ").append("Response Body : ").append(responseBody).toString();
 
-		if (rcveSrvcId.equals(IfConstant.IfSpec.IfMcCs001.getRcveSrvcId())) {
+		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
 			loggerForBase64DataLogging.info(resLog);
 		} else {
 			log.info(resLog);

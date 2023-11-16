@@ -10,7 +10,7 @@ import lombok.ToString;
 public class Mvc015ReqDto {
 
 	/** 사원번호 */
-	public String emnb;
+	private String emnb;
 
 	/** URL_MOBILE */
 	private String url_mobile;

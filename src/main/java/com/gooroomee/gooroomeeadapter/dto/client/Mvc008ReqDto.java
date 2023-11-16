@@ -10,7 +10,7 @@ import lombok.ToString;
 public class Mvc008ReqDto {
 
 	/** 사원번호 */
-	public String emnb;
+	private String emnb;
 
 	/** 고객ID */
 	private String custId;

@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.dto.intrf;
+package com.gooroomee.gooroomeeadapter.dto.intrf.copy;
 
 import java.sql.Date;
 

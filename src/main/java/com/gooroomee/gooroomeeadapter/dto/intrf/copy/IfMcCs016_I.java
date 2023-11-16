@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.dto.client;
+package com.gooroomee.gooroomeeadapter.dto.intrf.copy;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Mvc016ReqDto {
-	
-	/** 사원번호 */
-	private String emnb;
+public class IfMcCs016_I {
 
 	// XXX 확인
 	/** SNS */

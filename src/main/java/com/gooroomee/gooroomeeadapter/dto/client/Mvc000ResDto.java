@@ -17,7 +17,7 @@ import lombok.ToString;
 public class Mvc000ResDto {
 
 	/** 사원번호 */
-	public String emnb;
+	private String emnb;
 
 	/**
 	 * 신분증 타입

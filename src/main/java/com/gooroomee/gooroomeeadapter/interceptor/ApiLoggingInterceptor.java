@@ -27,7 +27,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 	@Autowired
 	ObjectMapper objectMapper;
 
-	private static final Logger loggerForBase64DataLogging = LoggerFactory
+	private static final Logger LOGGER_FOR_BASE64_DATA_LOGGING = LoggerFactory
 			.getLogger(ApiLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64"
 
 	private static final String TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_1 = "entry";
@@ -47,7 +47,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 
 		if (request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_1)
 				|| request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2)) {
-			loggerForBase64DataLogging.info("[{}] [Request Body] : {}", request.getRequestURI(), requestJsonNode);
+			LOGGER_FOR_BASE64_DATA_LOGGING.info("[{}] [Request Body] : {}", request.getRequestURI(), requestJsonNode);
 		} else {
 			log.info("[{}] [Request Body] : {}", request.getRequestURI(), requestJsonNode);
 		}
@@ -57,7 +57,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 
 		if (request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_1)
 				|| request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2)) {
-			loggerForBase64DataLogging.info("[{}] [Response Body] : {}", request.getRequestURI(), responseJsonNode);
+			LOGGER_FOR_BASE64_DATA_LOGGING.info("[{}] [Response Body] : {}", request.getRequestURI(), responseJsonNode);
 		} else {
 			log.info("[{}] [Response Body] : {}", request.getRequestURI(), responseJsonNode);
 		}

@@ -10,7 +10,7 @@ import lombok.ToString;
 public class Mvc017ReqDto {
 	
 	/** 사원번호 */
-	public String emnb;
+	private String emnb;
 
 	// XXX 확인
 	/** 대체키SUID */

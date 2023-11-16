@@ -86,6 +86,10 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.gooroomeeadapter.dto.ifprovider.consumer.OtpReqDto;
+import com.gooroomee.gooroomeeadapter.dto.ifprovider.consumer.OtpResDto;
+import com.gooroomee.gooroomeeadapter.dto.ifprovider.provider.OtpDto_I;
+import com.gooroomee.gooroomeeadapter.dto.ifprovider.provider.common.IfProviderResponseCommonDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataBody.Image;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_O;
@@ -152,12 +156,8 @@ public class GrmAdapterController {
 	@Value(value = "${interface.ocr.secret-key}")
 	private String ocrSecretKey;
 
-	/** mvc.entry-uri-issue-service.uri */
-	@Value(value = "${mvc.entry-uri-issue-service.uri}")
-	private String uriOfMvcEntryUriIssueService;
-
 	@Autowired
-	private GrmAdapterService gooroomeeAdapterService;
+	private GrmAdapterService grmAdapterService;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -760,7 +760,7 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;
 		Class<IfMcCs001_O> ifOutputDtoClass = IfMcCs001_O.class;
-		IfMcCs001_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs001_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		String ocrResultJson = ifOutputDto.getDataBody().getImages();
 		log.info("[OCR RESULT] : {}", ocrResultJson);
@@ -809,7 +809,7 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
-		IfMcCs002_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs002_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 		/*
 		// 체크하지 않아야만 함. 이 서비스 호출의 목적은 진위확인을 하는 것이 아니라, custId 를 받아오는 것이기 때문에.
 		if (!"Y".equalsIgnoreCase(ifOutputDto.getCsnsYn())) {
@@ -845,7 +845,7 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 		Class<IfMcCs003_O> ifOutputDtoClass = IfMcCs003_O.class;
-		IfMcCs003_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs003_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 		/*
 		if (!"Y".equalsIgnoreCase(ifOutputDto.getPrcsSucsYn())) {
 			throw new IfException("싱글뷰 오픈 메세지 전송에 실패했습니다.");
@@ -888,7 +888,7 @@ public class GrmAdapterController {
 
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
 		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
-		IfMcCs005_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs005_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		String rspnCodeVal = ifOutputDto.getRspnCodeVal(); // "00":오류, "01":정상
 
@@ -926,7 +926,7 @@ public class GrmAdapterController {
 
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
 		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
-		IfMcCs006_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs006_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		/*
 		if (ifOutputDto.getEmpeInfoList() == null || ifOutputDto.getEmpeInfoList().size() == 0) {
@@ -972,7 +972,7 @@ public class GrmAdapterController {
 
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
 		Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
-		IfMcCs007_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs007_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 //		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0 || ifOutputDto.getTotCont() == 0) {
 		/*
@@ -1015,7 +1015,7 @@ public class GrmAdapterController {
 //		IfMcCs008_O cs008_O = gooroomeeAdapterService.ifmccs008(emnb, cs008_I);
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs008;
 		Class<IfMcCs008_O> ifOutputDtoClass = IfMcCs008_O.class;
-		IfMcCs008_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs008_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		/*
 		if (ifOutputDto.getCustAcntListInqyList() == null || ifOutputDto.getCustAcntListInqyList().size() == 0) {
@@ -1057,7 +1057,7 @@ public class GrmAdapterController {
 //		IfMcCs009_O cs009_O = gooroomeeAdapterService.ifmccs009(emnb, cs009_I);
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs009;
 		Class<IfMcCs009_O> ifOutputDtoClass = IfMcCs009_O.class;
-		IfMcCs009_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs009_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		Mvc009ResDto resDto = modelMapper.map(ifOutputDto, Mvc009ResDto.class);
 
@@ -1111,7 +1111,7 @@ public class GrmAdapterController {
 //		IfMcCs010_O cs010_O = gooroomeeAdapterService.ifmccs010(emnb, cs010_I);
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs010;
 		Class<IfMcCs010_O> ifOutputDtoClass = IfMcCs010_O.class;
-		IfMcCs010_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs010_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
 		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
@@ -1221,7 +1221,7 @@ public class GrmAdapterController {
 //		IfMcCs011_O cs011_O = gooroomeeAdapterService.ifmccs011(emnb, cs011_I);
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs011;
 		Class<IfMcCs011_O> ifOutputDtoClass = IfMcCs011_O.class;
-		IfMcCs011_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs011_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		String resCode = ifOutputDto.getDataBody().getResCode(); // 응답코드 ("1200":성공, 그외:실퍠)
 		String errorMessage = ifOutputDto.getDataBody().getErrorMessage(); // 에러메세지
@@ -1292,7 +1292,7 @@ public class GrmAdapterController {
 //		IfMcCs012_O cs012_O = gooroomeeAdapterService.ifmccs012(emnb, cs012_I);
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs012;
 		Class<IfMcCs012_O> ifOutputDtoClass = IfMcCs012_O.class;
-		IfMcCs012_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs012_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		String resCode = ifOutputDto.getDataBody().getResCode(); // 응답코드 ("1200":성공, 그외:실퍠)
 		String errorMessage = ifOutputDto.getDataBody().getErrorMessage(); // 에러메세지
@@ -1386,7 +1386,7 @@ public class GrmAdapterController {
 
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
 		Class<IfMcCs015_O> ifOutputDtoClass = IfMcCs015_O.class;
-		IfMcCs015_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs015_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		double dvsnRsltVal = ifOutputDto.getDvsnRsltVal();
 		int smsTrnmRsltVal = ifOutputDto.getSmsTrnmRsltVal();
@@ -1426,7 +1426,7 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs016;
 		Class<IfMcCs016_O> ifOutputDtoClass = IfMcCs016_O.class;
-		IfMcCs016_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs016_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		Mvc016ResDto resDto = modelMapper.map(ifOutputDto, Mvc016ResDto.class);
 
@@ -1457,7 +1457,7 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs017;
 		Class<IfMcCs017_O> ifOutputDtoClass = IfMcCs017_O.class;
-		IfMcCs017_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs017_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 		/*
 		if (ifOutputDto.getCnplSuid() == null) {
 			throw new IfException("조회된 연락처가 없습니다.");
@@ -1492,7 +1492,7 @@ public class GrmAdapterController {
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs018;
 		Class<IfMcCs018_O> ifOutputDtoClass = IfMcCs018_O.class;
-		IfMcCs018_O ifOutputDto = gooroomeeAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfMcCs018_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 
 		/*
 		if (ifOutputDto.getPscdList() == null || ifOutputDto.getPscdList().size() == 0) {
@@ -1519,9 +1519,27 @@ public class GrmAdapterController {
 
 	// XXX 
 	@RequestMapping(path = { "/counselling/otp" })
-	public @ResponseBody IfTelegram<Mvc003ResDto> counsellingOtp(@RequestBody IfTelegram<Mvc003ReqDto> inputTelegram) {
-		System.out.println("*** counsellingOtp ***");
-		return null;
+	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram) throws JsonMappingException, JsonProcessingException, URISyntaxException {
+		
+		OtpReqDto inputTelegramPayload = inputTelegram.getPayload();
+//		OtpDto_I dto_I = modelMapper.map(inputTelegramPayload, OtpDto_I.class);
+		OtpDto_I dto_I = new OtpDto_I();
+		dto_I.setUsername(inputTelegramPayload.getCustNm());
+		dto_I.setApiUserId(inputTelegramPayload.getCustId());
+		dto_I.setPhoneNumber(inputTelegramPayload.getCustTlno());
+		dto_I.setRequestAgency(inputTelegramPayload.getRequestOrgnCode());
+		
+		IfProviderResponseCommonDto<String> dto_O = grmAdapterService.counsellingOtp(dto_I);
+		
+		OtpResDto otpResDto = new OtpResDto();
+		otpResDto.setDvsnVal(dto_O.getCode());
+		otpResDto.setRsltMsgeCntn(dto_O.getMessage());
+		otpResDto.setRsltDatVal(dto_O.getData());
+		
+		IfTelegram outputTelegram = modelMapper.map(inputTelegram, IfTelegram.class);
+		outputTelegram.setPayload(otpResDto);
+		
+		return outputTelegram;
 	}
 	
 	
