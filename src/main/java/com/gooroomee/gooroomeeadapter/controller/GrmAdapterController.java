@@ -1517,9 +1517,13 @@ public class GrmAdapterController {
 		throw exception;
 	}
 
+	
+	
 	// XXX 
 	@RequestMapping(path = { "/counselling/otp" })
-	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram) throws JsonMappingException, JsonProcessingException, URISyntaxException {
+	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws JsonMappingException, JsonProcessingException, URISyntaxException {
+		
+		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
 		
 		OtpReqDto inputTelegramPayload = inputTelegram.getPayload();
 //		OtpDto_I dto_I = modelMapper.map(inputTelegramPayload, OtpDto_I.class);

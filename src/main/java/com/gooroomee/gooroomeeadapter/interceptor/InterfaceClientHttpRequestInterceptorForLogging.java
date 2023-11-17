@@ -25,10 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
-	
-	public static void main(String[] args) {
-		System.out.println(loggerForBase64DataLogging);
-	}
 
 	private static final Logger loggerForBase64DataLogging = LoggerFactory
 			.getLogger(InterfaceClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
