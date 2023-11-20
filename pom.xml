@@ -20,6 +20,55 @@
 		<java.version>1.8</java.version>
 		<!-- <project.lib.path>E:/_dev/_workspace/workspace-spring-tool-suite4/pjt_hanwha_life_mvc/lib</project.lib.path> -->
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<env>local</env>
+				<build.profile.id>local</build.profile.id>
+				<profileActive>local</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<build.profile.id>dev</build.profile.id>
+				<profileActive>dev</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<env>qa</env>
+				<build.profile.id>qa</build.profile.id>
+				<profileActive>qa</profileActive>
+			</properties>
+			<!-- 
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			 -->
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<env>prod</env>
+				<build.profile.id>prod</build.profile.id>
+				<profileActive>prod</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>dr</id>
+			<properties>
+				<env>dr</env>
+				<build.profile.id>dr</build.profile.id>
+				<profileActive>dr</profileActive>
+			</properties>
+		</profile>
+	</profiles>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
