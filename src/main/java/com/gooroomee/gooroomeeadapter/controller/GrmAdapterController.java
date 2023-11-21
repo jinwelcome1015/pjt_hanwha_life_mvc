@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -124,6 +125,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
+import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeaderResponseMessage;
 import com.gooroomee.gooroomeeadapter.exception.IfException;
 import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
@@ -1541,6 +1544,27 @@ public class GrmAdapterController {
 		otpResDto.setRsltDatVal(dto_O.getData());
 		
 		IfTelegram outputTelegram = modelMapper.map(inputTelegram, IfTelegram.class);
+		IfTelegramHeader outputTelegramHeader = outputTelegram.getHeader();
+		
+		List<IfTelegramHeaderResponseMessage> msgeList = new ArrayList<>();
+		
+		String prcsRsltDvsnCode = "0";
+		if(!"RT_SUCCESS".equalsIgnoreCase(dto_O.getCode())) {
+			prcsRsltDvsnCode = "1";
+			
+			IfTelegramHeaderResponseMessage ifTelegramHeaderResponseMessage = new IfTelegramHeaderResponseMessage();
+			ifTelegramHeaderResponseMessage.setMsgeCntn(dto_O.getMessage());	
+			ifTelegramHeaderResponseMessage.setMsgeCode(outputTelegramHeader.getTrnmSysCode() + "E" + "0001");
+			ifTelegramHeaderResponseMessage.setMsgeOtptDvsnCode("");;
+			
+			msgeList.add(ifTelegramHeaderResponseMessage);
+		}
+		
+		outputTelegramHeader.setMsgeList(msgeList);
+		outputTelegramHeader.setMsgeListCont(msgeList.size());
+		
+		outputTelegramHeader.setPrcsRsltDvsnCode(prcsRsltDvsnCode);
+		
 		outputTelegram.setPayload(otpResDto);
 		
 		return outputTelegram;
@@ -1726,4 +1750,5 @@ public class GrmAdapterController {
 		return idCardMockImageInfoList;
 	}
 
+	
 }
