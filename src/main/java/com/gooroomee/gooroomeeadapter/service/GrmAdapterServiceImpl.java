@@ -2,6 +2,7 @@ package com.gooroomee.gooroomeeadapter.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
@@ -112,7 +113,10 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		String requestJson = objectMapper.writeValueAsString(dto_I);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+//		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+//		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
+		
 		httpHeaders.set(uriOfMvcEntryUriIssueServiceApiKeyHeaderName, uriOfMvcEntryUriIssueServiceApiKeyHeaderValue);
 
 		String targetFullUrl = uriOfMvcEntryUriIssueService;

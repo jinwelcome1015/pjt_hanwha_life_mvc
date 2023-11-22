@@ -5,6 +5,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -144,7 +145,9 @@ public class IfUtil {
 		String requestJson = OBJECT_MAPPER.writeValueAsString(requestTelegram);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+//		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+//		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
 
 		String targetFullUrl = getTargetFullUrl(ifType);
 
