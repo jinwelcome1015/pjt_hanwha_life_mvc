@@ -19,6 +19,6 @@ public class OtpReqDto {
 	private String custTlno;
 	
 	/** 요청 기관 */
-	private String requestOrgnCode;
+	private String rqstOrgnCode;
 
 }

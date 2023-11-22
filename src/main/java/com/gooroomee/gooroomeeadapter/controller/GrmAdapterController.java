@@ -1534,7 +1534,7 @@ public class GrmAdapterController {
 		dto_I.setUsername(inputTelegramPayload.getCustNm());
 		dto_I.setApiUserId(inputTelegramPayload.getCustId());
 		dto_I.setPhoneNumber(inputTelegramPayload.getCustTlno());
-		dto_I.setRequestAgency(inputTelegramPayload.getRequestOrgnCode());
+		dto_I.setRequestAgency(inputTelegramPayload.getRqstOrgnCode());
 		
 		IfProviderResponseCommonDto<String> dto_O = grmAdapterService.counsellingOtp(dto_I);
 		
