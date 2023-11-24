@@ -85,6 +85,10 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc017ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc017ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc018ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc019ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc019ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc020ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc020ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.gooroomeeadapter.dto.ifprovider.consumer.OtpReqDto;
@@ -124,6 +128,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeaderResponseMessage;
@@ -254,8 +260,9 @@ public class GrmAdapterController {
 		return custNm;
 	}
 
+	
 	private String getIsncDate(JsonNode ocrResultReadTree) {
-		String issueDate = null;
+		String issueDate = "";
 
 		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
 		JsonNode resultJsonNode = idCardJsonNode.get("result");
@@ -266,73 +273,90 @@ public class GrmAdapterController {
 
 		JsonNode issueDateListJsonNode = idTypeFieldJsonNode.get("issueDate");
 		JsonNode firstIssueDateJsonNode = issueDateListJsonNode.get(0);
-
+		
 		JsonNode firstIssueDateTextJsonNode = firstIssueDateJsonNode.get("text");
-		issueDate = firstIssueDateTextJsonNode.asText();
-		issueDate = issueDate.replaceAll("\\D", "");
-		/*
+		String beforeFormattedIssueDate = firstIssueDateTextJsonNode.asText();
+		log.debug("[포맷팅 이전 issueDate] : {}", beforeFormattedIssueDate);
+		
 		try {
-			Date transformDate = this.transformDate(issueDate);
-			issueDate = DATE_FORMAT_YYYYMMDD.format(transformDate);
-		} catch (ParseException e) {
-			log.warn(e.getMessage());
-			issueDate = "20220101";
-		}
-		*/
-		/* */
-		JsonNode firstIssueDateFromattedJsonNode = firstIssueDateJsonNode.get("formatted");
-		
-		JsonNode yearJsonNode = firstIssueDateFromattedJsonNode.get("year");
-		String issueYear = yearJsonNode.asText();
-		// XXX OCR 인식불량 보완 로직
-		if ("".equals(StringUtils.trimToEmpty(issueYear))) {
-			issueYear = "2021";
-		}
-		
-		JsonNode monthJsonNode = firstIssueDateFromattedJsonNode.get("month");
-		String issueMonth = monthJsonNode.asText();
-		// XXX OCR 인식불량 보완 로직
-		if ("".equals(StringUtils.trimToEmpty(issueMonth))) {
-			issueMonth = "01";
-		}
-		
-		JsonNode dayJsonNode = firstIssueDateFromattedJsonNode.get("day");
-		String issueDay = dayJsonNode.asText();
-		// XXX OCR 인식불량 보완 로직
-		if("".equals(StringUtils.trimToEmpty(issueDay))) {
-			issueDay = "01";
-		}
-		
-		issueDate = issueYear + issueMonth + issueDay;
-		/* */
-		/*
-		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		
-		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
-			String issueYear = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("year").asText();
-			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("month").asText();
-			String issueDay = ocrResultReadTree.get("idCard").get("result").get("ic").get("issueDate").get(0).get("formatted").get("day").asText();
+			JsonNode firstIssueDateFromattedJsonNode = firstIssueDateJsonNode.get("formatted");
+			
+			JsonNode yearJsonNode = firstIssueDateFromattedJsonNode.get("year");
+			String issueYear = yearJsonNode.asText();
+			
+			JsonNode monthJsonNode = firstIssueDateFromattedJsonNode.get("month");
+			String issueMonth = monthJsonNode.asText();
+			
+			JsonNode dayJsonNode = firstIssueDateFromattedJsonNode.get("day");
+			String issueDay = dayJsonNode.asText();
+			
 			issueDate = issueYear + issueMonth + issueDay;
-		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
-			String issueYear = ocrResultReadTree.get("idCard").get("result").get("dl").get("issueDate").get(0).get("formatted").get("year").asText();
-			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("dl").get("issueDate").get(0).get("formatted").get("month").asText();
-			String issueDay = ocrResultReadTree.get("idCard").get("result").get("dl").get("issueDate").get(0).get("formatted").get("day").asText();
-			issueDate = issueYear + issueMonth + issueDay;
-		} else if (idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
-			String issueYear = ocrResultReadTree.get("idCard").get("result").get("pp").get("issueDate").get(0).get("formatted").get("year").asText();
-			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("pp").get("issueDate").get(0).get("formatted").get("month").asText();
-			String issueDay = ocrResultReadTree.get("idCard").get("result").get("pp").get("issueDate").get(0).get("formatted").get("day").asText();
-			issueDate = issueYear + issueMonth + issueDay;
-		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
-			String issueYear = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("year").asText();
-			String issueMonth = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("month").asText();
-			String issueDay = ocrResultReadTree.get("idCard").get("result").get("ac").get("issueDate").get(0).get("formatted").get("day").asText();
-			issueDate = issueYear + issueMonth + issueDay;
+			
+		}catch (NullPointerException e) {
+			log.error("[issueDate 포맷팅 실패] : {}", beforeFormattedIssueDate);
+			issueDate = "";
 		}
-		*/
+		
 		return issueDate;
 	}
+	
+	
+	
+	private String getExpyDate(JsonNode ocrResultReadTree) {
+		String expyDate = "";
 
+		JsonNode idCardJsonNode = ocrResultReadTree.get("idCard");
+		JsonNode resultJsonNode = idCardJsonNode.get("result");
+		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
+		String idType = idTypeJsonNode.asText();
+		
+		if(IfConstant.OcrIdType.IdCard.getName().equalsIgnoreCase(idType) 
+			||	IfConstant.OcrIdType.AlienRegistrationCard.getName().equalsIgnoreCase(idType) 
+		) {
+			return "";
+		}
+		
+		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
+		
+		JsonNode expireDateListJsonNode = null;
+		if(IfConstant.OcrIdType.DriverLicense.getName().equalsIgnoreCase(idType)) {
+			expireDateListJsonNode = idTypeFieldJsonNode.get("renewEndDate");
+		}else if(IfConstant.OcrIdType.Passport.getName().equalsIgnoreCase(idType)) {
+			expireDateListJsonNode = idTypeFieldJsonNode.get("expireDate");
+		}
+
+		JsonNode firstExpireDateJsonNode = expireDateListJsonNode.get(0);
+		
+		JsonNode firstExpireDateTextJsonNode = firstExpireDateJsonNode.get("text");
+		String beforeFormattedExpireDate = firstExpireDateTextJsonNode.asText();
+		log.debug("[포맷팅 이전 expireDate] : {}", beforeFormattedExpireDate);
+		
+		try {
+			JsonNode firstExpireDateFromattedJsonNode = firstExpireDateJsonNode.get("formatted");
+			
+			JsonNode yearJsonNode = firstExpireDateFromattedJsonNode.get("year");
+			String expireYear = yearJsonNode.asText();
+			
+			
+			JsonNode monthJsonNode = firstExpireDateFromattedJsonNode.get("month");
+			String expireMonth = monthJsonNode.asText();
+			
+			
+			JsonNode dayJsonNode = firstExpireDateFromattedJsonNode.get("day");
+			String expireDay = dayJsonNode.asText();
+			
+			expyDate = expireYear + expireMonth + expireDay;
+		}catch (NullPointerException e) {
+			log.error("[expireDate 포맷팅 실패] : {}", beforeFormattedExpireDate);
+			expyDate = "";
+		}
+
+		return expyDate;
+	}
+
+	
+	
 	private String getBtdt(JsonNode ocrResultReadTree) {
 		String btdt = null;
 
@@ -362,7 +386,7 @@ public class GrmAdapterController {
 			JsonNode firstBirthDateJsonNode = birthDateJsonNode.get(0);
 			JsonNode firstBirthDateFormattedJsonNode = firstBirthDateJsonNode.get("formatted");
 			if (firstBirthDateFormattedJsonNode == null) {
-				throw new IfException("[OCR 실패] idCard.result.pp.birthDate[0].formatted 가 없습니다.");
+				throw new IfException("[OCR 실패] : idCard.result.pp.birthDate[0].formatted 가 없습니다.");
 			}
 			JsonNode birthDateYearJsonNode = firstBirthDateFormattedJsonNode.get("year");
 			JsonNode birthDateMonthJsonNode = firstBirthDateFormattedJsonNode.get("month");
@@ -378,6 +402,10 @@ public class GrmAdapterController {
 			String alienRegNum = firstAlienRegNumTextJsonNode.asText();
 			String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
 			btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
+		}
+		
+		if(StringUtils.defaultString(btdt).length() != 8) {
+			throw new IfException(String.format("[OCR 실패] 인식된 생년월일이 8자리가 아닙니다. (인식결과 : %s)", btdt));
 		}
 
 		/*
@@ -429,7 +457,20 @@ public class GrmAdapterController {
 		}
 		return first2digitsOfBirthYear;
 	}
+	
+	
+	
+	private String getBirthYyyyMMddFromPersonalNum(String personalNum) {
+		String refinedPersonalNum = personalNum.replaceAll("\\D", "");
+		String yyMMdd = refinedPersonalNum.substring(0, 6);
+		String regNumFirst1digit = refinedPersonalNum.substring(6, 6 + 1);
+		String yy = getFirst2digitsOfBirthYearFromRegNumFirst1digit(regNumFirst1digit);
+		String yyyyMMdd = yy + yyMMdd;
+		return yyyyMMdd;
+	}
 
+	
+	
 	private String getSex(JsonNode ocrResultReadTree) {
 		String sex = null;
 
@@ -466,26 +507,11 @@ public class GrmAdapterController {
 			sex = firstSexTextJsonNode.asText();
 		}
 
-		/*
-		String idtype = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
-		
-		if (idtype.equals(IfConstant.OcrIdType.IdCard.getName())) {
-			String personalNum = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
-			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
-		} else if (idtype.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
-			String personalNum = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
-			String[] personalNumberTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-			sex = (Integer.parseInt(personalNumberTokens[1].substring(0, 1)) % 2) == 1 ? "M" : "F";
-		} else if (idtype.equals(IfConstant.OcrIdType.Passport.getName())) {
-			sex = ocrResultReadTree.get("idCard").get("result").get("pp").get("sex").get(0).get("text").asText();
-		} else if (idtype.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
-			sex = ocrResultReadTree.get("idCard").get("result").get("ac").get("sex").get(0).get("text").asText();
-		}
-		*/
 		return sex;
 	}
 
+	
+	
 	public Date transformDate(String date) throws ParseException {
 		SimpleDateFormat beforeFormat = DATE_FORMAT_YYYYMMDD;
 
@@ -1360,7 +1386,7 @@ public class GrmAdapterController {
 		ifInputDto.setBtchPrcsYn("1"); // (1:Y), (7:N)
 		ifInputDto.setButnDvsnCode("2"); // (1:Fomrmat String, 2:JSON, 3:XML)
 		ifInputDto.setCustId(reqDto.getCustId());
-		ifInputDto.setDutySendYn("Y");
+		ifInputDto.setDutySendYn("Y");	// 의무발송(고객 핸드폰 수신여부 무시)
 		ifInputDto.setHpTlphOfno(reqDto.getHpTlphOfno());
 		ifInputDto.setHpTlphSbno(reqDto.getHpTlphSbno());
 		ifInputDto.setHpTlphTlcmNo(reqDto.getHpTlphTlcmNo());
@@ -1513,6 +1539,321 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	/**
+	 * <pre>
+	 * [19] 
+	 * 신분증OCR요청2
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst2"), (API_URL_TOKEN + "/idcdOcrRqst2" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "19. 신분증OCR요청2")
+	public @ResponseBody ResponseDto<Mvc019ResDto> idcdOcrRqst2(@RequestBody Mvc019ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+		
+		IfMcCs019_I cs019_I = modelMapper.map(reqDto, IfMcCs019_I.class);
+
+		IfMcCs019_I.DataHeader dataHeader = new IfMcCs019_I.DataHeader();
+
+		dataHeader.setSRVC_ID(IfConstant.SRVC_ID);
+
+		// TODO 확인 필요
+//		dataHeader.setSCRN_ID(IfConstant.TRNM_SYS_CODE);
+		dataHeader.setSCRN_ID(reqDto.getSCRN_ID());
+
+		dataHeader.setX_OCR_SECRET(ocrSecretKey);
+
+//		dataHeader.setCRTF_RTCD("");
+
+//		dataHeader.setDLRE_MSG("");
+
+		com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I.DataBody.Image image = new IfMcCs019_I.DataBody.Image();
+
+		String imageFormat = reqDto.getFormat();
+		image.setFormat(imageFormat);
+
+		String imageBase64Data = reqDto.getData();
+		String regexBase64prefix = "^.+\\,";
+		String refinedImageBase64Data = imageBase64Data.replaceAll(regexBase64prefix, "");
+		image.setData(refinedImageBase64Data);
+
+		String imageName = reqDto.getName();
+		image.setName(imageName);
+
+		List<com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I.DataBody.Image> imageList = new ArrayList<>();
+		imageList.add(image);
+
+		IfMcCs019_I.DataBody dataBody = new IfMcCs019_I.DataBody();
+
+		dataBody.setORGN_CODE(IfConstant.BELN_ORGN_CODE);
+
+		String userId = reqDto.getUSER_ID();
+		dataBody.setUSER_ID(userId);
+
+		dataBody.setImages(imageList);
+
+		IfMcCs019_I ifInputDto = new IfMcCs019_I();
+		ifInputDto.setDataHeader(dataHeader);
+		ifInputDto.setDataBody(dataBody);
+
+		/*
+		String emnb = reqDto.getEmnb();
+		
+		IfMcCs001_O cs001_O = gooroomeeAdapterService.ifmccs001(emnb, cs001_I);
+		
+		Mvc001ResDto resDto = modelMapper.map(cs001_O, Mvc001ResDto.class);
+		*/
+
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs001;	// 신분증OCR요청 인터페이스
+		Class<IfMcCs019_O> ifOutputDtoClass = IfMcCs019_O.class;
+		IfMcCs019_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+
+		String ocrResultJson = ifOutputDto.getDataBody().getImages();
+		log.info("[OCR RESULT] : {}", ocrResultJson);
+
+		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
+
+		if (ocrResultReadTrees.size() != 1) {
+			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
+			throw new IfException(message);
+		}
+
+		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
+
+		if (!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
+			String message = ocrResultReadTree.get("message").asText();
+			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
+			throw new IfException(message);
+		}
+
+//		Mvc019ResDto resDto = modelMapper.map(ifOutputDto, Mvc019ResDto.class);
+		Mvc019ResDto resDto = new Mvc019ResDto();
+		
+		// 공통
+		String idType = ocrResultReadTree.get("idCard").get("result").get("idtype").asText();
+		String custNm = this.getCustNm(ocrResultReadTree);
+		String custGender = this.getSex(ocrResultReadTree);
+		String btdt = this.getBtdt(ocrResultReadTree);
+		String isncDate = this.getIsncDate(ocrResultReadTree);
+		String expyDate = this.getExpyDate(ocrResultReadTree);
+		
+		resDto.setIdType(idType);
+		resDto.setCustNm(custNm);
+		resDto.setCustGender(custGender);
+		resDto.setCustBirthDate(btdt);
+		resDto.setIsncDate(isncDate);
+		resDto.setExpyDate(expyDate);
+
+		
+		// A. 주민등록증 경우
+		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
+			String rrno = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
+			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+
+			resDto.setRrno(rrno);
+			
+		// B. 운전면허증 경우
+		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
+			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+
+			String driverLicenseSequenceNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("code").get(0).get("text").asText();
+			
+			resDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
+			resDto.setDrvnLcnsNo(driverLicenseNumber);
+			
+			String rrno = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
+			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+
+			resDto.setRrno(rrno);
+			
+		// C. 여권 경우
+		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
+			String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0).get("text").asText();
+
+			resDto.setPsprNo(passportNumber);
+			
+			String personalNum = ocrResultReadTree.get("idCard").get("result").get("pp").get("personalNum").get(0).get("text").asText();
+			String rrno = btdt.substring(2) + personalNum;
+			
+			resDto.setRrno(rrno);
+			
+		// D. 외국인등록증 경우
+		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+			String alienRegistrationNumber = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
+
+			resDto.setFrnrRgstNo(alienRegistrationNumber);
+		}
+
+		ResponseDto<Mvc019ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * <pre>
+	 * [02, 09, 03]
+	 * 
+	 *	02.진위확인결과조회
+	 *	09.개인정보유출노출여부조회
+	 *	03.신분증스캔후처리
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/entry2"), (API_URL_TOKEN + "/entry2" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "20. 진입2")
+	public @ResponseBody ResponseDto<Mvc020ResDto> entry2(@RequestBody Mvc020ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException, ParseException {
+		
+		Mvc020ResDto resDto = new Mvc020ResDto();
+
+		String idType = reqDto.getIdType();
+		String trflCnfmDvsnCode = this.getTrflCnfmDvsnCodeFromIdType(idType);
+
+		String custNm = reqDto.getCustNm();
+//		String btdt = reqDto.getBtdt();
+//		String btdt = null;
+		String isncDate = reqDto.getIsncDate();
+		String expyDate = reqDto.getExpyDate();
+		
+
+		// XXX [02] 진위확인결과조회
+		Mvc002ReqDto mvc002ReqDto = new Mvc002ReqDto();
+
+		mvc002ReqDto.setEmnb(reqDto.getEmnb());
+
+		mvc002ReqDto.setTrflCnfmDvsnCode(trflCnfmDvsnCode);
+
+		mvc002ReqDto.setTrflCnfmBswrDvsnCode(TrflCnfmBswrDvsnCode.other.getCode());
+
+		mvc002ReqDto.setTrflCnfmChnlCode(IfConstant.TrflCnfmChnlCode.INDIVIDUAL.getCode());
+
+		mvc002ReqDto.setPrcsBswrScrnId(reqDto.getSCRN_ID());
+
+		mvc002ReqDto.setTrflCnfmJobCode(TrflCnfmJobCode.CUSTOMER_IDENTIFICATION.getCode());
+
+		mvc002ReqDto.setCustId("");
+
+		mvc002ReqDto.setMgmtNo("");
+		mvc002ReqDto.setCustNm(custNm);
+//		mvc002ReqDto.setBtdt(this.transformDate(btdt));
+//		mvc002ReqDto.setBtdt(btdt);
+		
+//		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
+		mvc002ReqDto.setIsncDate(isncDate);
+		mvc002ReqDto.setExpyDate(expyDate);
+
+		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
+			String rrno = reqDto.getRrno();
+			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+
+			mvc002ReqDto.setRrno(rrno);
+			
+			String btdt = this.getBirthYyyyMMddFromPersonalNum(rrno);
+			mvc002ReqDto.setBtdt(btdt);
+			
+		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
+			String driverLicenseNumber = reqDto.getDrvnLcnsNo();
+			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+
+			String driverLicenseSequenceNumber = reqDto.getDrvnLcnsSqno();
+			
+//			mvc002ReqDto.setDrvnLcnsSqno("");
+			mvc002ReqDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
+			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
+			
+			String rrno = reqDto.getRrno();
+			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+
+			mvc002ReqDto.setRrno(rrno);
+			
+			String btdt = this.getBirthYyyyMMddFromPersonalNum(rrno);
+			mvc002ReqDto.setBtdt(btdt);
+			
+		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
+			String passportNumber = reqDto.getPsprNo();
+
+			mvc002ReqDto.setPsprNo(passportNumber);
+			
+			String btdt = reqDto.getBtdt();
+			mvc002ReqDto.setBtdt(btdt);
+			
+		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
+			String alienRegistrationNumber = reqDto.getFrnrRgstNo();
+
+			mvc002ReqDto.setFrnrRgstNo(alienRegistrationNumber);
+			
+			String btdt = this.getBirthYyyyMMddFromPersonalNum(alienRegistrationNumber);
+			mvc002ReqDto.setBtdt(btdt);
+		}
+
+		ResponseDto<Mvc002ResDto> response002dto = this.trflCnfm(mvc002ReqDto, request);
+
+		Mvc002ResDto mvc002ResDto = response002dto.getData();
+
+		String csnsYn = mvc002ResDto.getCsnsYn();
+		resDto.setCustInfoAuthenticityYn(csnsYn);
+
+		String trflCnfmRsltVal = mvc002ResDto.getTrflCnfmRsltVal();
+		resDto.setCustInfoAuthenticityResultCode(trflCnfmRsltVal);
+
+		String rsltMsgeCntn = mvc002ResDto.getRsltMsgeCntn();
+		resDto.setCustInfoAuthenticityResultMessage(rsltMsgeCntn);
+
+		String custId = mvc002ResDto.getCustId();
+		resDto.setCustId(custId);
+
+		// XXX [09] 개인정보유출노출여부조회
+		Mvc009ReqDto mvc009ReqDto = new Mvc009ReqDto();
+		mvc009ReqDto.setEmnb(reqDto.getEmnb());
+		mvc009ReqDto.setCustId(mvc002ResDto.getCustId());
+
+		ResponseDto<Mvc009ResDto> response009dto = this.prsnInfoLeakMgmt(mvc009ReqDto, request);
+		Mvc009ResDto mvc009ResDto = response009dto.getData();
+
+		String leakYn = mvc009ResDto.getLeakYn();
+		String epsrYn = mvc009ResDto.getEpsrYn();
+		String hpnoChngYn = mvc009ResDto.getHpnoChngYn();
+
+		resDto.setCustPersonalInfoleakYn(leakYn);
+		resDto.setCustPersonalInfoEpsrYn(epsrYn);
+		resDto.setCustHpnoChngYn(hpnoChngYn);
+
+		// [03] 신분증스캔후처리
+		Mvc003ReqDto mvc003ReqDto = new Mvc003ReqDto();
+		mvc003ReqDto.setCsnsYn(mvc002ResDto.getCsnsYn());
+		mvc003ReqDto.setCustId(mvc002ResDto.getCustId());
+		mvc003ReqDto.setEmnb(reqDto.getEmnb());
+
+		ResponseDto<Mvc003ResDto> response003dto = this.itfcIdcdScan(mvc003ReqDto, request);
+		Mvc003ResDto mvc003ResDto = response003dto.getData();
+		String prcsSucsYn = mvc003ResDto.getPrcsSucsYn();
+
+		resDto.setSingleViewOpenMessagePushSuccessYn(prcsSucsYn);
+
+		ResponseDto<Mvc020ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
+	
 
 	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
 	public void exception(HttpServletRequest request) throws Exception {
@@ -1749,6 +2090,5 @@ public class GrmAdapterController {
 
 		return idCardMockImageInfoList;
 	}
-
 	
 }

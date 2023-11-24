@@ -1,0 +1,32 @@
+{
+    "header": {
+        "trnmSysCode": "MVC",
+        "ipAddr": "010252005065",
+        "tlgrCretDttm": "20231026135528604",
+        "rndmNo": "5825",
+        "hsno": 2,
+        "prsnInfoIncsYn": "N",
+        "itfcId": "HLIMVC00016",
+        "rcveSrvcId": "hcsIdcdOcrRqst",
+        "rcveSysCode": "HCS",
+        "mciNodeNo": "11",
+        "serverType": "D",
+        "rspnDvsnCode": "S",
+        "emnb": "1077593",
+        "belnOrgnCode": "00630",
+        "chnlTypeCode": "SVR",
+        "rqsrIp": "10.252.5.65",
+        "totalCount": 0,
+        "msgeListCont": 0
+    },
+    "payload": {
+        "idType": "ID Card",
+        "custNm": "홍길동",
+        "custGender": "M",
+        "custBirthDate": "19800101",
+        "isncDate": "",
+        "expyDate": "",
+        "rrno": "",
+        "drvnLcnsNo": "",
+    }
+}
