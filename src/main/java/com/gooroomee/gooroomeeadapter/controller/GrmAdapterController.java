@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -77,6 +78,10 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc011ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc011ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc012ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc012ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc013ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc013ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc014ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc014ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc015ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc015ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc016ReqDto;
@@ -119,6 +124,10 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs013_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs013_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
@@ -543,8 +552,11 @@ public class GrmAdapterController {
 
 	/**
 	 * <pre>
-	 * [01, 02, 09, 03]
+	 * [00] 
+	 * 진입
 	 * 
+	 * 
+	 * [01, 02, 09, 03]
 	 *	01.신분증OCR요청
 	 *	02.진위확인결과조회
 	 *	09.개인정보유출노출여부조회
@@ -1341,6 +1353,138 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	/**
+	 * <pre>
+	 * [13] 
+	 * 고객통합기본정보조회
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/cstmIntgBscInfrInqr"), (API_URL_TOKEN + "/cstmIntgBscInfrInqr" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "13. 고객통합기본정보조회")
+	public @ResponseBody ResponseDto<Mvc013ResDto> cstmIntgBscInfrInqr(@RequestBody Mvc013ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+
+		IfMcCs013_I ifInputDto = modelMapper.map(reqDto, IfMcCs013_I.class);
+
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs013;
+		Class<IfMcCs013_O> ifOutputDtoClass = IfMcCs013_O.class;
+		IfMcCs013_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		
+		Mvc013ResDto resDto = modelMapper.map(ifOutputDto, Mvc013ResDto.class);
+
+		ResponseDto<Mvc013ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
+	
+	
+	/**
+	 * <pre>
+	 * [14] 
+	 * SMS 메세지 발송
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/sendSmsMsg"), (API_URL_TOKEN + "/sendSmsMsg" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "14. SMS 메세지 발송")
+	public @ResponseBody ResponseDto<Mvc014ResDto> sendSmsMsg(@RequestBody Mvc014ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+
+//		IfMcCs014_I ifInputDto = modelMapper.map(reqDto, IfMcCs014_I.class);
+		/*
+		String payloadJson = "{\r\n" + 
+		        "    \"sendCont\": 1,\r\n" + 
+		        "    \"jobMsgeCntn\": \"인증번호 999를 입력해 주세요.\",\r\n" + 
+		        "    \"sendEmnb\": \"1077593\",\r\n" + 
+		        "    \"sendEmpeNm\": \"홍길동\",\r\n" + 
+		        "    \"sndeDeptCode\": \"00630\",\r\n" + 
+		        "    \"sndeDeptNm\": \"보험서비스팀\",\r\n" + 
+		        "    \"belnOrgnCode\": \"00630\",\r\n" + 
+		        "    \"nttkTmplNm\": \"SZAU000002\",\r\n" + 
+		        "    \"trnnPrgmId\": \"111\",\r\n" + 
+		        "    \"bswrNm\": \"모바일 화상상담 서비스 문자인증\",\r\n" + 
+		        "    \"rcveCnfmYn\": \"Y\",\r\n" + 
+		        "    \"custId\": \"0000099995\",\r\n" + 
+		        "    \"hpTlphSbno\": \"3661\",\r\n" + 
+		        "    \"hpTlphOfno\": \"2889\",\r\n" + 
+		        "    \"hpTlphTlcmNo\": \"010\",\r\n" + 
+		        "    \"sndeTlphArcd\": \"\",\r\n" + 
+		        "    \"sndeTlphOfno\": \"1588\",\r\n" + 
+		        "    \"sndeTlphInno\": \"6363\",\r\n" + 
+		        "    \"ntfcKindCode\": \"ZAU0008\",\r\n" + 
+		        "    \"rcvrNm\": \"임꺽정\"\r\n" + 
+		        "}";
+		*/
+		
+		String authenticationNumber = reqDto.getAuthenticationNumber();
+		String jobMsgeCntn = String.format(IfConstant.SEND_SMS_MSG_JOB_MSGE_CNTN, authenticationNumber);
+		
+		IfMcCs014_I ifInputDto = new IfMcCs014_I();
+		ifInputDto.setApctInfoCntn(null);
+		ifInputDto.setBelnOrgnCode(IfConstant.BELN_ORGN_CODE);
+		ifInputDto.setBswrNm(IfConstant.SEND_SMS_MSG_BSWR_NM);
+		ifInputDto.setCmntCntn(null);
+		// XXX
+		ifInputDto.setCustId(reqDto.getCustId());
+		ifInputDto.setCustTlno(null);
+		// XXX
+		ifInputDto.setHpTlphOfno(reqDto.getHpTlphOfno());
+		// XXX
+		ifInputDto.setHpTlphSbno(reqDto.getHpTlphSbno());
+		// XXX
+		ifInputDto.setHpTlphTlcmNo(reqDto.getHpTlphTlcmNo());
+		// XXX
+		ifInputDto.setJobMsgeCntn(jobMsgeCntn);
+		ifInputDto.setJoinTrgtPolyNo(null);
+		ifInputDto.setLoanNo(null);
+		ifInputDto.setMailTmplNm(null);
+		ifInputDto.setNtfcKindCode(IfConstant.SEND_SMS_MSG_NTFC_KIND_CODE);
+		ifInputDto.setNttkTmplNm(IfConstant.SEND_SMS_MSG_NTTK_TMPL_NM);
+		ifInputDto.setRcveCnfmYn("Y");
+		// XXX
+		ifInputDto.setRcvrNm(reqDto.getRcvrNm());
+		ifInputDto.setSbsnSendRsvtTme(null);
+		ifInputDto.setSendCont(BigInteger.valueOf(1));
+		// XXX
+		ifInputDto.setSendEmnb(reqDto.getEmnb());
+		// XXX
+		ifInputDto.setSendEmpeNm(reqDto.getSendEmpeNm());
+		ifInputDto.setSndeDeptCode(IfConstant.BELN_ORGN_CODE);
+		ifInputDto.setSndeDeptNm("보험서비스팀");
+		ifInputDto.setSndeMailAddr(null);
+		ifInputDto.setSndeTlphArcd("");
+		ifInputDto.setSndeTlphOfno("1588");
+		ifInputDto.setSndeTlphInno("6363");
+		// XXX
+		ifInputDto.setTrnnPrgmId("MVC010101");
+
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs014;
+		Class<IfMcCs014_O> ifOutputDtoClass = IfMcCs014_O.class;
+		IfMcCs014_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		
+		Mvc014ResDto resDto = modelMapper.map(ifOutputDto, Mvc014ResDto.class);
+
+		ResponseDto<Mvc014ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
+	
 
 	/**
 	 * 
@@ -1704,8 +1848,11 @@ public class GrmAdapterController {
 	
 	/**
 	 * <pre>
-	 * [02, 09, 03]
+	 * [20]
+	 * 진입2
 	 * 
+	 * 
+	 * [02, 09, 03]
 	 *	02.진위확인결과조회
 	 *	09.개인정보유출노출여부조회
 	 *	03.신분증스캔후처리
@@ -1852,6 +1999,13 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

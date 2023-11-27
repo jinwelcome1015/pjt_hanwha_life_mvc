@@ -20,16 +20,18 @@
         "msgeListCont": 0
     },
     "payload": {
+        "emnb": "1077593",
         "idType": "ID Card",
         "custNm": "홍길동",
-        "custGender": "M",
         "custBirthDate": "19800101",
-        "isncDate": "20200816",
-        "expyDate": "",
-        "rrno": "8001012345678",
-        "drvnLcnsNo": "",
-        "drvnLcnsSqno": "",
-        "psprNo": "",
-        "frnrRgstNo": ""
+        "custGender": "M",
+        "custId": "0052778800",
+        "custInfoAuthenticityYn": "Y",
+        "custInfoAuthenticityResultCode": "00000000",
+        "custInfoAuthenticityResultMessage": "정상처리 되었습니다.(당일 성공건 존재)",
+        "custPersonalInfoleakYn": "N",
+        "custPersonalInfoEpsrYn": "N",
+        "custHpnoChngYn": "N",
+        "singleViewOpenMessagePushSuccessYn": "Y"
     }
 }

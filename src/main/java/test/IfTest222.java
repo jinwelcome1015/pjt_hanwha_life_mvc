@@ -2,7 +2,9 @@ package test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
@@ -10,6 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -52,6 +55,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Sign;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
@@ -60,8 +64,11 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs013_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2.NttkButnCntn;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2.NttkButnCntn.Button;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O2;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
@@ -72,15 +79,14 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
 import com.gooroomee.gooroomeeadapter.util.IfUtil;
-
 import korealife.uv.com.cm.SHA256CmCrypt;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-public class IfTest {
+public class IfTest222 {
 
-    private static final Logger logger = LoggerFactory.getLogger(IfTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(IfTest222.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
     													.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -93,6 +99,7 @@ public class IfTest {
     
 
     public static final String EMNB = "1077593";
+//    public static final String EMNB = "1077123";
     //    public static final String EMNB = "1073818";
 
     
@@ -123,6 +130,31 @@ public class IfTest {
     public static final String REQ_TX_ID = "55df29e8-79b2-44d6-82b5-cb4c7cf9449f";
     
     
+    
+    @Getter
+    @Setter
+    @ToString
+    public static class InputPayloadDto{
+        private String custNm;
+        private String custId;
+        private String custTlno;
+        private String rqstOrgnCode;
+    }
+    
+    
+    @Getter
+    @Setter
+    @ToString
+    public static class OutputPayloadDto{
+        private String dvsnVal;
+        private String rsltMsgeCntn;
+        private String rsltDatVal;
+    }
+    
+    
+    
+    
+    
     /*
     public IfTest() throws IOException {
     	
@@ -142,12 +174,15 @@ public class IfTest {
     
 
     public static void main(String[] args) throws URISyntaxException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-                IfTest ifTest = new IfTest();
+                IfTest222 ifTest = new IfTest222();
 //                ifTest.doTest_00001();
 //                ifTest.doTest_00002();
 //                ifTest.doTest_encryptDecrypt();
         
 //                ifTest.doTest_jacksonPascalCase();
+                
+                
+//                ifTest.testIf00A();
         
                 // XXX 성공
 //                ifTest.testIf001();
@@ -166,7 +201,7 @@ public class IfTest {
 
 
                 // XXX 성공
-//                ifTest.testIf006();
+//                ifTest.testIf006();ㅓ
 
                 // XXX 성공
 //                ifTest.testIf007();
@@ -189,8 +224,8 @@ public class IfTest {
                 // XXX 실패
 //                ifTest.testIf015_1();
 
-                // XXX 실패
-                ifTest.testIf015_2();
+                // XXX 성공
+//                ifTest.testIf015_2();
         
                 // XXX 성공
 //                ifTest.testIf016();
@@ -200,7 +235,98 @@ public class IfTest {
                 
                 // XXX 성공
 //                ifTest.testIf018();
+                
+                // XXX 성공
+//                ifTest.testIf013();
+                
+                // XXX                 
+                ifTest.testIf014();
     }
+    
+    
+    
+    
+    
+    
+    /**
+     * IVR 연계
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    public void testIf00A() throws JsonProcessingException, URISyntaxException {
+        
+        
+        
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+
+        String payloadJson = "{\r\n" + 
+                "    \"custNm\" : \"곽우섭\",\r\n" + 
+                "    \"custId\" : \"9024777049\",\r\n" + 
+                "    \"custTlno\" : \"01022340080\",\r\n" + 
+                "    \"rqstOrgnCode\" : \"mcc02\"\r\n" + 
+                "}";
+        
+        
+        InputPayloadDto inputPayload = OBJECT_MAPPER.readValue(payloadJson, InputPayloadDto.class);
+        
+        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        
+        String inputHeaderJson = "{\r\n" + 
+                "    \"trnmSysCode\": \"IVR\",\r\n" + 
+                "    \"rcveSysCode\": \"MVC\",\r\n" + 
+                "    \"itfcId\": \"HLIIVR00122\",\r\n" + 
+                "    \"rcveSrvcId\": \"mvcCounsellingOtp001r\",\r\n" + 
+                "    \"trnnNo\": null,\r\n" + 
+                "    \"ipAddr\": \"010252005065\",\r\n" + 
+                "    \"tlgrCretDttm\": \"20231121092151038\",\r\n" + 
+                "    \"rndmNo\": \"0020\",\r\n" + 
+                "    \"hsno\": 0,\r\n" + 
+                "    \"ctfnTokn\": null,\r\n" + 
+                "    \"ogtsTrnnNo\": null,\r\n" + 
+                "    \"prsnInfoIncsYn\": \"N\",\r\n" + 
+                "    \"mciNodeNo\": null,\r\n" + 
+                "    \"mciSesnId\": null,\r\n" + 
+                "    \"serverType\": \"Q\",\r\n" + 
+                "    \"rspnDvsnCode\": \"S\",\r\n" + 
+                "    \"extlDvsnCode\": null,\r\n" + 
+                "    \"emnb\": \"10777777\",\r\n" + 
+                "    \"belnOrgnCode\": \"00630\",\r\n" + 
+                "    \"custId\": null,\r\n" + 
+                "    \"chnlTypeCode\": \"SVR\",\r\n" + 
+                "    \"scrnId\": null,\r\n" + 
+                "    \"befoScrnId\": null,\r\n" + 
+                "    \"userTmunIdnfVal\": null,\r\n" + 
+                "    \"rqsrIp\": null,\r\n" + 
+                "    \"rqstDttm\": null,\r\n" + 
+                "    \"baseCrny\": null,\r\n" + 
+                "    \"baseCnty\": null,\r\n" + 
+                "    \"baseLang\": null,\r\n" + 
+                "    \"tlgrRspnDttm\": null,\r\n" + 
+                "    \"prcsRsltDvsnCode\": null,\r\n" + 
+                "    \"totalCount\": 0,\r\n" + 
+                "    \"lastPageYn\": null,\r\n" + 
+                "    \"msgeListCont\": 0,\r\n" + 
+                "    \"msgeList\": null,\r\n" + 
+                "    \"msgeStackTrace\": null\r\n" + 
+                "}";  
+        
+
+//        IfTelegramHeader inputHeader = new IfTelegramHeader();
+        IfTelegramHeader inputHeader = OBJECT_MAPPER.readValue(inputHeaderJson, IfTelegramHeader.class);
+        
+        
+        IfTelegram<OutputPayloadDto> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+                OutputPayloadDto.class);
+
+        OutputPayloadDto outputPayload = outputTelegram.getPayload();
+
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
+    }
+    
+    
+    
+    
 
     
     
@@ -306,7 +432,7 @@ public class IfTest {
                 + "    \"drvnLcnsNo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
                 + "    \"expyDate\" : \"\"\r\n" + "  }";
         */
-        
+        /*
         // custId 없음
         String payloadJson = "{\r\n" + "    \"trflCnfmDvsnCode\" : \"011\",\r\n" + "    \"trflCnfmBswrDvsnCode\" : \"01\",\r\n"
                 + "    \"trflCnfmChnlCode\" : \"01\",\r\n" + "    \"prcsBswrScrnId\" : \"MSESTEP05\",\r\n"
@@ -315,20 +441,20 @@ public class IfTest {
                 + "    \"drvnLcnsSqno\" : \"\",\r\n" + "    \"rrno\" : \"8810221229923\",\r\n"
                 + "    \"drvnLcnsNㅓo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
                 + "    \"expyDate\" : \"\"\r\n" + "  }";
+        */
         
         
         
-        /*
         // custId, btdt 없음 >>> 에러
         String payloadJson = "{\r\n" + "    \"trflCnfmDvsnCode\" : \"011\",\r\n" + "    \"trflCnfmBswrDvsnCode\" : \"01\",\r\n"
                 + "    \"trflCnfmChnlCode\" : \"01\",\r\n" + "    \"prcsBswrScrnId\" : \"MSESTEP05\",\r\n"
                 + "    \"trflCnfmJobCode\" : \"CS001\",\r\n" + "    \"custId\" : \"\",\r\n"
-                + "    \"custNm\" : \"최주열\",\r\n" + "    \"isncDate\" : \"\",\r\n" + "    \"btdt\" : \"\",\r\n"
+                + "    \"custNm\" : \"최주열11\",\r\n" + "    \"isncDate\" : \"\",\r\n" + "    \"btdt\" : \"\",\r\n"
                 + "    \"drvnLcnsSqno\" : \"\",\r\n" + "    \"rrno\" : \"8810221229923\",\r\n"
                 + "    \"drvnLcnsNo\" : \"130760650530\",\r\n" + "    \"frnrRgstNo\" : \"\",\r\n" + "    \"psprNo\" : \"\",\r\n"
                 + "    \"expyDate\" : \"\"\r\n" + "  }";
         
-        */
+        
         
         
         IfMcCs002_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs002_I.class);
@@ -356,15 +482,28 @@ public class IfTest {
      */
     public void testIf003() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        /*
+        String payloadJson = "{\r\n" + "    \"csnsYn\": \"Y\",\r\n" + "    \"pushRcvrEmnb\": \"2030205\",\r\n"
+                + "    \"custId\": \"1005132571\"\r\n" + "}";
+        */
+        /*
+        String payloadJson = "{\r\n" + "    \"csnsYn\": \"Y\",\r\n" + "    \"pushRcvrEmnb\": \"2030205\",\r\n"
+                + "    \"custId\": \"1005132571\"\r\n" + "}";
+        */
+        
 
         String payloadJson = "{\r\n" + "    \"csnsYn\": \"Y\",\r\n" + "    \"pushRcvrEmnb\": \"2030205\",\r\n"
                 + "    \"custId\": \"1005132571\"\r\n" + "}";
-
+        
+        
         IfMcCs003_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs003_I.class);
-
+        
         inputPayload.setPushRcvrEmnb(EMNB); // 사번 overwrite
-
-        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        
+//        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, "10777777", ACTIVE_PROFILE, IF_ENDPOINT_URL);
+        
+        
 
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs003;
 
@@ -396,12 +535,17 @@ public class IfTest {
         */
         
         
+        String payloadJson = "{\r\n" + 
+                "    \"emnb\": \"1077593\",\r\n" + 
+                "    \"lognPswd\": \"hlihli2@1\"\r\n" + 
+                "}";
         
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"emnb\": \"1077593\",\r\n" + 
                 "    \"lognPswd\": \"hlihli2@\"\r\n" + 
                 "}";
-        
+        */
         /*
         String payloadJson = "{\r\n" + 
                 "    \"emnb\": \"1077593\",\r\n" + 
@@ -456,11 +600,16 @@ public class IfTest {
      */
     public void testIf006() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-
+        
         String payloadJson = "{\r\n" + "    \"scwdNm\" : \"1871261\",\r\n" + "    \"orgnCode\" : \"\",\r\n"
                 + "    \"empeDvsnCode\" : \"\",\r\n" + "    \"wholEmpeInqyYn\" : \"N\",\r\n" + "    \"fpExlsYn\" : \"N\",\r\n"
                 + "    \"tnofDvsnCode\" : \"\"\r\n" + "  }";
-
+        
+        /*
+        String payloadJson = "{\r\n" + "    \"scwdNm\" : \"9999999\",\r\n" + "    \"orgnCode\" : \"\",\r\n"
+                + "    \"empeDvsnCode\" : \"AA\",\r\n" + "    \"wholEmpeInqyYn\" : \"N\",\r\n" + "    \"fpExlsYn\" : \"N\",\r\n"
+                + "    \"tnofDvsnCode\" : \"\"\r\n" + "  }";
+        */
         IfMcCs006_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs006_I.class);
 
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
@@ -487,7 +636,7 @@ public class IfTest {
     
     public void testIf007() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"custId\" : \"8061129138\",\r\n" + 
                 "    \"polyNo\" : \"\",\r\n" + 
@@ -496,6 +645,18 @@ public class IfTest {
                 "    \"nextKey\" : \"1\",\r\n" + 
                 "    \"pageSize\" : 50\r\n" + 
                 "  }";
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"custId\" : \"8031662218\",\r\n" + 
+                "    \"polyNo\" : \"\",\r\n" + 
+                "    \"cntcDvsnCode\" : \"01\",\r\n" + 
+                "    \"custDvsnCode\" : \"01\",\r\n" + 
+                "    \"nextKey\" : \"1\",\r\n" + 
+                "    \"pageSize\" : 50\r\n" + 
+                "  }";
+        
+        
         
         /*
         String payloadJson = "{\r\n" + 
@@ -562,14 +723,25 @@ public class IfTest {
                 "    \"pageNumber\" : 1\r\n" + 
                 "  }";
         */
-        
+        /* 
         String payloadJson = "{\r\n" + 
                 "    \"custId\": \"6068807976\"\r\n" + 
+                "}";
+        */
+        /*
+        String payloadJson = "{\r\n" + 
+                "    \"custId\": \"606880797612345\"\r\n" + 
+                "}";
+        */
+         
+        String payloadJson = "{\r\n" + 
+                "    \"custId\": \"8031662218\"\r\n" + 
                 "}";
         
         IfMcCs008_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs008_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+//        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, "10777777", ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs008;
     
@@ -593,11 +765,16 @@ public class IfTest {
      */
     public void testIf009() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"custId\": \"3002220133\"\r\n" + 
                 "}";
-
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"custId\": \"300222013312345\"\r\n" + 
+                "}";
+        
         IfMcCs009_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs009_I.class);
 
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
@@ -625,7 +802,7 @@ public class IfTest {
      */
     public void testIf010() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-    
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"dataHeader\": {\r\n" + 
                 "        \"SRVC_ID\": \"SVC028\",\r\n" + 
@@ -639,7 +816,22 @@ public class IfTest {
                 "        \"grant_type\": \"client_credentials\"\r\n" + 
                 "    }\r\n" + 
                 "}";
-    
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"dataHeader\": {\r\n" + 
+                "        \"SRVC_ID\": \"SVC028\",\r\n" + 
+                "        \"SCRN_ID\": \"화면 ID\",\r\n" + 
+                "        \"CRTF_RTCD\": \"\",\r\n" +
+                "        \"DLRE_MSG\": \"\",\r\n" + 
+                "        \"ORGN_CODE\": \"00630\",\r\n" + 
+                "        \"USER_ID\": \"USER_001\"\r\n" + 
+                "    },\r\n" + 
+                "    \"dataBody\": {\r\n" + 
+                "        \"grant_type\": \"client_credentials12345\"\r\n" + 
+                "    }\r\n" + 
+                "}";
+        
         IfMcCs010_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs010_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
@@ -692,7 +884,9 @@ public class IfTest {
 	    IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
 	    
 	    String token_type = TOKEN_TYPE;
-	    String access_token = INITECH_O_AUTH_TOKEN;
+//	    String access_token = INITECH_O_AUTH_TOKEN;
+	    String access_token = "1111111111111111111";
+	    
 	    String initechOAuthToken = token_type + " " + access_token;
 	    dataBody.setInitechOAuthToken(initechOAuthToken);
 	    
@@ -829,6 +1023,7 @@ public class IfTest {
     
     
     
+    
     /**
      * 고객통합기본정보조회
      * @throws JsonProcessingException
@@ -865,6 +1060,10 @@ public class IfTest {
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
+    
+    
+    
+    
     
     
     /**
@@ -946,6 +1145,10 @@ public class IfTest {
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
+    
+    
+    
+    
     
     
     
@@ -1075,7 +1278,7 @@ public class IfTest {
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_1;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
@@ -1265,7 +1468,43 @@ public class IfTest {
         String msgeTitlNm = "모바일 화상상담 서비스 사용 안내";
         
         
+        /*
         
+        String payloadJson = "{\r\n" + 
+                "        \"sendCont\": 1,\r\n" + 
+        //                "        \"jobMsgeCntn\": \"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+        //                "        \"jobMsgeCntn\": \"" + a + "\",\r\n" +
+                "        \"trnnPrgmId\": null,\r\n" + 
+                "        \"sndeDeptCode\": \"00630\",\r\n" + 
+                "        \"sendRsvtDttm\": null,\r\n" + 
+                "        \"ntfcTmplCode\": \"AZAU000001\",\r\n" + 
+                "        \"rcvrTlno\": \"\",\r\n" + 
+                "        \"btchPrcsYn\": \"1\",\r\n" + 
+        //                "        \"msgeTitlNm\": \"모바일 화상상담 서비스 사용 안내\",\r\n" + 
+                "        \"sndeTlno\": \"\",\r\n" + 
+                "        \"sbsnSendYn\": \"Y\",\r\n" + 
+                "        \"onlnBtchDvsnCode\": \"R\",\r\n" + 
+                "        \"ntfcMdiaDvsnCode\": \"LMS\",\r\n" + 
+                "        \"custId\": \"5019808635\",\r\n" + 
+                "        \"tmplCode\": \"\",\r\n" + 
+                "        \"rcvrNm\": \"신용진\",\r\n" + 
+                "        \"sbsnSendMsgeCntn\": \"[한화생명] 모바일 화상상담 서비스 사용 안내\\r\\n\\r\\n신용진 고객님 안녕하세요. \\r\\n모바일 화상상담 서비스를 신청해 주셔서 감사합니다. \\r\\n하단의 '바로가기' 버튼을 클릭 해 주시면 모바일 화상상담 서비스가 시작됩니다. \\r\\n\\r\\n주소링크 : https://www.hanwhalife.com \\r\\n\\r\\n서비스 연결은 메세지를 받으신 후 30분 간 유효함을 안내 드립니다. \\r\\n감사합니다.\\r\\n\\r\\n* 서비스 연결 시 5G/LTE 환경에서 데이터 통화료가 발생할 수 있습니다.\",\r\n" + 
+                "        \"dutySendYn\": \"Y\",\r\n" + 
+                "        \"butnDvsnCode\": \"2\",\r\n" + 
+        //                "        \"nttkButnCntn\": \"{\\\"button\\\":[{\\\"name\\\":\\\"한화 테스트 URL\\\",\\\"type\\\":\\\"WL\\\",\\\"url_pc\\\":\\\"https://www.hanwhalife.com\\\",\\\"url_mobile\\\":\\\"https://www.hanwhalife.com\\\",\\\"target\\\":\\\"out\\\"}]}\",\r\n" + 
+                "        \"sndeTlphArcd\": \"\",\r\n" + 
+                "        \"sndeTlphOfno\": \"1588\",\r\n" + 
+                "        \"sndeTlphInno\": \"6363\",\r\n" + 
+                "        \"hpTlphTlcmNo\": \"010\",\r\n" + 
+                "        \"hpTlphOfno\": \"2889\",\r\n" + 
+                "        \"hpTlphSbno\": \"3661\",\r\n" + 
+                "        \"ntfcKindCode\": \"ZAU0006\"\r\n" + 
+                "    }";
+        */
+        
+        
+        
+
         
         String payloadJson = "{\r\n" + 
                 "        \"sendCont\": 1,\r\n" + 
@@ -1274,7 +1513,7 @@ public class IfTest {
                 "        \"trnnPrgmId\": null,\r\n" + 
                 "        \"sndeDeptCode\": \"00630\",\r\n" + 
                 "        \"sendRsvtDttm\": null,\r\n" + 
-                "        \"ntfcTmplCode\": \"AZAU000001\",\r\n" + 
+                "        \"ntfcTmplCode\": \"AZAU000001111\",\r\n" + 
                 "        \"rcvrTlno\": \"\",\r\n" + 
                 "        \"btchPrcsYn\": \"1\",\r\n" + 
 //                "        \"msgeTitlNm\": \"모바일 화상상담 서비스 사용 안내\",\r\n" + 
@@ -1299,14 +1538,16 @@ public class IfTest {
                 "    }";
         
         
-        IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
+        
+        
+        IfMcCs015_I2 inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I2.class);
 //        String hpTlphSbno = inputPayload.getHpTlphSbno();
         
         inputPayload.setJobMsgeCntn(jobMsgeCntn);
         inputPayload.setMsgeTitlNm(msgeTitlNm);
         
         
-        IfMcCs015_I.NttkButnCntn.Button button = new IfMcCs015_I.NttkButnCntn.Button();
+        IfMcCs015_I2.NttkButnCntn.Button button = new IfMcCs015_I2.NttkButnCntn.Button();
         button.setName("모바일 화상상담 바로가기");
         button.setType("WL");
         button.setUrl_pc("");
@@ -1316,7 +1557,7 @@ public class IfTest {
         List<Button> buttonList = new ArrayList<>();
         buttonList.add(button);
         
-        IfMcCs015_I.NttkButnCntn nttkButnCntn = new IfMcCs015_I.NttkButnCntn();
+        IfMcCs015_I2.NttkButnCntn nttkButnCntn = new IfMcCs015_I2.NttkButnCntn();
         nttkButnCntn.setButton(buttonList);
         
         inputPayload.setNttkButnCntn(nttkButnCntn);
@@ -1334,15 +1575,15 @@ public class IfTest {
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_2;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
-                IfMcCs015_O.class);
+        IfTelegram<IfMcCs015_O2> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+                IfMcCs015_O2.class);
     
-        IfMcCs015_O outputPayload = outputTelegram.getPayload();
+        IfMcCs015_O2 outputPayload = outputTelegram.getPayload();
     
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
@@ -1394,11 +1635,16 @@ public class IfTest {
      */
     public void testIf017() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-    
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"sbsnKeySuid\" : 435468352206471303\r\n" + 
                 "  }";
-    
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"sbsnKeySuid\" : 435468352206471304\r\n" + 
+                "  }";
+        
         IfMcCs017_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs017_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
@@ -1425,11 +1671,16 @@ public class IfTest {
      */
     public void testIf018() throws JsonProcessingException, URISyntaxException {
         String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
-    
+        /*
         String payloadJson = "{\r\n" + 
                 "    \"scwdNm\" : \"가로공원로 82길\"\r\n" + 
                 "  }";
-    
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "    \"scwdNm\" : \"가로공원로 1182길\"\r\n" + 
+                "  }";
+        
         IfMcCs018_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs018_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
@@ -1446,6 +1697,11 @@ public class IfTest {
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
     }
+    
+    
+    
+    
+    
     
     
     

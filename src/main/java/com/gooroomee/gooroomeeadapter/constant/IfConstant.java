@@ -59,6 +59,18 @@ public class IfConstant {
 
 	/** base64 데이터 기록용 별도 logger의 이름을 위한 suffix */
 	public static final String LOGGER_NAME_SUFFIX_FOR_BASE64 = "._BASE64";
+	
+	/** [SMS 메세지 발송] 업무명 */
+	public static final String SEND_SMS_MSG_BSWR_NM = "모바일 화상상담 서비스 문자인증";
+	
+	/** [SMS 메세지 발송] 작업메시지내용 */
+	public static final String SEND_SMS_MSG_JOB_MSGE_CNTN = "인증번호 %s를 입력해 주세요.";
+	
+	/** [SMS 메세지 발송] 안내장종류코드 */
+	public static final String SEND_SMS_MSG_NTFC_KIND_CODE = "ZAU0008";
+
+	/** [SMS 메세지 발송] 안내장템플릿코드 */
+	public static final String SEND_SMS_MSG_NTTK_TMPL_NM = "SZAU000002";
 
 	/** 채널유형코드 */
 	@Getter
@@ -200,13 +212,22 @@ public class IfConstant {
 		IfMcCs017("HLIMVC00032", "icmCnplSbsnKeyMgmtPSI002r", "ICM"),
 
 		/** 인터페이스 명세 : 우편번호조회 */
-		IfMcCs018("HLIMVC00033", "icmAddrMgmtPSI001r", "ICM");
+		IfMcCs018("HLIMVC00033", "icmAddrMgmtPSI001r", "ICM"),
+		
+		/** 인터페이스 명세 : 고객통합기본정보조회 */
+        IfMcCs013("HLIMVC00036", "icsIntgCustInqyMgmtPSI007r", "HLI"),
+        
+        /** 인터페이스 명세 : SMS 메세지 발송 */
+        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "INI");
 
+		
 		private final String itfcId;
 		private final String rcveSrvcId;
 		private final String rcveSysCode;
 	}
 
+	
+	
 	/** 인터페이스 타입 */
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PRIVATE)

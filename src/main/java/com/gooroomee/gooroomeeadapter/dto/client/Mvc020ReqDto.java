@@ -34,27 +34,6 @@ public class Mvc020ReqDto {
 	@JsonProperty("SCRN_ID")
 	private String SCRN_ID;
 
-	/** 진위확인구분코드 */
-	private String trflCnfmDvsnCode;
-
-	/** 진위확인업무구분코드 */
-	private String trflCnfmBswrDvsnCode;
-
-	/** 진위확인채널코드 */
-	private String trflCnfmChnlCode;
-
-	/** 처리업무화면ID */
-	private String prcsBswrScrnId;
-
-	/** 진위확인작업코드 */
-	private String trflCnfmJobCode;
-
-	/** 고객ID */
-	private String custId;
-
-	/** 관리번호 */
-	private String mgmtNo;
-
 	/** 고객명 */
 	private String custNm;
 
@@ -93,14 +72,5 @@ public class Mvc020ReqDto {
 //	@DateTimeFormat(pattern = "yyyyMMdd")
 //	private Date expyDate;
 	private String expyDate;
-
-//	/** 이미지관리번호 */
-//	private String imgeMgmtNo;
-
-//	/** 이미지종류코드 */
-//	private String imgeKindCode;
-
-//	/** 이미지파일ID */
-//	private String imgeFileId;
 
 }

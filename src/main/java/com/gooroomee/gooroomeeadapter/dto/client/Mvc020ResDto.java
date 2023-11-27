@@ -16,39 +16,6 @@ import lombok.ToString;
 @ToString
 public class Mvc020ResDto {
 
-	/** 사원번호 */
-	private String emnb;
-
-	/**
-	 * 신분증 타입
-	 * 
-	 * <pre>
-	 * "ID Card"
-	 * "Driver's License"
-	 * "Passport"
-	 * "Alien Registration Card"
-	 * </pre>
-	 */
-	private String idType;
-
-	/** 고객명 */
-	private String custNm;
-
-	/** 고객생년월일 */
-//	@JsonFormat(pattern = "yyyyMMdd")
-//	@DateTimeFormat(pattern = "yyyyMMdd")
-//	private Date custBirthDate;
-	private String custBirthDate;
-
-	/**
-	 * <pre>
-	 * 고객성별 
-	 * 	남 : "M"
-	 * 	녀 : "F"
-	 * </pre>
-	 */
-	private String custGender;
-
 	/** 고객ID */
 	private String custId;
 
