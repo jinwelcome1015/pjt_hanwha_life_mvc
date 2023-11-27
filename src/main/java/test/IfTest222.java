@@ -2,9 +2,7 @@ package test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
@@ -12,7 +10,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -55,7 +52,6 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Sign;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
@@ -64,11 +60,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs013_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2.NttkButnCntn;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I2.NttkButnCntn.Button;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O2;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
@@ -79,6 +71,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
 import com.gooroomee.gooroomeeadapter.util.IfUtil;
+
 import korealife.uv.com.cm.SHA256CmCrypt;
 import lombok.Getter;
 import lombok.Setter;
@@ -1277,8 +1270,10 @@ public class IfTest222 {
         IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
-    
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_1;
+        
+//        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_1;
+        // XXX
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
@@ -1540,24 +1535,31 @@ public class IfTest222 {
         
         
         
-        IfMcCs015_I2 inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I2.class);
+//        IfMcCs015_I2 inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I2.class);
+        // XXX
+        IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
 //        String hpTlphSbno = inputPayload.getHpTlphSbno();
         
         inputPayload.setJobMsgeCntn(jobMsgeCntn);
         inputPayload.setMsgeTitlNm(msgeTitlNm);
         
-        
-        IfMcCs015_I2.NttkButnCntn.Button button = new IfMcCs015_I2.NttkButnCntn.Button();
+        // XXX
+//        IfMcCs015_I2.NttkButnCntn.Button button = new IfMcCs015_I2.NttkButnCntn.Button();
+        IfMcCs015_I.NttkButnCntn.Button button = new IfMcCs015_I.NttkButnCntn.Button();
         button.setName("모바일 화상상담 바로가기");
         button.setType("WL");
         button.setUrl_pc("");
         button.setUrl_mobile("https://www.hanwhalife.com");
         button.setTarget("out");
         
-        List<Button> buttonList = new ArrayList<>();
+//        List<Button> buttonList = new ArrayList<>();
+        // XXX
+        List<com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button> buttonList = new ArrayList<>();
         buttonList.add(button);
         
-        IfMcCs015_I2.NttkButnCntn nttkButnCntn = new IfMcCs015_I2.NttkButnCntn();
+//        IfMcCs015_I2.NttkButnCntn nttkButnCntn = new IfMcCs015_I2.NttkButnCntn();
+        // XXX
+        IfMcCs015_I.NttkButnCntn nttkButnCntn = new IfMcCs015_I.NttkButnCntn();
         nttkButnCntn.setButton(buttonList);
         
         inputPayload.setNttkButnCntn(nttkButnCntn);
@@ -1575,15 +1577,20 @@ public class IfTest222 {
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_2;
+//        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_2;
+        // XXX
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs015_O2> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
-                IfMcCs015_O2.class);
+//        IfTelegram<IfMcCs015_O2> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs015_O2.class);
+        // XXX
+        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs015_O.class);
     
-        IfMcCs015_O2 outputPayload = outputTelegram.getPayload();
+//        IfMcCs015_O2 outputPayload = outputTelegram.getPayload();
+        // XXX
+        IfMcCs015_O outputPayload = outputTelegram.getPayload();
     
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
