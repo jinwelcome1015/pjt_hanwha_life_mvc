@@ -31,5 +31,8 @@ public class Mvc015ResDto {
      * 실패 : 음수(소수점 포함)
      */
     private double dvsnRsltVal;
+    
+    /** 구분결과값 Y/N (성공여부 Y/N) */
+    private String dvsnRsltValYn;
 
 }

@@ -42,6 +42,7 @@
     "chekLstCntn": "0102889MXiN,",
     "prcsRsltCntn": "정상적으로 발송요청 처리되었습니다.",
     "dvsnRsltVal": 0.0,
-    "smsTrnmRsltVal": 0
+    "smsTrnmRsltVal": 0,
+    "dvsnRsltValYn": "Y"
   }
 }

@@ -29,4 +29,7 @@ public class IfMcCs014_O {
     /** SMS전송결과값 */
     private int smsTrnmRsltVal;
 
+    /** 구분결과값 Y/N (성공여부 Y/N) */
+    private String dvsnRsltValYn;
+    
 }

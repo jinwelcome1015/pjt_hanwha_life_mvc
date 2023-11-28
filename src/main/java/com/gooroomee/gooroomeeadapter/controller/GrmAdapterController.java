@@ -1478,7 +1478,10 @@ public class GrmAdapterController {
 		IfMcCs014_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 		
 		Mvc014ResDto resDto = modelMapper.map(ifOutputDto, Mvc014ResDto.class);
-
+		
+		String dvsnRsltValYn = Double.compare(resDto.getDvsnRsltVal(), 0.0) == 0 ? "Y" : "N";
+		resDto.setDvsnRsltValYn(dvsnRsltValYn);
+		
 		ResponseDto<Mvc014ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 		return responseDto;
@@ -1571,6 +1574,9 @@ public class GrmAdapterController {
 		}
 
 		Mvc015ResDto resDto = modelMapper.map(ifOutputDto, Mvc015ResDto.class);
+		
+		String dvsnRsltValYn = Double.compare(resDto.getDvsnRsltVal(), 0.0) == 0 ? "Y" : "N";
+		resDto.setDvsnRsltValYn(dvsnRsltValYn);
 
 		ResponseDto<Mvc015ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 

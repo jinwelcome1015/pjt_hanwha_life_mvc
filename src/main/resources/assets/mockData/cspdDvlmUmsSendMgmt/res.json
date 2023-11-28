@@ -42,6 +42,7 @@
         "prcsRsltCntn": "알림톡이 정상발송 등록 되었습니다.",
         "rqstSrvcId": "3000010000048035",
         "chekLstCntn": "",
-        "dvsnRsltVal": 0.0
+        "dvsnRsltVal": 0.0,
+        "dvsnRsltValYn": "Y"
     }
 }
