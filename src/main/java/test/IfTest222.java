@@ -1270,7 +1270,7 @@ public class IfTest222 {
         IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
-    
+        
 //        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_1;
         // XXX
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
@@ -1534,8 +1534,9 @@ public class IfTest222 {
         
         
         
-        // XXX
+        
 //        IfMcCs015_I2 inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I2.class);
+        // XXX
         IfMcCs015_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs015_I.class);
 //        String hpTlphSbno = inputPayload.getHpTlphSbno();
         
@@ -1551,13 +1552,13 @@ public class IfTest222 {
         button.setUrl_mobile("https://www.hanwhalife.com");
         button.setTarget("out");
         
-        // XXX
 //        List<Button> buttonList = new ArrayList<>();
+        // XXX
         List<com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button> buttonList = new ArrayList<>();
         buttonList.add(button);
         
-        // XXX
 //        IfMcCs015_I2.NttkButnCntn nttkButnCntn = new IfMcCs015_I2.NttkButnCntn();
+        // XXX
         IfMcCs015_I.NttkButnCntn nttkButnCntn = new IfMcCs015_I.NttkButnCntn();
         nttkButnCntn.setButton(buttonList);
         
@@ -1575,7 +1576,7 @@ public class IfTest222 {
         
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
-        
+    
 //        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015_2;
         // XXX
         IfSpec ifSpec = IfConstant.IfSpec.IfMcCs015;
@@ -1586,7 +1587,7 @@ public class IfTest222 {
 //        IfTelegram<IfMcCs015_O2> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs015_O2.class);
         // XXX
         IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs015_O.class);
-        
+    
 //        IfMcCs015_O2 outputPayload = outputTelegram.getPayload();
         // XXX
         IfMcCs015_O outputPayload = outputTelegram.getPayload();
