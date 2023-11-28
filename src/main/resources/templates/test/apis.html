@@ -93,7 +93,7 @@
 
 					const sTargetText = event.target.options[event.target.selectedIndex].innerText;
 
-					if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText)) {
+					if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText) || /^19\..*/.test(sTargetText)) {
 						document.querySelector('#divForIdCard').style.display = 'block';
 					} else {
 						document.querySelector('#divForIdCard').style.display = 'none';
