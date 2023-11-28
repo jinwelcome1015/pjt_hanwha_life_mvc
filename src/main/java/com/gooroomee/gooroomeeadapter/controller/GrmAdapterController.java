@@ -553,7 +553,7 @@ public class GrmAdapterController {
 	/**
 	 * <pre>
 	 * [00] 
-	 * 진입
+	 * 진입2
 	 * 
 	 * 
 	 * [01, 02, 09, 03]
@@ -732,7 +732,7 @@ public class GrmAdapterController {
 	/**
 	 * <pre>
 	 * [01] 
-	 * 신분증OCR요청
+	 * 신분증OCR요청2
 	 * </pre>
 	 * 
 	 * @param reqDto
@@ -1695,7 +1695,7 @@ public class GrmAdapterController {
 	/**
 	 * <pre>
 	 * [19] 
-	 * 신분증OCR요청2
+	 * 신분증OCR요청
 	 * </pre>
 	 * 
 	 * @param reqDto
@@ -1855,7 +1855,7 @@ public class GrmAdapterController {
 	/**
 	 * <pre>
 	 * [20]
-	 * 진입2
+	 * 진입
 	 * 
 	 * 
 	 * [02, 09, 03]
