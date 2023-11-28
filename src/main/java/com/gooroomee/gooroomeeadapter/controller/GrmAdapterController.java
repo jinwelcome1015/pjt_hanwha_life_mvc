@@ -569,13 +569,13 @@ public class GrmAdapterController {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/entry"), (API_URL_TOKEN + "/entry" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "00. 진입")
-	public @ResponseBody ResponseDto<Mvc000ResDto> entry(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request)
+	@RequestMapping(path = { (API_URL_TOKEN + "/entry2"), (API_URL_TOKEN + "/entry2" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "00. 진입2")
+	public @ResponseBody ResponseDto<Mvc000ResDto> entry2(@RequestBody Mvc001ReqDto mvc001ReqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException, ParseException {
 
 		// XXX [01] 신분증OCR요청
-		ResponseDto<Mvc001ResDto> response001dto = this.idcdOcrRqst(mvc001ReqDto, request);
+		ResponseDto<Mvc001ResDto> response001dto = this.idcdOcrRqst2(mvc001ReqDto, request);
 		Mvc001ResDto mvc001ResDto = response001dto.getData();
 
 //		Mvc001ResDto.DataHeader mvc001ResDtoDataHeader = mvc001ResDto.getDataHeader();
@@ -740,9 +740,9 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "01. 신분증OCR요청")
-	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst(@RequestBody Mvc001ReqDto reqDto, HttpServletRequest request)
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst2"), (API_URL_TOKEN + "/idcdOcrRqst2" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "01. 신분증OCR요청2")
+	public @ResponseBody ResponseDto<Mvc001ResDto> idcdOcrRqst2(@RequestBody Mvc001ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 
 //		IfMcCs001_I cs001_I = modelMapper.map(reqDto, IfMcCs001_I.class);
@@ -1703,9 +1703,9 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst2"), (API_URL_TOKEN + "/idcdOcrRqst2" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "19. 신분증OCR요청2")
-	public @ResponseBody ResponseDto<Mvc019ResDto> idcdOcrRqst2(@RequestBody Mvc019ReqDto reqDto, HttpServletRequest request)
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "19. 신분증OCR요청")
+	public @ResponseBody ResponseDto<Mvc019ResDto> idcdOcrRqst(@RequestBody Mvc019ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
 		IfMcCs019_I cs019_I = modelMapper.map(reqDto, IfMcCs019_I.class);
@@ -1870,9 +1870,9 @@ public class GrmAdapterController {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/entry2"), (API_URL_TOKEN + "/entry2" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "20. 진입2")
-	public @ResponseBody ResponseDto<Mvc020ResDto> entry2(@RequestBody Mvc020ReqDto reqDto, HttpServletRequest request)
+	@RequestMapping(path = { (API_URL_TOKEN + "/entry"), (API_URL_TOKEN + "/entry" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "20. 진입")
+	public @ResponseBody ResponseDto<Mvc020ResDto> entry(@RequestBody Mvc020ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException, ParseException {
 		
 		Mvc020ResDto resDto = new Mvc020ResDto();
@@ -2027,7 +2027,7 @@ public class GrmAdapterController {
 	@RequestMapping(path = { "/counselling/otp" })
 	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws JsonMappingException, JsonProcessingException, URISyntaxException {
 		
-		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
+//		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
 		
 		OtpReqDto inputTelegramPayload = inputTelegram.getPayload();
 //		OtpDto_I dto_I = modelMapper.map(inputTelegramPayload, OtpDto_I.class);
