@@ -91,7 +91,7 @@
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -108,7 +108,7 @@
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -119,13 +119,13 @@
             <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
-        	<appender-ref ref="CONSOLE"/>
+        	<!-- <appender-ref ref="CONSOLE"/> -->
             <appender-ref ref="FILE-INFO"/>
         </logger>
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -134,12 +134,13 @@
     <!--prod, dr-->
     <springProfile name="prod, dr">
         <root level="ERROR">
+        	<!-- <appender-ref ref="CONSOLE"/> -->
             <appender-ref ref="FILE-ERROR"/>
         </root>
         <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>

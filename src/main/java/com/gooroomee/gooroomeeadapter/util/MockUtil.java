@@ -31,19 +31,22 @@ public class MockUtil {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).registerModule(new SimpleModule());
 
-	public static <O> O getMockRequestData(String thisMethodName, Class<O> requestDtoClass) throws IOException {
+	public static <O> O getMockRequestData(String thisMethodName, Class<O> requestDtoClass, String subCasePath) throws IOException {
 		String mockResponseDataFileName = "req.json";
-		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName);
+		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName, subCasePath);
 	}
 
-	public static <O> O getMockResponseData(String thisMethodName, Class<O> responseDtoClass) throws IOException {
+	public static <O> O getMockResponseData(String thisMethodName, Class<O> responseDtoClass, String subCasePath) throws IOException {
 		String mockResponseDataFileName = "res.json";
-		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName);
+		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName, subCasePath);
 	}
 
-	public static <O> O getMockData(String thisMethodName, Class<O> outputClass, String mockDataFileName) throws IOException {
+	public static <O> O getMockData(String thisMethodName, Class<O> outputClass, String mockDataFileName, String subCasePath) throws IOException {
 		String mockDataRootPath = "/assets/mockData/";
 		String mockDataDetailPath = mockDataRootPath + thisMethodName;
+		if(subCasePath != null) {
+			mockDataDetailPath += "/" + subCasePath;
+		}
 
 		File mockResponseDataFile = new File(mockDataDetailPath, mockDataFileName);
 

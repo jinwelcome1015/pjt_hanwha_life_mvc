@@ -383,20 +383,23 @@ public class IfConstant {
 	public enum OcrIdType {
 
 		/** OCR 신분증 타입 : 주민등록증 */
-		IdCard("ID Card", "004"),
+		IdCard("ID Card", "ic", "004"),
 
 		// XXX 확인 : 운전면허증(도로교통공단), 운전면허증(경찰청) 등등 진위확인구분코드 확인 필요
 		/** OCR 신분증 타입 : 운전면허증 */
-		DriverLicense("Driver's License", "011"),
+		DriverLicense("Driver's License", "dl", "011"),
 
 		/** OCR 신분증 타입 : 여권 */
-		Passport("Passport", "911"),
+		Passport("Passport", "dl", "911"),
 
 		/** OCR 신분증 타입 : 외국인등록증 */
-		AlienRegistrationCard("Alien Registration Card", "017");
+		AlienRegistrationCard("Alien Registration Card", "ac", "017");
 
 		/** 신분증 타입 이름 */
 		private final String name;
+		
+		/** 신분증 타입 OCR JSON NODE FIELD 이름 */
+		private final String idTypeFieldName;
 
 		/** 진위확인구분코드 */
 		private final String trflCnfmDvsnCode;

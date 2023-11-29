@@ -35,9 +35,11 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -237,7 +239,19 @@ public class GrmAdapterController {
 		}
 		return fieldName;
 	}
+	
+	private String getNameNodeName(String idTypeFieldName) {
+		String nameNodeName;
+		if("pp".equals(idTypeFieldName)) {
+			nameNodeName = "fullNameKor";
+		}else {
+			nameNodeName = "name";
+		}
+		return nameNodeName;
+	}
 
+	
+	
 	private String getCustNm(JsonNode ocrResultReadTree) {
 		String custNm = null;
 
@@ -246,9 +260,16 @@ public class GrmAdapterController {
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		log.info("idTypeFieldName : {}", idTypeFieldName);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
-
-		JsonNode nameListJsonNode = idTypeFieldJsonNode.get("name");
+		
+		String nameNodeName = this.getNameNodeName(idTypeFieldName);
+		
+		JsonNode nameListJsonNode = idTypeFieldJsonNode.get(nameNodeName);
+		if(nameListJsonNode == null) {
+			log.debug("idCard.result.idtype.{}.{} 노드가 없습니다.", idTypeFieldName, nameNodeName);
+		}
+		
 		JsonNode firstNameJsonNode = nameListJsonNode.get(0);
 		JsonNode firstNameTextJsonNode = firstNameJsonNode.get("text");
 		custNm = firstNameTextJsonNode.asText();
@@ -278,6 +299,7 @@ public class GrmAdapterController {
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		log.info("idTypeFieldName : {}", idTypeFieldName);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
 
 		JsonNode issueDateListJsonNode = idTypeFieldJsonNode.get("issueDate");
@@ -326,6 +348,7 @@ public class GrmAdapterController {
 		}
 		
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		log.info("idTypeFieldName : {}", idTypeFieldName);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
 		
 		JsonNode expireDateListJsonNode = null;
@@ -374,6 +397,7 @@ public class GrmAdapterController {
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		log.info("idTypeFieldName : {}", idTypeFieldName);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
@@ -488,6 +512,7 @@ public class GrmAdapterController {
 		JsonNode idTypeJsonNode = resultJsonNode.get("idtype");
 		String idType = idTypeJsonNode.asText();
 		String idTypeFieldName = this.getIdTypeFieldNameFromIdType(idType);
+		log.info("idTypeFieldName : {}", idTypeFieldName);
 		JsonNode idTypeFieldJsonNode = resultJsonNode.get(idTypeFieldName);
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
@@ -1691,6 +1716,12 @@ public class GrmAdapterController {
 	}
 	
 	
+	@RequestMapping(path = { (API_URL_TOKEN + "/t"), (API_URL_TOKEN + "/t" + MockUtil.URL_SUFFIX_FOR_MOCK + "/**") }, method = { RequestMethod.POST }, name = "B. 신분증OCR요청")
+	public @ResponseBody ResponseDto<Mvc019ResDto> idcdOcrRqst(HttpServletRequest request){
+		System.out.println("###");
+		return null;
+	}
+	
 	
 	/**
 	 * <pre>
@@ -1703,8 +1734,7 @@ public class GrmAdapterController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "19. 신분증OCR요청")
+	@RequestMapping(path = { (API_URL_TOKEN + "/idcdOcrRqst"), (API_URL_TOKEN + "/idcdOcrRqst" + MockUtil.URL_SUFFIX_FOR_MOCK + "/{idcdCase}") }, method = { RequestMethod.POST }, name = "19. 신분증OCR요청")
 	public @ResponseBody ResponseDto<Mvc019ResDto> idcdOcrRqst(@RequestBody Mvc019ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
@@ -1768,6 +1798,11 @@ public class GrmAdapterController {
 
 		String ocrResultJson = ifOutputDto.getDataBody().getImages();
 		log.info("[OCR RESULT] : {}", ocrResultJson);
+		
+		if(ocrResultJson == null || "".equals(ocrResultJson)) {
+			String message = String.format("신분증 OCR 결과가 %s 입니다.", ocrResultJson);
+			throw new IfException(message);
+		}
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
 
@@ -2034,7 +2069,11 @@ public class GrmAdapterController {
 		OtpDto_I dto_I = new OtpDto_I();
 		dto_I.setUsername(inputTelegramPayload.getCustNm());
 		dto_I.setApiUserId(inputTelegramPayload.getCustId());
-		dto_I.setPhoneNumber(inputTelegramPayload.getCustTlno());
+		
+		dto_I.setPhoneNumber1(inputTelegramPayload.getHpTlphTlcmNo());
+		dto_I.setPhoneNumber2(inputTelegramPayload.getHpTlphOfno());
+		dto_I.setPhoneNumber3(inputTelegramPayload.getHpTlphSbno());
+		
 		dto_I.setRequestAgency(inputTelegramPayload.getRqstOrgnCode());
 		
 		IfProviderResponseCommonDto<String> dto_O = grmAdapterService.counsellingOtp(dto_I);
@@ -2140,7 +2179,7 @@ public class GrmAdapterController {
 
 								Class<?> parameterType = parameter.getType();
 
-								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType);
+								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
 								Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
 										new TypeReference<Map<String, Object>>() {
 										});

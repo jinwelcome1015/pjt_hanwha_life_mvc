@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -55,7 +56,8 @@ public class Test {
 //		test.encrypt();
 //		test.regex();
 //		test.sex();
-		test.log();
+//		test.log();
+		test.urlPattern();
 	}
 
 	private void sex() {
@@ -171,6 +173,19 @@ public class Test {
 	public void log() {
 		
 		System.out.println();
+	}
+	
+	public void urlPattern() {
+		String a = "/grm/adapter/intrf/idcdOcrRqst/mock/1";
+		String m = ".*/mock/\\d";
+//		Pattern pattern = Pattern.compile(m);
+		boolean matches = Pattern.matches(m, a);
+		
+		System.out.println(matches);
+		
+		String replaceAll = a.replaceAll(".*mock/", "");
+		
+		System.out.println("replaceAll : " + replaceAll);
 	}
 	
 }

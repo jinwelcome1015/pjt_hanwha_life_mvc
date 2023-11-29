@@ -20,16 +20,16 @@
         "msgeListCont": 0
     },
     "payload": {
-        "idType": "ID Card",
+        "idType": "Driver's License",
         "custNm": "홍길동",
         "custGender": "M",
         "custBirthDate": "19800101",
         "isncDate": "20200816",
-        "expyDate": "",
+        "expyDate": "20241231",
         "rrno": "8001012345678",
-        "drvnLcnsNo": "",
-        "drvnLcnsSqno": "",
-        "psprNo": "",
-        "frnrRgstNo": ""
+        "drvnLcnsNo": "111500345607",
+        "drvnLcnsSqno": "NV676V",
+        "psprNo": null,
+        "frnrRgstNo": null
     }
 }

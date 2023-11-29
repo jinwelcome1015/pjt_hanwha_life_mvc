@@ -20,16 +20,16 @@
         "msgeListCont": 0
     },
     "payload": {
-        "idType": "ID Card",
-        "custNm": "홍길동",
-        "custGender": "M",
+        "idType": "Passport",
+        "custNm": "김셀비",
+        "custGender": "F",
         "custBirthDate": "19800101",
         "isncDate": "20200816",
-        "expyDate": "",
+        "expyDate": "20300815",
         "rrno": "8001012345678",
         "drvnLcnsNo": "",
         "drvnLcnsSqno": "",
-        "psprNo": "",
+        "psprNo": "M123A4567",
         "frnrRgstNo": ""
     }
 }
