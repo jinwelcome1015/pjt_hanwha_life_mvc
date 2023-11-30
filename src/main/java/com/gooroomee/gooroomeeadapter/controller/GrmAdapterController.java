@@ -327,7 +327,7 @@ public class GrmAdapterController {
 			issueDate = issueYear + issueMonth + issueDay;
 			
 		}catch (NullPointerException e) {
-			log.error("[issueDate 포맷팅 실패] : {}", beforeFormattedIssueDate);
+			log.warn("[issueDate 포맷팅 실패] : {}", beforeFormattedIssueDate);
 			issueDate = "";
 		}
 		
@@ -383,7 +383,7 @@ public class GrmAdapterController {
 			
 			expyDate = expireYear + expireMonth + expireDay;
 		}catch (NullPointerException e) {
-			log.error("[expireDate 포맷팅 실패] : {}", beforeFormattedExpireDate);
+			log.warn("[expireDate 포맷팅 실패] : {}", beforeFormattedExpireDate);
 			expyDate = "";
 		}
 
@@ -565,19 +565,7 @@ public class GrmAdapterController {
 		return d;
 	}
 
-	/*
-	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
-		GrmAdapterController grmAdapterController = new GrmAdapterController();
 	
-		ObjectMapper objectMapper = new ObjectMapper();
-		String ocrResultJson = "[{\"uid\":\"a513711d3b514f6fb11ad3dc3848df1f\",\"validationResult\":{\"result\":\"NO_REQUESTED\"},\"inferResult\":\"SUCCESS\",\"idCard\":{\"result\":{\"idtype\":\"ID Card\",\"rois\":[{\"vertices\":[{\"x\":3.1388545,\"y\":3.9956706},{\"x\":754.52325,\"y\":-5.092327},{\"x\":747.84045,\"y\":473.14856},{\"x\":2.264223,\"y\":474.4076}]}],\"ic\":{\"address\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":51.675,\"y\":235.1875},{\"x\":192.7875,\"y\":235.1875},{\"x\":192.7875,\"y\":272.2875},{\"x\":51.675,\"y\":272.2875}]},{\"vertices\":[{\"x\":53.6625,\"y\":268.3125},{\"x\":263.67496,\"y\":268.3125},{\"x\":263.67496,\"y\":304.0875},{\"x\":53.6625,\"y\":304.0875}]},{\"vertices\":[{\"x\":203.3875,\"y\":235.85},{\"x\":387.5625,\"y\":235.85},{\"x\":387.5625,\"y\":270.9625},{\"x\":203.3875,\"y\":270.9625}]},{\"vertices\":[{\"x\":271.625,\"y\":268.975},{\"x\":347.15,\"y\":268.975},{\"x\":347.15,\"y\":302.7625},{\"x\":271.625,\"y\":302.7625}]}],\"formatted\":{\"value\":\"서울특별시 가산디지털1로 (대륭테크노타운, 18차)\"},\"text\":\"서울특별시 가산디지털1로 (대륭테크노타운 18차)\",\"maskingPolys\":[]}],\"authority\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":146.53316,\"y\":381.33884},{\"x\":326.93195,\"y\":383.12497},{\"x\":326.47778,\"y\":428.99695},{\"x\":146.07898,\"y\":427.21082}]},{\"vertices\":[{\"x\":343.17493,\"y\":382.92496},{\"x\":524.6999,\"y\":382.92496},{\"x\":524.6999,\"y\":427.31247},{\"x\":343.17493,\"y\":427.31247}]},{\"vertices\":[{\"x\":525.3625,\"y\":374.975},{\"x\":622.75,\"y\":374.975},{\"x\":622.75,\"y\":429.3},{\"x\":525.3625,\"y\":429.3}]}],\"formatted\":{\"value\":\"서울특별시 금천구청장\"},\"text\":\"서울특별시 금천구청장 청바\",\"maskingPolys\":[]}],\"name\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":72.2125,\"y\":116.6},{\"x\":367.6875,\"y\":116.6},{\"x\":367.6875,\"y\":165.625},{\"x\":72.2125,\"y\":165.625}]}],\"formatted\":{\"value\":\"홍길동\"},\"text\":\"홍길동\",\"maskingPolys\":[]}],\"personalNum\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":65.5875,\"y\":181.52498},{\"x\":363.71246,\"y\":181.52498},{\"x\":363.71246,\"y\":216.63748},{\"x\":65.5875,\"y\":216.63748}]}],\"formatted\":{\"value\":\"800101-2345678\"},\"text\":\"800101-2345678\",\"maskingPolys\":[{\"vertices\":[{\"x\":211.13873,\"y\":178.01373},{\"x\":367.22372,\"y\":178.01373},{\"x\":367.22372,\"y\":220.14873},{\"x\":211.13873,\"y\":220.14873}]}]}],\"issueDate\":[{\"boundingPolys\":[{\"vertices\":[{\"x\":242.475,\"y\":351.7875},{\"x\":374.3125,\"y\":351.7875},{\"x\":374.3125,\"y\":381.6},{\"x\":242.475,\"y\":381.6}]},{\"vertices\":[{\"x\":372.98746,\"y\":352.44995},{\"x\":422.01245,\"y\":352.44995},{\"x\":422.01245,\"y\":380.93747},{\"x\":372.98746,\"y\":380.93747}]}],\"formatted\":{\"month\":\"08\",\"year\":\"2020\",\"day\":\"16\"},\"text\":\"2020.08.16\",\"maskingPolys\":[{\"vertices\":[{\"x\":239.52966,\"y\":349.0218},{\"x\":424.9578,\"y\":349.0217},{\"x\":424.9578,\"y\":384.3657},{\"x\":239.52968,\"y\":384.36578}]}]}]},\"isConfident\":true},\"meta\":{\"estimatedLanguage\":\"ko\"}},\"name\":\"test_idcard\",\"message\":\"SUCCESS\"}]";
-		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
-		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
-		String isncDate = grmAdapterController.getIsncDate(ocrResultReadTree);
-		System.out.println(isncDate);
-	}	
-	*/
-
 	/**
 	 * <pre>
 	 * [00] 
@@ -1775,13 +1763,7 @@ public class GrmAdapterController {
 		return responseDto;
 	}
 	
-	
-	@RequestMapping(path = { (API_URL_TOKEN + "/t"), (API_URL_TOKEN + "/t" + MockUtil.URL_SUFFIX_FOR_MOCK + "/**") }, method = { RequestMethod.POST }, name = "B. 신분증OCR요청")
-	public @ResponseBody ResponseDto<Mvc019ResDto> idcdOcrRqst(HttpServletRequest request){
-		System.out.println("###");
-		return null;
-	}
-	
+
 	
 	/**
 	 * <pre>
@@ -1905,7 +1887,7 @@ public class GrmAdapterController {
 				rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
 				resDto.setRrno(rrno);
 			}catch (NullPointerException e) {
-				log.error("rrno (idCard.result.ic.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("rrno (idCard.result.ic.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 			
 		// B. 운전면허증 경우
@@ -1915,14 +1897,14 @@ public class GrmAdapterController {
 				driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
 				resDto.setDrvnLcnsNo(driverLicenseNumber);
 			}catch (NullPointerException e) {
-				log.error("drvnLcnsNo (idCard.result.dl.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("drvnLcnsNo (idCard.result.dl.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 
 			try {
 				String driverLicenseSequenceNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("code").get(0).get("text").asText();
 				resDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
 			}catch (NullPointerException e) {
-				log.error("drvnLcnsSqno (idCard.result.dl.code[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("drvnLcnsSqno (idCard.result.dl.code[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 			
 			try {
@@ -1930,7 +1912,7 @@ public class GrmAdapterController {
 				rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
 				resDto.setRrno(rrno);
 			}catch (NullPointerException e) {
-				log.error("rrno (idCard.result.dl.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("rrno (idCard.result.dl.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 
 			
@@ -1940,7 +1922,7 @@ public class GrmAdapterController {
 				String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0).get("text").asText();
 				resDto.setPsprNo(passportNumber);
 			}catch (NullPointerException e) {
-				log.error("psprNo (idCard.result.pp.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("psprNo (idCard.result.pp.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 			
 			try {
@@ -1948,7 +1930,7 @@ public class GrmAdapterController {
 				String rrno = btdt.substring(2) + personalNum;
 				resDto.setRrno(rrno);
 			}catch (NullPointerException e) {
-				log.error("rrno (idCard.result.pp.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("rrno (idCard.result.pp.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 			
 		// D. 외국인등록증 경우
@@ -1957,7 +1939,7 @@ public class GrmAdapterController {
 				String alienRegistrationNumber = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
 				resDto.setFrnrRgstNo(alienRegistrationNumber);
 			}catch (NullPointerException e) {
-				log.error("frnrRgstNo (idCard.result.ac.alienRegNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+				log.warn("frnrRgstNo (idCard.result.ac.alienRegNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
 			}
 		}
 

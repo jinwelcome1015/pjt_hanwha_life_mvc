@@ -38,7 +38,9 @@
         "msgeStackTrace": null
     },
     "payload": {
-        "initechOAuthToken": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXV0aC5pbmlodWIuYml6Iiwic3ViIjoiYWNjZXNzVG9rZW4iLCJleHAiOjE2OTg2NDQ4MzAsImp0aSI6ImdOOUNFTlZsUGFaRmdvWjY0a0dKIiwiY2xpZW50X2lkIjoiMDFlMjM4ZWYtODAyNS00MjgzLTk4M2YtOWY1ZDIyMWU4ODVlIn0.qZyF8Owy9t9t2V5K0t_3hkH5uAr5Pwpfi1tirOZgvjQlV8zkF2a_XAWMCwqpNnqiYRd-Ufn9ys9sncVCiTvxQ-yXmdR76A6et7O6MGw5r3wc-KiyICvGP7i_rjr-NaJsMhdmcykwzXAiw48eO5aqEx94BSI3JaUtWcvnoYUz-1octLzvrD1ocurCXnlcNrL9Z_r7--ZOEMrUlN8IRPN-FB7L5Tq2sGWsGjX-bV1ogXYuu7R4bt6So1DWkiThu1dlgw0FWci4Bll3hUaBY2DrncGE49mWXPH6yOxvSBq1lEIEK3KopAXxMcZF1PbknQaEFvaN7MHb0Q5kXXmv72X2fg",
+        "SCRN_ID": "MVC_SCRN_TEST_01",
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXV0aC5pbmlodWIuYml6Iiwic3ViIjoiYWNjZXNzVG9rZW4iLCJleHAiOjE2OTgxMTU2MjUsImp0aSI6ImlhaHE3Y3VmX0VjbWE2MlJic2hUIiwiY2xpZW50X2lkIjoiMDFlMjM4ZWYtODAyNS00MjgzLTk4M2YtOWY1ZDIyMWU4ODVlIn0.nJlmV-Q-V8hgDqMBl3OKq5rpWH8IlnWJy0RC7AT9QgSD6TyOyB6krkz4Jb3HA5O8XnFFDZNfRm0ywFuJCzAVy0JeQyjiqqY8Z_aQmtm2CekVGWeg5mhnuxl2sEqialuX9qHb_XrtMHY0I56cIw5NM7_YdNqZ8cUTpZD4rfZgxn_uAHukVV0VQu3I0fK4VYzWqsuPZX7an170SNQvcJ6T3nEfxGgN3cQyWuB10XLRX2xi3fXkrA4dMWFnRorB-gMMHMHK-YC4W2yGPA4OLSeZxTC4nfcqDVJpzXnnyO7YZ_Ny7TZ3kwMEj_StzjLjcCbSkfQVXMrdgVmozKxdVW846Q",
+        "token_type": "Bearer",
         "reqTxId": "55df29e8-79b2-44d6-82b5-cb4c7cf9449f",
         "USER_ID": "USER_001"
     }

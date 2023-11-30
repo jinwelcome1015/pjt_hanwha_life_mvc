@@ -38,6 +38,7 @@
         "msgeStackTrace": null
     },
     "payload": {
+        "SCRN_ID": "MVC_SCRN_TEST_01",
         "USER_ID": "USER001"
     }
 }
