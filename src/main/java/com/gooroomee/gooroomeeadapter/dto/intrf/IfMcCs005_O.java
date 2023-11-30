@@ -82,4 +82,8 @@ public class IfMcCs005_O {
 	/** 상위기관명 */
 	private String hgrnOrgnNm;
 
+	
+	
+	/** 시스템 이용권한 소유여부 Y/N */
+	private String hasAuthorityYn;
 }

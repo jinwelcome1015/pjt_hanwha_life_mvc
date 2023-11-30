@@ -99,6 +99,14 @@
     "odn1Pscd": "228",
     "odn2Pscd": "23",
     "odn3Pscd": "507",
-    "roadNmAddrYn": "Y"
+    "roadNmAddrYn": "Y",
+
+
+    
+    "registeredHpNo1": "010",
+    "registeredHpNo2": "5231",
+    "registeredHpNo3": "7973",
+    "registeredHpNoMatchYn": "Y"
+
   }
 }

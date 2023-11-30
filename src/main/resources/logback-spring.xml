@@ -119,15 +119,17 @@
             <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
-        	<!-- <appender-ref ref="CONSOLE"/> -->
+        	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
+        <!-- 
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
+         -->
     </springProfile>
     
      

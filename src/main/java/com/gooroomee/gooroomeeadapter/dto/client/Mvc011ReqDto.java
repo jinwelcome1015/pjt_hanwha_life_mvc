@@ -22,8 +22,8 @@ public class Mvc011ReqDto {
 	@JsonProperty("USER_ID")
 	private String USER_ID;
 
-	/** 이니텍인증토큰 */
-	private String initechOAuthToken;
+//	/** 이니텍인증토큰 */
+//	private String initechOAuthToken;
 
 	/** 인증서비스ID */
 	private String pid;
@@ -45,5 +45,11 @@ public class Mvc011ReqDto {
 
 	/** 요청브라우저타입 */
 	private String deviceBrowser;
+	
+	/** 액세스토큰 */
+	private String access_token;
+
+	/** 토큰타입 */
+	private String token_type;
 
 }

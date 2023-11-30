@@ -64,6 +64,8 @@
     "ogztFormDvsnCode": "E2",
     "orgnTlno": "02-1588-1234",
     "orgnAbrvNm": "생보운영1팀",
-    "hgrnOrgnNm": "IT운영팀"
+    "hgrnOrgnNm": "IT운영팀",
+
+    "hasAuthorityYn": "Y"
   }
 }

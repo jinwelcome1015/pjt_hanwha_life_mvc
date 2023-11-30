@@ -22,10 +22,16 @@ public class Mvc012ReqDto {
 	@JsonProperty("USER_ID")
 	private String USER_ID;
 
-	/** 이니텍인증토큰 */
-	private String initechOAuthToken;
+//	/** 이니텍인증토큰 */
+//	private String initechOAuthToken;
 
 	/** 트랜잭션ID */
 	private String reqTxId;
+	
+	/** 액세스토큰 */
+	private String access_token;
+
+	/** 토큰타입 */
+	private String token_type;
 
 }

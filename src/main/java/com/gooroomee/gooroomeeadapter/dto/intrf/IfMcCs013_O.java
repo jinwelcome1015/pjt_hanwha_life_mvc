@@ -182,6 +182,25 @@ public class IfMcCs013_O {
     /** 도로명주소여부 */
     private String roadNmAddrYn;
     
+    
+    
+    
+    /** 휴대폰사업자번호 (등록된) */
+    private String registeredHpNo1;
+    
+    /** 휴대폰국번호 (등록된) */
+    private String registeredHpNo2;
+    
+    /** 휴대폰개별번호 (등록된) */
+    private String registeredHpNo3;
+
+    /** 등록된 휴대폰 번호와 일치여부 Y/N */
+    private String registeredHpNoMatchYn;
+    
+    
+    
+    
+    
     /** 진위확인이력 */
     private TrflCnfmHist trflCnfmHist;
     

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class IfConstant {
+	
+	public static final String ISRN_CORE_ATRT_ID = "PPR_00070";
 
 	/** 송신 시스템 코드 */
 	public static final String TRNM_SYS_CODE = "MVC";
@@ -218,7 +220,10 @@ public class IfConstant {
         IfMcCs013("HLIMVC00036", "icsIntgCustInqyMgmtPSI007r", "HLI"),
         
         /** 인터페이스 명세 : SMS 메세지 발송 */
-        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "INI");
+        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "INI"),
+        
+        /** 인터페이스 명세 : 권한별사용자조회 */
+        IfMcCs021("HLIMVC00039", "comAtrtSrchPSI013r", "HLI");
 
 		
 		private final String itfcId;

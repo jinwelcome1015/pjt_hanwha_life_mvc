@@ -26,13 +26,15 @@ public class Mvc013ResDto {
     /** 고객명 */
     private String custNm;
     
-    /** 휴대폰사업자번호 */
-    private String hpBsno;
+    /** 휴대폰사업자번호 (등록된) */
+    private String registeredHpNo1;
     
-    /** 휴대폰국번호 */
-    private String hpOfno;
+    /** 휴대폰국번호 (등록된) */
+    private String registeredHpNo2;
     
-    /** 휴대폰개별번호 */
-    private String hpInno;
+    /** 휴대폰개별번호 (등록된) */
+    private String registeredHpNo3;
 
+    /** 등록된 휴대폰 번호와 일치여부 Y/N */
+    private String registeredHpNoMatchYn;
 }

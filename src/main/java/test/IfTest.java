@@ -68,6 +68,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
@@ -200,6 +202,9 @@ public class IfTest {
                 
                 // XXX 성공
 //                ifTest.testIf018();
+                
+                // XXX 성공 
+                ifTest.testIf021();
     }
 
     
@@ -1442,6 +1447,43 @@ public class IfTest {
         IfTelegram<IfMcCs018_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs018_O.class);
     
         IfMcCs018_O outputPayload = outputTelegram.getPayload();
+    
+//        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
+        logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));
+    }
+    
+    
+    
+    /**
+     * 권한별사용자조회
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    public void testIf021() throws JsonProcessingException, URISyntaxException {
+        String thisMethodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        /*
+        String payloadJson = "{\r\n" + 
+                "    \"scwdNm\" : \"가로공원로 82길\"\r\n" + 
+                "  }";
+        */
+        
+        String payloadJson = "{\r\n" + 
+                "     \"isrnCoreAtrtId\": \"PPR_0007\",\r\n" + 
+                "     \"orgnCode\": \"00630\"\r\n" + 
+                "}";
+        
+        IfMcCs021_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs021_I.class);
+    
+        IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
+    
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs021;
+    
+        IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
+                ifSpec.getRcveSysCode());
+    
+        IfTelegram<IfMcCs021_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs021_O.class);
+    
+        IfMcCs021_O outputPayload = outputTelegram.getPayload();
     
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));

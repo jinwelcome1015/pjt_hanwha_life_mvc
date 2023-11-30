@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -35,11 +34,9 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -141,6 +138,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_O.User;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeaderResponseMessage;
@@ -151,6 +151,9 @@ import com.gooroomee.gooroomeeadapter.util.MockUtil;
 
 import korealife.uv.com.cm.SHA256CmCrypt;
 import lombok.extern.slf4j.Slf4j;
+
+
+
 
 @Controller
 @Slf4j
@@ -948,21 +951,44 @@ public class GrmAdapterController {
 		String lognPswd = reqDto.getLognPswd();
 		String encLognPswd = SHA256CmCrypt.SHA256_getEncString(lognPswd);
 
-		IfMcCs005_I ifInputDto = new IfMcCs005_I();
-		ifInputDto.setEmnb(emnb);
-		ifInputDto.setLognPswd(encLognPswd);
+		IfMcCs005_I ifInputDto005 = new IfMcCs005_I();
+		ifInputDto005.setEmnb(emnb);
+		ifInputDto005.setLognPswd(encLognPswd);
 
-		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs005;
-		Class<IfMcCs005_O> ifOutputDtoClass = IfMcCs005_O.class;
-		IfMcCs005_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		IfSpec ifSpec005 = IfConstant.IfSpec.IfMcCs005;
+		Class<IfMcCs005_O> ifOutputDtoClass005 = IfMcCs005_O.class;
+		IfMcCs005_O ifOutputDto005 = grmAdapterService.ifmccsCommon(emnb, ifSpec005, ifInputDto005, ifOutputDtoClass005);
 
-		String rspnCodeVal = ifOutputDto.getRspnCodeVal(); // "00":오류, "01":정상
+		String rspnCodeVal = ifOutputDto005.getRspnCodeVal(); // "00":오류, "01":정상
 
 		if (!"01".equalsIgnoreCase(rspnCodeVal)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto.getRspnMsgeCntn(), ifOutputDto.getRspnMsgeUniqId()));
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto005.getRspnMsgeCntn(), ifOutputDto005.getRspnMsgeUniqId()));
 		}
 
-		Mvc005ResDto resDto = modelMapper.map(ifOutputDto, Mvc005ResDto.class);
+		Mvc005ResDto resDto = modelMapper.map(ifOutputDto005, Mvc005ResDto.class);
+		
+		
+		// XXX
+		IfMcCs021_I ifInputDto021 = new IfMcCs021_I();
+		ifInputDto021.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
+		ifInputDto021.setOrgnCode(ifOutputDto005.getBelnOrgnCode());
+		
+		IfSpec ifSpec021 = IfConstant.IfSpec.IfMcCs021;
+		Class<IfMcCs021_O> ifOutputDtoClass021 = IfMcCs021_O.class;
+		IfMcCs021_O ifOutputDto021 = grmAdapterService.ifmccsCommon(emnb, ifSpec021, ifInputDto021, ifOutputDtoClass021);
+		
+		String hasAuthorityYn = "N";
+		
+		List<User> userLstList = ifOutputDto021.getUserLstList();
+		for (User user : userLstList) {
+			String authorityEmnb = user.getEmnb();
+			if(authorityEmnb.equals(reqDto.getEmnb())) {
+				hasAuthorityYn = "Y";
+				break;
+			}
+		}
+		
+		resDto.setHasAuthorityYn(hasAuthorityYn);
 
 		ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -1233,8 +1259,14 @@ public class GrmAdapterController {
 		dataHeader.setUSER_ID(reqDto.getUSER_ID());
 
 		IfMcCs011_I.DataBody dataBody = new IfMcCs011_I.DataBody();
-
-		String initechOAuthToken = reqDto.getInitechOAuthToken();
+		
+		String token_type = reqDto.getToken_type();
+		token_type = StringUtils.defaultString(token_type).trim();
+		
+		String access_token = reqDto.getAccess_token();
+		access_token = StringUtils.defaultString(access_token).trim();
+				
+		String initechOAuthToken = token_type + " " + access_token;
 		dataBody.setInitechOAuthToken(initechOAuthToken);
 
 		String pid = reqDto.getPid();
@@ -1343,7 +1375,13 @@ public class GrmAdapterController {
 
 		IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
 
-		String initechOAuthToken = reqDto.getInitechOAuthToken();
+		String token_type = reqDto.getToken_type();
+		token_type = StringUtils.defaultString(token_type).trim();
+		
+		String access_token = reqDto.getAccess_token();
+		access_token = StringUtils.defaultString(access_token).trim();
+				
+		String initechOAuthToken = token_type + " " + access_token;
 		dataBody.setInitechOAuthToken(initechOAuthToken);
 
 		String reqTxId = reqDto.getReqTxId();
@@ -1384,7 +1422,7 @@ public class GrmAdapterController {
 	/**
 	 * <pre>
 	 * [13] 
-	 * 고객통합기본정보조회
+	 * 고객휴대폰번호조회
 	 * </pre>
 	 * 
 	 * @param reqDto
@@ -1393,7 +1431,7 @@ public class GrmAdapterController {
 	 * @throws IOException
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/cstmIntgBscInfrInqr"), (API_URL_TOKEN + "/cstmIntgBscInfrInqr" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "13. 고객통합기본정보조회")
+			RequestMethod.POST }, name = "13. 고객휴대폰번호조회")
 	public @ResponseBody ResponseDto<Mvc013ResDto> cstmIntgBscInfrInqr(@RequestBody Mvc013ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 
@@ -1406,6 +1444,28 @@ public class GrmAdapterController {
 		
 		Mvc013ResDto resDto = modelMapper.map(ifOutputDto, Mvc013ResDto.class);
 
+		String ifOutputHpBsno = ifOutputDto.getHpBsno();
+		String ifOutputHpOfno = ifOutputDto.getHpOfno();
+		String ifOutputHpInno = ifOutputDto.getHpInno();
+		
+		resDto.setRegisteredHpNo1(ifOutputHpBsno);
+		resDto.setRegisteredHpNo2(ifOutputHpOfno);
+		resDto.setRegisteredHpNo3(ifOutputHpInno);
+		
+		String registeredHpNoMatchYn;
+
+		if(
+			ifOutputHpBsno.equals(reqDto.getHpNo1())
+			&& ifOutputHpOfno.equals(reqDto.getHpNo2())
+			&& ifOutputHpInno.equals(reqDto.getHpNo3())
+		) {
+			registeredHpNoMatchYn = "Y";
+		}else {
+			registeredHpNoMatchYn = "N";
+		}
+		
+		resDto.setRegisteredHpNoMatchYn(registeredHpNoMatchYn);
+		
 		ResponseDto<Mvc013ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 		return responseDto;
@@ -1840,42 +1900,65 @@ public class GrmAdapterController {
 		
 		// A. 주민등록증 경우
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
-			String rrno = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
-			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
-
-			resDto.setRrno(rrno);
+			try {
+				String rrno = ocrResultReadTree.get("idCard").get("result").get("ic").get("personalNum").get(0).get("text").asText();
+				rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+				resDto.setRrno(rrno);
+			}catch (NullPointerException e) {
+				log.error("rrno (idCard.result.ic.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 			
 		// B. 운전면허증 경우
 		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
-			String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
-			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+			try {
+				String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
+				driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+				resDto.setDrvnLcnsNo(driverLicenseNumber);
+			}catch (NullPointerException e) {
+				log.error("drvnLcnsNo (idCard.result.dl.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 
-			String driverLicenseSequenceNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("code").get(0).get("text").asText();
+			try {
+				String driverLicenseSequenceNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("code").get(0).get("text").asText();
+				resDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
+			}catch (NullPointerException e) {
+				log.error("drvnLcnsSqno (idCard.result.dl.code[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 			
-			resDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
-			resDto.setDrvnLcnsNo(driverLicenseNumber);
-			
-			String rrno = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
-			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+			try {
+				String rrno = ocrResultReadTree.get("idCard").get("result").get("dl").get("personalNum").get(0).get("text").asText();
+				rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+				resDto.setRrno(rrno);
+			}catch (NullPointerException e) {
+				log.error("rrno (idCard.result.dl.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 
-			resDto.setRrno(rrno);
 			
 		// C. 여권 경우
 		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
-			String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0).get("text").asText();
-
-			resDto.setPsprNo(passportNumber);
+			try {
+				String passportNumber = ocrResultReadTree.get("idCard").get("result").get("pp").get("num").get(0).get("text").asText();
+				resDto.setPsprNo(passportNumber);
+			}catch (NullPointerException e) {
+				log.error("psprNo (idCard.result.pp.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 			
-			String personalNum = ocrResultReadTree.get("idCard").get("result").get("pp").get("personalNum").get(0).get("text").asText();
-			String rrno = btdt.substring(2) + personalNum;
-			
-			resDto.setRrno(rrno);
+			try {
+				String personalNum = ocrResultReadTree.get("idCard").get("result").get("pp").get("personalNum").get(0).get("text").asText();
+				String rrno = btdt.substring(2) + personalNum;
+				resDto.setRrno(rrno);
+			}catch (NullPointerException e) {
+				log.error("rrno (idCard.result.pp.personalNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 			
 		// D. 외국인등록증 경우
 		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
-			String alienRegistrationNumber = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
-
-			resDto.setFrnrRgstNo(alienRegistrationNumber);
+			try {
+				String alienRegistrationNumber = ocrResultReadTree.get("idCard").get("result").get("ac").get("alienRegNum").get(0).get("text").asText();
+				resDto.setFrnrRgstNo(alienRegistrationNumber);
+			}catch (NullPointerException e) {
+				log.error("frnrRgstNo (idCard.result.ac.alienRegNum[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
+			}
 		}
 
 		ResponseDto<Mvc019ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -1963,7 +2046,6 @@ public class GrmAdapterController {
 
 			String driverLicenseSequenceNumber = reqDto.getDrvnLcnsSqno();
 			
-//			mvc002ReqDto.setDrvnLcnsSqno("");
 			mvc002ReqDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
 			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
 			
@@ -2044,11 +2126,6 @@ public class GrmAdapterController {
 	
 	
 	
-	
-	
-	
-	
-	
 
 	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
 	public void exception(HttpServletRequest request) throws Exception {
@@ -2109,6 +2186,8 @@ public class GrmAdapterController {
 		
 		return outputTelegram;
 	}
+	
+	
 	
 	
 	/**
