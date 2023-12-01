@@ -61,6 +61,8 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc002ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc004ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc004ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc005ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc005ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc006ReqDto;
@@ -138,9 +140,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_O.User;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O.User;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeaderResponseMessage;
@@ -915,6 +917,43 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	/**
+	 * <pre>
+	 * [04] 
+	 * 권한별사용자조회
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/atrtSrch"), (API_URL_TOKEN + "/atrtSrch" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "04. 권한별사용자조회")
+	public @ResponseBody ResponseDto<Mvc004ResDto> atrtSrch(@RequestBody Mvc004ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+		
+		if("".equals(StringUtils.defaultString(reqDto.getIsrnCoreAtrtId()))) {
+			reqDto.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
+		}
+
+		IfMcCs004_I ifInputDto = modelMapper.map(reqDto, IfMcCs004_I.class);
+
+		String emnb = reqDto.getEmnb();
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs004;
+		Class<IfMcCs004_O> ifOutputDtoClass = IfMcCs004_O.class;
+		IfMcCs004_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+
+		Mvc004ResDto resDto = modelMapper.map(ifOutputDto, Mvc004ResDto.class);
+
+		ResponseDto<Mvc004ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
 
 	/**
 	 * <pre>
@@ -948,22 +987,21 @@ public class GrmAdapterController {
 		IfMcCs005_O ifOutputDto005 = grmAdapterService.ifmccsCommon(emnb, ifSpec005, ifInputDto005, ifOutputDtoClass005);
 
 		String rspnCodeVal = ifOutputDto005.getRspnCodeVal(); // "00":오류, "01":정상
-		/*
+		
 		if (!"01".equalsIgnoreCase(rspnCodeVal)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto005.getRspnMsgeCntn(), ifOutputDto005.getRspnMsgeUniqId()));
+			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto005.getRspnMsgeCntn(), ifOutputDto005.getRspnMsgeUniqId()), HttpStatus.OK);
 		}
-		*/
+
 		Mvc005ResDto resDto = modelMapper.map(ifOutputDto005, Mvc005ResDto.class);
 		
-		
 		// XXX
-		IfMcCs021_I ifInputDto021 = new IfMcCs021_I();
+		IfMcCs004_I ifInputDto021 = new IfMcCs004_I();
 		ifInputDto021.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
 		ifInputDto021.setOrgnCode(ifOutputDto005.getBelnOrgnCode());
 		
-		IfSpec ifSpec021 = IfConstant.IfSpec.IfMcCs021;
-		Class<IfMcCs021_O> ifOutputDtoClass021 = IfMcCs021_O.class;
-		IfMcCs021_O ifOutputDto021 = grmAdapterService.ifmccsCommon(emnb, ifSpec021, ifInputDto021, ifOutputDtoClass021);
+		IfSpec ifSpec021 = IfConstant.IfSpec.IfMcCs004;
+		Class<IfMcCs004_O> ifOutputDtoClass021 = IfMcCs004_O.class;
+		IfMcCs004_O ifOutputDto021 = grmAdapterService.ifmccsCommon(emnb, ifSpec021, ifInputDto021, ifOutputDtoClass021);
 		
 		
 		List<User> userLstList = ifOutputDto021.getUserLstList();

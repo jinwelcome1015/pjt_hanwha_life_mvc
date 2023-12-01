@@ -68,8 +68,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs021_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.AesUtil;
@@ -1472,18 +1472,18 @@ public class IfTest {
                 "     \"orgnCode\": \"00630\"\r\n" + 
                 "}";
         
-        IfMcCs021_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs021_I.class);
+        IfMcCs004_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs004_I.class);
     
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
     
-        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs021;
+        IfSpec ifSpec = IfConstant.IfSpec.IfMcCs004;
     
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs021_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs021_O.class);
+        IfTelegram<IfMcCs004_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs004_O.class);
     
-        IfMcCs021_O outputPayload = outputTelegram.getPayload();
+        IfMcCs004_O outputPayload = outputTelegram.getPayload();
     
 //        logger.debug("[" + thisMethodName + "]" + "[outputPayload] : " + OBJECT_MAPPER.writeValueAsString(outputPayload));
         logger.debug("[" + thisMethodName + "]" + "[outputTelegram] : " + OBJECT_MAPPER.writeValueAsString(outputTelegram));

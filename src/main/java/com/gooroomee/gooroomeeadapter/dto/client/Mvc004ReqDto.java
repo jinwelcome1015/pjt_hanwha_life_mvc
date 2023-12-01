@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.dto.intrf;
+package com.gooroomee.gooroomeeadapter.dto.client;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,9 +7,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class IfMcCs021_I {
-    
-    /** 보험코어권한ID */
+public class Mvc004ReqDto {
+	
+	/** 사원번호 */
+	private String emnb;
+
+	/** 보험코어권한ID */
     private String isrnCoreAtrtId;
 
     /** 기관코드 */

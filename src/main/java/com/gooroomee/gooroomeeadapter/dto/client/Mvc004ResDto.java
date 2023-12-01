@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Mvc021ResDto {
+public class Mvc004ResDto {
 
 	// XXX 확인
     /** 사용자리스트 */

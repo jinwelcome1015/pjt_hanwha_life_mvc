@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class IfMcCs021_O {
+public class IfMcCs004_O {
 
     // XXX 확인
     /** 사용자리스트 */

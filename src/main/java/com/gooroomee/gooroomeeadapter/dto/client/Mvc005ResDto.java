@@ -24,8 +24,8 @@ public class Mvc005ResDto {
 	/** 사원명 */
 	private String empeNm;
 
-	/** 주민등록번호 */
-	private String rrno;
+//	/** 주민등록번호 */
+//	private String rrno;
 
 	/** 사용자구분코드 */
 	private String userDvsnCode;

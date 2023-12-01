@@ -1,0 +1,62 @@
+{
+  "header": {
+    "trnnNo": null,
+    "trnmSysCode": "MVC",
+    "ipAddr": "010252005065",
+    "tlgrCretDttm": "20231130170756292",
+    "rndmNo": "7561",
+    "hsno": 2,
+    "ctfnTokn": "",
+    "ogtsTrnnNo": "",
+    "prsnInfoIncsYn": "N",
+    "itfcId": "HLIMVC00039",
+    "rcveSrvcId": "comAtrtSrchPSI013r",
+    "rcveSysCode": "HLI",
+    "mciNodeNo": "12",
+    "mciSesnId": "",
+    "serverType": "Q",
+    "rspnDvsnCode": "R",
+    "extlDvsnCode": "",
+    "emnb": "1077593",
+    "belnOrgnCode": "00630",
+    "custId": "",
+    "chnlTypeCode": "SVR",
+    "scrnId": "",
+    "befoScrnId": "",
+    "userTmunIdnfVal": "",
+    "rqsrIp": "10.252.5.65",
+    "rqstDttm": "",
+    "baseCrny": "",
+    "baseCnty": "",
+    "baseLang": "",
+    "tlgrRspnDttm": "20231130170756668",
+    "prcsRsltDvsnCode": "0",
+    "totalCount": 0,
+    "lastPageYn": "",
+    "msgeListCont": 0,
+    "msgeList": null,
+    "msgeStackTrace": ""
+  },
+  "payload": {
+    "userLstList": [
+      {
+        "isrnCoreAtrtId": "PPR_0007",
+        "isrnCoreAtrtNm": "[전자문서]모바일 화상상담",
+        "isrnCoreAtrtIstcCntn": "[전자문서] 모바일 화상상담",
+        "emnb": "1077592",
+        "empeNm": "홍길동",
+        "orgnCode": "00025",
+        "orgnNm": "IT운영팀"
+      },
+      {
+        "isrnCoreAtrtId": "PPR_0007",
+        "isrnCoreAtrtNm": "[전자문서]모바일 화상상담",
+        "isrnCoreAtrtIstcCntn": "[전자문서] 모바일 화상상담",
+        "emnb": "1077593",
+        "empeNm": "임꺽정",
+        "orgnCode": "00025",
+        "orgnNm": "IT운영팀"
+      }
+    ]
+  }
+}

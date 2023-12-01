@@ -179,6 +179,9 @@ public class IfConstant {
 
 		/** 인터페이스 명세 : 신분증스캔후처리 */
 		IfMcCs003("HLIMVC00018", "comItfcIdcdScanPSI001c", "COM"),
+		
+		/** 인터페이스 명세 : 권한별사용자조회 */
+        IfMcCs004("HLIMVC00039", "comAtrtSrchPSI013r", "HLI"),
 
 		/** 인터페이스 명세 : SSO대체로그인인증 */
 		IfMcCs005("HLIMVC00019", "comItfcUserCtfnPSI001c", "COM"),
@@ -220,10 +223,9 @@ public class IfConstant {
         IfMcCs013("HLIMVC00036", "icsIntgCustInqyMgmtPSI007r", "HLI"),
         
         /** 인터페이스 명세 : SMS 메세지 발송 */
-        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "INI"),
+        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "INI");
         
-        /** 인터페이스 명세 : 권한별사용자조회 */
-        IfMcCs021("HLIMVC00039", "comAtrtSrchPSI013r", "HLI");
+        
 
 		
 		private final String itfcId;
