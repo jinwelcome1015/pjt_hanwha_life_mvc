@@ -948,11 +948,11 @@ public class GrmAdapterController {
 		IfMcCs005_O ifOutputDto005 = grmAdapterService.ifmccsCommon(emnb, ifSpec005, ifInputDto005, ifOutputDtoClass005);
 
 		String rspnCodeVal = ifOutputDto005.getRspnCodeVal(); // "00":오류, "01":정상
-
+		/*
 		if (!"01".equalsIgnoreCase(rspnCodeVal)) {
 			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto005.getRspnMsgeCntn(), ifOutputDto005.getRspnMsgeUniqId()));
 		}
-
+		*/
 		Mvc005ResDto resDto = modelMapper.map(ifOutputDto005, Mvc005ResDto.class);
 		
 		
