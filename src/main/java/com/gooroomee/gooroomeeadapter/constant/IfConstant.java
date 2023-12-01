@@ -6,7 +6,7 @@ import lombok.Getter;
 
 public class IfConstant {
 	
-	public static final String ISRN_CORE_ATRT_ID = "PPR_00070";
+	public static final String ISRN_CORE_ATRT_ID = "PPR_0007";
 
 	/** 송신 시스템 코드 */
 	public static final String TRNM_SYS_CODE = "MVC";

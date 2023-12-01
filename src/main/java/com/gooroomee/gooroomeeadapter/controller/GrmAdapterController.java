@@ -965,18 +965,24 @@ public class GrmAdapterController {
 		Class<IfMcCs021_O> ifOutputDtoClass021 = IfMcCs021_O.class;
 		IfMcCs021_O ifOutputDto021 = grmAdapterService.ifmccsCommon(emnb, ifSpec021, ifInputDto021, ifOutputDtoClass021);
 		
-		String hasAuthorityYn = "N";
 		
 		List<User> userLstList = ifOutputDto021.getUserLstList();
-		for (User user : userLstList) {
-			String authorityEmnb = user.getEmnb();
-			if(authorityEmnb.equals(reqDto.getEmnb())) {
-				hasAuthorityYn = "Y";
-				break;
+		if(userLstList == null) {
+			log.info("userLstList가 null 입니다.");
+		}else if(userLstList.size() == 0) {
+			log.info("userLstList가 0개 입니다.");
+		}else {
+			String hasAuthorityYn = "N";
+			for (User user : userLstList) {
+				String authorityEmnb = user.getEmnb();
+				if(authorityEmnb.equals(reqDto.getEmnb())) {
+					hasAuthorityYn = "Y";
+					break;
+				}
 			}
+			resDto.setHasAuthorityYn(hasAuthorityYn);
 		}
 		
-		resDto.setHasAuthorityYn(hasAuthorityYn);
 
 		ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -1441,8 +1447,14 @@ public class GrmAdapterController {
 		resDto.setRegisteredHpNo3(ifOutputHpInno);
 		
 		String registeredHpNoMatchYn;
-
+		
 		if(
+			"".equals(StringUtils.defaultString(reqDto.getHpNo1()))
+			&& "".equals(StringUtils.defaultString(reqDto.getHpNo2()))
+			&& "".equals(StringUtils.defaultString(reqDto.getHpNo3()))
+		) {
+			registeredHpNoMatchYn = null;
+		}else if(
 			ifOutputHpBsno.equals(reqDto.getHpNo1())
 			&& ifOutputHpOfno.equals(reqDto.getHpNo2())
 			&& ifOutputHpInno.equals(reqDto.getHpNo3())
