@@ -37,6 +37,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -95,6 +96,8 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc019ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc019ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc020ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc020ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc999ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc999ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
 import com.gooroomee.gooroomeeadapter.dto.ifprovider.consumer.OtpReqDto;
@@ -2153,6 +2156,53 @@ public class GrmAdapterController {
 		ResponseDto<Mvc020ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 		return responseDto;
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * <pre>
+	 * [99]
+	 * EDMS등록
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/edmsRgstr"), (API_URL_TOKEN + "/edmsRgstr" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "99. EDMS등록")
+	public @ResponseBody ResponseDto<Mvc999ResDto> edmsRgstr(@ModelAttribute Mvc999ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+		
+		System.out.println("###");
+		
+		/*
+		IfMcCs006_I ifInputDto = modelMapper.map(reqDto, IfMcCs006_I.class);
+		
+		String emnb = reqDto.getEmnb();
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
+		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
+		IfMcCs006_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		
+		if (ifOutputDto.getEmpeInfoList() == null) {
+			ifOutputDto.setEmpeInfoList(new ArrayList<>());
+		}
+		
+		Mvc006ResDto resDto = modelMapper.map(ifOutputDto, Mvc006ResDto.class);
+		
+		ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+		
+		return responseDto;
+		*/		
+		
+		return null;
 	}
 	
 	

@@ -83,6 +83,7 @@
     <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
         	<appender-ref ref="CONSOLE"/>
@@ -99,6 +100,7 @@
     <!--dev-->
     <springProfile name="dev">
         <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
@@ -116,6 +118,7 @@
     <!--qa-->
     <springProfile name="qa">
         <root level="INFO">
+        	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </root>
         <logger level="DEBUG" name="com.gooroomee" additivity="false">
@@ -136,7 +139,7 @@
     <!--prod, dr-->
     <springProfile name="prod, dr">
         <root level="ERROR">
-        	<!-- <appender-ref ref="CONSOLE"/> -->
+        	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-ERROR"/>
         </root>
         <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
