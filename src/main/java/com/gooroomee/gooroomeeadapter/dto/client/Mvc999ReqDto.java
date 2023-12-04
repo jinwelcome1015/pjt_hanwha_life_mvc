@@ -1,12 +1,6 @@
 package com.gooroomee.gooroomeeadapter.dto.client;
 
-import java.sql.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,14 +11,14 @@ import lombok.ToString;
 @ToString
 public class Mvc999ReqDto {
 
-	/** 사용자ID */
-	private String userId;
+//	/** 사용자ID */
+//	private String userId;
 	
-	/** 시스템코드 */
-	private String sysCode;
+//	/** 시스템코드 */
+//	private String sysCode;
 
-	/** 업무구분코드 */
-	private String bswrvsnCode;
+//	/** 업무구분코드 */
+//	private String bswrvsnCode;
 	
 	/** 서류번호 (이미지관리번호) */
 	private String imgeDocuNo;
@@ -38,26 +32,26 @@ public class Mvc999ReqDto {
 	/** 서식바코드 */
 	private String dcfmBrcd;
 	
-	/** 청약심사유형값 */
-	private String appnJdgnTypeVal;
+//	/** 청약심사유형값 */
+//	private String appnJdgnTypeVal;
 	
-	/** 방카청약서여부 */
-	private String bncaAcfmYn;
+//	/** 방카청약서여부 */
+//	private String bncaAcfmYn;
 	
-	/** 청약서수정여부 */
-	private String acfmAltrYn;
+//	/** 청약서수정여부 */
+//	private String acfmAltrYn;
 	
-	/** 계약자알릴의무사항여부 */
-	private String cntcBefrObdsMatrYn;
+//	/** 계약자알릴의무사항여부 */
+//	private String cntcBefrObdsMatrYn;
 	
-	/** 이미지PREFIX값 */
-	private String imgePrefixVal;
+//	/** 이미지PREFIX값 */
+//	private String imgePrefixVal;
 	
 	/** 파일명 */
 	private String fileNm;
 	
-	/** 원본파일명 */
-	private String ogtxFileNm; 
+//	/** 원본파일명 */
+//	private String ogtxFileNm; 
 	
 	/** 파일데이터 */
 	private MultipartFile file;
