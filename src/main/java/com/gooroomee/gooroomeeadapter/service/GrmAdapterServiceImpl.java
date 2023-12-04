@@ -93,17 +93,19 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	@Value(value = "${mvc.entry-uri-issue-service.api-key-header-value}")
 	private String uriOfMvcEntryUriIssueServiceApiKeyHeaderValue;
 	
-	
-	
+	/** 이미지 시스템 서비스 SCHEME */
 	@Value(value = "${edms.server.service_scheme}")
 	private String edmsServerServiceScheme;
 	
+	/** 이미지 시스템 서비스 URI */
 	@Value(value = "${edms.server.service_uri}")
 	private String edmsServerServiceUri;
 	
+	/** 이미지 시스템 서비스 DOMAIN */
 	@Value(value = "${edms.server.internal.domain}")
 	private String edmsServerServiceDomain;
 	
+	/** 이미지 시스템 서비스 PORT */
 	@Value(value = "${edms.server.internal.port}")
 	private String edmsServerServicePort;
 	
