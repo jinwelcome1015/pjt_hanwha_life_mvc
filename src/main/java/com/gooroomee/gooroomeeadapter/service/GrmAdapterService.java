@@ -16,6 +16,6 @@ public interface GrmAdapterService {
 
 	IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException;
 
-	IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput);
+	IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException;
 
 }

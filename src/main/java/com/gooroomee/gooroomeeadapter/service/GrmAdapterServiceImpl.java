@@ -98,21 +98,14 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	@Value(value = "${edms.server.service_scheme}")
 	private String edmsServerServiceScheme;
 	
-	@Value(value = "${edms.server.service_scheme}")
-	private String edmsServerServiceScheme;
+	@Value(value = "${edms.server.service_uri}")
+	private String edmsServerServiceUri;
 	
-	# IMA 서버 정보
-	edms.server.service_scheme=https
-	edms.server.service_uri=/edm/api/File/register.do
-
-	#edms.server.internal.domain=qaedms.hanwhalife.com
-	edms.server.internal.domain=10.10.7.17
-	edms.server.internal.ip=10.10.7.17
-	edms.server.internal.port=8911
-
-	edms.server.external.domain=qaima.hanwhalife.com
-	edms.server.external.ip=210.216.157.17
-	edms.server.external.port=8911
+	@Value(value = "${edms.server.internal.domain}")
+	private String edmsServerServiceDomain;
+	
+	@Value(value = "${edms.server.internal.port}")
+	private String edmsServerServicePort;
 	
 
 	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
@@ -158,17 +151,18 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	}
 	
 	@Override
-	public IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) {
-		IfMcCs999_O edmsOutput = null;
+	public IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException {
+		
+		String edmsServiceUri = edmsServerServiceScheme + "://" + edmsServerServiceDomain + ":" + edmsServerServicePort + edmsServerServiceUri;
 		
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 		
-//		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
-//		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
+		RequestEntity<IfMcCs999_I> requestEntity = new RequestEntity<>(edmsInput, httpHeaders, HttpMethod.POST, new URI(edmsServiceUri));
 		
-		RequestEntity<IfMcCs999_I> requestEntity = new RequestEntity<>(edmsInput, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
+		ResponseEntity<IfMcCs999_O> responseEntity = restTemplateForCommon.exchange(requestEntity, IfMcCs999_O.class);
+		
+		IfMcCs999_O edmsOutput = responseEntity.getBody();
 		
 		return edmsOutput;
 	}

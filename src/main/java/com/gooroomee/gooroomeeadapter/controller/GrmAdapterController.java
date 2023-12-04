@@ -2203,9 +2203,13 @@ public class GrmAdapterController {
 		edmsInput.setSysCode(IfConstant.SYS_CODE_FOR_SUBMIT_TO_EDMS);
 		edmsInput.setUserId(IfConstant.USER_ID_FOR_SUBMIT_TO_EDMS);
 		
-		IfMcCs999_O edmsRgstr = grmAdapterService.edmsRgstr(edmsInput);
+		IfMcCs999_O edmsOutput = grmAdapterService.edmsRgstr(edmsInput);
 		
-		return null;
+		Mvc999ResDto resDto = modelMapper.map(edmsOutput, Mvc999ResDto.class);
+		
+		ResponseDto<Mvc999ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+		
+		return responseDto;
 	}
 	
 	
