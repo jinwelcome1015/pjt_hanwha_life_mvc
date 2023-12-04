@@ -47,8 +47,8 @@ public class Mvc999ReqDto {
 //	/** 이미지PREFIX값 */
 //	private String imgePrefixVal;
 	
-	/** 파일명 */
-	private String fileNm;
+//	/** 파일명 */
+//	private String fileNm;
 	
 //	/** 원본파일명 */
 //	private String ogtxFileNm; 

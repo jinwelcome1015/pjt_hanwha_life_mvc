@@ -11,11 +11,11 @@ public class IfConstant {
 	/** 송신 시스템 코드 */
 	public static final String TRNM_SYS_CODE = "MVC";
 	
-	/** IMA 제출을 위한 시스템 코드 */
-	public static final String SYS_CODE_FOR_SUBMIT_TO_IMA = "031";
+	/** EDMS 제출을 위한 시스템 코드 */
+	public static final String SYS_CODE_FOR_SUBMIT_TO_EDMS = "031";
 
-	/** IMA 제출을 위한 사용자ID */
-	public static final String userId = "1485888";
+	/** EDMS 제출을 위한 사용자ID */
+	public static final String USER_ID_FOR_SUBMIT_TO_EDMS = "1485888";
 	
 	/** 소속 기관 코드 */
 	public static final String BELN_ORGN_CODE = "00630";

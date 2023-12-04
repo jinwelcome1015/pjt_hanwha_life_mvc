@@ -26,6 +26,8 @@ import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
 import com.gooroomee.gooroomeeadapter.dto.ifprovider.provider.OtpDto_I;
 import com.gooroomee.gooroomeeadapter.dto.ifprovider.provider.common.IfProviderResponseCommonDto;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.util.IfUtil;
@@ -91,6 +93,27 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	@Value(value = "${mvc.entry-uri-issue-service.api-key-header-value}")
 	private String uriOfMvcEntryUriIssueServiceApiKeyHeaderValue;
 	
+	
+	
+	@Value(value = "${edms.server.service_scheme}")
+	private String edmsServerServiceScheme;
+	
+	@Value(value = "${edms.server.service_scheme}")
+	private String edmsServerServiceScheme;
+	
+	# IMA 서버 정보
+	edms.server.service_scheme=https
+	edms.server.service_uri=/edm/api/File/register.do
+
+	#edms.server.internal.domain=qaedms.hanwhalife.com
+	edms.server.internal.domain=10.10.7.17
+	edms.server.internal.ip=10.10.7.17
+	edms.server.internal.port=8911
+
+	edms.server.external.domain=qaima.hanwhalife.com
+	edms.server.external.ip=210.216.157.17
+	edms.server.external.port=8911
+	
 
 	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
 
@@ -132,6 +155,22 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		}
 
 		return responseCommonDto;
+	}
+	
+	@Override
+	public IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) {
+		IfMcCs999_O edmsOutput = null;
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+		
+//		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+//		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
+		
+		RequestEntity<IfMcCs999_I> requestEntity = new RequestEntity<>(edmsInput, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
+		
+		return edmsOutput;
 	}
 
 }

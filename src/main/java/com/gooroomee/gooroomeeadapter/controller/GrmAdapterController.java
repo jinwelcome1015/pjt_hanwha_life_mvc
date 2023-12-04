@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -143,6 +144,8 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O.User;
@@ -2180,26 +2183,27 @@ public class GrmAdapterController {
 	public @ResponseBody ResponseDto<Mvc999ResDto> edmsRgstr(@ModelAttribute Mvc999ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
+		MultipartFile file = reqDto.getFile();
+		String originalFilename = file.getOriginalFilename();
 		
-		/*
-		IfMcCs006_I ifInputDto = modelMapper.map(reqDto, IfMcCs006_I.class);
+		IfMcCs999_I edmsInput = new IfMcCs999_I();
+		edmsInput.setAcfmAltrYn(null);
+		edmsInput.setAppnJdgnTypeVal(null);
+		edmsInput.setBncaAcfmYn(null);
+		edmsInput.setBswrvsnCode(IfConstant.TRNM_SYS_CODE);
+		edmsInput.setCntcBefrObdsMatrYn(null);
+		edmsInput.setDcfmBrcd(null);
+		edmsInput.setDcfmCode(reqDto.getDcfmCode());
+		edmsInput.setDcmtTypeCode(reqDto.getDcmtTypeCode());
+		edmsInput.setFile(file);
+		edmsInput.setFileNm(originalFilename);
+		edmsInput.setImgeDocuNo(reqDto.getImgeDocuNo());
+		edmsInput.setImgePrefixVal(null);
+		edmsInput.setOgtxFileNm(null);
+		edmsInput.setSysCode(IfConstant.SYS_CODE_FOR_SUBMIT_TO_EDMS);
+		edmsInput.setUserId(IfConstant.USER_ID_FOR_SUBMIT_TO_EDMS);
 		
-		String emnb = reqDto.getEmnb();
-		
-		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs006;
-		Class<IfMcCs006_O> ifOutputDtoClass = IfMcCs006_O.class;
-		IfMcCs006_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-		
-		if (ifOutputDto.getEmpeInfoList() == null) {
-			ifOutputDto.setEmpeInfoList(new ArrayList<>());
-		}
-		
-		Mvc006ResDto resDto = modelMapper.map(ifOutputDto, Mvc006ResDto.class);
-		
-		ResponseDto<Mvc006ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-		
-		return responseDto;
-		*/		
+		IfMcCs999_O edmsRgstr = grmAdapterService.edmsRgstr(edmsInput);
 		
 		return null;
 	}
