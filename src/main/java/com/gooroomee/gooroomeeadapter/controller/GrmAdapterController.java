@@ -2180,8 +2180,7 @@ public class GrmAdapterController {
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/edmsRgstr"), (API_URL_TOKEN + "/edmsRgstr" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "99. EDMS등록")
-	public @ResponseBody ResponseDto<Mvc999ResDto> edmsRgstr(@ModelAttribute Mvc999ReqDto reqDto, HttpServletRequest request)
-			throws URISyntaxException, IOException {
+	public @ResponseBody ResponseDto<Mvc999ResDto> edmsRgstr(@ModelAttribute Mvc999ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException{
 		
 		MultipartFile file = reqDto.getFile();
 		String originalFilename = file.getOriginalFilename();
@@ -2342,7 +2341,8 @@ public class GrmAdapterController {
 						Parameter[] parameters = method.getParameters();
 						for (Parameter parameter : parameters) {
 							RequestBody requestBody = parameter.getAnnotation(RequestBody.class);
-							if (requestBody != null) {
+							ModelAttribute modelAttribute = parameter.getAnnotation(ModelAttribute.class);
+							if (requestBody != null || modelAttribute != null) {
 								ObjectMapper objectMapper = new ObjectMapper();
 
 								Class<?> parameterType = parameter.getType();

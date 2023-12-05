@@ -1,5 +1,6 @@
 package com.gooroomee.gooroomeeadapter.service;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,6 @@ public interface GrmAdapterService {
 
 	IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException;
 
-	IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException;
+	IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException, IOException;
 
 }

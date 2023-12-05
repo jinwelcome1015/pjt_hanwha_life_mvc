@@ -29,8 +29,8 @@ public class Mvc999ReqDto {
 	/** 문서유형코드 (서식분류체계 - 외부등록이미지코드) */
 	private String dcmtTypeCode;
 	
-	/** 서식바코드 */
-	private String dcfmBrcd;
+//	/** 서식바코드 */
+//	private String dcfmBrcd;
 	
 //	/** 청약심사유형값 */
 //	private String appnJdgnTypeVal;

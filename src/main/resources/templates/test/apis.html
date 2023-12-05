@@ -95,8 +95,13 @@
 
 					if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText) || /^19\..*/.test(sTargetText)) {
 						document.querySelector('#divForIdCard').style.display = 'block';
+						document.querySelector('#multipartFormDataFieldset').style.display = 'none';
+					} else if(/^99\..*/.test(sTargetText)){
+						document.querySelector('#divForIdCard').style.display = 'none';
+						document.querySelector('#multipartFormDataFieldset').style.display = 'block';
 					} else {
 						document.querySelector('#divForIdCard').style.display = 'none';
+						document.querySelector('#multipartFormDataFieldset').style.display = 'none';
 					}
 				} catch (error) {
 					alert(`[error name] : ${error.name}\n[error message] : ${error.message}`);
@@ -293,6 +298,14 @@
 					<label for="requestBody">requestBody</label>
 					<textarea name="requestBody" id="requestBody" class="httpBody"></textarea>
 				</div>
+				<div>
+					<fieldset id="multipartFormDataFieldset" style="display: none;">
+						<legend>multipart/form-data</legend>
+						
+					</fieldset>
+				</div>
+				
+				
 				<div>
 					<button id="btnForRequest" disabled="disabled">요청</button>
 				</div>

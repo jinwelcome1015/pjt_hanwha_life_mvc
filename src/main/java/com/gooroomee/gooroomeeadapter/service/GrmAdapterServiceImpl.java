@@ -1,23 +1,30 @@
 package com.gooroomee.gooroomeeadapter.service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -153,10 +160,31 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	}
 	
 	@Override
-	public IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException {
+	public IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException, IOException {
 		
 		String edmsServiceUri = edmsServerServiceScheme + "://" + edmsServerServiceDomain + ":" + edmsServerServicePort + edmsServerServiceUri;
 		
+		MultipartFile multipartFile = edmsInput.getFile();
+		ByteArrayResource resource = new ByteArrayResource(multipartFile.getBytes()) {
+			@Override
+			public String getFilename() {
+				return multipartFile.getOriginalFilename();
+			};
+		};
+		
+		MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
+		Map<String, Object> map = objectMapper.convertValue(edmsInput, new TypeReference<Map<String, Object>>() {});
+		multiValueMap.setAll(map);
+		multiValueMap.set("file", resource);
+		
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+		
+		RequestEntity<MultiValueMap<String, Object>> requestEntity = new RequestEntity<>(multiValueMap, httpHeaders, HttpMethod.POST, new URI(edmsServiceUri));
+		ResponseEntity<IfMcCs999_O> responseEntity = restTemplateForCommon.exchange(requestEntity, IfMcCs999_O.class);
+		IfMcCs999_O edmsOutput = responseEntity.getBody();
+		/*
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 		
@@ -165,7 +193,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		ResponseEntity<IfMcCs999_O> responseEntity = restTemplateForCommon.exchange(requestEntity, IfMcCs999_O.class);
 		
 		IfMcCs999_O edmsOutput = responseEntity.getBody();
-		
+		*/
 		return edmsOutput;
 	}
 
