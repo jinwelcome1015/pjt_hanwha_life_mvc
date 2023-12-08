@@ -17,8 +17,8 @@ public class Mvc999ReqDto {
 //	/** 시스템코드 */
 //	private String sysCode;
 
-//	/** 업무구분코드 */
-//	private String bswrvsnCode;
+	/** 업무구분코드 */
+	private String bswrvsnCode;
 	
 	/** 서류번호 (이미지관리번호) */
 	private String imgeDocuNo;

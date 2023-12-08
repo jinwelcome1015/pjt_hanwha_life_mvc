@@ -112,6 +112,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O.User;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
@@ -146,9 +149,6 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O.User;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeaderResponseMessage;
@@ -853,6 +853,7 @@ public class GrmAdapterController {
 
 	}
 
+	
 	/**
 	 * <pre>
 	 * [02] 
@@ -870,6 +871,15 @@ public class GrmAdapterController {
 			throws URISyntaxException, IOException {
 
 		IfMcCs002_I ifInputDto = modelMapper.map(reqDto, IfMcCs002_I.class);
+		
+		String rrno = StringUtils.defaultString(ifInputDto.getRrno());
+		rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+		ifInputDto.setRrno(rrno);
+		
+		String driverLicenseNumber = StringUtils.defaultString(ifInputDto.getDrvnLcnsNo());
+		driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+		driverLicenseNumber = driverLicenseNumber.replaceAll("\s+", "");
+		ifInputDto.setDrvnLcnsNo(driverLicenseNumber);
 
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
@@ -925,7 +935,6 @@ public class GrmAdapterController {
 	}
 	
 	
-	
 	/**
 	 * <pre>
 	 * [04] 
@@ -941,24 +950,52 @@ public class GrmAdapterController {
 			RequestMethod.POST }, name = "04. 권한별사용자조회")
 	public @ResponseBody ResponseDto<Mvc004ResDto> atrtSrch(@RequestBody Mvc004ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
-		
-		if("".equals(StringUtils.defaultString(reqDto.getIsrnCoreAtrtId()))) {
-			reqDto.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
-		}
-
+	
 		IfMcCs004_I ifInputDto = modelMapper.map(reqDto, IfMcCs004_I.class);
-
-		String emnb = reqDto.getEmnb();
-		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs004;
-		Class<IfMcCs004_O> ifOutputDtoClass = IfMcCs004_O.class;
-		IfMcCs004_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-
+		
+		if("".equals(StringUtils.defaultString(ifInputDto.getIsrnCoreAtrtId()))) {
+			ifInputDto.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
+		}
+		
+		if(ifInputDto.getPageSize() <= 0) {
+			ifInputDto.setPageSize(50);
+		}
+		
+		String nextKey = "".equals(StringUtils.defaultString(ifInputDto.getNextKey())) ? "0" : ifInputDto.getNextKey();
+		
+		List<User> totalUserList = new ArrayList<>();
+		List<User> pagingUserList = null;
+		
+		IfMcCs004_O ifOutputDto = null;
+		
+		do {
+			
+			ifInputDto.setNextKey(nextKey);
+			
+			String emnb = reqDto.getEmnb();
+			IfSpec ifSpec = IfConstant.IfSpec.IfMcCs004;
+			Class<IfMcCs004_O> ifOutputDtoClass = IfMcCs004_O.class;
+			ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+			
+			nextKey = ifOutputDto.getNextKey();
+			
+			pagingUserList = ifOutputDto.getUserLstList();
+			if(pagingUserList != null && pagingUserList.size() != 0) {
+				totalUserList.addAll(pagingUserList);
+			}
+			
+		} while (!"0".equals(nextKey));
+		
+		ifOutputDto.setUserLstList(totalUserList);
+	
+	
 		Mvc004ResDto resDto = modelMapper.map(ifOutputDto, Mvc004ResDto.class);
-
+	
 		ResponseDto<Mvc004ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
-
+	
 		return responseDto;
 	}
+	
 	
 
 	/**
@@ -1000,6 +1037,34 @@ public class GrmAdapterController {
 
 		Mvc005ResDto resDto = modelMapper.map(ifOutputDto005, Mvc005ResDto.class);
 		
+		
+		// XXX
+		Mvc004ReqDto mvc004ReqDto = new Mvc004ReqDto();
+		mvc004ReqDto.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
+		mvc004ReqDto.setOrgnCode(ifOutputDto005.getBelnOrgnCode());
+		
+		ResponseDto<Mvc004ResDto> mvc004ResponseDto = this.atrtSrch(mvc004ReqDto, request);
+		List<com.gooroomee.gooroomeeadapter.dto.client.Mvc004ResDto.User> userLstList = mvc004ResponseDto.getData().getUserLstList();
+		
+		if(userLstList == null) {
+			log.info("userLstList가 null 입니다.");
+		}else if(userLstList.size() == 0) {
+			log.info("userLstList가 0개 입니다.");
+		}else {
+			String hasAuthorityYn = "N";
+			for (com.gooroomee.gooroomeeadapter.dto.client.Mvc004ResDto.User user : userLstList) {
+				String authorityEmnb = user.getEmnb();
+				if(authorityEmnb.equals(reqDto.getEmnb())) {
+					hasAuthorityYn = "Y";
+					break;
+				}
+			}
+			resDto.setHasAuthorityYn(hasAuthorityYn);
+		}
+		
+		
+		
+		/*
 		// XXX
 		IfMcCs004_I ifInputDto021 = new IfMcCs004_I();
 		ifInputDto021.setIsrnCoreAtrtId(IfConstant.ISRN_CORE_ATRT_ID);
@@ -1026,7 +1091,7 @@ public class GrmAdapterController {
 			}
 			resDto.setHasAuthorityYn(hasAuthorityYn);
 		}
-		
+		*/
 
 		ResponseDto<Mvc005ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
@@ -1424,6 +1489,8 @@ public class GrmAdapterController {
 
 		String reqTxId = reqDto.getReqTxId();
 		dataBody.setReqTxId(reqTxId);
+		
+		dataBody.setOp(IfConstant.EzCertSrvcOp.auth.getValue());
 
 		IfMcCs012_I ifInputDto = new IfMcCs012_I();
 		ifInputDto.setDataHeader(dataHeader);
@@ -1951,6 +2018,9 @@ public class GrmAdapterController {
 			try {
 				String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
 				driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+				
+				driverLicenseNumber = driverLicenseNumber.replaceAll("\s+", "");
+				
 				resDto.setDrvnLcnsNo(driverLicenseNumber);
 			}catch (NullPointerException e) {
 				log.warn("drvnLcnsNo (idCard.result.dl.num[0].text) 를 얻는데 실패했습니다. \"\"로 초기화 합니다.");
@@ -2068,35 +2138,44 @@ public class GrmAdapterController {
 //		mvc002ReqDto.setIsncDate(this.transformDate(isncDate));
 		mvc002ReqDto.setIsncDate(isncDate);
 		mvc002ReqDto.setExpyDate(expyDate);
+		
+		
+		String rrno = StringUtils.defaultString(reqDto.getRrno());
+		rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+		mvc002ReqDto.setRrno(rrno);
+		
+//		String btdt = this.getBirthYyyyMMddFromPersonalNum(rrno);
+//		mvc002ReqDto.setBtdt(btdt);
+		
 
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
-			String rrno = reqDto.getRrno();
-			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
-
-			mvc002ReqDto.setRrno(rrno);
+//			String rrno = StringUtils.defaultString(reqDto.getRrno());
+//			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+//			mvc002ReqDto.setRrno(rrno);
 			
 			String btdt = this.getBirthYyyyMMddFromPersonalNum(rrno);
 			mvc002ReqDto.setBtdt(btdt);
 			
 		} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
-			String driverLicenseNumber = reqDto.getDrvnLcnsNo();
+			String driverLicenseNumber = StringUtils.defaultString(reqDto.getDrvnLcnsNo());
+			
 			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
-
+			driverLicenseNumber = driverLicenseNumber.replaceAll("\s+", "");
+			
 			String driverLicenseSequenceNumber = reqDto.getDrvnLcnsSqno();
 			
 			mvc002ReqDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
 			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
 			
-			String rrno = reqDto.getRrno();
-			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
-
-			mvc002ReqDto.setRrno(rrno);
+//			String rrno = reqDto.getRrno();
+//			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
+//			mvc002ReqDto.setRrno(rrno);
 			
 			String btdt = this.getBirthYyyyMMddFromPersonalNum(rrno);
 			mvc002ReqDto.setBtdt(btdt);
 			
 		} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
-			String passportNumber = reqDto.getPsprNo();
+			String passportNumber = StringUtils.defaultString(reqDto.getPsprNo());
 
 			mvc002ReqDto.setPsprNo(passportNumber);
 			
@@ -2104,7 +2183,7 @@ public class GrmAdapterController {
 			mvc002ReqDto.setBtdt(btdt);
 			
 		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
-			String alienRegistrationNumber = reqDto.getFrnrRgstNo();
+			String alienRegistrationNumber = StringUtils.defaultString(reqDto.getFrnrRgstNo());
 
 			mvc002ReqDto.setFrnrRgstNo(alienRegistrationNumber);
 			
@@ -2113,9 +2192,13 @@ public class GrmAdapterController {
 		}
 
 		ResponseDto<Mvc002ResDto> response002dto = this.trflCnfm(mvc002ReqDto, request);
-
+		
 		Mvc002ResDto mvc002ResDto = response002dto.getData();
-
+		
+		if("".equals(StringUtils.defaultString(mvc002ResDto.getCustId()))) {
+			throw new IfException("진위확인서비스에서 조회된 고객아이디가 없습니다.");
+		}
+		
 		String csnsYn = mvc002ResDto.getCsnsYn();
 		resDto.setCustInfoAuthenticityYn(csnsYn);
 
@@ -2189,7 +2272,10 @@ public class GrmAdapterController {
 		edmsInput.setAcfmAltrYn(null);
 		edmsInput.setAppnJdgnTypeVal(null);
 		edmsInput.setBncaAcfmYn(null);
-		edmsInput.setBswrvsnCode(IfConstant.TRNM_SYS_CODE);
+		
+		edmsInput.setBswrvsnCode(reqDto.getBswrvsnCode());
+//		edmsInput.setBswrvsnCode(StringUtils.defaultString(reqDto.getBswrvsnCode(), IfConstant.TRNM_SYS_CODE));
+		
 		edmsInput.setCntcBefrObdsMatrYn(null);
 		edmsInput.setDcfmBrcd(null);
 		edmsInput.setDcfmCode(reqDto.getDcfmCode());
@@ -2201,6 +2287,9 @@ public class GrmAdapterController {
 		edmsInput.setOgtxFileNm(null);
 		edmsInput.setSysCode(IfConstant.SYS_CODE_FOR_SUBMIT_TO_EDMS);
 		edmsInput.setUserId(IfConstant.USER_ID_FOR_SUBMIT_TO_EDMS);
+		
+//		String edmsInputJson = objectMapper.writeValueAsString(edmsInput);
+//		log.info("[EDMS INPUT] : {}", edmsInputJson);
 		
 		IfMcCs999_O edmsOutput = grmAdapterService.edmsRgstr(edmsInput);
 		

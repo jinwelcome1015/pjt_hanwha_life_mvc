@@ -16,6 +16,13 @@ public class IfMcCs004_O {
     // XXX 확인
     /** 사용자리스트 */
 	private List<User> userLstList;
+	
+	/** nextKey */
+    private String nextKey;
+    
+    /** pageNumber */
+    private int pageNumber;
+	
 
 	@Getter
 	@Setter

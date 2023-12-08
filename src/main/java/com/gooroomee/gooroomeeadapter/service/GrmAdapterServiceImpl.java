@@ -54,6 +54,11 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	private RestTemplate restTemplateForCommon;
 	
 	@Autowired
+	@Qualifier(value = "restTemplateForMultipartFormData")
+	private RestTemplate restTemplateForMultipartFormData;
+	
+	
+	@Autowired
 	private ObjectMapper objectMapper;
 
 	/** 인터페이스 엔드포인트 URL */
@@ -172,18 +177,46 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 			};
 		};
 		
+		/*
 		MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
 		Map<String, Object> map = objectMapper.convertValue(edmsInput, new TypeReference<Map<String, Object>>() {});
 		multiValueMap.setAll(map);
 		multiValueMap.set("file", resource);
+		*/
 		
+		MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
+		multiValueMap.set("acfmAltrYn", edmsInput.getAcfmAltrYn());
+		multiValueMap.set("appnJdgnTypeVal", edmsInput.getAppnJdgnTypeVal());
+		multiValueMap.set("bncaAcfmYn", edmsInput.getBncaAcfmYn());
+		multiValueMap.set("bswrvsnCode", edmsInput.getBswrvsnCode());
+		multiValueMap.set("cntcBefrObdsMatrYn", edmsInput.getCntcBefrObdsMatrYn());
+		multiValueMap.set("dcfmBrcd", edmsInput.getDcfmBrcd());
+		multiValueMap.set("dcfmCode", edmsInput.getDcfmCode());
+		multiValueMap.set("dcmtTypeCode", edmsInput.getDcmtTypeCode());
+//		multiValueMap.set("file", edmsInput.getFile());
+		multiValueMap.set("file", resource);
+		multiValueMap.set("fileNm", edmsInput.getFileNm());
+		multiValueMap.set("imgeDocuNo", edmsInput.getImgeDocuNo());
+		multiValueMap.set("imgePrefixVal", edmsInput.getImgePrefixVal());
+		multiValueMap.set("ogtxFileNm", edmsInput.getOgtxFileNm());
+		multiValueMap.set("sysCode", edmsInput.getSysCode());
+		multiValueMap.set("userId", edmsInput.getUserId());
 		
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 		
 		RequestEntity<MultiValueMap<String, Object>> requestEntity = new RequestEntity<>(multiValueMap, httpHeaders, HttpMethod.POST, new URI(edmsServiceUri));
-		ResponseEntity<IfMcCs999_O> responseEntity = restTemplateForCommon.exchange(requestEntity, IfMcCs999_O.class);
-		IfMcCs999_O edmsOutput = responseEntity.getBody();
+//		ResponseEntity<IfMcCs999_O> responseEntity = restTemplateForCommon.exchange(requestEntity, IfMcCs999_O.class);
+		
+		ResponseEntity<String> responseEntity = restTemplateForMultipartFormData.exchange(requestEntity, String.class);
+		
+		String responseBody = responseEntity.getBody();
+		
+		IfMcCs999_O edmsOutput = null;
+		if (responseBody != null) {
+			edmsOutput = objectMapper.readValue(responseBody, IfMcCs999_O.class);
+		}
+		
 		/*
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);

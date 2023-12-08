@@ -25,7 +25,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-		registry.addInterceptor(apiLoggingInterceptor).order(2).addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**", "/counselling/otp").excludePathPatterns("/js/**");
+//		registry.addInterceptor(apiLoggingInterceptor).order(2).addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**", "/counselling/otp").excludePathPatterns("/js/**");
+		
+		registry.addInterceptor(apiLoggingInterceptor).order(2).addPathPatterns(GrmAdapterController.API_URL_TOKEN + "/**", "/counselling/otp").excludePathPatterns("/js/**", GrmAdapterController.API_URL_TOKEN + 	"/edmsRgstr");
 
 		Boolean isApiAuthEnabled = Boolean.valueOf(apiAuthEnabled);
 		if (isApiAuthEnabled) {

@@ -32,6 +32,7 @@ import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.filter.CustomServletWrappingFilter;
+import com.gooroomee.gooroomeeadapter.interceptor.EdmsClientHttpRequestInterceptorForLogging;
 import com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging;
 
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,10 @@ public class GrmAdapterConfiguration {
 	private static final int MAXIMUM_CONNECTION_PER_ROUTE = 20;
 
 	@Autowired
-	InterfaceClientHttpRequestInterceptorForLogging restTemplateLoggingRequestInterceptor;
+	InterfaceClientHttpRequestInterceptorForLogging commonRestTemplateLoggingRequestInterceptor;
+	
+	@Autowired
+	EdmsClientHttpRequestInterceptorForLogging edmsRestTemplateLoggingRequestInterceptor;
 
 	@Value(value = "${spring.profiles.active}")
 	private String springProfilesActive;
@@ -85,7 +89,7 @@ public class GrmAdapterConfiguration {
 				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
 				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
 				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
-				.additionalInterceptors(restTemplateLoggingRequestInterceptor)
+				.additionalInterceptors(commonRestTemplateLoggingRequestInterceptor)
 				.build();
 
 		if (log.isDebugEnabled()) {
@@ -108,7 +112,31 @@ public class GrmAdapterConfiguration {
 				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
 				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
 				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
-				.additionalInterceptors(restTemplateLoggingRequestInterceptor)
+				.additionalInterceptors(commonRestTemplateLoggingRequestInterceptor)
+				.build();
+
+		if (log.isDebugEnabled()) {
+			ClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+			restTemplate.setRequestFactory(clientHttpRequestFactory);
+			return restTemplate;
+		}
+		return restTemplate;
+	}
+	
+	
+	@Bean(name = {"restTemplateForMultipartFormData"})
+	public RestTemplate restTemplateForMultipartFormData(RestTemplateBuilder restTemplateBuilder) {
+
+		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION).setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE).build();
+
+		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+		factory.setHttpClient(httpClient);
+
+		RestTemplate restTemplate = restTemplateBuilder
+				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
+				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
+				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
+				.additionalInterceptors(edmsRestTemplateLoggingRequestInterceptor)
 				.build();
 
 		if (log.isDebugEnabled()) {

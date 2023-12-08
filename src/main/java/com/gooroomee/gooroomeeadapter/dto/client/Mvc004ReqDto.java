@@ -17,5 +17,11 @@ public class Mvc004ReqDto {
 
     /** 기관코드 */
     private String orgnCode;
+    
+    /** nextKey */
+    private String nextKey;
+
+    /** pageSize */
+    private int pageSize;
 
 }

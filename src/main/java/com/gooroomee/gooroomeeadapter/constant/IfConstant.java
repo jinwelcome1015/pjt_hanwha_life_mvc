@@ -68,17 +68,23 @@ public class IfConstant {
 	/** base64 데이터 기록용 별도 logger의 이름을 위한 suffix */
 	public static final String LOGGER_NAME_SUFFIX_FOR_BASE64 = "._BASE64";
 	
+	/** multipart form data 데이터 기록용 별도 logger의 이름을 위한 suffix */
+	public static final String LOGGER_NAME_SUFFIX_FOR_MULTIPART_FORM_DATA = "._MULTIPART_FORM_DATA";
+	
 	/** [SMS 메세지 발송] 업무명 */
 	public static final String SEND_SMS_MSG_BSWR_NM = "모바일 화상상담 서비스 문자인증";
 	
 	/** [SMS 메세지 발송] 작업메시지내용 */
-	public static final String SEND_SMS_MSG_JOB_MSGE_CNTN = "인증번호 %s를 입력해 주세요.";
+	public static final String SEND_SMS_MSG_JOB_MSGE_CNTN = "[한화생명] 모바일 화상상담 서비스 \r\n" + "인증번호 %s를 입력해 주세요.";
+//	public static final String SEND_SMS_MSG_JOB_MSGE_CNTN = "모바일 화상상담 서비스 \r\n" + "인증번호 %s를 입력해 주세요.";
 	
 	/** [SMS 메세지 발송] 안내장종류코드 */
 	public static final String SEND_SMS_MSG_NTFC_KIND_CODE = "ZAU0008";
 
 	/** [SMS 메세지 발송] 안내장템플릿코드 */
 	public static final String SEND_SMS_MSG_NTTK_TMPL_NM = "SZAU000002";
+
+	
 
 	/** 채널유형코드 */
 	@Getter
@@ -178,64 +184,62 @@ public class IfConstant {
 	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public enum IfSpec {
 		/** 인터페이스 명세 : 신분증OCR요청 */
-		IfMcCs001("HLIMVC00016", "hcsIdcdOcrRqst", "HCS"),
+		IfMcCs001("HLIMVC00016", "hcsIdcdOcrRqst", "신분증OCR요청", "HCS"),
 
 		/** 인터페이스 명세 : 진위확인결과조회 */
-		IfMcCs002("HLIMVC00017", "icsTrflCnfmPSI002r", "ICS"),
+		IfMcCs002("HLIMVC00017", "icsTrflCnfmPSI002r", "진위확인결과조회", "ICS"),
 
 		/** 인터페이스 명세 : 신분증스캔후처리 */
-		IfMcCs003("HLIMVC00018", "comItfcIdcdScanPSI001c", "COM"),
+		IfMcCs003("HLIMVC00018", "comItfcIdcdScanPSI001c", "신분증스캔후처리", "COM"),
 		
 		/** 인터페이스 명세 : 권한별사용자조회 */
-        IfMcCs004("HLIMVC00039", "comAtrtSrchPSI013r", "HLI"),
+        IfMcCs004("HLIMVC00039", "comAtrtSrchPSI013r", "권한별사용자조회", "HLI"),
 
 		/** 인터페이스 명세 : SSO대체로그인인증 */
-		IfMcCs005("HLIMVC00019", "comItfcUserCtfnPSI001c", "COM"),
+		IfMcCs005("HLIMVC00019", "comItfcUserCtfnPSI001c", "SSO대체로그인인증", "COM"),
 
 		/** 인터페이스 명세 : 사원목록조회 */
-		IfMcCs006("HLIMVC00020", "comEmpeInqyPSI001r", "COM"),
+		IfMcCs006("HLIMVC00020", "comEmpeInqyPSI001r", "사원목록조회", "COM"),
 
 		/** 인터페이스 명세 : 고객계약정보조회 */
-		IfMcCs007("HLIMVC00023", "icsIntgCustInqyMgmtPSI001r", "ICS"),
+		IfMcCs007("HLIMVC00023", "icsIntgCustInqyMgmtPSI001r", "고객계약정보조회", "ICS"),
 
 		/** 인터페이스 명세 : 고객계좌목록조회 */
-		IfMcCs008("HLIMVC00024", "icsIntgCustPSI008r", "ICS"),
+		IfMcCs008("HLIMVC00024", "icsIntgCustPSI008r", "고객계좌목록조회", "ICS"),
 
 		/** 인터페이스 명세 : 개인정보유출노출여부조회 */
-		IfMcCs009("HLIMVC00025", "icsPrsnInfoLeakMgmtPSI005r", "ICS"),
+		IfMcCs009("HLIMVC00025", "icsPrsnInfoLeakMgmtPSI005r", "개인정보유출노출여부조회", "ICS"),
 
 		/** 인터페이스 명세 : 간편인증 토큰발급 */
-		IfMcCs010("HLIMVC00027", "hcsInitechToken", "HCS"),
+		IfMcCs010("HLIMVC00027", "hcsInitechToken", "간편인증 토큰발급", "HCS"),
 
 		/** 인터페이스 명세 : 간편인증 요청 */
-		IfMcCs011("HLIMVC00028", "hcsInitechRequest", "HCS"),
+		IfMcCs011("HLIMVC00028", "hcsInitechRequest", "간편인증 요청", "HCS"),
 
 		/** 인터페이스 명세 : 간편인증 상태 조회 */
-		IfMcCs012("HLIMVC00029", "hcsInitechStatus", "HCS"),
+		IfMcCs012("HLIMVC00029", "hcsInitechStatus", "간편인증 상태 조회", "HCS"),
 
 		/** 인터페이스 명세 : 카카오알림톡발송_챗버블 */
-		IfMcCs015("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "INI"),
+		IfMcCs015("HLIMVC00035", "iniCspdDvlmUmsSendMgmtPSI004c", "카카오알림톡발송_챗버블", "INI"),
 
 		/** 인터페이스 명세 : 대체키별연락처저장 */
-		IfMcCs016("HLIMVC00031", "icmCnplSbsnKeyMgmtPSI001c", "ICM"),
+		IfMcCs016("HLIMVC00031", "icmCnplSbsnKeyMgmtPSI001c", "대체키별연락처저장", "ICM"),
 
 		/** 인터페이스 명세 : 대체키별연락처조회 */
-		IfMcCs017("HLIMVC00032", "icmCnplSbsnKeyMgmtPSI002r", "ICM"),
+		IfMcCs017("HLIMVC00032", "icmCnplSbsnKeyMgmtPSI002r", "대체키별연락처조회", "ICM"),
 
 		/** 인터페이스 명세 : 우편번호조회 */
-		IfMcCs018("HLIMVC00033", "icmAddrMgmtPSI001r", "ICM"),
+		IfMcCs018("HLIMVC00033", "icmAddrMgmtPSI001r", "우편번호조회", "ICM"),
 		
 		/** 인터페이스 명세 : 고객통합기본정보조회 */
-        IfMcCs013("HLIMVC00036", "icsIntgCustInqyMgmtPSI007r", "HLI"),
+        IfMcCs013("HLIMVC00036", "icsIntgCustInqyMgmtPSI007r", "고객통합기본정보조회", "HLI"),
         
         /** 인터페이스 명세 : SMS 메세지 발송 */
-        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "INI");
-        
-        
-
+        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "SMS 메세지 발송", "INI");
 		
 		private final String itfcId;
 		private final String rcveSrvcId;
+		private final String rcveSrvcKorNm;
 		private final String rcveSysCode;
 	}
 
@@ -403,7 +407,7 @@ public class IfConstant {
 		DriverLicense("Driver's License", "dl", "011"),
 
 		/** OCR 신분증 타입 : 여권 */
-		Passport("Passport", "dl", "911"),
+		Passport("Passport", "dl", "991"),
 
 		/** OCR 신분증 타입 : 외국인등록증 */
 		AlienRegistrationCard("Alien Registration Card", "ac", "017");

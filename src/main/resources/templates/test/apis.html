@@ -35,6 +35,11 @@
 			/* background-color: darkgrey; */
 			/* object-fit: scale-down; */
 		}
+
+		div#divForEdms {
+			border: 1px solid black;
+			padding: 1rem;
+		}
 	</style>
 
 	<script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
@@ -94,14 +99,51 @@
 					const sTargetText = event.target.options[event.target.selectedIndex].innerText;
 
 					if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText) || /^19\..*/.test(sTargetText)) {
+						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+						oHttpRequestHeader['Content-Type'] = 'application/json';
+						document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+
+						document.querySelector('#divForRequestBody').style.display = 'block';
 						document.querySelector('#divForIdCard').style.display = 'block';
-						document.querySelector('#multipartFormDataFieldset').style.display = 'none';
+						document.querySelector('#divForEdms').style.display = 'none';
+
 					} else if(/^99\..*/.test(sTargetText)){
+						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+						oHttpRequestHeader['Content-Type'] = 'multipart/form-data';
+						document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+
+						document.querySelector('#divForRequestBody').style.display = 'none';
 						document.querySelector('#divForIdCard').style.display = 'none';
-						document.querySelector('#multipartFormDataFieldset').style.display = 'block';
+						document.querySelector('#divForEdms').style.display = 'block';
+
+						const oFormForEdms = document.querySelector('#formForEdms');
+
+						oFormForEdms.replaceChildren();
+						
+						const oData = res.data;
+						
+						let aHtml = [];
+						
+						for(let key in oData){
+							if(key === 'file'){
+								aHtml.push(`${key} : <input type="file" name="${key}" id="${key}">`);
+							}else{
+								aHtml.push(`${key} : <input type="text" name="${key}" id="${key}" value="${oData[key]}">`);
+							}
+						}
+
+						let sHtml = aHtml.join('<br/>');
+						
+						oFormForEdms.innerHTML = sHtml;
+
 					} else {
+						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+						oHttpRequestHeader['Content-Type'] = 'application/json';
+						document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+
+						document.querySelector('#divForRequestBody').style.display = 'block';
 						document.querySelector('#divForIdCard').style.display = 'none';
-						document.querySelector('#multipartFormDataFieldset').style.display = 'none';
+						document.querySelector('#divForEdms').style.display = 'none';
 					}
 				} catch (error) {
 					alert(`[error name] : ${error.name}\n[error message] : ${error.message}`);
@@ -115,12 +157,24 @@
 				event.preventDefault();
 				const apiPath = document.querySelector('#apiPath').value;
 				const sUrl = sBaseUrl + apiPath;
-
+				
+				const oSelectForApiPath = document.querySelector('#apiPath');
+				const sSelectForApiPathInnerText = oSelectForApiPath.options[oSelectForApiPath.selectedIndex].innerText;
+				const isEdmsCase = /^99\..*/.test(sSelectForApiPathInnerText);
+				
 				const requestHeader = JSON.parse(document.querySelector('#requestHeader').value);
-				const requestBody = document.querySelector('#requestBody').value;
-				// const oParam = JSON.parse(requestBody);
+				let requestBody;
 
+				if(isEdmsCase){
+					const oForm = document.querySelector('form#formForEdms');
+					requestBody = new FormData(oForm);
+				}else {
+					requestBody = document.querySelector('#requestBody').value;
+				}
+
+				
 				try {
+
 					const res = await axios({
 						url: sUrl,
 						method: 'POST',
@@ -290,21 +344,19 @@
 
 			<fieldset>
 				<legend>API-REQUEST</legend>
-				<div>
+				<div id="divForRequestHeader">
 					<label for="requestHeader">requestHeader</label>
 					<textarea name="requestHeader" id="requestHeader" class="httpHeader"></textarea>
 				</div>
-				<div>
+				<div id="divForRequestBody">
 					<label for="requestBody">requestBody</label>
 					<textarea name="requestBody" id="requestBody" class="httpBody"></textarea>
 				</div>
-				<div>
-					<fieldset id="multipartFormDataFieldset" style="display: none;">
-						<legend>multipart/form-data</legend>
-						
-					</fieldset>
+				<div id="divForEdms" style="display: none;">
+					<form id="formForEdms" action="" method="post">
+						<h3>이미지 시스템 (multipart/form-data)</h3>
+					</form>
 				</div>
-				
 				
 				<div>
 					<button id="btnForRequest" disabled="disabled">요청</button>
@@ -317,6 +369,7 @@
 					<label for="responseBody">responseBody</label>
 					<textarea name="responseBody" id="responseBody" class="httpBody"></textarea>
 				</div>
+
 			</fieldset>
 		<!-- </form> -->
 	</main>
