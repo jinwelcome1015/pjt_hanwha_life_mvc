@@ -38,6 +38,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
+	
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
 
@@ -47,6 +48,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 
 		URI uri = request.getURI();
 		this.traceResponse(response, uri);
+	
 		return response;
 	}
 	
@@ -63,7 +65,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 		
 		try {
 			rcveSrvcId = requestBodyObjectNode.get("header").get("rcveSrvcId").asText();
-			ifSpec = this.findIfSpec(rcveSrvcId);
+			ifSpec = IfConstant.findIfSpec(rcveSrvcId);
 		}catch (NullPointerException e) {
 			log.error("payload.header.rcveSrvcId 가 없습니다.");
 		}
@@ -80,28 +82,14 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 			firstImageObjectNode.put("data", "");
 		}
 		
-		log.info("[INTERFACE] [REQUEST] : {}({}) - {}", ifSpec.getRcveSrvcKorNm(), ifSpec.getRcveSrvcId(), requestBodyObjectNode);
-
-		
-		/*
-		Map<String, Object> requestBodyMap = objectMapper.readValue(requestBody, new TypeReference<Map<String, Object>>() {});
-		
-		@SuppressWarnings("unchecked")
-		Map<String, Object> requestBodyHeaderMap = (Map<String, Object>) requestBodyMap.get("header");
-		
-		String rcveSrvcId = null;
-		if(requestBodyHeaderMap != null && requestBodyHeaderMap.get("rcveSrvcId") != null) {
-			rcveSrvcId = (String) requestBodyHeaderMap.get("rcveSrvcId");
+		String rcveSrvcKorNm = "";
+		if(ifSpec != null) {
+			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
-		String reqLog = new StringBuilder().append("[REQUEST]").append(" ").append("Uri : ").append(request.getURI()).append(", ").append("Method : ")
-				.append(request.getMethod()).append(", ").append("Request Body : ").append(new String(body, StandardCharsets.UTF_8)).toString();
 		
-		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
-			loggerForBase64DataLogging.info(reqLog);
-		} else {
-			log.info(reqLog);
-		}
-		 */
+//		log.info("[INTERFACE] [REQUEST] : {}{} - {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode);
+		log.info("[INTERFACE] [REQUEST] : {}{} - [header] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("header"));
+		log.info("[INTERFACE] [REQUEST] : {}{} - [payload] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("payload"));
 	}
 
 
@@ -115,7 +103,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 		
 		try {
 			rcveSrvcId = responseBodyObjectNode.get("header").get("rcveSrvcId").asText();
-			ifSpec = this.findIfSpec(rcveSrvcId);
+			ifSpec = IfConstant.findIfSpec(rcveSrvcId);
 		}catch (NullPointerException e) {
 			log.error("payload.header.rcveSrvcId 가 없습니다.");
 		}
@@ -132,49 +120,17 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 			dataBodyObjectNode.put("images", "");
 		}
 		
-//		log.info("[INTERFACE] [RESPONSE] Status code : {}, Response Body : {}", response.getStatusCode(), responseBodyObjectNode);
-		
-		log.info("[INTERFACE] [RESPONSE] : {}({}) - [Status code : {}], {}", ifSpec.getRcveSrvcKorNm(), ifSpec.getRcveSrvcId(), response.getStatusCode(), responseBodyObjectNode);
-		
-		/*
-		Map<String, Object> responseBodyMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() {
-		});
-		
-		@SuppressWarnings("unchecked")
-		Map<String, Object> responseBodyHeaderMap = (Map<String, Object>) responseBodyMap.get("header");
-		
-		
-		String rcveSrvcId = null;
-		if(responseBodyHeaderMap != null && responseBodyHeaderMap.get("rcveSrvcId") != null) {
-			rcveSrvcId = (String) responseBodyHeaderMap.get("rcveSrvcId");
+		String rcveSrvcKorNm = "";
+		if(ifSpec != null) {
+			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
 		
-		String resLog = new StringBuilder().append("[RESPONSE]").append(" ").append("Uri : ").append(uri).append(", ").append("Status code : ")
-				.append(response.getStatusCode()).append(", ").append("Response Body : ").append(responseBody).toString();
-		
-		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
-			loggerForBase64DataLogging.info(resLog);
-		} else {
-			log.info(resLog);
-		}
-		*/
+//		log.info("[INTERFACE] [RESPONSE] : {}{} - [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, response.getStatusCode(), responseBodyObjectNode);
+		log.info("[INTERFACE] [RESPONSE] : {}{} - [header] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE] : {}{} - [payload] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"),  response.getStatusCode());
 	}
 	
 	
-	private IfSpec findIfSpec(String rcveSrvcId) {
-		
-		IfSpec foundIfSpec = null;
-		
-		IfSpec[] ifspecs = IfConstant.IfSpec.values();
-		
-		for (IfSpec ifSpec : ifspecs) {
-			if(ifSpec.getRcveSrvcId().equals(rcveSrvcId)) {
-				foundIfSpec = ifSpec;
-				break;
-			}
-		}
-		
-		return foundIfSpec;
-	}
+	
 	
 }

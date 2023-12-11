@@ -28,6 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class ApiLoggingInterceptor implements HandlerInterceptor {
+	
+	@Autowired
+	GrmAdapterController grmAdapterController; 
 
 	@Autowired
 	ObjectMapper objectMapper;
@@ -45,6 +48,9 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
 
+		String controllerPath = request.getRequestURI().replaceAll(String.format("^%s", request.getContextPath()), "");
+		String controllerName = grmAdapterController.findControllerName(controllerPath);
+		
 		if (exception != null) {
 			request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, exception);
 			request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
@@ -65,8 +71,9 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 
 			requestObjectNode.put("data", "");
 		} 
-		log.info("[GRM-CLIENT] [{}] [Request Body] : {}", request.getRequestURI(), requestObjectNode);
-
+//		log.info("[GRM-CLIENT] [{}] [Request Body] : {}", request.getRequestURI(), requestObjectNode);
+		log.info("[GRM-CLIENT] [{}({})] [Request Body] : {}", controllerPath, controllerName, requestObjectNode);
+		
 		
 		final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
 		ObjectNode responseObjectNode = (ObjectNode) objectMapper.readTree(cachingResponse.getContentAsByteArray());
@@ -75,7 +82,8 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 				|| request.getRequestURI().contains(TOKEN_OF_URL_WITH_BASE64_REQUEST_PARAM_2)) {
 //			LOGGER_FOR_BASE64_DATA_LOGGING.info("[GRM-CLIENT] [Response Body] : {}", responseObjectNode);
 		} 
-		log.info("[GRM-CLIENT] [{}] [Response Body] : {}", request.getRequestURI(), responseObjectNode);
+//		log.info("[GRM-CLIENT] [{}] [Response Body] : {}", request.getRequestURI(), responseObjectNode);
+		log.info("[GRM-CLIENT] [{}({})] [Response Body] : {}", controllerPath, controllerName, responseObjectNode);
 
 		HandlerInterceptor.super.afterCompletion(request, response, handler, exception);
 	}

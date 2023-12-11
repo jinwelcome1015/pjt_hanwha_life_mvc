@@ -1,5 +1,7 @@
 package com.gooroomee.gooroomeeadapter.constant;
 
+import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -241,6 +243,24 @@ public class IfConstant {
 		private final String rcveSrvcId;
 		private final String rcveSrvcKorNm;
 		private final String rcveSysCode;
+	}
+	
+	
+	
+	public static IfSpec findIfSpec(String rcveSrvcId) {
+
+		IfSpec foundIfSpec = null;
+
+		IfSpec[] ifspecs = IfConstant.IfSpec.values();
+
+		for (IfSpec ifSpec : ifspecs) {
+			if (ifSpec.getRcveSrvcId().equals(rcveSrvcId)) {
+				foundIfSpec = ifSpec;
+				break;
+			}
+		}
+
+		return foundIfSpec;
 	}
 
 	

@@ -52,13 +52,13 @@ public class EdmsClientHttpRequestInterceptorForLogging implements ClientHttpReq
 
 	private void traceRequest(HttpRequest request, byte[] body) throws JsonMappingException, JsonProcessingException {
 		String requestBody = new String(body, StandardCharsets.UTF_8);
-		log.info("[MULTIPART] [REQUEST] Request Uri : {}", request.getURI());
+		log.info("[EDMS] [REQUEST] Request Uri : {}", request.getURI());
 		loggerForMultipartFormDataLogging.info("[MULTIPART] [REQUEST] Request Uri : {}, Request Body Bytes Lengths : {}", request.getURI(), requestBody.getBytes().length);
 	}
 
 	private void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
 		String responseBody = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
 		ObjectNode responseBodyObjectNode = (ObjectNode) objectMapper.readTree(responseBody);
-		log.info("[MULTIPART] [RESPONSE] Status code : {}, Response Body : {}", response.getStatusCode(), responseBodyObjectNode);
+		log.info("[EDMS] [RESPONSE] Status code : {}, Response Body : {}", response.getStatusCode(), responseBodyObjectNode);
 	}
 }

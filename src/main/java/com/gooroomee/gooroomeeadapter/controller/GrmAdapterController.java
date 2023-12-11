@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -219,6 +220,7 @@ public class GrmAdapterController {
 
 	private static final SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
 
+	
 	/**
 	 * 
 	 * 
@@ -885,12 +887,7 @@ public class GrmAdapterController {
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs002;
 		Class<IfMcCs002_O> ifOutputDtoClass = IfMcCs002_O.class;
 		IfMcCs002_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-		/*
-		// 체크하지 않아야만 함. 이 서비스 호출의 목적은 진위확인을 하는 것이 아니라, custId 를 받아오는 것이기 때문에.
-		if (!"Y".equalsIgnoreCase(ifOutputDto.getCsnsYn())) {
-			throw new IfException(String.format("%s", ifOutputDto.getRsltMsgeCntn()));
-		}
-		*/
+		
 		Mvc002ResDto resDto = modelMapper.map(ifOutputDto, Mvc002ResDto.class);
 
 		ResponseDto<Mvc002ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
@@ -2547,4 +2544,26 @@ public class GrmAdapterController {
 		return idCardMockImageInfoList;
 	}
 	
+	
+	public String findControllerName(String controllerPath) {
+		
+		String controllerName = null;
+
+		Method[] declaredMethods = this.getClass().getDeclaredMethods();
+		rootFor : for (Method method : declaredMethods) {
+			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+			if (requestMapping != null) {
+				String[] paths = requestMapping.path();
+				String name = requestMapping.name();
+				for (String path : paths) {
+					if (path.startsWith(controllerPath)) {
+						controllerName = name;
+						break rootFor;
+					}
+				}
+			}
+		}
+		
+		return controllerName;
+	}
 }
