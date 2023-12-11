@@ -2314,7 +2314,7 @@ public class GrmAdapterController {
 	
 	
 	// XXX 
-	@RequestMapping(path = { "/counselling/otp" })
+	@RequestMapping(path = { "/counselling/otp" }, name = "[가]. IVR PROVIDER")
 	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws JsonMappingException, JsonProcessingException, URISyntaxException {
 		
 //		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
@@ -2568,6 +2568,26 @@ public class GrmAdapterController {
 			}
 		}
 		
+//		controllerName = StringUtils.defaultString(controllerName);
+		
 		return controllerName;
+	}
+	
+	
+	public final String[] TOKENS_OF_URL_WITH_BASE64_REQUEST_PARAM = new String[] { "idcdOcrRqst", "idcdOcrRqst2", "entry2" };
+
+	public boolean isRequestThatHasBase64Data(String requestUri) throws IOException {
+		boolean isRequestThatHasBase64Data = false;
+		
+		String[] tokens = this.TOKENS_OF_URL_WITH_BASE64_REQUEST_PARAM;
+
+		for (String token : tokens) {
+			if(requestUri.contains(token)) {
+				isRequestThatHasBase64Data = true;
+				break;
+			}
+		}
+		
+		return isRequestThatHasBase64Data;
 	}
 }
