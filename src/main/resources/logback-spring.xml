@@ -92,7 +92,7 @@
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -110,7 +110,7 @@
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -125,14 +125,12 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <!-- 
         <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-         -->
     </springProfile>
     
      
@@ -145,7 +143,7 @@
         <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging._BASE64" additivity="false">
+        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>

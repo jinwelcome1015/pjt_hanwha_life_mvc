@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -170,7 +171,7 @@ public class IfUtil {
 			List<IfTelegramHeaderResponseMessage> msgeList = responseTelegramHeader.getMsgeList();
 
 			if (cnt > 0 && msgeList != null && msgeList.size() > 0) {
-				throw new IfException(msgeList.get(0).getMsgeCntn());
+				throw new IfException(HttpStatus.INTERNAL_SERVER_ERROR, msgeList.get(0).getMsgeCntn());
 			}
 		}
 

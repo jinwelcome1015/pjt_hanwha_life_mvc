@@ -32,8 +32,9 @@ import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.filter.CustomServletWrappingFilter;
-import com.gooroomee.gooroomeeadapter.interceptor.EdmsClientHttpRequestInterceptorForLogging;
-import com.gooroomee.gooroomeeadapter.interceptor.InterfaceClientHttpRequestInterceptorForLogging;
+import com.gooroomee.gooroomeeadapter.interceptor.IfProviderLoggingInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.ImageSystemLoggingInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,12 +46,15 @@ public class GrmAdapterConfiguration {
 	private static final int CONNECTION_TIMEOUT_SECOND = 3;
 	private static final int MAXIMUM_TOTAL_CONNECTION = 50;
 	private static final int MAXIMUM_CONNECTION_PER_ROUTE = 20;
-
-	@Autowired
-	InterfaceClientHttpRequestInterceptorForLogging commonRestTemplateLoggingRequestInterceptor;
 	
 	@Autowired
-	EdmsClientHttpRequestInterceptorForLogging edmsRestTemplateLoggingRequestInterceptor;
+	IfProviderLoggingInterceptor ifProviderLoggingInterceptor;
+
+	@Autowired
+	IfConsumerLoggingInterceptor ifConsumerLoggingInterceptor;
+	
+	@Autowired
+	ImageSystemLoggingInterceptor imageSystemLoggingInterceptor;
 
 	@Value(value = "${spring.profiles.active}")
 	private String springProfilesActive;
@@ -77,8 +81,9 @@ public class GrmAdapterConfiguration {
 		return objectMapper;
 	}
 
-	@Bean(name = {"restTemplateForInterface"})
-	public RestTemplate restTemplateForInterface(RestTemplateBuilder restTemplateBuilder) {
+	
+	@Bean(name = {"restTemplateForIfConsumer"})
+	public RestTemplate restTemplateForIfConsumer(RestTemplateBuilder restTemplateBuilder) {
 
 		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION).setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE).build();
 
@@ -89,30 +94,7 @@ public class GrmAdapterConfiguration {
 				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
 				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
 				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
-				.additionalInterceptors(commonRestTemplateLoggingRequestInterceptor)
-				.build();
-
-		if (log.isDebugEnabled()) {
-			ClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
-			restTemplate.setRequestFactory(clientHttpRequestFactory);
-			return restTemplate;
-		}
-		return restTemplate;
-	}
-
-	@Bean(name = {"restTemplateForCommon"})
-	public RestTemplate restTemplateForCommon(RestTemplateBuilder restTemplateBuilder) {
-
-		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION).setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE).build();
-
-		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		factory.setHttpClient(httpClient);
-
-		RestTemplate restTemplate = restTemplateBuilder
-				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
-				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
-				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
-				.additionalInterceptors(commonRestTemplateLoggingRequestInterceptor)
+				.additionalInterceptors(ifConsumerLoggingInterceptor)
 				.build();
 
 		if (log.isDebugEnabled()) {
@@ -124,8 +106,8 @@ public class GrmAdapterConfiguration {
 	}
 	
 	
-	@Bean(name = {"restTemplateForMultipartFormData"})
-	public RestTemplate restTemplateForMultipartFormData(RestTemplateBuilder restTemplateBuilder) {
+	@Bean(name = {"restTemplateForIfProvider"})
+	public RestTemplate restTemplateForIfProvider(RestTemplateBuilder restTemplateBuilder) {
 
 		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION).setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE).build();
 
@@ -136,7 +118,31 @@ public class GrmAdapterConfiguration {
 				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
 				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
 				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
-				.additionalInterceptors(edmsRestTemplateLoggingRequestInterceptor)
+				.additionalInterceptors(ifProviderLoggingInterceptor)
+				.build();
+
+		if (log.isDebugEnabled()) {
+			ClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+			restTemplate.setRequestFactory(clientHttpRequestFactory);
+			return restTemplate;
+		}
+		return restTemplate;
+	}
+	
+	
+	@Bean(name = {"restTemplateForImageSystem"})
+	public RestTemplate restTemplateForImageSystem(RestTemplateBuilder restTemplateBuilder) {
+
+		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(MAXIMUM_TOTAL_CONNECTION).setMaxConnPerRoute(MAXIMUM_CONNECTION_PER_ROUTE).build();
+
+		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+		factory.setHttpClient(httpClient);
+
+		RestTemplate restTemplate = restTemplateBuilder
+				.setReadTimeout(Duration.ofSeconds(READ_TIMEOUT_SECOND))
+				.setConnectTimeout(Duration.ofSeconds(CONNECTION_TIMEOUT_SECOND))
+				.additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
+				.additionalInterceptors(imageSystemLoggingInterceptor)
 				.build();
 
 		if (log.isDebugEnabled()) {

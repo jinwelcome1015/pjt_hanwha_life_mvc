@@ -27,13 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class EdmsClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
+public class ImageSystemLoggingInterceptor implements ClientHttpRequestInterceptor {
 	
-	@Value(value = "${api.ocr.logging.enabled:false}")
-	private boolean apiOcrLoggingEnabled;
 
-	private static final Logger loggerForMultipartFormDataLogging = LoggerFactory
-			.getLogger(EdmsClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_MULTIPART_FORM_DATA); // "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._MULTIPART_FORM_DATA"
+	private static final Logger loggerForMultipartFormDataLogging = LoggerFactory.getLogger(ImageSystemLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_MULTIPART_FORM_DATA); // "com.gooroomee.gooroomeeadapter.interceptor.ImageSystemLoggingInterceptor._MULTIPART_FORM_DATA"
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -52,13 +49,13 @@ public class EdmsClientHttpRequestInterceptorForLogging implements ClientHttpReq
 
 	private void traceRequest(HttpRequest request, byte[] body) throws JsonMappingException, JsonProcessingException {
 		String requestBody = new String(body, StandardCharsets.UTF_8);
-		log.info("[EDMS] [REQUEST] Request Uri : {}", request.getURI());
-		loggerForMultipartFormDataLogging.info("[MULTIPART] [REQUEST] Request Uri : {}, Request Body Bytes Lengths : {}", request.getURI(), requestBody.getBytes().length);
+		log.info("[MULTIPART] [REQUEST] Request Uri : {}", request.getURI());
+		loggerForMultipartFormDataLogging.info("[IMG-SYS] [REQUEST] Request Uri : {}, Request Body Bytes Lengths : {}", request.getURI(), requestBody.getBytes().length);
 	}
 
 	private void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
 		String responseBody = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
 		ObjectNode responseBodyObjectNode = (ObjectNode) objectMapper.readTree(responseBody);
-		log.info("[EDMS] [RESPONSE] Status code : {}, Response Body : {}", response.getStatusCode(), responseBodyObjectNode);
+		log.info("[IMG-SYS] [RESPONSE] Status code : {}, Response Body : {}", response.getStatusCode(), responseBodyObjectNode);
 	}
 }

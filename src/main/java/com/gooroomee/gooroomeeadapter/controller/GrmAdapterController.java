@@ -432,7 +432,7 @@ public class GrmAdapterController {
 			JsonNode firstBirthDateJsonNode = birthDateJsonNode.get(0);
 			JsonNode firstBirthDateFormattedJsonNode = firstBirthDateJsonNode.get("formatted");
 			if (firstBirthDateFormattedJsonNode == null) {
-				throw new IfException("[OCR 실패] : idCard.result.pp.birthDate[0].formatted 가 없습니다.");
+				throw new IfException(HttpStatus.OK, "[OCR 실패] : idCard.result.pp.birthDate[0].formatted 가 없습니다.");
 			}
 			JsonNode birthDateYearJsonNode = firstBirthDateFormattedJsonNode.get("year");
 			JsonNode birthDateMonthJsonNode = firstBirthDateFormattedJsonNode.get("month");
@@ -451,7 +451,7 @@ public class GrmAdapterController {
 		}
 		
 		if(StringUtils.defaultString(btdt).length() != 8) {
-			throw new IfException(String.format("[OCR 실패] 인식된 생년월일이 8자리가 아닙니다. (인식결과 : %s)", btdt));
+			throw new IfException(HttpStatus.OK, String.format("[OCR 실패] 인식된 생년월일이 8자리가 아닙니다. (인식결과 : %s)", btdt));
 		}
 
 		/*
@@ -836,7 +836,7 @@ public class GrmAdapterController {
 
 		if (ocrResultReadTrees.size() != 1) {
 			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
-			throw new IfException(message);
+			throw new IfException(HttpStatus.OK, message);
 		}
 
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
@@ -844,7 +844,7 @@ public class GrmAdapterController {
 		if (!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
 			String message = ocrResultReadTree.get("message").asText();
 			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
-			throw new IfException(message);
+			throw new IfException(HttpStatus.INTERNAL_SERVER_ERROR, message);
 		}
 
 		Mvc001ResDto resDto = modelMapper.map(ifOutputDto, Mvc001ResDto.class);
@@ -880,7 +880,7 @@ public class GrmAdapterController {
 		
 		String driverLicenseNumber = StringUtils.defaultString(ifInputDto.getDrvnLcnsNo());
 		driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
-		driverLicenseNumber = driverLicenseNumber.replaceAll("\s+", "");
+		driverLicenseNumber = driverLicenseNumber.replaceAll("\\s+", "");
 		ifInputDto.setDrvnLcnsNo(driverLicenseNumber);
 
 		String emnb = reqDto.getEmnb();
@@ -1029,7 +1029,7 @@ public class GrmAdapterController {
 		String rspnCodeVal = ifOutputDto005.getRspnCodeVal(); // "00":오류, "01":정상
 		
 		if (!"01".equalsIgnoreCase(rspnCodeVal)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto005.getRspnMsgeCntn(), ifOutputDto005.getRspnMsgeUniqId()), HttpStatus.OK);
+			throw new IfException(HttpStatus.OK, String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", ifOutputDto005.getRspnMsgeCntn(), ifOutputDto005.getRspnMsgeUniqId()));
 		}
 
 		Mvc005ResDto resDto = modelMapper.map(ifOutputDto005, Mvc005ResDto.class);
@@ -1308,7 +1308,7 @@ public class GrmAdapterController {
 		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
 		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
 		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
+			throw new IfException(HttpStatus.OK, String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
 		}
 
 		Mvc010ResDto resDto = modelMapper.map(ifOutputDto, Mvc010ResDto.class);
@@ -1424,13 +1424,13 @@ public class GrmAdapterController {
 		String resCode = ifOutputDto.getDataBody().getResCode(); // 응답코드 ("1200":성공, 그외:실퍠)
 		String errorMessage = ifOutputDto.getDataBody().getErrorMessage(); // 에러메세지
 		if (!"1200".equalsIgnoreCase(resCode)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
+			throw new IfException(HttpStatus.OK, String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
 		}
 
 		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
 		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
 		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
+			throw new IfException(HttpStatus.OK, String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
 		}
 
 		Mvc011ResDto resDto = modelMapper.map(ifOutputDto, Mvc011ResDto.class);
@@ -1503,13 +1503,13 @@ public class GrmAdapterController {
 		String resCode = ifOutputDto.getDataBody().getResCode(); // 응답코드 ("1200":성공, 그외:실퍠)
 		String errorMessage = ifOutputDto.getDataBody().getErrorMessage(); // 에러메세지
 		if (!"1200".equalsIgnoreCase(resCode)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
+			throw new IfException(HttpStatus.OK, String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", errorMessage, resCode));
 		}
 
 		String crtf_RTCD = ifOutputDto.getDataHeader().getCRTF_RTCD(); // 처리결과코드 ("0000":정상, 그외:실패)
 		String dlre_MSG = ifOutputDto.getDataHeader().getDLRE_MSG();
 		if (!"0000".equalsIgnoreCase(crtf_RTCD)) {
-			throw new IfException(String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
+			throw new IfException(HttpStatus.OK, String.format("%s" + System.lineSeparator() + "(에러코드 : %s)", dlre_MSG, crtf_RTCD));
 		}
 
 		Mvc012ResDto resDto = modelMapper.map(ifOutputDto, Mvc012ResDto.class);
@@ -1761,9 +1761,9 @@ public class GrmAdapterController {
 		int smsTrnmRsltVal = ifOutputDto.getSmsTrnmRsltVal();
 
 		if (0.0 != dvsnRsltVal) {
-			throw new IfException("알림톡 발송에 실패했습니다.");
+			throw new IfException(HttpStatus.OK, "알림톡 발송에 실패했습니다.");
 		} else if (0 != smsTrnmRsltVal) {
-			throw new IfException("SMS 발송에 실패했습니다.");
+			throw new IfException(HttpStatus.OK, "SMS 발송에 실패했습니다.");
 		}
 
 		Mvc015ResDto resDto = modelMapper.map(ifOutputDto, Mvc015ResDto.class);
@@ -1963,14 +1963,14 @@ public class GrmAdapterController {
 		
 		if(ocrResultJson == null || "".equals(ocrResultJson)) {
 			String message = String.format("신분증 OCR 결과가 %s 입니다.", ocrResultJson);
-			throw new IfException(message);
+			throw new IfException(HttpStatus.OK, message);
 		}
 
 		JsonNode ocrResultReadTrees = objectMapper.readTree(ocrResultJson);
 
 		if (ocrResultReadTrees.size() != 1) {
 			String message = String.format("신분증 OCR 결과가 1건이 아닙니다. (%d건)", ocrResultReadTrees.size());
-			throw new IfException(message);
+			throw new IfException(HttpStatus.OK, message);
 		}
 
 		JsonNode ocrResultReadTree = ocrResultReadTrees.get(0);
@@ -1978,7 +1978,7 @@ public class GrmAdapterController {
 		if (!IfConstant.OcrInferResult.SUCCESS.getResultValue().equals(ocrResultReadTree.get("inferResult").asText())) {
 			String message = ocrResultReadTree.get("message").asText();
 			message = String.format("이미지 인식을 실패했습니다." + System.lineSeparator() + "(message : %s)", message);
-			throw new IfException(message);
+			throw new IfException(HttpStatus.OK, message);
 		}
 
 //		Mvc019ResDto resDto = modelMapper.map(ifOutputDto, Mvc019ResDto.class);
@@ -2016,7 +2016,7 @@ public class GrmAdapterController {
 				String driverLicenseNumber = ocrResultReadTree.get("idCard").get("result").get("dl").get("num").get(0).get("text").asText();
 				driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
 				
-				driverLicenseNumber = driverLicenseNumber.replaceAll("\s+", "");
+				driverLicenseNumber = driverLicenseNumber.replaceAll("\\s+", "");
 				
 				resDto.setDrvnLcnsNo(driverLicenseNumber);
 			}catch (NullPointerException e) {
@@ -2157,7 +2157,7 @@ public class GrmAdapterController {
 			String driverLicenseNumber = StringUtils.defaultString(reqDto.getDrvnLcnsNo());
 			
 			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
-			driverLicenseNumber = driverLicenseNumber.replaceAll("\s+", "");
+			driverLicenseNumber = driverLicenseNumber.replaceAll("\\s+", "");
 			
 			String driverLicenseSequenceNumber = reqDto.getDrvnLcnsSqno();
 			
@@ -2175,8 +2175,12 @@ public class GrmAdapterController {
 			String passportNumber = StringUtils.defaultString(reqDto.getPsprNo());
 
 			mvc002ReqDto.setPsprNo(passportNumber);
-			
+			/*
 			String btdt = reqDto.getBtdt();
+			mvc002ReqDto.setBtdt(btdt);
+			*/
+			
+			String btdt = this.getBirthYyyyMMddFromPersonalNum(rrno);
 			mvc002ReqDto.setBtdt(btdt);
 			
 		} else if (idType.equals(IfConstant.OcrIdType.AlienRegistrationCard.getName())) {
@@ -2193,7 +2197,7 @@ public class GrmAdapterController {
 		Mvc002ResDto mvc002ResDto = response002dto.getData();
 		
 		if("".equals(StringUtils.defaultString(mvc002ResDto.getCustId()))) {
-			throw new IfException("진위확인서비스에서 조회된 고객아이디가 없습니다.");
+			throw new IfException(HttpStatus.OK, "진위확인서비스에서 조회된 고객아이디가 없습니다.");
 		}
 		
 		String csnsYn = mvc002ResDto.getCsnsYn();

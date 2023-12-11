@@ -28,13 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHttpRequestInterceptor {
+public class IfConsumerLoggingInterceptor implements ClientHttpRequestInterceptor {
 	
 	@Value(value = "${api.ocr.logging.enabled:false}")
 	private boolean apiOcrLoggingEnabled;
 
-	private static final Logger loggerForBase64DataLogging = LoggerFactory
-			.getLogger(InterfaceClientHttpRequestInterceptorForLogging.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ClientHttpRequestInterceptorForLogging._BASE64"
+	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(IfConsumerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64"
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -67,7 +66,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 			rcveSrvcId = requestBodyObjectNode.get("header").get("rcveSrvcId").asText();
 			ifSpec = IfConstant.findIfSpec(rcveSrvcId);
 		}catch (NullPointerException e) {
-			log.error("payload.header.rcveSrvcId 가 없습니다.");
+			log.warn("payload.header.rcveSrvcId 가 없습니다.");
 		}
 		
 		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
@@ -87,7 +86,6 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
 		
-//		log.info("[INTERFACE] [REQUEST] : {}{} - {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode);
 		log.info("[INTERFACE] [REQUEST] : {}{} - [header] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("header"));
 		log.info("[INTERFACE] [REQUEST] : {}{} - [payload] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("payload"));
 	}
@@ -105,7 +103,7 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 			rcveSrvcId = responseBodyObjectNode.get("header").get("rcveSrvcId").asText();
 			ifSpec = IfConstant.findIfSpec(rcveSrvcId);
 		}catch (NullPointerException e) {
-			log.error("payload.header.rcveSrvcId 가 없습니다.");
+			log.warn("payload.header.rcveSrvcId 가 없습니다.");
 		}
 		
 		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
@@ -125,7 +123,6 @@ public class InterfaceClientHttpRequestInterceptorForLogging implements ClientHt
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
 		
-//		log.info("[INTERFACE] [RESPONSE] : {}{} - [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, response.getStatusCode(), responseBodyObjectNode);
 		log.info("[INTERFACE] [RESPONSE] : {}{} - [header] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
 		log.info("[INTERFACE] [RESPONSE] : {}{} - [payload] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"),  response.getStatusCode());
 	}

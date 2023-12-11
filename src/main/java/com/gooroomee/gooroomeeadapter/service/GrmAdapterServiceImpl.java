@@ -44,20 +44,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class GrmAdapterServiceImpl implements GrmAdapterService {
+	
+	@Autowired
+	@Qualifier(value = "restTemplateForIfConsumer")
+	private RestTemplate restTemplateForIfConsumer;
+	
+	@Autowired
+	@Qualifier(value = "restTemplateForIfProvider")
+	private RestTemplate restTemplateForIfProvider;
+	
+	@Autowired
+	@Qualifier(value = "restTemplateForImageSystem")
+	private RestTemplate restTemplateForImageSystem;
 
-	@Autowired
-	@Qualifier(value = "restTemplateForInterface")
-	private RestTemplate restTemplateForInterface;
-	
-	@Autowired
-	@Qualifier(value = "restTemplateForCommon")
-	private RestTemplate restTemplateForCommon;
-	
-	@Autowired
-	@Qualifier(value = "restTemplateForMultipartFormData")
-	private RestTemplate restTemplateForMultipartFormData;
-	
-	
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -124,7 +123,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 	public <I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException {
 
-		IfUtil ifUtil = new IfUtil(restTemplateForInterface, emnb, activeProfile, ifEndpointUrl);
+		IfUtil ifUtil = new IfUtil(restTemplateForIfConsumer, emnb, activeProfile, ifEndpointUrl);
 
 		IfTelegramHeader inputTelegramHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode());
 
@@ -153,7 +152,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
 
-		ResponseEntity<String> responseEntity = restTemplateForCommon.exchange(requestEntity, String.class);
+		ResponseEntity<String> responseEntity = restTemplateForIfProvider.exchange(requestEntity, String.class);
 		String responseBody = responseEntity.getBody();
 
 		if (responseBody != null) {
@@ -165,11 +164,11 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	}
 	
 	@Override
-	public IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException, IOException {
+	public IfMcCs999_O edmsRgstr(IfMcCs999_I imgSystemInput) throws URISyntaxException, IOException {
 		
 		String edmsServiceUri = edmsServerServiceScheme + "://" + edmsServerServiceDomain + ":" + edmsServerServicePort + edmsServerServiceUri;
 		
-		MultipartFile multipartFile = edmsInput.getFile();
+		MultipartFile multipartFile = imgSystemInput.getFile();
 		ByteArrayResource resource = new ByteArrayResource(multipartFile.getBytes()) {
 			@Override
 			public String getFilename() {
@@ -185,22 +184,22 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		*/
 		
 		MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
-		multiValueMap.set("acfmAltrYn", edmsInput.getAcfmAltrYn());
-		multiValueMap.set("appnJdgnTypeVal", edmsInput.getAppnJdgnTypeVal());
-		multiValueMap.set("bncaAcfmYn", edmsInput.getBncaAcfmYn());
-		multiValueMap.set("bswrvsnCode", edmsInput.getBswrvsnCode());
-		multiValueMap.set("cntcBefrObdsMatrYn", edmsInput.getCntcBefrObdsMatrYn());
-		multiValueMap.set("dcfmBrcd", edmsInput.getDcfmBrcd());
-		multiValueMap.set("dcfmCode", edmsInput.getDcfmCode());
-		multiValueMap.set("dcmtTypeCode", edmsInput.getDcmtTypeCode());
+		multiValueMap.set("acfmAltrYn", imgSystemInput.getAcfmAltrYn());
+		multiValueMap.set("appnJdgnTypeVal", imgSystemInput.getAppnJdgnTypeVal());
+		multiValueMap.set("bncaAcfmYn", imgSystemInput.getBncaAcfmYn());
+		multiValueMap.set("bswrvsnCode", imgSystemInput.getBswrvsnCode());
+		multiValueMap.set("cntcBefrObdsMatrYn", imgSystemInput.getCntcBefrObdsMatrYn());
+		multiValueMap.set("dcfmBrcd", imgSystemInput.getDcfmBrcd());
+		multiValueMap.set("dcfmCode", imgSystemInput.getDcfmCode());
+		multiValueMap.set("dcmtTypeCode", imgSystemInput.getDcmtTypeCode());
 //		multiValueMap.set("file", edmsInput.getFile());
 		multiValueMap.set("file", resource);
-		multiValueMap.set("fileNm", edmsInput.getFileNm());
-		multiValueMap.set("imgeDocuNo", edmsInput.getImgeDocuNo());
-		multiValueMap.set("imgePrefixVal", edmsInput.getImgePrefixVal());
-		multiValueMap.set("ogtxFileNm", edmsInput.getOgtxFileNm());
-		multiValueMap.set("sysCode", edmsInput.getSysCode());
-		multiValueMap.set("userId", edmsInput.getUserId());
+		multiValueMap.set("fileNm", imgSystemInput.getFileNm());
+		multiValueMap.set("imgeDocuNo", imgSystemInput.getImgeDocuNo());
+		multiValueMap.set("imgePrefixVal", imgSystemInput.getImgePrefixVal());
+		multiValueMap.set("ogtxFileNm", imgSystemInput.getOgtxFileNm());
+		multiValueMap.set("sysCode", imgSystemInput.getSysCode());
+		multiValueMap.set("userId", imgSystemInput.getUserId());
 		
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -208,13 +207,13 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		RequestEntity<MultiValueMap<String, Object>> requestEntity = new RequestEntity<>(multiValueMap, httpHeaders, HttpMethod.POST, new URI(edmsServiceUri));
 //		ResponseEntity<IfMcCs999_O> responseEntity = restTemplateForCommon.exchange(requestEntity, IfMcCs999_O.class);
 		
-		ResponseEntity<String> responseEntity = restTemplateForMultipartFormData.exchange(requestEntity, String.class);
+		ResponseEntity<String> responseEntity = restTemplateForImageSystem.exchange(requestEntity, String.class);
 		
 		String responseBody = responseEntity.getBody();
 		
-		IfMcCs999_O edmsOutput = null;
+		IfMcCs999_O imgSystemOutput = null;
 		if (responseBody != null) {
-			edmsOutput = objectMapper.readValue(responseBody, IfMcCs999_O.class);
+			imgSystemOutput = objectMapper.readValue(responseBody, IfMcCs999_O.class);
 		}
 		
 		/*
@@ -227,7 +226,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		IfMcCs999_O edmsOutput = responseEntity.getBody();
 		*/
-		return edmsOutput;
+		return imgSystemOutput;
 	}
 
 }
