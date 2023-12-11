@@ -21,28 +21,32 @@ public class GrmAdapterControllerAdvice {
 
 	@ExceptionHandler(value = Exception.class)
 	public @ResponseBody ResponseDto<String> globalExceptionHandler(Exception exception) {
+		/*
 		ObjectMapper objectMapper = new ObjectMapper();
-
+		
 		Map<String, Object> exceptionMap = new LinkedHashMap<String, Object>();
-
+		
 		String message = exception.getMessage();
-
+		
 		StackTraceElement[] stackTrace = exception.getStackTrace();
 		exceptionMap.put("message", message);
 		exceptionMap.put("stackTrace", stackTrace);
-
+		
 		String exceptionInfoString;
-
+		
 		try {
 			exceptionInfoString = objectMapper.writeValueAsString(exceptionMap);
 		} catch (JsonProcessingException jsonProcessingException) {
 			log.error("[JsonProcessingException] : {}", jsonProcessingException.getMessage());
 			exceptionInfoString = message;
 		}
-
+		
 		log.error("[EXCEPTION] : {}", exceptionInfoString);
-
-		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, message);
+		*/
+		
+		log.error("[EXCEPTION]", exception);
+		
+		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
 
 	}
 }

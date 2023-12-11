@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.service;
+package com.gooroomee.gooroomeeadapter.service.impl;
 
 import java.io.IOException;
 import java.net.URI;
@@ -37,6 +37,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.gooroomeeadapter.service.GrmAdapterService;
 import com.gooroomee.gooroomeeadapter.util.IfUtil;
 
 import lombok.extern.slf4j.Slf4j;

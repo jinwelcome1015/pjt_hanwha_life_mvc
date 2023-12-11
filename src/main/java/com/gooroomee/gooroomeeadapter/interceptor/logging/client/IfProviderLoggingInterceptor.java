@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.interceptor;
+package com.gooroomee.gooroomeeadapter.interceptor.logging.client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,25 +28,28 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class IfConsumerLoggingInterceptor implements ClientHttpRequestInterceptor {
+public class IfProviderLoggingInterceptor implements ClientHttpRequestInterceptor {
 	
-	@Value(value = "${api.ocr.logging.enabled:false}")
-	private boolean apiOcrLoggingEnabled;
-
-	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(IfConsumerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64"
-
 	private ObjectMapper objectMapper = new ObjectMapper();
-
 	
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
 
-		this.traceRequest(request, body);
+		try {
+			this.traceRequest(request, body);
+		}catch (Exception e) {
+			log.error("[LOGGING EXCEPTION]", e);
+		}
 
 		ClientHttpResponse response = execution.execute(request, body);
 
 		URI uri = request.getURI();
-		this.traceResponse(response, uri);
+		
+		try {
+			this.traceResponse(response, uri);
+		}catch (Exception e) {
+			log.error("[LOGGING EXCEPTION]", e);
+		}
 	
 		return response;
 	}
@@ -59,35 +62,7 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 
 		ObjectNode requestBodyObjectNode = (ObjectNode) objectMapper.readTree(requestBody);
 		
-		String rcveSrvcId = null;
-		IfSpec ifSpec = null;
-		
-		try {
-			rcveSrvcId = requestBodyObjectNode.get("header").get("rcveSrvcId").asText();
-			ifSpec = IfConstant.findIfSpec(rcveSrvcId);
-		}catch (NullPointerException e) {
-			log.warn("payload.header.rcveSrvcId 가 없습니다.");
-		}
-		
-		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
-			
-			ObjectNode firstImageObjectNode = (ObjectNode) requestBodyObjectNode.get("payload").get("dataBody").get("images").get(0);
-			
-			if(apiOcrLoggingEnabled) {
-				String base64Data = firstImageObjectNode.get("data").asText();
-				loggerForBase64DataLogging.info("[INTERFACE] [BASE64] : {}", base64Data);
-			}
-			
-			firstImageObjectNode.put("data", "");
-		}
-		
-		String rcveSrvcKorNm = "";
-		if(ifSpec != null) {
-			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
-		}
-		
-		log.info("[INTERFACE] [REQUEST] : {}{} - [header] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("header"));
-		log.info("[INTERFACE] [REQUEST] : {}{} - [payload] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("payload"));
+		log.info("[IF-PROVIDER] [REQUEST] : [URI] - {}, [BODY] - {}", request.getURI(), requestBodyObjectNode);
 	}
 
 
@@ -96,35 +71,9 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 		String responseBody = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
 		
 		ObjectNode responseBodyObjectNode = (ObjectNode) objectMapper.readTree(responseBody);
-		String rcveSrvcId = null;
-		IfSpec ifSpec = null;
 		
-		try {
-			rcveSrvcId = responseBodyObjectNode.get("header").get("rcveSrvcId").asText();
-			ifSpec = IfConstant.findIfSpec(rcveSrvcId);
-		}catch (NullPointerException e) {
-			log.warn("payload.header.rcveSrvcId 가 없습니다.");
-		}
+		log.info("[IF-PROVIDER] [RESPONSE] : [URI] - {}, [BODY] - {}, [STATUS CODE] - {}", uri, responseBodyObjectNode, response.getStatusCode());
 		
-		if (IfConstant.IfSpec.IfMcCs001.getRcveSrvcId().equals(rcveSrvcId)) {
-			
-			ObjectNode dataBodyObjectNode = (ObjectNode) responseBodyObjectNode.get("payload").get("dataBody");
-			
-			if(apiOcrLoggingEnabled) {
-				String ocrData = dataBodyObjectNode.get("images").asText();
-				loggerForBase64DataLogging.info("[INTERFACE] [OCR] : {}", ocrData);
-			}
-			
-			dataBodyObjectNode.put("images", "");
-		}
-		
-		String rcveSrvcKorNm = "";
-		if(ifSpec != null) {
-			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
-		}
-		
-		log.info("[INTERFACE] [RESPONSE] : {}{} - [header] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
-		log.info("[INTERFACE] [RESPONSE] : {}{} - [payload] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"),  response.getStatusCode());
 	}
 	
 	

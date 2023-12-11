@@ -32,9 +32,9 @@ import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc003ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
 import com.gooroomee.gooroomeeadapter.filter.CustomServletWrappingFilter;
-import com.gooroomee.gooroomeeadapter.interceptor.IfProviderLoggingInterceptor;
-import com.gooroomee.gooroomeeadapter.interceptor.ImageSystemLoggingInterceptor;
-import com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfProviderLoggingInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.logging.client.ImageSystemLoggingInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,8 +56,8 @@ public class GrmAdapterConfiguration {
 	@Autowired
 	ImageSystemLoggingInterceptor imageSystemLoggingInterceptor;
 
-	@Value(value = "${spring.profiles.active}")
-	private String springProfilesActive;
+//	@Value(value = "${spring.profiles.active}")
+//	private String springProfilesActive;
 
 	@Bean
 	public FilterRegistrationBean<CustomServletWrappingFilter> filterRegistrationBean() {

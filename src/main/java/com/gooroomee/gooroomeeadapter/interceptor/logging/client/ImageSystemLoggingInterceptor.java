@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.interceptor;
+package com.gooroomee.gooroomeeadapter.interceptor.logging.client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -36,13 +36,21 @@ public class ImageSystemLoggingInterceptor implements ClientHttpRequestIntercept
 
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-
-		this.traceRequest(request, body);
+		try {
+			this.traceRequest(request, body);
+		}catch (Exception e) {
+			log.error("[LOGGING EXCEPTION]", e);
+		}
 
 		ClientHttpResponse response = execution.execute(request, body);
 
 		URI uri = request.getURI();
-		this.traceResponse(response, uri);
+		try {
+			this.traceResponse(response, uri);
+		} catch (Exception e) {
+			log.error("[LOGGING EXCEPTION]", e);
+		}
+		
 		return response;
 	}
 

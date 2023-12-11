@@ -1,4 +1,4 @@
-package com.gooroomee.gooroomeeadapter.interceptor;
+package com.gooroomee.gooroomeeadapter.interceptor.auth;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

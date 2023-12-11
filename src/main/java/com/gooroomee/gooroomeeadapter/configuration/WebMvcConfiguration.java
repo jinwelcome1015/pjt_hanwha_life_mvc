@@ -7,8 +7,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
-import com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor;
-import com.gooroomee.gooroomeeadapter.interceptor.AuthInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.auth.AuthInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiLoggingInterceptor;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
