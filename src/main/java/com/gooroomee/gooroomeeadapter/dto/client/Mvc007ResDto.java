@@ -19,7 +19,7 @@ public class Mvc007ResDto {
 	/** 총건수 */
 	private int totCont;
 
-	/** 다음페이지여부 */
+	/** 다음페이지여부(보험코어의 변수명이 잘못됨. 사실상 마지막 페이지 여부(isLastPageYn)) */
 	private String nextPageYn;
 
 	// XXX 확인
