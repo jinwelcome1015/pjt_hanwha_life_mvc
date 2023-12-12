@@ -122,6 +122,7 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O.CustCntcInfoInqyRslt;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs009_I;
@@ -1157,24 +1158,43 @@ public class GrmAdapterController {
 		IfMcCs007_I ifInputDto = modelMapper.map(reqDto, IfMcCs007_I.class);
 		ifInputDto.setCntcDvsnCode(IfConstant.ContractClassificationCode.INSURANCE.getCode());
 		ifInputDto.setCustDvsnCode(IfConstant.CustomerDivisionCode.INDIVIDUAL.getCode());
-		ifInputDto.setNextKey("1");
-		ifInputDto.setPageSize(50);
 
-		String emnb = reqDto.getEmnb();
-
-		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
-		Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
-		IfMcCs007_O ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
-
-//		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0 || ifOutputDto.getTotCont() == 0) {
-		/*
-		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null || ifOutputDto.getCustCntcInfoInqyRsltList().size() == 0) {
-			throw new IfException("조회된 고객계약정보가 없습니다.");
+		if(ifInputDto.getPageSize() <= 0) {
+			// TODO 삭제
+//			ifInputDto.setPageSize(50);
+			ifInputDto.setPageSize(1);
 		}
-		*/
-		if (ifOutputDto.getCustCntcInfoInqyRsltList() == null) {
-			ifOutputDto.setCustCntcInfoInqyRsltList(new ArrayList<>());
-		}
+		
+		String isLastPageYn = "N";
+		String nextKey = "".equals(StringUtils.defaultString(ifInputDto.getNextKey())) ? "0" : ifInputDto.getNextKey();
+		
+		List<CustCntcInfoInqyRslt> totalContractList = new ArrayList<>();
+		List<CustCntcInfoInqyRslt> pagingContractList = null;
+		
+		IfMcCs007_O ifOutputDto = null;
+		
+		do {
+			ifInputDto.setNextKey(nextKey);
+			
+			String emnb = reqDto.getEmnb();
+			IfSpec ifSpec = IfConstant.IfSpec.IfMcCs007;
+			Class<IfMcCs007_O> ifOutputDtoClass = IfMcCs007_O.class;
+			ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+		
+			isLastPageYn = ifOutputDto.getNextPageYn();		// 보험코어 소스, 실제 응답결과를 보면 파라미터 이름이 nextPageYn 이지만, 사실상 isLastPageYn(마지막 페이지 여부)임.
+			pagingContractList = ifOutputDto.getCustCntcInfoInqyRsltList();
+			
+			if(pagingContractList != null) {
+				totalContractList.addAll(pagingContractList);
+				int custCntcInfoInqyRsltListSize = pagingContractList.size();
+				nextKey = String.valueOf(Integer.parseInt(nextKey) + custCntcInfoInqyRsltListSize);
+			}
+		
+		} while ("N".equalsIgnoreCase(isLastPageYn) || pagingContractList != null);
+		
+		ifOutputDto.setCustCntcInfoInqyRsltList(totalContractList);
+		ifOutputDto.setNextPageYn(isLastPageYn);
+		ifOutputDto.setTotCont(totalContractList.size());
 
 		Mvc007ResDto resDto = modelMapper.map(ifOutputDto, Mvc007ResDto.class);
 
