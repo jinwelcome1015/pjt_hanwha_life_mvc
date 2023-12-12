@@ -22,7 +22,8 @@
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/logback-dev-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- <fileNamePattern>./log/logback-dev-%d{yyyy-MM-dd}.%i.log</fileNamePattern> -->
+            <fileNamePattern>./log/logback-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
@@ -36,30 +37,14 @@
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/logback-dev-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- <fileNamePattern>./log/logback-dev-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern> -->
+            <fileNamePattern>./log/logback-info-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
     </appender>
     
-     <appender name="FILE-ERROR-OCR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>            
-        </filter>
-        <encoder>
-        	<charset>UTF-8</charset>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/logback-prod-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>50MB</maxFileSize>
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>3GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
     
     <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -72,14 +57,39 @@
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        	<!-- 
             <fileNamePattern>./log/logback-prod-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+         	-->
+         	<fileNamePattern>./log/logback-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+         	
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    
+    <appender name="FILE-ERROR-OCR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>            
+        </filter>
+        <encoder>
+        	<charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- <fileNamePattern>./log/logback-prod-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern> -->
+            <fileNamePattern>./log/logback-error-ocr-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
-	 <!--local-->
+
+	<!--local-->
     <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
@@ -89,10 +99,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -107,10 +117,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -125,27 +135,47 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
     
      
     <!--prod, dr-->
+    <springProfile name="qa">
+        <root level="INFO">
+        	<appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE-INFO"/>
+        </root>
+        <logger level="DEBUG" name="com.gooroomee" additivity="false">
+        	<appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE-INFO"/>
+        </logger>
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
+        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-INFO-OCR"/>
+        </logger>
+    </springProfile>
+    
+    
+    <!-- 
     <springProfile name="prod, dr">
         <root level="ERROR">
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-ERROR"/>
         </root>
-        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64" additivity="false">
-            <appender-ref ref="FILE-INFO-OCR"/>
+        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-ERROR-OCR"/>
         </logger>
-        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64" additivity="false">
-            <appender-ref ref="FILE-INFO-OCR"/>
+        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+            <appender-ref ref="FILE-ERROR-OCR"/>
         </logger>
     </springProfile>
-    
+     -->
+     
 </configuration>

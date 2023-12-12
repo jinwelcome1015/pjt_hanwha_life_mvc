@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class ApiLoggingInterceptor implements HandlerInterceptor {
+public class ApiServerLoggingInterceptor implements HandlerInterceptor {
 	
 	@Autowired
 	GrmAdapterController grmAdapterController; 
@@ -33,9 +33,8 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
 	private boolean apiOcrLoggingEnabled;
 	
 	private static final Logger LOGGER_FOR_BASE64_DATA_LOGGING = LoggerFactory
-			.getLogger(ApiLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.ApiLoggingInterceptor._BASE64"
+			.getLogger(ApiServerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64"
 
-	
 	
 	
 	

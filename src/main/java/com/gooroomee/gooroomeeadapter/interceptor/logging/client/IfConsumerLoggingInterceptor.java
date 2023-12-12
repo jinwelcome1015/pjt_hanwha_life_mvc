@@ -33,7 +33,7 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 	@Value(value = "${api.ocr.logging.enabled:false}")
 	private boolean apiOcrLoggingEnabled;
 
-	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(IfConsumerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.IfConsumerLoggingInterceptor._BASE64"
+	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(IfConsumerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64"
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 

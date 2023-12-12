@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gooroomee.gooroomeeadapter.controller.GrmAdapterController;
 import com.gooroomee.gooroomeeadapter.interceptor.auth.AuthInterceptor;
-import com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiLoggingInterceptor;
+import com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
@@ -17,7 +17,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	private String apiAuthEnabled;
 
 	@Autowired
-	ApiLoggingInterceptor apiLoggingInterceptor;
+	ApiServerLoggingInterceptor apiLoggingInterceptor;
 
 	@Autowired
 	AuthInterceptor authInterceptor;
