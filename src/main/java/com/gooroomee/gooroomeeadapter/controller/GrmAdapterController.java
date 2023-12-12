@@ -1558,6 +1558,14 @@ public class GrmAdapterController {
 			throws URISyntaxException, IOException {
 
 		IfMcCs013_I ifInputDto = modelMapper.map(reqDto, IfMcCs013_I.class);
+		
+		if("".equals(StringUtils.defaultString(ifInputDto.getCustId()))) {
+			throw new IfException(HttpStatus.OK, "custId 는 필수 입력값 입니다.");
+		}
+		
+		String rrno = ifInputDto.getRrno();
+		rrno = StringUtils.defaultString(rrno);
+		ifInputDto.setRrno(rrno);
 
 		String emnb = reqDto.getEmnb();
 		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs013;
