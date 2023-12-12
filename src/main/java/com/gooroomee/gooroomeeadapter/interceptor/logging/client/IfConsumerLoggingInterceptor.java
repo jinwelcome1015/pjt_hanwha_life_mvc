@@ -96,8 +96,8 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
 		
-		log.info("[INTERFACE] [REQUEST] : {}{} - [header] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("header"));
-		log.info("[INTERFACE] [REQUEST] : {}{} - [payload] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("payload"));
+		log.info("[INTERFACE] [REQUEST-HEADER] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("header"));
+		log.info("[INTERFACE] [REQUEST-PAYLOAD] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("payload"));
 	}
 
 
@@ -133,8 +133,8 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
 		
-		log.info("[INTERFACE] [RESPONSE] : {}{} - [header] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
-		log.info("[INTERFACE] [RESPONSE] : {}{} - [payload] : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"),  response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE-HEADER] : {}{} : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE-PAYLOAD] : {}{} : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"),  response.getStatusCode());
 	}
 	
 	
