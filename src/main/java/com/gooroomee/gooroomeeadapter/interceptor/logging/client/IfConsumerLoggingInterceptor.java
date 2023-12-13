@@ -45,7 +45,6 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 		}catch (Exception e) {
 			log.error("[LOGGING EXCEPTION]", e);
 		}
-		
 
 		ClientHttpResponse response = execution.execute(request, body);
 
@@ -56,7 +55,6 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 		}catch (Exception e) {
 			log.error("[LOGGING EXCEPTION]", e);
 		}
-		
 	
 		return response;
 	}
@@ -133,11 +131,7 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
 		
-		log.info("[INTERFACE] [RESPONSE-HEADER] : {}{} : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
-		log.info("[INTERFACE] [RESPONSE-PAYLOAD] : {}{} : {}, [Status code : {}], {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"),  response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE-HEADER] : {}{} : {}, [Status code] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE-PAYLOAD] : {}{} : {}, [Status code] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"), response.getStatusCode());
 	}
-	
-	
-	
-	
 }

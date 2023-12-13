@@ -33,7 +33,11 @@ public class GrmAdapterControllerAdvice {
 		if(httpStatus == HttpStatus.INTERNAL_SERVER_ERROR) {
 			log.error("[EXCEPTION]", exception);
 		} else {
-			log.info("[EXCEPTION]", exception);
+			if(exception instanceof IfException) {
+				log.info("[EXCEPTION] : {}", exception.getMessage());
+			}else {
+				log.info("[EXCEPTION]", exception);
+			}
 		}
 		
 		return new ResponseDto<String>(Result.FAIL, httpStatus, exception.getMessage());

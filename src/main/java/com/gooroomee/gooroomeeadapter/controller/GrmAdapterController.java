@@ -982,7 +982,7 @@ public class GrmAdapterController {
 				totalUserList.addAll(pagingUserList);
 			}
 			
-		} while (!"0".equals(nextKey));
+		} while (!"0".equals(nextKey) && (pagingUserList != null && pagingUserList.size() > 0));
 		
 		ifOutputDto.setUserLstList(totalUserList);
 	
@@ -1160,9 +1160,7 @@ public class GrmAdapterController {
 		ifInputDto.setCustDvsnCode(IfConstant.CustomerDivisionCode.INDIVIDUAL.getCode());
 
 		if(ifInputDto.getPageSize() <= 0) {
-			// TODO 삭제
-//			ifInputDto.setPageSize(50);
-			ifInputDto.setPageSize(1);
+			ifInputDto.setPageSize(50);
 		}
 		
 		String isLastPageYn = "N";
@@ -1190,7 +1188,7 @@ public class GrmAdapterController {
 				nextKey = String.valueOf(Integer.parseInt(nextKey) + custCntcInfoInqyRsltListSize);
 			}
 		
-		} while ("N".equalsIgnoreCase(isLastPageYn) || pagingContractList != null);
+		} while ("N".equalsIgnoreCase(isLastPageYn) && (pagingContractList != null && pagingContractList.size() > 0));
 		
 		ifOutputDto.setCustCntcInfoInqyRsltList(totalContractList);
 		ifOutputDto.setNextPageYn(isLastPageYn);
