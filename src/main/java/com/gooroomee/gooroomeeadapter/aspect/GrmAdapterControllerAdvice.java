@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto.Result;
+import com.gooroomee.gooroomeeadapter.exception.IfException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,32 +22,21 @@ public class GrmAdapterControllerAdvice {
 
 	@ExceptionHandler(value = Exception.class)
 	public @ResponseBody ResponseDto<String> globalExceptionHandler(Exception exception) {
-		/*
-		ObjectMapper objectMapper = new ObjectMapper();
 		
-		Map<String, Object> exceptionMap = new LinkedHashMap<String, Object>();
 		
-		String message = exception.getMessage();
-		
-		StackTraceElement[] stackTrace = exception.getStackTrace();
-		exceptionMap.put("message", message);
-		exceptionMap.put("stackTrace", stackTrace);
-		
-		String exceptionInfoString;
-		
-		try {
-			exceptionInfoString = objectMapper.writeValueAsString(exceptionMap);
-		} catch (JsonProcessingException jsonProcessingException) {
-			log.error("[JsonProcessingException] : {}", jsonProcessingException.getMessage());
-			exceptionInfoString = message;
+		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		if(exception instanceof IfException) {
+			IfException ifException = (IfException) exception;
+			httpStatus = ifException.getHttpStatus();
 		}
 		
-		log.error("[EXCEPTION] : {}", exceptionInfoString);
-		*/
+		if(httpStatus == HttpStatus.INTERNAL_SERVER_ERROR) {
+			log.error("[EXCEPTION]", exception);
+		} else {
+			log.info("[EXCEPTION]", exception);
+		}
 		
-		log.error("[EXCEPTION]", exception);
-		
-		return new ResponseDto<String>(Result.FAIL, HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+		return new ResponseDto<String>(Result.FAIL, httpStatus, exception.getMessage());
 
 	}
 }
