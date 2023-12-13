@@ -130,8 +130,8 @@ public class IfConsumerLoggingInterceptor implements ClientHttpRequestIntercepto
 		if(ifSpec != null) {
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
-		
-		log.info("[INTERFACE] [RESPONSE-HEADER] : {}{} : {}, [Status code] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"), response.getStatusCode());
-		log.info("[INTERFACE] [RESPONSE-PAYLOAD] : {}{} : {}, [Status code] : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"), response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE-STATUS-CODE] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, response.getStatusCode());
+		log.info("[INTERFACE] [RESPONSE-HEADER] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("header"));
+		log.info("[INTERFACE] [RESPONSE-PAYLOAD] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, responseBodyObjectNode.get("payload"));
 	}
 }
