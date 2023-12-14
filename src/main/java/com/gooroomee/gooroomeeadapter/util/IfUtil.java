@@ -174,7 +174,7 @@ public class IfUtil {
 
 //			if (cnt > 0 && msgeList != null && msgeList.size() > 0) {
 			if (msgeList != null && msgeList.size() > 0) {
-				throw new IfException(HttpStatus.INTERNAL_SERVER_ERROR, msgeList.get(0).getMsgeCntn());
+				throw new IfException(HttpStatus.OK, msgeList.get(0).getMsgeCntn());
 			}
 		}
 
