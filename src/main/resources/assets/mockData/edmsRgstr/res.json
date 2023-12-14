@@ -1,8 +1,8 @@
 {
-  "payload": {
-    "trscId": "202312051111111111111111111111",
-    "rsltYn": "N",
-    "rsltMsge": "미사용 접속시간이 초과되었거나 잘못된 접근입니다.\n다시 접속해주세요.",
-    "rsltErroCode": "AUTHE-NON"
-  }
+     "payload": {
+          "trscId": "20231214100530889_QA_SOL_IMA_INSD_00000000000000000153_00000000",
+          "rsltYn": "Y",
+          "rsltMsge": null,
+          "rsltErroCode": null
+     }
 }

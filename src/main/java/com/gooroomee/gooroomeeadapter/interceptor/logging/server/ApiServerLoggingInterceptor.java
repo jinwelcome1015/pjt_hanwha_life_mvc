@@ -1,5 +1,7 @@
 package com.gooroomee.gooroomeeadapter.interceptor.logging.server;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -40,42 +43,20 @@ public class ApiServerLoggingInterceptor implements HandlerInterceptor {
 	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
+		if (exception != null) {
+			request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, exception);
+			request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
+		}
+		
 		try {
 			
 			String requestUri = request.getRequestURI();
-			
 			String controllerPath = request.getRequestURI().replaceAll(String.format("^%s", request.getContextPath()), "");
 			String controllerName = grmAdapterController.findControllerName(controllerPath);
 			
-			if (exception != null) {
-				request.setAttribute(GrmAdapterController.EXCEPTION_ATTRIBUTE_NAME, exception);
-				request.getRequestDispatcher(GrmAdapterController.EXCEPTION_CONTROLLER_PATH).forward(request, response);
-			}
+			this.logRequest(request, requestUri, controllerPath, controllerName);
 			
-			final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-			ObjectNode requestObjectNode = (ObjectNode) objectMapper.readTree(cachingRequest.getContentAsByteArray());
-			
-			
-			
-			if (grmAdapterController.isRequestThatHasBase64Data(requestUri)) {
-				if(apiOcrLoggingEnabled) {
-					String base64Data = requestObjectNode.get("data").asText();
-					LOGGER_FOR_BASE64_DATA_LOGGING.info("[GRM-CLIENT] [BASE64] : {}", base64Data);
-				}
-				
-				requestObjectNode.put("data", "");
-			} 
-			log.info("[GRM-CLIENT] [{}({})] [Request Body] : {}", controllerPath, controllerName, requestObjectNode);
-			
-			
-			final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
-			ObjectNode responseObjectNode = (ObjectNode) objectMapper.readTree(cachingResponse.getContentAsByteArray());
-			
-			if (grmAdapterController.isRequestThatHasBase64Data(requestUri)) {
-//			LOGGER_FOR_BASE64_DATA_LOGGING.info("[GRM-CLIENT] [Response Body] : {}", responseObjectNode);
-			} 
-//		log.info("[GRM-CLIENT] [{}] [Response Body] : {}", request.getRequestURI(), responseObjectNode);
-			log.info("[GRM-CLIENT] [{}({})] [Response Body] : {}", controllerPath, controllerName, responseObjectNode);
+			this.logResponse(response, requestUri, controllerPath, controllerName);
 			
 		}catch (Exception e) {
 			log.error("[LOGGING EXCEPTION]", e);
@@ -83,8 +64,39 @@ public class ApiServerLoggingInterceptor implements HandlerInterceptor {
 
 		HandlerInterceptor.super.afterCompletion(request, response, handler, exception);
 	}
+	
+	
+	private void logRequest(HttpServletRequest request, String requestUri, String controllerPath, String controllerName) throws IOException {
+		if(request instanceof StandardMultipartHttpServletRequest) {
+			log.info("[GRM-CLIENT-WITH-MULTIPART] [{}({})] [Request Body ContentLength] : {}", controllerPath, controllerName, request.getContentLength());
+		}else {
+			final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+			ObjectNode requestObjectNode = (ObjectNode) objectMapper.readTree(cachingRequest.getContentAsByteArray());
+			
+			if (grmAdapterController.isRequestThatHasBase64Data(requestUri)) {
+				if(apiOcrLoggingEnabled) {
+					String base64Data = requestObjectNode.get("data").asText();
+					LOGGER_FOR_BASE64_DATA_LOGGING.info("[GRM-CLIENT] [BASE64] : {}", base64Data);
+				}
+				requestObjectNode.put("data", "");
+			} 
+			log.info("[GRM-CLIENT] [{}({})] [Request Body] : {}", controllerPath, controllerName, requestObjectNode);
+		}
+	}
 
 	
+	
+	private void logResponse(HttpServletResponse response, String requestUri, String controllerPath, String controllerName) throws IOException {
+
+		final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
+		ObjectNode responseObjectNode = (ObjectNode) objectMapper.readTree(cachingResponse.getContentAsByteArray());
+
+		if (grmAdapterController.isRequestThatHasBase64Data(requestUri)) {
+//		LOGGER_FOR_BASE64_DATA_LOGGING.info("[GRM-CLIENT] [Response Body] : {}", responseObjectNode);
+		}
+		log.info("[GRM-CLIENT] [{}({})] [Response Body] : {}", controllerPath, controllerName, responseObjectNode);
+
+	}
 	
 	
 }

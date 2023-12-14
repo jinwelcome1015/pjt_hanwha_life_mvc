@@ -8,6 +8,7 @@ import lombok.Getter;
 
 public class IfConstant {
 	
+	/** 보험코어권한ID */
 	public static final String ISRN_CORE_ATRT_ID = "PPR_0007";
 
 	/** 송신 시스템 코드 */
