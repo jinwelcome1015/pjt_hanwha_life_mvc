@@ -89,7 +89,7 @@ public class IfUtil {
 		header.setEmnb(this.getEnmb());
 		header.setBelnOrgnCode(BELN_ORGN_CODE);
 		header.setPrsnInfoIncsYn(prsnInfoIncsYn);
-		header.setIpAddr(this.formatIpAddress(this.getLocalIpAddress()));
+		header.setIpAddr(NetworkUtil.formatIpAddress(NetworkUtil.getLocalIpAddress()));
 		header.setTlgrCretDttm(this.getTlgrCretDttm());
 		header.setRndmNo(this.getRandomNumber());
 		header.setServerType(this.getServerType());
@@ -181,19 +181,6 @@ public class IfUtil {
 		return responseTelegram;
 	}
 
-	
-	public String formatIpAddress(String ipAddress) {
-		String formattedIpAddrString = "";
-
-		String[] ipAddressTokens = ipAddress.split("\\.");
-		for (String ipAddressToken : ipAddressTokens) {
-			Integer ipTokenDigit = Integer.valueOf(ipAddressToken);
-			String formattedToken = String.format("%03d", ipTokenDigit);
-			formattedIpAddrString += formattedToken;
-		}
-
-		return formattedIpAddrString;
-	}
 
 	public String getTlgrCretDttm() {
 		String pattern = "yyyyMMddHHmmssSSS";
@@ -202,27 +189,7 @@ public class IfUtil {
 		return simpleDateFormat.format(date);
 	}
 
-	public String getLocalIpAddress() {
-		try {
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			while (networkInterfaces.hasMoreElements()) {
-				NetworkInterface networkInterface = networkInterfaces.nextElement();
-				Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
-
-				while (inetAddresses.hasMoreElements()) {
-					InetAddress inetAddress = (InetAddress) inetAddresses.nextElement();
-					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-						return inetAddress.getHostAddress();
-					}
-
-				}
-			}
-		} catch (SocketException e) {
-			log.error(e.getMessage());
-		}
-
-		return IfConstant.DEFAULT_IP_ADDRESS;
-	}
+	
 
 	public String getRandomNumber() {
 		return getRandomNumber(4);

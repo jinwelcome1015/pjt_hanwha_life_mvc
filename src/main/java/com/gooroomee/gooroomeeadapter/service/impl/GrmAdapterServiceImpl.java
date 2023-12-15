@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.gooroomee.gooroomeeadapter.component.GrmCounsellingOtpUriSupplier;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant;
 import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
 import com.gooroomee.gooroomeeadapter.dto.ifprovider.provider.OtpDto_I;
@@ -60,6 +61,13 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	
+	
+	@Autowired
+	@Qualifier(value = "grmCounsellingOtpUriSupplierWithConnectTest")
+	private GrmCounsellingOtpUriSupplier grmCounsellingOtpUriSupplier;
+	
 
 	/** 인터페이스 엔드포인트 URL */
 	@Value(value = "${spring.profiles.active}")
@@ -93,9 +101,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	@Value(value = "${interface.encrypt.aes-iv}")
 	private String encryptAesIv;
 	
-	/** MVC시스템입장URI를 발행해주는 서비스의 URI */
-	@Value(value = "${mvc.entry-uri-issue-service.uri}")
-	private String uriOfMvcEntryUriIssueService;
+//	/** MVC시스템입장URI를 발행해주는 서비스의 URI */
+//	@Value(value = "${mvc.entry-uri-issue-service.uri}")
+//	private String uriOfMvcEntryUriIssueService;
 	
 	/** MVC시스템입장URI를 발행해주는 서비스의 API 키 이름 */
 	@Value(value = "${mvc.entry-uri-issue-service.api-key-header-name}")
@@ -149,7 +157,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		
 		httpHeaders.set(uriOfMvcEntryUriIssueServiceApiKeyHeaderName, uriOfMvcEntryUriIssueServiceApiKeyHeaderValue);
 
-		String targetFullUrl = uriOfMvcEntryUriIssueService;
+//		String targetFullUrl = uriOfMvcEntryUriIssueService;
 
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
 
