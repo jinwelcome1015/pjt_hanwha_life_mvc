@@ -15,9 +15,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -98,6 +101,8 @@ import com.gooroomee.gooroomeeadapter.dto.client.Mvc019ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc019ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc020ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc020ResDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc023ReqDto;
+import com.gooroomee.gooroomeeadapter.dto.client.Mvc023ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc999ReqDto;
 import com.gooroomee.gooroomeeadapter.dto.client.Mvc999ResDto;
 import com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto;
@@ -149,6 +154,9 @@ import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs019_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs023_I;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs023_O;
+import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs023_O.DateInfo;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_I;
 import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs999_O;
 import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
@@ -565,6 +573,24 @@ public class GrmAdapterController {
 		return d;
 	}
 
+	
+	private List<DateInfo> filterDate(List<DateInfo> dateInfoList){
+		return dateInfoList.stream().filter(dateInfo -> {
+			boolean isRemainCase = false;
+			if(
+				"Y".equalsIgnoreCase(dateInfo.getAcdtIsrnHldyYn())
+				|| "Y".equalsIgnoreCase(dateInfo.getBsnsOfdyYn())
+				|| "Y".equalsIgnoreCase(dateInfo.getElctAppnOfdyYn())
+				|| "Y".equalsIgnoreCase(dateInfo.getHldyYn())
+				|| "Y".equalsIgnoreCase(dateInfo.getStckOfdyYn())
+			) {
+				isRemainCase = true;
+			}
+			return isRemainCase;
+		}).collect(Collectors.toList());
+	} 
+	
+	
 	
 	/**
 	 * <pre>
@@ -2259,6 +2285,82 @@ public class GrmAdapterController {
 
 		return responseDto;
 	}
+	
+	
+	
+	
+	/**
+	 * 
+	 * <pre>
+	 * [21]
+	 * 휴일목록조회
+	 * </pre>
+	 * 
+	 * @param reqDto
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	@RequestMapping(path = { (API_URL_TOKEN + "/hldyInfoMgmt"), (API_URL_TOKEN + "/hldyInfoMgmt" + MockUtil.URL_SUFFIX_FOR_MOCK) }, method = {
+			RequestMethod.POST }, name = "21. 휴일목록조회")
+	public @ResponseBody ResponseDto<Mvc023ResDto> hldyInfoMgmt(@RequestBody Mvc023ReqDto reqDto, HttpServletRequest request)
+			throws URISyntaxException, IOException {
+		
+		int stndYymmLength = reqDto.getStndYymm().length();
+		if(stndYymmLength != 4 && stndYymmLength != 6) {
+			String message = "stndYymm 값이 \"yyyy\" 또는 \"yyyyMM\" 형식이 아닙니다.";
+			throw new IfException(HttpStatus.OK, message);
+		}
+
+		IfMcCs023_I ifInputDto = modelMapper.map(reqDto, IfMcCs023_I.class);
+
+		String emnb = reqDto.getEmnb();
+		
+		IfSpec ifSpec = IfConstant.IfSpec.IfMcCs023;
+		Class<IfMcCs023_O> ifOutputDtoClass = IfMcCs023_O.class;
+		
+		IfMcCs023_O ifOutputDto = null;
+		
+		List<DateInfo> pagingDateInfoList = null;
+		List<DateInfo> totalDateInfoList = new ArrayList<>();
+		
+		if(stndYymmLength == 4) {
+			for(int i = 1; i <= 12; i++) {
+				String yyyy = reqDto.getStndYymm();
+				String MM = StringUtils.leftPad(String.valueOf(i), 2, "0");
+				
+				String yyyyMM = yyyy + MM;
+				ifInputDto.setStndYymm(yyyyMM);
+				
+				ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+				pagingDateInfoList = ifOutputDto.getDateInfoList();
+				pagingDateInfoList = this.filterDate(pagingDateInfoList);
+				
+				if(pagingDateInfoList != null) {
+					totalDateInfoList.addAll(pagingDateInfoList);
+				}
+			}
+		}else if(stndYymmLength == 6) {
+			
+			ifOutputDto = grmAdapterService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
+			pagingDateInfoList = ifOutputDto.getDateInfoList();
+			pagingDateInfoList = this.filterDate(pagingDateInfoList);
+			
+			if(pagingDateInfoList != null) {
+				totalDateInfoList.addAll(pagingDateInfoList);
+			}
+		}
+		
+		ifOutputDto.setDateInfoList(totalDateInfoList);
+		
+		Mvc023ResDto resDto = modelMapper.map(ifOutputDto, Mvc023ResDto.class);
+
+		ResponseDto<Mvc023ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
+
+		return responseDto;
+	}
+	
+	
 	
 	
 	

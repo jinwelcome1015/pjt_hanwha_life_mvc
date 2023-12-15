@@ -238,7 +238,11 @@ public class IfConstant {
         IfMcCs013("HLIMVC00036", "icsIntgCustInqyMgmtPSI007r", "고객통합기본정보조회", "HLI"),
         
         /** 인터페이스 명세 : SMS 메세지 발송 */
-        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "SMS 메세지 발송", "INI");
+        IfMcCs014("HLIMVC00037", "iniCspdDvlmUmsSendMgmtPSI001c", "SMS 메세지 발송", "INI"),
+        
+        /** 인터페이스 명세 : 해당년월일자정보목록조회 */
+        IfMcCs023("HLIMVC00041", "comHldyInfoMgmtPSI001r", "해당년월일자정보목록조회", "COM");
+		
 		
 		private final String itfcId;
 		private final String rcveSrvcId;
