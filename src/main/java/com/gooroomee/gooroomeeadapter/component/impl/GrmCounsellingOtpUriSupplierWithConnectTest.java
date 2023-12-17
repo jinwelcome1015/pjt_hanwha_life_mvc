@@ -130,7 +130,7 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 			ip = ipPort[0];
 			port = Integer.parseInt(ipPort[1]);
 		} else {
-			throw new RuntimeException("IP 와 PORT 를 추출하는 과정에서 예외가 발생했습니다.");
+			throw new RuntimeException(String.format("IP 와 PORT 를 추출하는 과정에서 예외가 발생했습니다. ([URI] : %s)", uri));
 		}
 
 		IpPortInfo ipPortInfo = new IpPortInfo(uri, ip, port);
