@@ -151,9 +151,9 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		String requestJson = objectMapper.writeValueAsString(dto_I);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-//		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
+		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON_UTF8));
 //		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
+//		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
 		
 		httpHeaders.set(uriOfMvcEntryUriIssueServiceApiKeyHeaderName, uriOfMvcEntryUriIssueServiceApiKeyHeaderValue);
 
