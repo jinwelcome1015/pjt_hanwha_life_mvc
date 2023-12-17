@@ -145,7 +145,7 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 	
 
 	@Override
-	public IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException {
+	public IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws URISyntaxException, IOException {
 		IfProviderResponseCommonDto<String> responseCommonDto = null;
 
 		String requestJson = objectMapper.writeValueAsString(dto_I);
@@ -158,6 +158,8 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 		httpHeaders.set(uriOfMvcEntryUriIssueServiceApiKeyHeaderName, uriOfMvcEntryUriIssueServiceApiKeyHeaderValue);
 
 //		String targetFullUrl = uriOfMvcEntryUriIssueService;
+		
+		String targetFullUrl = grmCounsellingOtpUriSupplier.getFirstConnectableUri(); 
 
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
 

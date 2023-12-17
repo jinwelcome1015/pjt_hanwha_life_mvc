@@ -2432,7 +2432,7 @@ public class GrmAdapterController {
 	
 	// XXX 
 	@RequestMapping(path = { "/counselling/otp" }, name = "[가]. IVR PROVIDER")
-	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws JsonMappingException, JsonProcessingException, URISyntaxException {
+	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 //		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
 		

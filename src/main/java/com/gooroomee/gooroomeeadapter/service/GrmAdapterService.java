@@ -15,7 +15,7 @@ public interface GrmAdapterService {
 
 	<I, O> O ifmccsCommon(String emnb, IfSpec ifSpec, I ifInputDto, Class<O> ifOutputDtoClass) throws JsonProcessingException, URISyntaxException;
 
-	IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException;
+	IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException, IOException;
 
 	IfMcCs999_O edmsRgstr(IfMcCs999_I edmsInput) throws URISyntaxException, IOException;
 

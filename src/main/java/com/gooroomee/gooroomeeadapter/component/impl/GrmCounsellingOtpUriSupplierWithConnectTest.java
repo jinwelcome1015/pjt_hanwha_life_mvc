@@ -18,8 +18,11 @@ import com.gooroomee.gooroomeeadapter.util.NetworkUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Component
+@Slf4j
 public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounsellingOtpUriSupplier {
 
 	/** MVC시스템입장URI를 발행해주는 서비스의 URI */
@@ -31,9 +34,11 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 	private String uriOfMvcEntryUriIssueService_2;
 	
 	@Override
-	public String getConnectableUri() {
-		List<IpPortInfo> ipPortInfos = this.getIpPortInfos();
-		List<IpPortInfo> reorderedLocalFirstIpPortInfos = this.reorderLocalFirst(ipPortInfos);
+	public String getFirstConnectableUri() throws IOException {
+		List<IpPortInfo> ipPortInfosOfMvcEntryUriIssueService = this.getIpPortInfosOfMvcEntryUriIssueService();
+		List<IpPortInfo> reorderedLocalFirstIpPortInfos = this.reorderLocalFirst(ipPortInfosOfMvcEntryUriIssueService);
+		
+		String firstConnectableUri = null;
 		
 		for (int i = 0; i < reorderedLocalFirstIpPortInfos.size(); i++) {
 			IpPortInfo ipPortInfo = reorderedLocalFirstIpPortInfos.get(i);
@@ -41,14 +46,31 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 			String ip = ipPortInfo.getIp();
 			int port = ipPortInfo.getPort();
 			
+			boolean isConnectable = false;
+			
 			Socket socket = new Socket();
 			try {
 				socket.connect(new InetSocketAddress(ip, port));
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.info("[IP] : {}, [PORT] : {}, [IOException] : {}", ip, port, e.getMessage());
+			} finally {
+				isConnectable = socket.isConnected();
+				socket.close();
+			}
+			
+			if(isConnectable) {
+				firstConnectableUri = ipPortInfo.getUri();
+				break;
+			} else {
+				continue;
 			}
 		}
 		
+		if(firstConnectableUri == null) {
+			throw new RuntimeException(String.format("%s 중, 연결가능한 URI가 없습니다.", reorderedLocalFirstIpPortInfos));
+		}
+		
+		return firstConnectableUri;
 	}
 	
 	
@@ -63,11 +85,13 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 			}
 		}
 		
+		log.info("[reorderLocalFirst] : {}", ipPortInfos);
+		
 		return ipPortInfos;
 	}
 	
 	
-	private List<IpPortInfo> getIpPortInfos(){
+	private List<IpPortInfo> getIpPortInfosOfMvcEntryUriIssueService(){
 		IpPortInfo ipPortInfo_1 = this.getIpPortInfo(uriOfMvcEntryUriIssueService_1);
 		IpPortInfo ipPortInfo_2 = this.getIpPortInfo(uriOfMvcEntryUriIssueService_2);
 		
@@ -82,8 +106,6 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 	private IpPortInfo getIpPortInfo(String uri) {
 		String tokenOfHttp = "http://";
 		String tokenOfHttps = "https://";
-		
-//		String pattern1 = "^(http://|https://)";
 		
 		String pattern1 = String.format("^(%s|%s)", tokenOfHttp, tokenOfHttps);
 		String pattern2 = "/.*";
@@ -115,7 +137,7 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 			throw new RuntimeException("IP 와 PORT 를 추출하는 과정에서 예외가 발생했습니다.");
 		}
 		
-		IpPortInfo ipPortInfo = new IpPortInfo(ip, port);
+		IpPortInfo ipPortInfo = new IpPortInfo(uri, ip, port);
 		
 		return ipPortInfo;
 	}
@@ -124,6 +146,7 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 	@Setter
 	@AllArgsConstructor
 	public static class IpPortInfo {
+		private String uri;
 		private String ip;
 		private int port;
 	}
