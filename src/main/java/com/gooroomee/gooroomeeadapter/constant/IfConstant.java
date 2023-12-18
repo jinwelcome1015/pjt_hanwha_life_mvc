@@ -243,10 +243,16 @@ public class IfConstant {
         /** 인터페이스 명세 : 해당년월일자정보목록조회 */
         IfMcCs023("HLIMVC00041", "comHldyInfoMgmtPSI001r", "해당년월일자정보목록조회", "COM");
 		
-		
+		/** 인터페이스ID */
 		private final String itfcId;
+		
+		/** 수신서비스ID */
 		private final String rcveSrvcId;
+		
+		/** 수신서비스 한글 이름 */
 		private final String rcveSrvcKorNm;
+		
+		/** 수신시스템 코드 */
 		private final String rcveSysCode;
 	}
 	

@@ -152,14 +152,13 @@ public class GrmAdapterServiceImpl implements GrmAdapterService {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON_UTF8));
-//		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-//		httpHeaders.set("Content-type", "application/json;charset=UTF-8");
 		
 		httpHeaders.set(uriOfMvcEntryUriIssueServiceApiKeyHeaderName, uriOfMvcEntryUriIssueServiceApiKeyHeaderValue);
 
 //		String targetFullUrl = uriOfMvcEntryUriIssueService;
-		
 		String targetFullUrl = grmCounsellingOtpUriSupplier.getFirstConnectableUri(); 
+		
+		log.info("[COUNSELLING OTP URI] : {}", targetFullUrl);
 
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
 

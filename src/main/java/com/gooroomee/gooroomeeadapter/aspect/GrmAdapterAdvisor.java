@@ -28,21 +28,35 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * AOP Advisor
+ * 
+ * @author 1077593
+ */
 @Aspect
 @Component
 @Slf4j
-public class GrmAdapterAdvice {
-
+public class GrmAdapterAdvisor {
+	
+	/** ModelMapper 객체 */
 	@Autowired
 	ModelMapper modelmapper;
 	
+	/** 인터페이스 응답 DTO 클래스의 PREFIX */
 	private static final String INTERFACE_OUTPUT_DTO_PREFIX = "com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs";
+	
+	/** 인터페이스 응답 DTO 클래스의 SUFFIX */
 	private static final String INTERFACE_OUTPUT_DTO_SUFFIX = "_O";
 
+	
+	/**
+	 * 요청 URI 가 MockUtil.URL_SUFFIX_FOR_MOCK 의 값으로 끝날 경우, 모조 데이터로 응답하게 하기 위한 Advisor
+	 * @param proceedingJoinPoint Advisor의 타겟 메서드
+	 * @return 모조 또는 실제 응답 데이터
+	 * @throws Throwable
+	 */
 	@Around("execution(* com.gooroomee.gooroomeeadapter.controller.*.*(..))")
-	public Object responseWithMockData(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
-		
+	public Object responseWithMockOrRealData(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
 		MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
 		Method method = methodSignature.getMethod();
@@ -55,7 +69,7 @@ public class GrmAdapterAdvice {
 				HttpServletRequest request = (HttpServletRequest) args[i];
 				String requestURI = request.getRequestURI();
 				
-				if (requestURI.endsWith(MockUtil.URL_SUFFIX_FOR_MOCK)) {
+				if (requestURI.endsWith(MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK)) {
 					/*
 					Type genericReturnType = method.getGenericReturnType();
 					String typeName = genericReturnType.getTypeName();
@@ -83,8 +97,8 @@ public class GrmAdapterAdvice {
 					ResponseDto<Object> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 					return responseDto;
-				}else if(Pattern.matches(".*" + MockUtil.URL_SUFFIX_FOR_MOCK + "/\\d", requestURI)) {
-					String subCasePath = requestURI.replaceAll(".*" + MockUtil.URL_SUFFIX_FOR_MOCK + "/", "");
+				}else if(Pattern.matches(".*" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK + "/\\d", requestURI)) {
+					String subCasePath = requestURI.replaceAll(".*" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK + "/", "");
 //					IoMetaInfoDto ioMetaInfoDto = this.getIoMetaInfoDto(method, subCasePath);
 //					Object interfaceOutputDto = ioMetaInfoDto.getInterfaceOutputDto();
 //					Class<?> resDtoClass = ioMetaInfoDto.getResDtoClass();
@@ -118,6 +132,15 @@ public class GrmAdapterAdvice {
 
 	}
 	
+	/**
+	 * 
+	 * @param method 모조 응답 데이터로 응답할 Controller의 Method 객체
+	 * @param mockOutputDtoClass 모조 응답 데이터룰 담기 위한 DTO클래스
+	 * @param subCasePath 경우에 따라 모조 응답 데이터를 다르게 만들기 위한 sub case 
+	 * @return IoMetaInfoDto 객체
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private IoMetaInfoDto getIoMetaInfoDto(Method method, Class<?> mockOutputDtoClass, String subCasePath) throws ClassNotFoundException, IOException {
 		Type genericReturnType = method.getGenericReturnType();
 		String typeName = genericReturnType.getTypeName();
@@ -144,11 +167,22 @@ public class GrmAdapterAdvice {
 		return ioMetaInfoDto;
 	}
 	
+	
+	/**
+	 * <pre>
+	 * IoMetaInfoDto
+	 * 인터페이스 응답 객체와 API 클라이언트 응답 클래스객체를 담는다.
+	 * </pre>
+	 * @author 1077593
+	 */
 	@Getter
 	@Setter
 	@ToString
 	private static class IoMetaInfoDto{
+		/** 인터페이스 응답 객체 */
 		private Object interfaceOutputDto;
+		
+		/** API 클라이언트 응답 클래스객체 */
 		private Class<?> resDtoClass;
 	}
 

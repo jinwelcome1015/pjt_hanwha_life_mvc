@@ -18,6 +18,7 @@ import com.gooroomee.gooroomeeadapter.util.NetworkUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -50,8 +51,9 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 			Socket socket = new Socket();
 			try {
 				socket.connect(new InetSocketAddress(ip, port));
+				log.debug("[CONNECT SUCCESS] ([IP] : {}, [PORT] : {})", ip, port);
 			} catch (IOException e) {
-				log.info("[IP] : {}, [PORT] : {}, [IOException] : {}", ip, port, e.getMessage());
+				log.debug("[CONNECT FAIL] ([IP] : {}, [PORT] : {}, [IOException] : {})", ip, port, e.getMessage());
 			} finally {
 				isConnectable = socket.isConnected();
 				socket.close();
@@ -140,6 +142,7 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 
 	@Getter
 	@Setter
+	@ToString
 	@AllArgsConstructor
 	private static class IpPortInfo {
 		private String uri;

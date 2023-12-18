@@ -14,8 +14,26 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
+/**
+ * AES 암호화 utility 클래스
+ * @author 1077593
+ *
+ */
 public class AesUtil {
 
+	/**
+	 * 평문을 암호화 한다.
+	 * @param plain 암호화할 평문
+	 * @param key 암호화 key
+	 * @param iv 암호화 iv
+	 * @return 암호화 결과
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 * @throws InvalidKeyException
+	 * @throws InvalidAlgorithmParameterException
+	 */
 	public static String encrypt(String plain, String key, String iv) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
 			BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -26,6 +44,20 @@ public class AesUtil {
 		return new String(Base64.encodeBase64(bytes));
 	}
 
+	
+	/**
+	 * 복호화해서 평문으로 만든다.
+	 * @param encrypted 복호화할 암호화문
+	 * @param key 복호화 key
+	 * @param iv 복호화 iv
+	 * @return 복호화 결과
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws InvalidKeyException
+	 * @throws InvalidAlgorithmParameterException
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 */
 	public static String decrypt(String encrypted, String key, String iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
 			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

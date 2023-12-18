@@ -65,8 +65,16 @@ public class IfUtil {
 	/** 전송대상(MCI/ESB/FEB) URL 정보 */
 	private String targetBaseUrl;
 
+	/** ObjectMapper 객체 */
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+	/**
+	 * IfUtil 생성자
+	 * @param restTemplate RestTemplate 객체
+	 * @param enmb 사번
+	 * @param activeProfile 활성 프로필(PROD, QA, DEV, LOCAL)
+	 * @param targetBaseUrl 전송대상(MCI/ESB/FEB) URL 정보
+	 */
 	public IfUtil(RestTemplate restTemplate, String enmb, String activeProfile, String targetBaseUrl) {
 		super();
 		this.restTemplate = restTemplate;
@@ -75,10 +83,26 @@ public class IfUtil {
 		this.targetBaseUrl = targetBaseUrl;
 	}
 
+	
+	/**
+	 * IfTelegramHeader(인터페이스 헤더) 객체를 생성해서 반환한다.
+	 * @param itfcId 인터페이스ID
+	 * @param rcveSrvcId 수신서비스ID
+	 * @param rcveSysCode 수신시스템코드
+	 * @return IfTelegramHeader(인터페이스 헤더) 객체
+	 */
 	public IfTelegramHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode) {
 		return createHeader(itfcId, rcveSrvcId, rcveSysCode, "N");
 	}
 
+	/**
+	 * IfTelegramHeader(인터페이스 헤더) 객체를 생성해서 반환한다.
+	 * @param itfcId 인터페이스ID
+	 * @param rcveSrvcId 수신서비스ID
+	 * @param rcveSysCode 수신시스템코드
+	 * @param prsnInfoIncsYn 수신시스템코드(Y/N)
+	 * @return IfTelegramHeader(인터페이스 헤더) 객체
+	 */
 	public IfTelegramHeader createHeader(String itfcId, String rcveSrvcId, String rcveSysCode, String prsnInfoIncsYn) {
 		IfTelegramHeader header = new IfTelegramHeader();
 		header.setItfcId(itfcId);
@@ -90,17 +114,21 @@ public class IfUtil {
 		header.setBelnOrgnCode(BELN_ORGN_CODE);
 		header.setPrsnInfoIncsYn(prsnInfoIncsYn);
 		header.setIpAddr(NetworkUtil.formatIpAddress(NetworkUtil.getLocalIpAddress()));
-		header.setTlgrCretDttm(this.getTlgrCretDttm());
-		header.setRndmNo(this.getRandomNumber());
-		header.setServerType(this.getServerType());
+		header.setTlgrCretDttm(CommonUtil.getNowYyyyMMddHHmmssSSS());
+		header.setRndmNo(CommonUtil.getRandomNumber());
+		header.setServerType(this.getServerType(this.getActiveProfile()));
 		header.setRspnDvsnCode(IfConstant.IfRspnDvsnCode.SEND.getValue());
 		return header;
 	}
 
-	private String getServerType() {
+	
+	/**
+	 * 활성 프로필을 통해 인터페이스 헤더에 셋팅할 서버타입을 얻어낸다.
+	 * @param profile 활성 프로필
+	 * @return 인터페이스 헤더에 셋팅할 서버타입
+	 */
+	private String getServerType(String profile) {
 		String serverType = "";
-
-		String profile = this.getActiveProfile();
 
 		if ("local".equalsIgnoreCase(profile)) {
 			serverType = IfConstant.IfServerType.LOCAL.getValue();
@@ -117,7 +145,14 @@ public class IfUtil {
 		return serverType;
 	}
 
-	public String getTargetFullUrl(IfConstant.IfType ifType) {
+	
+	
+	/**
+	 * 인터페이스 타입별로 인터페이스 타겟 엔드포인트 URI 를 반환한다.
+	 * @param ifType 인터페이스 타입
+	 * @return 인터페이스 타겟 엔드포인트 URI
+	 */
+	public String getTargetFullUri(IfConstant.IfType ifType) {
 
 		String targetFullUrl = "";
 
@@ -134,6 +169,20 @@ public class IfUtil {
 		return targetFullUrl;
 	}
 
+	
+	
+	/**
+	 * 인터페이스를 통해 요청전문, 응답전문을 주고 받는다.
+	 * @param <I> 요청전문타입
+	 * @param <O> 응답전문타입
+	 * @param ifType 인터페이스타입
+	 * @param header 인터페이스 요청전문  header
+	 * @param inputDto 인터페이스 요청전문 payload
+	 * @param outputDtoClass 인터페이스 응답전문 클래스객체
+	 * @return 인터페이스 응답전문
+	 * @throws JsonProcessingException
+	 * @throws URISyntaxException
+	 */
 	public <I, O> IfTelegram<O> sendAndReceiveTelegram(IfConstant.IfType ifType, IfTelegramHeader header, I inputDto, Class<O> outputDtoClass)
 			throws JsonProcessingException, URISyntaxException {
 
@@ -152,7 +201,7 @@ public class IfUtil {
 //		httpHeaders.setContentType(new MediaType(MediaType.APPLICATION_JSON));
 //		httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-		String targetFullUrl = getTargetFullUrl(ifType);
+		String targetFullUrl = this.getTargetFullUri(ifType);
 
 		RequestEntity<String> requestEntity = new RequestEntity<>(requestJson, httpHeaders, HttpMethod.POST, new URI(targetFullUrl));
 
@@ -179,34 +228,6 @@ public class IfUtil {
 		}
 
 		return responseTelegram;
-	}
-
-
-	public String getTlgrCretDttm() {
-		String pattern = "yyyyMMddHHmmssSSS";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		Date date = new Date();
-		return simpleDateFormat.format(date);
-	}
-
-	
-
-	public String getRandomNumber() {
-		return getRandomNumber(4);
-	}
-
-	private String getRandomNumber(int digits) {
-		if (digits < 1) {
-			throw new IllegalArgumentException("자리수는 양수값이어야 합니다.");
-		}
-
-		int exclusiveUpperBound = (int) Math.pow(10, digits);
-		SecureRandom secureRandom = new SecureRandom();
-		int nextInt = secureRandom.nextInt(exclusiveUpperBound);
-
-		String formattedRandomNumber = String.format("%04d", nextInt);
-
-		return formattedRandomNumber;
 	}
 
 }
