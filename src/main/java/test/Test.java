@@ -20,7 +20,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.slf4j.Logger;
 
-import com.gooroomee.gooroomeeadapter.util.AesUtil;
+import com.gooroomee.backbone.external.util.AesUtil;
 
 import korealife.uv.com.cm.SHA256CmCrypt;
 
@@ -102,7 +102,7 @@ public class Test {
 	}
 	
 	public void doFilterClassName() throws ClassNotFoundException, URISyntaxException {
-		String string = "com.gooroomee.gooroomeeadapter.dto.client.common.ResponseDto<com.gooroomee.gooroomeeadapter.dto.client.Mvc003ResDto>";
+		String string = "com.gooroomee.backbone.external.dto.client.common.ResponseDto<com.gooroomee.backbone.external.dto.client.Mvc003ResDto>";
 		String patternFrom = ".*\\<";
 		String patternTo = "\\>.*";
 		System.out.println("1 : " + string);

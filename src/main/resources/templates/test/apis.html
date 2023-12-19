@@ -36,7 +36,7 @@
 			/* object-fit: scale-down; */
 		}
 
-		div#divForEdms {
+		div#divForImgSys {
 			border: 1px solid black;
 			padding: 1rem;
 		}
@@ -105,7 +105,7 @@
 
 						document.querySelector('#divForRequestBody').style.display = 'block';
 						document.querySelector('#divForIdCard').style.display = 'block';
-						document.querySelector('#divForEdms').style.display = 'none';
+						document.querySelector('#divForImgSys').style.display = 'none';
 
 					} else if(/^99\..*/.test(sTargetText)){
 						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
@@ -114,11 +114,11 @@
 
 						document.querySelector('#divForRequestBody').style.display = 'none';
 						document.querySelector('#divForIdCard').style.display = 'none';
-						document.querySelector('#divForEdms').style.display = 'block';
+						document.querySelector('#divForImgSys').style.display = 'block';
 
-						const oFormForEdms = document.querySelector('#formForEdms');
+						const oFormForImgSys = document.querySelector('#formForImgSys');
 
-						oFormForEdms.replaceChildren();
+						oFormForImgSys.replaceChildren();
 						
 						const oData = res.data;
 						
@@ -134,7 +134,7 @@
 
 						let sHtml = aHtml.join('<br/>');
 						
-						oFormForEdms.innerHTML = sHtml;
+						oFormForImgSys.innerHTML = sHtml;
 
 					} else {
 						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
@@ -143,7 +143,7 @@
 
 						document.querySelector('#divForRequestBody').style.display = 'block';
 						document.querySelector('#divForIdCard').style.display = 'none';
-						document.querySelector('#divForEdms').style.display = 'none';
+						document.querySelector('#divForImgSys').style.display = 'none';
 					}
 				} catch (error) {
 					alert(`[error name] : ${error.name}\n[error message] : ${error.message}`);
@@ -160,13 +160,13 @@
 				
 				const oSelectForApiPath = document.querySelector('#apiPath');
 				const sSelectForApiPathInnerText = oSelectForApiPath.options[oSelectForApiPath.selectedIndex].innerText;
-				const isEdmsCase = /^99\..*/.test(sSelectForApiPathInnerText);
+				const isImgSysCase = /^99\..*/.test(sSelectForApiPathInnerText);
 				
 				const requestHeader = JSON.parse(document.querySelector('#requestHeader').value);
 				let requestBody;
 
-				if(isEdmsCase){
-					const oForm = document.querySelector('form#formForEdms');
+				if(isImgSysCase){
+					const oForm = document.querySelector('form#formForImgSys');
 					requestBody = new FormData(oForm);
 				}else {
 					requestBody = document.querySelector('#requestBody').value;
@@ -352,8 +352,8 @@
 					<label for="requestBody">requestBody</label>
 					<textarea name="requestBody" id="requestBody" class="httpBody"></textarea>
 				</div>
-				<div id="divForEdms" style="display: none;">
-					<form id="formForEdms" action="" method="post">
+				<div id="divForImgSys" style="display: none;">
+					<form id="formForImgSys" action="" method="post">
 						<h3>이미지 시스템 (multipart/form-data)</h3>
 					</form>
 				</div>

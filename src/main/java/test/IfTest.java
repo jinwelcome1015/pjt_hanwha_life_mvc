@@ -27,53 +27,53 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.gooroomee.gooroomeeadapter.constant.IfConstant;
-import com.gooroomee.gooroomeeadapter.constant.IfConstant.IfSpec;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataBody;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataBody.Image;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_I.DataHeader;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs001_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs002_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs003_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs005_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs006_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs007_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs008_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs009_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs009_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs010_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_I.DataBody.Callback;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs011_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs013_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs013_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs014_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs015_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs016_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs017_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs018_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_I;
-import com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs004_O;
-import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegram;
-import com.gooroomee.gooroomeeadapter.dto.intrf.common.IfTelegramHeader;
-import com.gooroomee.gooroomeeadapter.util.AesUtil;
-import com.gooroomee.gooroomeeadapter.util.IfUtil;
+import com.gooroomee.backbone.external.constant.IfConstant;
+import com.gooroomee.backbone.external.constant.IfConstant.IfSpec;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs002_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs002_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs003_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs003_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs004_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs004_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs005_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs005_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs006_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs006_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs008_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs008_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs009_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs009_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs010_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs010_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs012_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs013_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs013_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs014_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs014_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs016_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs016_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs017_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs017_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs018_I;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs018_O;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataBody;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataHeader;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataBody.Image;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_I.DataBody.Callback;
+import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
+import com.gooroomee.backbone.external.dto.intrf.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.backbone.external.util.AesUtil;
+import com.gooroomee.backbone.external.util.IfUtil;
 
 import korealife.uv.com.cm.SHA256CmCrypt;
 import lombok.Getter;
@@ -282,7 +282,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(), ifSpec.getRcveSysCode());
         
         
-        IfTelegram<IfMcCs001_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs001_O.class);
+        IfTelegram<IfMcCs001_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs001_O.class);
         
         IfMcCs001_O outputPayload = outputTelegram.getPayload();
         
@@ -345,7 +345,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs002_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs002_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs002_O.class);
 
         IfMcCs002_O outputPayload = outputTelegram.getPayload();
@@ -367,7 +367,7 @@ public class IfTest {
 
         IfMcCs003_I inputPayload = OBJECT_MAPPER.readValue(payloadJson, IfMcCs003_I.class);
 
-        inputPayload.setPushRcvrEmnb(EMNB); // 사번 overwrite
+        inputPayload.setPushRcvrEmnb(EMNB); // 사원번호 overwrite
 
         IfUtil ifUtil = new IfUtil(REST_TEMPLATE, EMNB, ACTIVE_PROFILE, IF_ENDPOINT_URL);
 
@@ -376,7 +376,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs003_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs003_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs003_O.class);
 
         IfMcCs003_O outputPayload = outputTelegram.getPayload();
@@ -445,7 +445,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs005_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs005_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs005_O.class);
 
         IfMcCs005_O outputPayload = outputTelegram.getPayload();
@@ -475,7 +475,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs006_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs006_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs006_O.class);
 
         IfMcCs006_O outputPayload = outputTelegram.getPayload();
@@ -542,7 +542,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs007_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs007_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs007_O.class);
     
         IfMcCs007_O outputPayload = outputTelegram.getPayload();
@@ -581,7 +581,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs008_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs008_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs008_O.class);
     
         IfMcCs008_O outputPayload = outputTelegram.getPayload();
@@ -612,7 +612,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
 
-        IfTelegram<IfMcCs009_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs009_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs009_O.class);
 
         IfMcCs009_O outputPayload = outputTelegram.getPayload();
@@ -654,7 +654,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs010_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs010_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs010_O.class);
     
         IfMcCs010_O outputPayload = outputTelegram.getPayload();
@@ -758,7 +758,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs011_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs011_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs011_O.class);
     
         IfMcCs011_O outputPayload = outputTelegram.getPayload();
@@ -787,11 +787,11 @@ public class IfTest {
 	    		"    \"ORGN_CODE\": \"00630\",\r\n" + 
 	    		"    \"USER_ID\": \"USER_001\"\r\n" + 
 	    		"}";
-	    com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataHeader.class);
+	    com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I.DataHeader.class);
 	
 	    
 	    
-	    com.gooroomee.gooroomeeadapter.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
+	    com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
 	    
 	    
 	    // XXX
@@ -823,7 +823,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs012_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs012_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs012_O.class);
     
         IfMcCs012_O outputPayload = outputTelegram.getPayload();
@@ -863,7 +863,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs013_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs013_O.class);
+        IfTelegram<IfMcCs013_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs013_O.class);
     
         IfMcCs013_O outputPayload = outputTelegram.getPayload();
     
@@ -944,7 +944,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs014_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs014_O.class);
+        IfTelegram<IfMcCs014_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs014_O.class);
     
         IfMcCs014_O outputPayload = outputTelegram.getPayload();
     
@@ -1085,7 +1085,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs015_O.class);
     
         IfMcCs015_O outputPayload = outputTelegram.getPayload();
@@ -1344,7 +1344,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
+        IfTelegram<IfMcCs015_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload,
                 IfMcCs015_O.class);
     
         IfMcCs015_O outputPayload = outputTelegram.getPayload();
@@ -1383,7 +1383,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs016_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs016_O.class);
+        IfTelegram<IfMcCs016_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs016_O.class);
     
         IfMcCs016_O outputPayload = outputTelegram.getPayload();
     
@@ -1413,7 +1413,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs017_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs017_O.class);
+        IfTelegram<IfMcCs017_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs017_O.class);
     
         IfMcCs017_O outputPayload = outputTelegram.getPayload();
     
@@ -1444,7 +1444,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs018_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs018_O.class);
+        IfTelegram<IfMcCs018_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs018_O.class);
     
         IfMcCs018_O outputPayload = outputTelegram.getPayload();
     
@@ -1481,7 +1481,7 @@ public class IfTest {
         IfTelegramHeader inputHeader = ifUtil.createHeader(ifSpec.getItfcId(), ifSpec.getRcveSrvcId(),
                 ifSpec.getRcveSysCode());
     
-        IfTelegram<IfMcCs004_O> outputTelegram = ifUtil.sendAndReceiveTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs004_O.class);
+        IfTelegram<IfMcCs004_O> outputTelegram = ifUtil.exchangeTelegram(IfConstant.IfType.MCI, inputHeader, inputPayload, IfMcCs004_O.class);
     
         IfMcCs004_O outputPayload = outputTelegram.getPayload();
     

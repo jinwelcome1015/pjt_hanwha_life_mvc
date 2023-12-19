@@ -92,10 +92,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -110,10 +110,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -128,10 +128,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -147,10 +147,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
-        <logger level="DEBUG" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="DEBUG" name="com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-INFO-OCR"/>
         </logger>
     </springProfile>
@@ -162,10 +162,10 @@
         	<appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-ERROR"/>
         </root>
-        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="WARN" name="com.gooroomee.backbone.external.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-ERROR-OCR"/>
         </logger>
-        <logger level="WARN" name="com.gooroomee.gooroomeeadapter.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
+        <logger level="WARN" name="com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64" additivity="false">
             <appender-ref ref="FILE-ERROR-OCR"/>
         </logger>
     </springProfile>
