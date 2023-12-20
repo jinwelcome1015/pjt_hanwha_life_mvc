@@ -132,7 +132,7 @@ public class GrmExternalBackboneAdvisor {
 	}
 	
 	/**
-	 * 
+	 * 컨트롤러 메서드 이름과 sub case 이름을 인자로 받아, 모조 응답데이터를 생성하기 위한 IoMetaInfoDto 객체를 반환한다. 
 	 * @param method 모조 응답 데이터로 응답할 Controller의 Method 객체
 	 * @param mockOutputDtoClass 모조 응답 데이터룰 담기 위한 DTO클래스
 	 * @param subCasePath 경우에 따라 모조 응답 데이터를 다르게 만들기 위한 sub case 

@@ -11,8 +11,11 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -225,10 +228,32 @@ public class IfUtil {
 		if (!IfConstant.IfPrcsRsltDvsnCode.NORMAL.getValue().equals(prcsRsltDvsnCode)) {
 //			int cnt = responseTelegramHeader.getMsgeListCont();
 			List<IfTelegramHeaderResponseMessage> msgeList = responseTelegramHeader.getMsgeList();
-
+			String msgeStackTrace = StringUtils.defaultString(responseTelegramHeader.getMsgeStackTrace());
+			
 //			if (cnt > 0 && msgeList != null && msgeList.size() > 0) {
-			if (msgeList != null && msgeList.size() > 0) {
-				throw new IfException(HttpStatus.OK, msgeList.get(0).getMsgeCntn());
+			if ((msgeList != null && msgeList.size() > 0) || (!"".equals(msgeStackTrace))) {
+				IfTelegramHeaderResponseMessage firstIfTelegramHeaderResponseMessage = msgeList.get(0);
+				String msgeCode = firstIfTelegramHeaderResponseMessage.getMsgeCode();
+				String msgeCntn = firstIfTelegramHeaderResponseMessage.getMsgeCntn();
+				
+				/*
+				Map<String, String> mapForError = new LinkedHashMap<>();
+				mapForError.put("msgeCode", msgeCode);
+				mapForError.put("msgeCntn", msgeCntn);
+				mapForError.put("msgeStackTrace", msgeStackTrace);
+				
+				String errorJson = OBJECT_MAPPER.writeValueAsString(mapForError);
+				throw new IfException(HttpStatus.OK, errorJson);
+				*/
+				
+				String errorMsge = "";
+				if("".equals(msgeStackTrace)) {
+					errorMsge = msgeCntn;
+				}else {
+					errorMsge = msgeStackTrace;
+				}
+				
+				throw new IfException(HttpStatus.OK, errorMsge);
 			}
 		}
 

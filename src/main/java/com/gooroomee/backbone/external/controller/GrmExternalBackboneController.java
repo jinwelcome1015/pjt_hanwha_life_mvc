@@ -215,31 +215,41 @@ public class GrmExternalBackboneController {
 	/** 전역 예외 처리를 위한 컨트롤러에 전달될 예외를 담고 있는 attribute 이름 */
 	public static final String EXCEPTION_ATTRIBUTE_NAME = "exception";
 
+	/** 구루미 코어, 보험 코어에 응답을 주기 위한 API임을 나타내는 token (API의 URI에 공통적으로 들어감) */
 	public static final String API_URL_TOKEN = "/intrf";
 
-	private static final String URL_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
+	/** 요청 모조 데이터를 응답으로 주기 위한 API의 URI */
+	private static final String URI_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
 
-//	private static final String URL_FOR_REQUEST_MOCK_IMAGE = "/test/api/mockImage/req";
+//	/** 요청 모조 이미지를 응답으로 주기 위한 API의 URI */
+//	private static final String URI_FOR_REQUEST_MOCK_IMAGE = "/test/api/mockImage/req";
 
+	/** 테스트 화면에서 모조데이터를 요청할때, 모조데이터를 요청할 API의 URI를 담는 파라미터 */
 	private static final String PARAM_NAME_FOR_REQUEST_MOCK_DATA = "apiPath";
 
+	/** 테스트 화면에서 모조이미지를 요청할때, 모조이미지를 요청할 API의 URI를 담는 파라미터 */
 //	private static final String PARAM_NAME_FOR_REQUEST_MOCK_IMAGE = "imageName";
 
+	/** 개인번호(주민등록번호, 외국인등록번호)의 앞번호와 뒷번호를 구분하기위한 구분자 */
 	private static final String PERSONAL_NUMBER_DELIMITER = "-";
+	
+	/** 운전면허증의 앞번호와 뒷번호를 구분하기위한 구분자 */
 	private static final String DRIVER_LICENSE_NUMBER_DELIMITER = "-";
 
+	/** 모조 이미지 파일들을 모아놓은 root 경로 */
 	private static final String MOCK_IMAGE_ROOT_PATH = "/assets/mockIdCardImage";
 
+	/** 이미지 데이터 파일의 확장자 */
 	private static final String IMAGE_DATA_FILE_EXTENSION = "dat";
 
+	/** yyyyMMdd 형식을 담고 있는 SimpleDateFormat 객체 */
 	private static final SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
 	
 	public final String[] TOKENS_OF_URL_WITH_BASE64_REQUEST_PARAM = new String[] { "idcdOcrRqst", "idcdOcrRqst2", "entry2" };
 
 	
 	/**
-	 * 
-	 * 
+	 * 신분증 타입으로부터 진위확인구분코드를 도출해서 반환한다.
 	 * @param idType 신분증 타입
 	 * @return 진위확인구분코드
 	 */
@@ -255,6 +265,11 @@ public class GrmExternalBackboneController {
 		return trflCnfmDvsnCode;
 	}
 
+	/**
+	 * 신분증 타입을 인자로 받아, OCR결과 json에서 각 신분증 타입을 나타내는 필드 이름을 반환한다. 
+	 * @param idType 신분증 타입
+	 * @return OCR결과 json에서 각 신분증 타입을 나타내는 필드 이름
+	 */
 	private String getIdTypeFieldNameFromIdType(String idType) {
 		String fieldName = null;
 		if (idType.equals(IfConstant.OcrIdType.IdCard.getName())) {
@@ -269,6 +284,11 @@ public class GrmExternalBackboneController {
 		return fieldName;
 	}
 	
+	/**
+	 * OCR결과 json에서, 각 신분증 타입을 나타내는 필드 이름을 인자로 받아서, 각 신분증 타입별로 신분증 상의 한글 이름을 값으로 갖고 있는 필드이름을 반환한다.
+	 * @param idTypeFieldName OCR결과 json에서, 각 신분증 타입을 나타내는 필드 이름
+	 * @return 각 신분증 타입별로 신분증 상의 한글 이름을 값으로 갖고 있는 필드이름
+	 */
 	private String getNameNodeName(String idTypeFieldName) {
 		String nameNodeName;
 		if("pp".equals(idTypeFieldName)) {
@@ -280,7 +300,11 @@ public class GrmExternalBackboneController {
 	}
 
 	
-	
+	/**
+	 * OCR결과 JsonNode 객체를 인자로 받아서, 그 안에 있는 고객이름을 찾아 반환한다. 
+	 * @param ocrResultReadTree OCR결과 JsonNode 객체
+	 * @return 고객이름
+	 */
 	private String getCustNm(JsonNode ocrResultReadTree) {
 		String custNm = null;
 		
@@ -312,6 +336,11 @@ public class GrmExternalBackboneController {
 	}
 	
 	
+	/**
+	 * OCR결과 JsonNode 객체를 인자로 받아서, 발행일자(yyyyMMdd 형식)를 반환한다. 
+	 * @param ocrResultReadTree OCR결과 JsonNode 객체
+	 * @return 발행일자(yyyyMMdd형식)
+	 */
 	private String getIsncDate(JsonNode ocrResultReadTree) {
 		String issueDate = null;
 
@@ -350,12 +379,15 @@ public class GrmExternalBackboneController {
 			log.warn("issueDate({}) 를 포맷팅 하는데 실패했습니다. \"\"로 초기화 합니다.", beforeFormattedIssueDate);
 			issueDate = "";
 		}
-		
 		return issueDate;
 	}
 	
 	
-	
+	/**
+	 * OCR결과 JsonNode 객체를 인자로 받아서, 만료일자(yyyyMMdd 형식)를 반환한다. 
+	 * @param ocrResultReadTree OCR결과 JsonNode 객체
+	 * @return 만료일자(yyyyMMdd형식)
+	 */
 	private String getExpyDate(JsonNode ocrResultReadTree) {
 		String expyDate = null;
 		String beforeFormattedExpireDate = null;
@@ -412,7 +444,11 @@ public class GrmExternalBackboneController {
 	}
 
 	
-	
+	/**
+	 * OCR결과 JsonNode 객체를 인자로 받아서, 생년월일(yyyyMMdd 형식)을 반환한다. 
+	 * @param ocrResultReadTree OCR결과 JsonNode 객체
+	 * @return 생년월일(yyyyMMdd형식)
+	 */
 	private String getBtdt(JsonNode ocrResultReadTree) {
 		String btdt = null;
 		
@@ -431,14 +467,14 @@ public class GrmExternalBackboneController {
 				JsonNode firstPersonalNumTextJsonNode = firstPersonalNumJsonNode.get("text");
 				String personalNum = firstPersonalNumTextJsonNode.asText();
 				String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-				btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
+				btdt = this.getFirst2digitsOfBirthYearFromPersonalNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
 			} else if (idType.equals(IfConstant.OcrIdType.DriverLicense.getName())) {
 				JsonNode personalNumListJsonNode = idTypeFieldJsonNode.get("personalNum");
 				JsonNode firstPersonalNumJsonNode = personalNumListJsonNode.get(0);
 				JsonNode firstPersonalNumTextJsonNode = firstPersonalNumJsonNode.get("text");
 				String personalNum = firstPersonalNumTextJsonNode.asText();
 				String[] personalNumTokens = personalNum.split(PERSONAL_NUMBER_DELIMITER);
-				btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
+				btdt = this.getFirst2digitsOfBirthYearFromPersonalNumFirst1digit(personalNumTokens[1].substring(0, 1)) + personalNumTokens[0];
 			} else if (idType.equals(IfConstant.OcrIdType.Passport.getName())) {
 				JsonNode birthDateJsonNode = idTypeFieldJsonNode.get("birthDate");
 				JsonNode firstBirthDateJsonNode = birthDateJsonNode.get(0);
@@ -459,7 +495,7 @@ public class GrmExternalBackboneController {
 				JsonNode firstAlienRegNumTextJsonNode = firstAlienRegNumJsonNode.get("text");
 				String alienRegNum = firstAlienRegNumTextJsonNode.asText();
 				String[] alienRegNumTokens = alienRegNum.split(PERSONAL_NUMBER_DELIMITER);
-				btdt = this.getFirst2digitsOfBirthYearFromRegNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
+				btdt = this.getFirst2digitsOfBirthYearFromPersonalNumFirst1digit(alienRegNumTokens[1].substring(0, 1)) + alienRegNumTokens[0];
 			}
 			
 			/*
@@ -475,10 +511,17 @@ public class GrmExternalBackboneController {
 		return btdt;
 	}
 
-	private String getFirst2digitsOfBirthYearFromRegNumFirst1digit(String regNumFirst1digit) {
+	
+	
+	/**
+	 * 개인번호(주민등록번호, 외국인등록번호) 뒷자리의 첫번째 숫자를 인자로 받아서, 생년월일에서 생년의 첫번째, 두번째 숫자 (예: 1988년의 경우, 19)를 반환한다.
+	 * @param personalNumFirst1digit 개인번호(주민등록번호, 외국인등록번호) 뒷자리의 첫번째 숫자
+	 * @return 생년월일에서 생년의 첫번째, 두번째 숫자 (예: 1988년의 경우, 19)
+	 */
+	private String getFirst2digitsOfBirthYearFromPersonalNumFirst1digit(String personalNumFirst1digit) {
 		String first2digitsOfBirthYear = "";
 
-		switch (regNumFirst1digit) {
+		switch (personalNumFirst1digit) {
 		case "9":
 		case "0":
 			first2digitsOfBirthYear = "18";
@@ -516,13 +559,18 @@ public class GrmExternalBackboneController {
 		
 		String yyMMdd = refinedPersonalNum.substring(0, 6);
 		String regNumFirst1digit = refinedPersonalNum.substring(6, 6 + 1);
-		String yy = getFirst2digitsOfBirthYearFromRegNumFirst1digit(regNumFirst1digit);
+		String yy = getFirst2digitsOfBirthYearFromPersonalNumFirst1digit(regNumFirst1digit);
 		String yyyyMMdd = yy + yyMMdd;
 		return yyyyMMdd;
 	}
 
 	
 	
+	/**
+	 * OCR결과 JsonNode 객체를 인자로 받아서, 성별(M/F)을 반환한다. 
+	 * @param ocrResultReadTree OCR결과 JsonNode 객체
+	 * @return 성별(M/F)
+	 */
 	private String getSex(JsonNode ocrResultReadTree) {
 		String sex = null;
 		
@@ -571,7 +619,12 @@ public class GrmExternalBackboneController {
 	}
 
 	
-	
+	/**
+	 * yyyyMMdd 형식의 년월일 문자열을 인자로 받아서 이에 대응하는 java.sql.Date 객체를 생성해 반환한다.
+	 * @param date yyyyMMdd 형식의 년월일 문자열
+	 * @return java.sql.Date 객체
+	 * @throws ParseException
+	 */
 	public Date transformDate(String date) throws ParseException {
 		SimpleDateFormat beforeFormat = DATE_FORMAT_YYYYMMDD;
 
@@ -589,7 +642,12 @@ public class GrmExternalBackboneController {
 	}
 
 	
-	private List<DateInfo> filterDate(List<DateInfo> dateInfoList){
+	/**
+	 * DateInfo 객체의 List 를 인자로 받아서, 이 DateInfo 들 중, 휴무일인 DateInfo 만 담은 List 를 생성해 반환한다.
+	 * @param dateInfoList DateInfo 객체의 List
+	 * @return 휴무일인 DateInfo 만 담은 List
+	 */
+	private List<DateInfo> filterClosedDays(List<DateInfo> dateInfoList){
 		return dateInfoList.stream().filter(dateInfo -> {
 			boolean isRemainCase = false;
 			if(
@@ -610,8 +668,7 @@ public class GrmExternalBackboneController {
 	/**
 	 * <pre>
 	 * [00] 
-	 * 진입2
-	 * 
+	 * 진입2 API
 	 * 
 	 * [01, 02, 09, 03]
 	 *	01.신분증OCR요청
@@ -2329,7 +2386,7 @@ public class GrmExternalBackboneController {
 				
 				ifOutputDto = grmExternalBackboneService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 				pagingDateInfoList = ifOutputDto.getDateInfoList();
-				pagingDateInfoList = this.filterDate(pagingDateInfoList);
+				pagingDateInfoList = this.filterClosedDays(pagingDateInfoList);
 				
 				if(pagingDateInfoList != null) {
 					totalDateInfoList.addAll(pagingDateInfoList);
@@ -2339,7 +2396,7 @@ public class GrmExternalBackboneController {
 			
 			ifOutputDto = grmExternalBackboneService.ifmccsCommon(emnb, ifSpec, ifInputDto, ifOutputDtoClass);
 			pagingDateInfoList = ifOutputDto.getDateInfoList();
-			pagingDateInfoList = this.filterDate(pagingDateInfoList);
+			pagingDateInfoList = this.filterClosedDays(pagingDateInfoList);
 			
 			if(pagingDateInfoList != null) {
 				totalDateInfoList.addAll(pagingDateInfoList);
@@ -2515,13 +2572,13 @@ public class GrmExternalBackboneController {
 		model.addAttribute("apiAuthKey", apiAuthKey);
 		model.addAttribute("apiInfoList", this.getApiInfoList());
 		model.addAttribute("idCardMockImageInfoList", this.getIdCardMockImageInfoList());
-		model.addAttribute("urlForRequestMockData", URL_FOR_REQUEST_MOCK_DATA);
+		model.addAttribute("urlForRequestMockData", URI_FOR_REQUEST_MOCK_DATA);
 		model.addAttribute("paramNameForRequestMockData", PARAM_NAME_FOR_REQUEST_MOCK_DATA);
 
 		return "test/apis";
 	}
 
-	@RequestMapping(path = { URL_FOR_REQUEST_MOCK_DATA }, method = { RequestMethod.GET })
+	@RequestMapping(path = { URI_FOR_REQUEST_MOCK_DATA }, method = { RequestMethod.GET })
 	public @ResponseBody String getApiTestRequestMockData(@RequestParam MultiValueMap<String, String> map) throws ClassNotFoundException, IOException {
 		String mockData = null;
 
