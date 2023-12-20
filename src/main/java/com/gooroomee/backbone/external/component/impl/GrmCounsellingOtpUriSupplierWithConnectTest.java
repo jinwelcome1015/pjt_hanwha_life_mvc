@@ -99,7 +99,7 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 				ipPortInfos.add(0, ipPortInfo);
 			}
 		}
-
+		log.info("[localIpAddress] : {}", localIpAddress);
 		log.info("[reorderLocalFirst] : {}", ipPortInfos);
 
 		return ipPortInfos;
