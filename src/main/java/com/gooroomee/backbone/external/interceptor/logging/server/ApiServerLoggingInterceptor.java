@@ -42,11 +42,11 @@ public class ApiServerLoggingInterceptor implements HandlerInterceptor {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	/** OCR서비스에 전달할 BASE64데이터를 기록할지 여부 */
+	/** OCR서비스에 전달할 Base64데이터를 기록할지 여부 */
 	@Value(value = "${api.ocr.logging.enabled:false}")
 	private boolean apiOcrLoggingEnabled;
 	
-	/** BASE64 데이터 logging을 위한 전용 Logger 객체 */
+	/** Base64 데이터 logging을 위한 전용 Logger 객체 */
 	private static final Logger LOGGER_FOR_BASE64_DATA_LOGGING = LoggerFactory
 			.getLogger(ApiServerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.backbone.external.interceptor.logging.server.ApiServerLoggingInterceptor._BASE64"
 	

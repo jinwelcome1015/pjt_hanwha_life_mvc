@@ -107,7 +107,7 @@ public class GrmExternalBackboneAdvisor {
 
 					String dtoQualifiedName = typeName;
 
-					dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
+//					dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
 
 					Class<?> resDtoClass = Class.forName(dtoQualifiedName);
 					
@@ -146,7 +146,8 @@ public class GrmExternalBackboneAdvisor {
 
 		String dtoQualifiedName = typeName;
 
-		dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
+//		dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
+		dtoQualifiedName = dtoQualifiedName.replaceFirst("(.*\\<)|(\\>.*)", "");
 
 		Class<?> resDtoClass = Class.forName(dtoQualifiedName);
 		

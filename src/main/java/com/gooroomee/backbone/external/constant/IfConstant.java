@@ -6,6 +6,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 상수값을 모아놓은 컨테이너 클래스
+ * @author 신용진
+ */
 public class IfConstant {
 	
 	/** 보험코어권한ID */
@@ -69,7 +73,7 @@ public class IfConstant {
 	/** [카카오알림톡발송_쳇버블] 온라인배치구분코드 */
 	public static final String ONLN_BTCH_DVSN_CODE = "R";
 
-	/** base64 데이터 기록용 별도 logger의 이름을 위한 suffix */
+	/** Base64 데이터 기록용 별도 logger의 이름을 위한 suffix */
 	public static final String LOGGER_NAME_SUFFIX_FOR_BASE64 = "._BASE64";
 	
 	/** multipart form data 데이터 기록용 별도 logger의 이름을 위한 suffix */

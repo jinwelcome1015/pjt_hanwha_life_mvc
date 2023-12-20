@@ -37,11 +37,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class IfConsumerLoggingInterceptor implements ClientHttpRequestInterceptor {
 	
-	/** OCR서비스에 전달할 BASE64데이터를 기록할지 여부 */
+	/** OCR서비스에 전달할 Base64데이터를 기록할지 여부 */
 	@Value(value = "${api.ocr.logging.enabled:false}")
 	private boolean apiOcrLoggingEnabled;
 
-	/** BASE64 데이터 logging을 위한 전용 Logger 객체 */
+	/** Base64 데이터 logging을 위한 전용 Logger 객체 */
 	private static final Logger loggerForBase64DataLogging = LoggerFactory.getLogger(IfConsumerLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_BASE64); // "com.gooroomee.backbone.external.interceptor.logging.client.IfConsumerLoggingInterceptor._BASE64"
 
 	/** ObjectMapper 객체 */

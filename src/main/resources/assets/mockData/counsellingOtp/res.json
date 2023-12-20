@@ -1,16 +1,19 @@
 {
   "header": {
+    "trnnNo": null,
     "trnmSysCode": "IVR",
     "ipAddr": "010019019058",
     "tlgrCretDttm": "20231219094327000",
     "rndmNo": "2990",
     "hsno": 2,
     "ctfnTokn": "",
+    "ogtsTrnnNo": null,
     "prsnInfoIncsYn": "N",
     "itfcId": "HLIIVR00122",
     "rcveSrvcId": "mvcCounsellingOtp001r",
     "rcveSysCode": "BAC",
     "mciNodeNo": "12",
+    "mciSesnId": null,
     "serverType": "Q",
     "rspnDvsnCode": "S",
     "extlDvsnCode": "",
@@ -26,15 +29,17 @@
     "baseCrny": "KRW",
     "baseCnty": "KOR",
     "baseLang": "KOR",
-    "tscsRqstVal": "",
-    "lastPageYn": "Y"
+    "tlgrRspnDttm": null,
+    "prcsRsltDvsnCode": "0",
+    "totalCount": 0,
+    "lastPageYn": "Y",
+    "msgeListCont": 0,
+    "msgeList": [],
+    "msgeStackTrace": null
   },
   "payload": {
-    "custNm": "한화생명",
-    "custId": "",
-    "rqstOrgnCode": "mcc03",
-    "hpTlphTlcmNo": "010",
-    "hpTlphOfno": "4442",
-    "hpTlphSbno": "4408"
+    "dvsnVal": "RT_SUCCESS",
+    "rsltMsgeCntn": "Success",
+    "rsltDatVal": "https://mvc-web-qa.hanwhalife.com/room/otp/7932942699c84909ab44a5e453ff45a475f0fdca32d946"
   }
 }

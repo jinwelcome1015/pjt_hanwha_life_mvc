@@ -172,7 +172,10 @@ import lombok.extern.slf4j.Slf4j;
 
 
 
-
+/**
+ * 컨트롤러 클래스
+ * @author 신용진
+ */
 @Controller
 @Slf4j
 public class GrmExternalBackboneController {
@@ -217,6 +220,9 @@ public class GrmExternalBackboneController {
 
 	/** 구루미 코어, 보험 코어에 응답을 주기 위한 API임을 나타내는 token (API의 URI에 공통적으로 들어감) */
 	public static final String API_URL_TOKEN = "/intrf";
+	
+	/** 이 어플리케이션이 인터페이스의 프로바이더가 되어, 화상상담 서비스를 위해 구르미 코어에 요청을 API임을 나타내는 token */
+	public static final String IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN = "/counselling";
 
 	/** 요청 모조 데이터를 응답으로 주기 위한 API의 URI */
 	private static final String URI_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
@@ -245,7 +251,8 @@ public class GrmExternalBackboneController {
 	/** yyyyMMdd 형식을 담고 있는 SimpleDateFormat 객체 */
 	private static final SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
 	
-	public final String[] TOKENS_OF_URL_WITH_BASE64_REQUEST_PARAM = new String[] { "idcdOcrRqst", "idcdOcrRqst2", "entry2" };
+	/** 요청 파라미터로 Base64 데이터를 갖는 API 임을 나타내는 token */
+	private static final String[] TOKENS_OF_URI_WITH_BASE64_REQUEST_PARAM = new String[] { "idcdOcrRqst", "idcdOcrRqst2", "entry2" };
 
 	
 	/**
@@ -2483,7 +2490,7 @@ public class GrmExternalBackboneController {
 	
 	
 	// XXX 
-	@RequestMapping(path = { "/counselling/otp" }, name = "[가]. IVR PROVIDER")
+	@RequestMapping(path = { (IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN + "/otp"), (IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN + "/otp" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, name = "[가]. IVR PROVIDER")
 	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 //		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
@@ -2604,7 +2611,13 @@ public class GrmExternalBackboneController {
 							if (requestBody != null || modelAttribute != null) {
 								ObjectMapper objectMapper = new ObjectMapper();
 
-								Class<?> parameterType = parameter.getType();
+								Class<?> parameterType = null;
+								
+								if(path.startsWith(IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN)) {
+									parameterType = (Class<?>) parameter.getParameterizedType();
+								}else {
+									parameterType = parameter.getType();
+								}
 
 								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
 								Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
@@ -2632,7 +2645,11 @@ public class GrmExternalBackboneController {
 				String name = requestMappingAnnotation.name();
 				String[] paths = requestMappingAnnotation.path();
 				for (String path : paths) {
-					if (path.startsWith(API_URL_TOKEN)) {
+//					if (path.startsWith(API_URL_TOKEN)) {
+					if (
+						path.startsWith(API_URL_TOKEN)
+						|| path.startsWith(IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN)
+					) {
 						Map<String, String> map = new HashMap<>();
 						map.put("path", path);
 						map.put("name", name);
@@ -2748,7 +2765,7 @@ public class GrmExternalBackboneController {
 	public boolean isRequestThatHasBase64Data(String requestUri) throws IOException {
 		boolean isRequestThatHasBase64Data = false;
 		
-		String[] tokens = this.TOKENS_OF_URL_WITH_BASE64_REQUEST_PARAM;
+		String[] tokens = TOKENS_OF_URI_WITH_BASE64_REQUEST_PARAM;
 
 		for (String token : tokens) {
 			if(requestUri.contains(token)) {
