@@ -2358,6 +2358,11 @@ public class GrmExternalBackboneController {
 	public @ResponseBody ResponseDto<Mvc023ResDto> hldyInfoMgmt(@RequestBody Mvc023ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
+		if(reqDto.getStndYymm() == null) {
+			String message = "파라미터 stndYymm 값이 없습니다.";
+			throw new IfException(HttpStatus.OK, message);
+		}
+		
 		int stndYymmLength = reqDto.getStndYymm().length();
 		if(stndYymmLength != 4 && stndYymmLength != 6) {
 			String message = "stndYymm 값이 \"yyyy\" 또는 \"yyyyMM\" 형식이 아닙니다.";
