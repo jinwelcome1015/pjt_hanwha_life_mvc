@@ -2491,7 +2491,7 @@ public class GrmExternalBackboneController {
 	
 	
 	// XXX 
-	@RequestMapping(path = { (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp"), (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, name = "[가]. IVR PROVIDER")
+	@RequestMapping(path = { (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp"), (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, name = "[가]. 인터페이스 PROVIDER - 구루미 입장 URI 발급요청")
 	public @ResponseBody IfTelegram<Res001Dto> counsellingOtp(@RequestBody IfTelegram<Req001Dto> inputTelegram, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 //		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
@@ -2616,22 +2616,24 @@ public class GrmExternalBackboneController {
 								
 								if(path.startsWith(API_URL_TOKEN)) {
 									parameterType = parameter.getType();
-								}else {
+									Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
+									Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
+											new TypeReference<Map<String, Object>>() {
+											});
+									
+										mockRequestDataMap.put("emnb", "1077123");
+
+									mockData = objectMapper.writeValueAsString(mockRequestDataMap);
+								} else {
 									String typeName = parameter.getParameterizedType().getTypeName();
 									String typeParameterClassName = CommonUtil.extractTypeParameterClassName(typeName);
 									parameterType = Class.forName(typeParameterClassName);
+									
+									IfTelegram<Map> ifRequestTelegram = MockUtil.getMockRequestIfTelegram(methodName, null);
+									mockData = objectMapper.writeValueAsString(ifRequestTelegram);
 								}
 
-								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
-								Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
-										new TypeReference<Map<String, Object>>() {
-										});
 								
-								if(path.startsWith(API_URL_TOKEN)) {
-									mockRequestDataMap.put("emnb", "1077123");
-								}
-
-								mockData = objectMapper.writeValueAsString(mockRequestDataMap);
 							}
 						}
 					}

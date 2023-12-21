@@ -48,8 +48,27 @@ public class MockUtil {
 	 * @throws IOException
 	 */
 	public static <T> T getMockRequestData(String thisMethodName, Class<T> requestDtoClass, String subCasePath) throws IOException {
-		String mockResponseDataFileName = "req.json";
-		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName, subCasePath);
+		String mockReqDataFileName = "req.json";
+//		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName, subCasePath);
+		/*
+		IfTelegram<Map> ifTelegram = getMockData(thisMethodName, mockReqDataFileName, subCasePath);
+		Map<String, Object> payload = ifTelegram.getPayload();
+		T t = OBJECT_MAPPER.convertValue(payload, requestDtoClass);
+		return t;
+		*/
+		
+		IfTelegram<Map> ifTelegram = getMockRequestIfTelegram(thisMethodName, subCasePath);
+
+		Map<String, Object> payload = ifTelegram.getPayload();
+		T t = OBJECT_MAPPER.convertValue(payload, requestDtoClass);
+
+		return t;
+		
+	}
+	
+	public static <T> IfTelegram<Map> getMockRequestIfTelegram(String thisMethodName, String subCasePath) throws IOException {
+		String mockResDataFileName = "req.json";
+		return getMockData(thisMethodName, mockResDataFileName, subCasePath);
 	}
 
 	
@@ -63,8 +82,20 @@ public class MockUtil {
 	 * @throws IOException
 	 */
 	public static <T> T getMockResponseData(String thisMethodName, Class<T> responseDtoClass, String subCasePath) throws IOException {
-		String mockResponseDataFileName = "res.json";
-		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName, subCasePath);
+//		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName, subCasePath);
+		
+		IfTelegram<Map> ifTelegram = getMockResponseIfTelegram(thisMethodName, subCasePath);
+		
+		Map<String, Object> payload = ifTelegram.getPayload();
+		T t = OBJECT_MAPPER.convertValue(payload, responseDtoClass);
+		
+		return t;
+	}
+	
+	
+	public static <T> IfTelegram<Map> getMockResponseIfTelegram(String thisMethodName, String subCasePath) throws IOException {
+		String mockResDataFileName = "res.json";
+		return getMockData(thisMethodName, mockResDataFileName, subCasePath);
 	}
 
 	
@@ -79,7 +110,8 @@ public class MockUtil {
 	 * @return 모조 데이터
 	 * @throws IOException
 	 */
-	public static <T> T getMockData(String thisMethodName, Class<T> outputClass, String mockDataFileName, String subCasePath) throws IOException {
+//	public static <T> T getMockData(String thisMethodName, Class<T> outputClass, String mockDataFileName, String subCasePath) throws IOException {
+	public static IfTelegram<Map> getMockData(String thisMethodName, String mockDataFileName, String subCasePath) throws IOException {
 		String mockDataRootPath = "/assets/mockData/";
 		String mockDataDetailPath = mockDataRootPath + thisMethodName;
 		if(subCasePath != null) {
@@ -102,13 +134,14 @@ public class MockUtil {
 		String jsonData = String.join(delimiter, lineList);
 
 		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, Map.class);
-		IfTelegram<Map> responseTelegram = null;
-		responseTelegram = OBJECT_MAPPER.readValue(jsonData, javaType);
-		Map<String, Object> payload = responseTelegram.getPayload();
+		IfTelegram<Map> ifTelegram = null;
+		ifTelegram = OBJECT_MAPPER.readValue(jsonData, javaType);
+//		Map<String, Object> payload = responseTelegram.getPayload();
 
-		T t = OBJECT_MAPPER.convertValue(payload, outputClass);
+//		T t = OBJECT_MAPPER.convertValue(payload, outputClass);
 
-		return t;
+//		return t;
+		return ifTelegram;
 
 	}
 }

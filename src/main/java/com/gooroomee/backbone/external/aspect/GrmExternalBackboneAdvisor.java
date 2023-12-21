@@ -15,10 +15,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.backbone.external.controller.GrmExternalBackboneController;
 import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc019ResDto;
 import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto;
@@ -48,6 +50,10 @@ public class GrmExternalBackboneAdvisor {
 	@Autowired
 	ModelMapper modelmapper;
 	
+	/** ObjectMapper 객체 */
+	@Autowired
+	ObjectMapper objectMapper;
+	
 	/** 인터페이스 응답 DTO 클래스의 PREFIX */
 	private static final String INTERFACE_OUTPUT_DTO_PREFIX = "com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs";
 	
@@ -63,19 +69,16 @@ public class GrmExternalBackboneAdvisor {
 	private static final int Res001Dto = 0;
 	
 	/** DTO를 변환할때 필드 이름이 다른 경우, 필드명의 매칭 정보를 담은 Map */
-	private Map<String, Object> fieldConvertInfoMap;
+	private Map<String, String> fieldNameConvertInfoMap;
 	
 	@PostConstruct
 	public void onPostConstruct() {
-		Map<String, Object> fieldConvertInfoMap = new HashMap<>();
-		fieldConvertInfoMap.put("code", "dvsnVal");
-		fieldConvertInfoMap.put("message", "rsltMsgeCntn");
-		fieldConvertInfoMap.put("data", "rsltDatVal");
+		Map<String, String> fieldNameConvertInfoMap = new HashMap<>();
+		fieldNameConvertInfoMap.put("code", "dvsnVal");
+		fieldNameConvertInfoMap.put("message", "rsltMsgeCntn");
+		fieldNameConvertInfoMap.put("data", "rsltDatVal");
 		
-		
-		fieldConvertInfoMap.put("counsellingOtp", IfTelegram.class);
-		
-		this.fieldConvertInfoMap = fieldConvertInfoMap;
+		this.fieldNameConvertInfoMap = fieldNameConvertInfoMap;
 	}
 
 	
@@ -116,14 +119,29 @@ public class GrmExternalBackboneAdvisor {
 						String dtoNumber = responseDtoClassSimpleName.replaceAll("\\D", "");
 						String interfaceOutputDtoQualifiedName = GRM_CORE_OUTPUT_DTO_PREFIX + dtoNumber + GRM_CORE_OUTPUT_DTO_SUFFIX;
 						Class<?> mockOutputDtoClass = Class.forName(interfaceOutputDtoQualifiedName);
-						Object interfaceOutputDto = MockUtil.getMockResponseData(method.getName(), mockOutputDtoClass, null);
+//						Object interfaceOutputDto = MockUtil.getMockResponseData(method.getName(), mockOutputDtoClass, null);
+						IfTelegram<Map> ifTelegram = MockUtil.getMockResponseIfTelegram(method.getName(), null);
+						
+						Map<String, Object> mapBeforeConvertFieldName = (Map<String, Object>) ifTelegram.getPayload();
 						
 //						Object interfaceOutputDto = MockUtil.getMockResponseData(method.getName(), method.getReturnType(), null);
-						
 //						Object resDto = modelmapper.map(interfaceOutputDto, resDtoClass);
-						Object map = modelmapper.map(interfaceOutputDto, resDtoClass);
 						
-						return interfaceOutputDto;
+//						Map<String, Object> mapBeforeConvertFieldName = (Map<String, Object>) objectMapper.convertValue(interfaceOutputDto, Map.class);
+						
+//						Map<String, Object> mapBeforeConvertFieldName = (Map<String, Object>) modelmapper.map(interfaceOutputDto, Map.class);
+						Map<String, Object> mapAfterConvertFieldName = new HashMap<String, Object>();
+						
+						for (String fromFieldName : mapBeforeConvertFieldName.keySet()) {
+							String toFieldName = fieldNameConvertInfoMap.get(fromFieldName);
+							Object value = mapBeforeConvertFieldName.get(fromFieldName);
+							
+							mapAfterConvertFieldName.put(toFieldName, value);
+						}
+//						Object resDto = modelmapper.map(mapAfterConvertFieldName, resDtoClass);
+						ifTelegram.setPayload(mapAfterConvertFieldName);
+						
+						return ifTelegram;
 						
 					}
 					
