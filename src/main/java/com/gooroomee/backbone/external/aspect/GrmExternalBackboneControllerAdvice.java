@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gooroomee.backbone.external.dto.client.common.ResponseDto;
-import com.gooroomee.backbone.external.dto.client.common.ResponseDto.Result;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto.Result;
 import com.gooroomee.backbone.external.exception.IfException;
 
 import lombok.extern.slf4j.Slf4j;

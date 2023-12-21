@@ -38,8 +38,8 @@
     "msgeStackTrace": null
   },
   "payload": {
-    "dvsnVal": "RT_SUCCESS",
-    "rsltMsgeCntn": "Success",
-    "rsltDatVal": "https://mvc-web-qa.hanwhalife.com/room/otp/7932942699c84909ab44a5e453ff45a475f0fdca32d946"
+    "code": "RT_SUCCESS",
+    "message": "Success",
+    "data": "https://mvc-web-qa.hanwhalife.com/room/otp/7932942699c84909ab44a5e453ff45a475f0fdca32d946"
   }
 }

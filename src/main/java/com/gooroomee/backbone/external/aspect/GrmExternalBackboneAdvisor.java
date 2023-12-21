@@ -3,8 +3,11 @@ package com.gooroomee.backbone.external.aspect;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,11 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import com.gooroomee.backbone.external.dto.client.Mvc019ResDto;
-import com.gooroomee.backbone.external.dto.client.common.ResponseDto;
-import com.gooroomee.backbone.external.dto.client.common.ResponseDto.Result;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs019_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs019_O.DataBody;
+import com.gooroomee.backbone.external.controller.GrmExternalBackboneController;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc019ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto.Result;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_O.DataBody;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.ifprovider.client.Res001Dto;
+import com.gooroomee.backbone.external.util.CommonUtil;
 import com.gooroomee.backbone.external.util.MockUtil;
 
 import lombok.Getter;
@@ -42,10 +49,34 @@ public class GrmExternalBackboneAdvisor {
 	ModelMapper modelmapper;
 	
 	/** 인터페이스 응답 DTO 클래스의 PREFIX */
-	private static final String INTERFACE_OUTPUT_DTO_PREFIX = "com.gooroomee.backbone.external.dto.intrf.IfMcCs";
+	private static final String INTERFACE_OUTPUT_DTO_PREFIX = "com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs";
 	
 	/** 인터페이스 응답 DTO 클래스의 SUFFIX */
 	private static final String INTERFACE_OUTPUT_DTO_SUFFIX = "_O";
+	
+	/** 구루미 코어 응답 DTO 클래스의 PREFIX */
+	private static final String GRM_CORE_OUTPUT_DTO_PREFIX = "com.gooroomee.backbone.external.dto.ifprovider.server.Grm";
+
+	/** 구루미 코어 응답 DTO 클래스의 SUFFIX */
+	private static final String GRM_CORE_OUTPUT_DTO_SUFFIX = "Dto_O";
+
+	private static final int Res001Dto = 0;
+	
+	/** DTO를 변환할때 필드 이름이 다른 경우, 필드명의 매칭 정보를 담은 Map */
+	private Map<String, Object> fieldConvertInfoMap;
+	
+	@PostConstruct
+	public void onPostConstruct() {
+		Map<String, Object> fieldConvertInfoMap = new HashMap<>();
+		fieldConvertInfoMap.put("code", "dvsnVal");
+		fieldConvertInfoMap.put("message", "rsltMsgeCntn");
+		fieldConvertInfoMap.put("data", "rsltDatVal");
+		
+		
+		fieldConvertInfoMap.put("counsellingOtp", IfTelegram.class);
+		
+		this.fieldConvertInfoMap = fieldConvertInfoMap;
+	}
 
 	
 	/**
@@ -66,9 +97,36 @@ public class GrmExternalBackboneAdvisor {
 
 			if (args[i] instanceof HttpServletRequest) {
 				HttpServletRequest request = (HttpServletRequest) args[i];
-				String requestURI = request.getRequestURI();
+				String requestUri = request.getRequestURI();
+				String contextPath = request.getContextPath();
+				String requestUriExceptContextPath = requestUri.replaceAll("^" + contextPath, "");
 				
-				if (requestURI.endsWith(MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK)) {
+				if (requestUri.endsWith(MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK)) {
+					
+					if(requestUriExceptContextPath.startsWith(GrmExternalBackboneController.IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN)) {
+						
+						Type genericReturnType = method.getGenericReturnType();
+						String typeName = genericReturnType.getTypeName();
+
+						String dtoQualifiedName = typeName;
+						dtoQualifiedName = CommonUtil.extractTypeParameterClassName(dtoQualifiedName);
+
+						Class<?> resDtoClass = Class.forName(dtoQualifiedName);
+						String responseDtoClassSimpleName = resDtoClass.getSimpleName();
+						String dtoNumber = responseDtoClassSimpleName.replaceAll("\\D", "");
+						String interfaceOutputDtoQualifiedName = GRM_CORE_OUTPUT_DTO_PREFIX + dtoNumber + GRM_CORE_OUTPUT_DTO_SUFFIX;
+						Class<?> mockOutputDtoClass = Class.forName(interfaceOutputDtoQualifiedName);
+						Object interfaceOutputDto = MockUtil.getMockResponseData(method.getName(), mockOutputDtoClass, null);
+						
+//						Object interfaceOutputDto = MockUtil.getMockResponseData(method.getName(), method.getReturnType(), null);
+						
+//						Object resDto = modelmapper.map(interfaceOutputDto, resDtoClass);
+						Object map = modelmapper.map(interfaceOutputDto, resDtoClass);
+						
+						return interfaceOutputDto;
+						
+					}
+					
 					/*
 					Type genericReturnType = method.getGenericReturnType();
 					String typeName = genericReturnType.getTypeName();
@@ -96,8 +154,8 @@ public class GrmExternalBackboneAdvisor {
 					ResponseDto<Object> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 
 					return responseDto;
-				}else if(Pattern.matches(".*" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK + "/\\d", requestURI)) {
-					String subCasePath = requestURI.replaceAll(".*" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK + "/", "");
+				}else if(Pattern.matches(".*" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK + "/\\d", requestUri)) {
+					String subCasePath = requestUri.replaceAll(".*" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK + "/", "");
 //					IoMetaInfoDto ioMetaInfoDto = this.getIoMetaInfoDto(method, subCasePath);
 //					Object interfaceOutputDto = ioMetaInfoDto.getInterfaceOutputDto();
 //					Class<?> resDtoClass = ioMetaInfoDto.getResDtoClass();
@@ -108,6 +166,7 @@ public class GrmExternalBackboneAdvisor {
 					String dtoQualifiedName = typeName;
 
 //					dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
+					dtoQualifiedName = CommonUtil.extractTypeParameterClassName(dtoQualifiedName);
 
 					Class<?> resDtoClass = Class.forName(dtoQualifiedName);
 					
@@ -147,11 +206,11 @@ public class GrmExternalBackboneAdvisor {
 		String dtoQualifiedName = typeName;
 
 //		dtoQualifiedName = dtoQualifiedName.replaceAll("(.*\\<)|(\\>.*)", "");
-		dtoQualifiedName = dtoQualifiedName.replaceFirst("(.*\\<)|(\\>.*)", "");
+		dtoQualifiedName = CommonUtil.extractTypeParameterClassName(dtoQualifiedName);
 
 		Class<?> resDtoClass = Class.forName(dtoQualifiedName);
 		
-		if(mockOutputDtoClass == null) {
+		if (mockOutputDtoClass == null) {
 			String responseDtoClassSimpleName = resDtoClass.getSimpleName();
 			String dtoNumber = responseDtoClassSimpleName.replaceAll("\\D", "");
 			String interfaceOutputDtoQualifiedName = INTERFACE_OUTPUT_DTO_PREFIX + dtoNumber + INTERFACE_OUTPUT_DTO_SUFFIX;

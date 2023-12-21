@@ -60,111 +60,112 @@ import com.gooroomee.backbone.external.constant.IfConstant.IfSpec;
 import com.gooroomee.backbone.external.constant.IfConstant.OcrIdType;
 import com.gooroomee.backbone.external.constant.IfConstant.TrflCnfmBswrDvsnCode;
 import com.gooroomee.backbone.external.constant.IfConstant.TrflCnfmJobCode;
-import com.gooroomee.backbone.external.dto.client.Mvc000ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc001ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc001ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc002ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc002ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc003ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc003ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc004ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc004ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc005ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc005ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc006ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc006ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc007ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc007ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc008ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc008ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc009ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc009ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc010ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc010ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc011ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc011ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc012ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc012ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc013ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc013ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc014ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc014ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc015ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc015ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc016ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc016ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc017ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc017ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc018ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc018ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc019ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc019ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc020ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc020ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc023ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc023ResDto;
-import com.gooroomee.backbone.external.dto.client.Mvc999ReqDto;
-import com.gooroomee.backbone.external.dto.client.Mvc999ResDto;
-import com.gooroomee.backbone.external.dto.client.common.ResponseDto;
-import com.gooroomee.backbone.external.dto.client.common.ResponseDto.Result;
-import com.gooroomee.backbone.external.dto.ifprovider.consumer.OtpReqDto;
-import com.gooroomee.backbone.external.dto.ifprovider.consumer.OtpResDto;
-import com.gooroomee.backbone.external.dto.ifprovider.provider.OtpDto_I;
-import com.gooroomee.backbone.external.dto.ifprovider.provider.common.IfProviderResponseCommonDto;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs002_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs002_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs003_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs003_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs004_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs004_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs005_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs005_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs006_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs006_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs008_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs008_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs009_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs009_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs010_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs010_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs012_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs013_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs013_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs014_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs014_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs016_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs016_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs017_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs017_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs018_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs018_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs019_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs019_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs023_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs023_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs999_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs999_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataBody.Image;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs004_O.User;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_O.CustCntcInfoInqyRslt;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_I.DataBody.Callback;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_I.NttkButnCntn.Button;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs023_O.DateInfo;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegram;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeader;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeaderResponseMessage;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc000ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc001ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc001ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc002ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc002ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc003ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc003ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc004ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc004ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc005ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc005ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc006ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc006ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc007ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc007ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc008ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc008ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc009ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc009ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc010ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc010ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc011ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc011ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc012ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc012ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc013ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc013ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc014ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc014ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc015ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc015ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc016ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc016ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc017ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc017ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc018ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc018ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc019ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc019ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc020ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc020ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc023ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc023ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc999ReqDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc999ResDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto;
+import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto.Result;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs002_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs002_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs003_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs003_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs005_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs005_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs006_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs006_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs008_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs008_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs009_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs009_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs010_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs010_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs013_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs013_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs014_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs014_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs016_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs016_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs017_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs017_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs018_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs018_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I.DataBody.Image;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_O.User;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_O.CustCntcInfoInqyRslt;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I.DataBody.Callback;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I.NttkButnCntn.Button;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_O.DateInfo;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeader;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeaderResponseMessage;
+import com.gooroomee.backbone.external.dto.ifprovider.client.Req001Dto;
+import com.gooroomee.backbone.external.dto.ifprovider.client.Res001Dto;
+import com.gooroomee.backbone.external.dto.ifprovider.server.Grm001Dto_I;
+import com.gooroomee.backbone.external.dto.ifprovider.server.common.IfProviderResponseCommonDto;
 import com.gooroomee.backbone.external.exception.IfException;
 import com.gooroomee.backbone.external.service.GrmExternalBackboneService;
 import com.gooroomee.backbone.external.util.AesUtil;
+import com.gooroomee.backbone.external.util.CommonUtil;
 import com.gooroomee.backbone.external.util.MockUtil;
 
 import korealife.uv.com.cm.SHA256CmCrypt;
@@ -222,7 +223,7 @@ public class GrmExternalBackboneController {
 	public static final String API_URL_TOKEN = "/intrf";
 	
 	/** 이 어플리케이션이 인터페이스의 프로바이더가 되어, 화상상담 서비스를 위해 구르미 코어에 요청을 API임을 나타내는 token */
-	public static final String IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN = "/counselling";
+	public static final String IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN = "/counselling";
 
 	/** 요청 모조 데이터를 응답으로 주기 위한 API의 URI */
 	private static final String URI_FOR_REQUEST_MOCK_DATA = "/test/api/mockData/req";
@@ -1128,7 +1129,7 @@ public class GrmExternalBackboneController {
 		mvc004ReqDto.setOrgnCode(ifOutputDto005.getBelnOrgnCode());
 		
 		ResponseDto<Mvc004ResDto> mvc004ResponseDto = this.atrtSrch(mvc004ReqDto, request);
-		List<com.gooroomee.backbone.external.dto.client.Mvc004ResDto.User> userLstList = mvc004ResponseDto.getData().getUserLstList();
+		List<com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc004ResDto.User> userLstList = mvc004ResponseDto.getData().getUserLstList();
 		
 		if(userLstList == null) {
 			log.info("userLstList가 null 입니다.");
@@ -1136,7 +1137,7 @@ public class GrmExternalBackboneController {
 			log.info("userLstList가 0개 입니다.");
 		}else {
 			String hasAuthorityYn = "N";
-			for (com.gooroomee.backbone.external.dto.client.Mvc004ResDto.User user : userLstList) {
+			for (com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc004ResDto.User user : userLstList) {
 				String authorityEmnb = user.getEmnb();
 				if(authorityEmnb.equals(reqDto.getEmnb())) {
 					hasAuthorityYn = "Y";
@@ -2023,7 +2024,7 @@ public class GrmExternalBackboneController {
 
 //		dataHeader.setDLRE_MSG("");
 
-		com.gooroomee.backbone.external.dto.intrf.IfMcCs019_I.DataBody.Image image = new IfMcCs019_I.DataBody.Image();
+		com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_I.DataBody.Image image = new IfMcCs019_I.DataBody.Image();
 
 		String imageFormat = reqDto.getFormat();
 		image.setFormat(imageFormat);
@@ -2036,7 +2037,7 @@ public class GrmExternalBackboneController {
 		String imageName = reqDto.getName();
 		image.setName(imageName);
 
-		List<com.gooroomee.backbone.external.dto.intrf.IfMcCs019_I.DataBody.Image> imageList = new ArrayList<>();
+		List<com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_I.DataBody.Image> imageList = new ArrayList<>();
 		imageList.add(image);
 
 		IfMcCs019_I.DataBody dataBody = new IfMcCs019_I.DataBody();
@@ -2490,14 +2491,14 @@ public class GrmExternalBackboneController {
 	
 	
 	// XXX 
-	@RequestMapping(path = { (IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN + "/otp"), (IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN + "/otp" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, name = "[가]. IVR PROVIDER")
-	public @ResponseBody IfTelegram<OtpResDto> counsellingOtp(@RequestBody IfTelegram<OtpReqDto> inputTelegram, HttpServletRequest request) throws URISyntaxException, IOException {
+	@RequestMapping(path = { (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp"), (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, name = "[가]. IVR PROVIDER")
+	public @ResponseBody IfTelegram<Res001Dto> counsellingOtp(@RequestBody IfTelegram<Req001Dto> inputTelegram, HttpServletRequest request) throws URISyntaxException, IOException {
 		
 //		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
 		
-		OtpReqDto inputTelegramPayload = inputTelegram.getPayload();
+		Req001Dto inputTelegramPayload = inputTelegram.getPayload();
 //		OtpDto_I dto_I = modelMapper.map(inputTelegramPayload, OtpDto_I.class);
-		OtpDto_I dto_I = new OtpDto_I();
+		Grm001Dto_I dto_I = new Grm001Dto_I();
 		dto_I.setUsername(inputTelegramPayload.getCustNm());
 		dto_I.setApiUserId(inputTelegramPayload.getCustId());
 		
@@ -2509,7 +2510,7 @@ public class GrmExternalBackboneController {
 		
 		IfProviderResponseCommonDto<String> dto_O = grmExternalBackboneService.counsellingOtp(dto_I);
 		
-		OtpResDto otpResDto = new OtpResDto();
+		Res001Dto otpResDto = new Res001Dto();
 		otpResDto.setDvsnVal(dto_O.getCode());
 		otpResDto.setRsltMsgeCntn(dto_O.getMessage());
 		otpResDto.setRsltDatVal(dto_O.getData());
@@ -2613,17 +2614,22 @@ public class GrmExternalBackboneController {
 
 								Class<?> parameterType = null;
 								
-								if(path.startsWith(IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN)) {
-									parameterType = (Class<?>) parameter.getParameterizedType();
-								}else {
+								if(path.startsWith(API_URL_TOKEN)) {
 									parameterType = parameter.getType();
+								}else {
+									String typeName = parameter.getParameterizedType().getTypeName();
+									String typeParameterClassName = CommonUtil.extractTypeParameterClassName(typeName);
+									parameterType = Class.forName(typeParameterClassName);
 								}
 
 								Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
 								Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
 										new TypeReference<Map<String, Object>>() {
 										});
-								mockRequestDataMap.put("emnb", "1077123");
+								
+								if(path.startsWith(API_URL_TOKEN)) {
+									mockRequestDataMap.put("emnb", "1077123");
+								}
 
 								mockData = objectMapper.writeValueAsString(mockRequestDataMap);
 							}
@@ -2648,7 +2654,7 @@ public class GrmExternalBackboneController {
 //					if (path.startsWith(API_URL_TOKEN)) {
 					if (
 						path.startsWith(API_URL_TOKEN)
-						|| path.startsWith(IF_PROVIDER_FOR_COUNSELLING_URL_TOKEN)
+						|| path.startsWith(IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN)
 					) {
 						Map<String, String> map = new HashMap<>();
 						map.put("path", path);

@@ -29,46 +29,46 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.backbone.external.constant.IfConstant;
 import com.gooroomee.backbone.external.constant.IfConstant.IfSpec;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs002_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs002_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs003_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs003_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs005_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs005_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs006_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs006_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs007_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs008_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs008_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs009_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs009_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs010_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs010_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs012_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs013_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs013_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs014_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs014_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs015_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs016_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs016_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs017_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs017_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs018_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs018_O;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataBody;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataHeader;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs001_I.DataBody.Image;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs011_I.DataBody.Callback;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegram;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs002_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs002_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs003_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs003_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs005_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs005_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs006_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs006_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs008_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs008_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs009_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs009_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs010_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs010_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs013_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs013_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs014_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs014_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs016_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs016_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs017_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs017_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs018_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs018_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I.DataBody;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I.DataHeader;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I.DataBody.Image;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I.DataBody.Callback;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeader;
 import com.gooroomee.backbone.external.util.AesUtil;
 import com.gooroomee.backbone.external.util.IfUtil;
 
@@ -969,11 +969,11 @@ public class IfTest222 {
 	    		"    \"ORGN_CODE\": \"00630\",\r\n" + 
 	    		"    \"USER_ID\": \"USER_001\"\r\n" + 
 	    		"}";
-	    com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I.DataHeader.class);
+	    com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_I.DataHeader dataHeader = OBJECT_MAPPER.readValue(payloadJson_dataHeader, com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_I.DataHeader.class);
 	
 	    
 	    
-	    com.gooroomee.backbone.external.dto.intrf.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
+	    com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_I.DataBody dataBody = new IfMcCs012_I.DataBody();
 	    
 	    
 	    // XXX
@@ -1554,7 +1554,7 @@ public class IfTest222 {
         
 //        List<Button> buttonList = new ArrayList<>();
         // XXX
-        List<com.gooroomee.backbone.external.dto.intrf.IfMcCs015_I.NttkButnCntn.Button> buttonList = new ArrayList<>();
+        List<com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I.NttkButnCntn.Button> buttonList = new ArrayList<>();
         buttonList.add(button);
         
 //        IfMcCs015_I2.NttkButnCntn nttkButnCntn = new IfMcCs015_I2.NttkButnCntn();

@@ -1,0 +1,16 @@
+package com.gooroomee.backbone.external.dto.ifconsumer.client;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter 
+@Setter
+@ToString
+public class Mvc016ResDto {
+	
+	// XXX 확인
+	/** 대체키SUID */
+	private long sbsnKeySuid;
+	
+}

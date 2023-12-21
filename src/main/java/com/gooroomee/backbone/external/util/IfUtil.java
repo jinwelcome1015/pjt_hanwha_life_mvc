@@ -33,9 +33,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.backbone.external.constant.IfConstant;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegram;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeader;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeaderResponseMessage;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeader;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeaderResponseMessage;
 import com.gooroomee.backbone.external.exception.IfException;
 
 import lombok.Getter;

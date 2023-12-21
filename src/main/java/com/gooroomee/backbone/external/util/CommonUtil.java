@@ -9,16 +9,16 @@ import java.util.Date;
  * @author 신용진
  */
 public class CommonUtil {
-	
+	/*
 	public static void main(String[] args) {
-		String string = "List<Map<String>>";
+		String string = "List<Map<String, Map<String, Object>>>";
 		
 		CommonUtil commonUtil = new CommonUtil();
 		String extractTypeParameterClassName = commonUtil.extractTypeParameterClassName(string);
 		System.out.println(extractTypeParameterClassName);
 	}
-	
-	public String extractTypeParameterClassName(String originClassName) {
+	*/
+	public static String extractTypeParameterClassName(String originClassName) {
 		String typeParameterClassName = originClassName;
 		typeParameterClassName = typeParameterClassName.replaceFirst("^(.*\\<)", "");
 		typeParameterClassName = typeParameterClassName.replaceFirst("(\\>.*)$", "");

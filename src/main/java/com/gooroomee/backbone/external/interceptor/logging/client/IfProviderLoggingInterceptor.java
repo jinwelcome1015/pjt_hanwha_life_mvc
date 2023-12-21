@@ -96,7 +96,4 @@ public class IfProviderLoggingInterceptor implements ClientHttpRequestIntercepto
 		
 	}
 	
-	
-	
-	
 }

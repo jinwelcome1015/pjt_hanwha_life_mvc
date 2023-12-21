@@ -32,12 +32,12 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gooroomee.backbone.external.component.GrmCounsellingOtpUriSupplier;
 import com.gooroomee.backbone.external.constant.IfConstant;
 import com.gooroomee.backbone.external.constant.IfConstant.IfSpec;
-import com.gooroomee.backbone.external.dto.ifprovider.provider.OtpDto_I;
-import com.gooroomee.backbone.external.dto.ifprovider.provider.common.IfProviderResponseCommonDto;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs999_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs999_O;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegram;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegramHeader;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeader;
+import com.gooroomee.backbone.external.dto.ifprovider.server.Grm001Dto_I;
+import com.gooroomee.backbone.external.dto.ifprovider.server.common.IfProviderResponseCommonDto;
 import com.gooroomee.backbone.external.service.GrmExternalBackboneService;
 import com.gooroomee.backbone.external.util.IfUtil;
 
@@ -154,7 +154,7 @@ public class GrmExternalBackboneServiceImpl implements GrmExternalBackboneServic
 	
 
 	@Override
-	public IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws URISyntaxException, IOException {
+	public IfProviderResponseCommonDto<String> counsellingOtp(Grm001Dto_I dto_I) throws URISyntaxException, IOException {
 		IfProviderResponseCommonDto<String> responseCommonDto = null;
 
 		String requestJson = objectMapper.writeValueAsString(dto_I);

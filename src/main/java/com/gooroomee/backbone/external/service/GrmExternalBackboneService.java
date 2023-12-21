@@ -6,10 +6,10 @@ import java.net.URISyntaxException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.gooroomee.backbone.external.constant.IfConstant.IfSpec;
-import com.gooroomee.backbone.external.dto.ifprovider.provider.OtpDto_I;
-import com.gooroomee.backbone.external.dto.ifprovider.provider.common.IfProviderResponseCommonDto;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs999_I;
-import com.gooroomee.backbone.external.dto.intrf.IfMcCs999_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_O;
+import com.gooroomee.backbone.external.dto.ifprovider.server.Grm001Dto_I;
+import com.gooroomee.backbone.external.dto.ifprovider.server.common.IfProviderResponseCommonDto;
 
 /**
  * 서비스 인터페이스
@@ -42,7 +42,7 @@ public interface GrmExternalBackboneService {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	IfProviderResponseCommonDto<String> counsellingOtp(OtpDto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException, IOException;
+	IfProviderResponseCommonDto<String> counsellingOtp(Grm001Dto_I dto_I) throws JsonMappingException, JsonProcessingException, URISyntaxException, IOException;
 
 	
 	

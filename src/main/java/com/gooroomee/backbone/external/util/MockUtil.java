@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.gooroomee.backbone.external.dto.intrf.common.IfTelegram;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
 
 /**
  * 모조 요청 데이터, 응답 데이터 사용을 위한 utility 클래스 
