@@ -672,11 +672,10 @@ public class GrmExternalBackboneController {
 	} 
 	
 	
-	
 	/**
 	 * <pre>
 	 * [00] 
-	 * 진입2 API
+	 * API - 진입2
 	 * 
 	 * [01, 02, 09, 03]
 	 *	01.신분증OCR요청
@@ -684,9 +683,9 @@ public class GrmExternalBackboneController {
 	 *	09.개인정보유출노출여부조회
 	 *	03.신분증스캔후처리
 	 * </pre>
-	 * 
-	 * @param mvc001ReqDto
-	 * @return
+	 * @param mvc001ReqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws ParseException
@@ -851,14 +850,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
 	 * <pre>
 	 * [01] 
-	 * 신분증OCR요청2
-	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * API - 신분증OCR요청2
+	 * </pre> 
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -955,6 +955,18 @@ public class GrmExternalBackboneController {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
+	
+	/**
+	 * <pre>
+	 * [02] 
+	 * API - 진위확인결과조회
+	 * </pre>
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/trflCnfm"), (API_URL_TOKEN + "/trflCnfm" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "02. 진위확인결과조회")
 	public @ResponseBody ResponseDto<Mvc002ResDto> trflCnfm(@RequestBody Mvc002ReqDto reqDto, HttpServletRequest request)
@@ -983,14 +995,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
 	 * <pre>
 	 * [03] 
-	 * 신분증스캔후처리
-	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * API - 신분증스캔후처리
+	 * </pre> 
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1023,11 +1036,11 @@ public class GrmExternalBackboneController {
 	/**
 	 * <pre>
 	 * [04] 
-	 * 권한별사용자조회
+	 * API - 권한별사용자조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1082,15 +1095,14 @@ public class GrmExternalBackboneController {
 	}
 	
 	
-
 	/**
 	 * <pre>
 	 * [05]
-	 * SSO대체로그인인증
+	 * API - SSO대체로그인인증
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1183,15 +1195,16 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
+	
 	/**
-	 * 
 	 * <pre>
 	 * [06]
-	 * 사원목록조회
+	 * API - 사원목록조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1225,15 +1238,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [07]
-	 * 고객계약정보조회
+	 * API - 고객계약정보조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1288,15 +1301,16 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+
+	
 	/**
-	 * 
 	 * <pre>
 	 * [08]
-	 * 고객계좌목록조회
+	 * API - 고객계좌목록조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1329,15 +1343,16 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+
+	
 	/**
-	 * 
 	 * <pre>
 	 * [09]
-	 * 개인정보유출노출여부조회
+	 * API - 개인정보유출노출여부조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1361,15 +1376,16 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+
+	
 	/**
-	 * 
 	 * <pre>
 	 * [10]
-	 * 간편인증 토큰발급
+	 * API - 간편인증 토큰발급
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1420,23 +1436,23 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [11]
-	 * 간편인증 요청
+	 * API - 간편인증 요청
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체 
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws BadPaddingException
-	 * @throws IllegalBlockSizeException
-	 * @throws NoSuchPaddingException
-	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 * @throws InvalidAlgorithmParameterException
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/initechRequest"), (API_URL_TOKEN + "/initechRequest" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "11. 간편인증 요청")
@@ -1541,15 +1557,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [12]
-	 * 간편인증 상태 조회
+	 * API - 간편인증 상태 조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1624,11 +1640,11 @@ public class GrmExternalBackboneController {
 	/**
 	 * <pre>
 	 * [13] 
-	 * 고객휴대폰번호조회
+	 * API - 고객휴대폰번호조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1692,11 +1708,11 @@ public class GrmExternalBackboneController {
 	/**
 	 * <pre>
 	 * [14] 
-	 * SMS 메세지 발송
+	 * API - SMS 메세지 발송
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1788,17 +1804,16 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 	
-	
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [15]
-	 * 카카오알림톡발송_챗버블
+	 * API - 카카오알림톡발송_챗버블
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1884,15 +1899,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [16]
-	 * 대체키별연락처저장
+	 * API - 대체키별연락처저장
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1915,15 +1930,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [17]
-	 * 대체키별연락처조회
+	 * API - 대체키별연락처조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1950,15 +1965,15 @@ public class GrmExternalBackboneController {
 		return responseDto;
 	}
 
+	
 	/**
-	 * 
 	 * <pre>
 	 * [18]
-	 * 우편번호조회
+	 * API - 우편번호조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -1993,14 +2008,15 @@ public class GrmExternalBackboneController {
 	
 
 	
+	
 	/**
 	 * <pre>
 	 * [19] 
-	 * 신분증OCR요청
+	 * API - 신분증OCR요청
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -2176,20 +2192,20 @@ public class GrmExternalBackboneController {
 	
 	
 	
+	
 	/**
 	 * <pre>
 	 * [20]
-	 * 진입
-	 * 
+	 * API - 진입
 	 * 
 	 * [02, 09, 03]
 	 *	02.진위확인결과조회
 	 *	09.개인정보유출노출여부조회
 	 *	03.신분증스캔후처리
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws ParseException
@@ -2347,22 +2363,19 @@ public class GrmExternalBackboneController {
 	}
 	
 	
-	
-	
 	/**
-	 * 
 	 * <pre>
-	 * [21]
-	 * 휴일목록조회
+	 * [23]
+	 * API - 휴일목록조회
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/hldyInfoMgmt"), (API_URL_TOKEN + "/hldyInfoMgmt" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, method = {
-			RequestMethod.POST }, name = "21. 휴일목록조회")
+			RequestMethod.POST }, name = "23. 휴일목록조회")
 	public @ResponseBody ResponseDto<Mvc023ResDto> hldyInfoMgmt(@RequestBody Mvc023ReqDto reqDto, HttpServletRequest request)
 			throws URISyntaxException, IOException {
 		
@@ -2427,20 +2440,14 @@ public class GrmExternalBackboneController {
 	
 	
 	
-	
-	
-	
-	
-	
 	/**
-	 * 
 	 * <pre>
 	 * [99]
-	 * 이미지 시스템 등록
+	 * API - 이미지 시스템 등록
 	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
+	 * @param reqDto 요청 DTO 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
@@ -2481,7 +2488,11 @@ public class GrmExternalBackboneController {
 	
 	
 	
-
+	/**
+	 * ControllerAdvice 에 Exception 을 throw 하기 위한 컨트롤러 메서드
+	 * @param request HttpServletRequest 객체
+	 * @throws Exception
+	 */
 	@RequestMapping(path = { EXCEPTION_CONTROLLER_PATH })
 	public void exception(HttpServletRequest request) throws Exception {
 		Exception exception = (Exception) request.getAttribute(EXCEPTION_ATTRIBUTE_NAME);
@@ -2489,10 +2500,19 @@ public class GrmExternalBackboneController {
 	}
 
 	
-	
-	// XXX 
+
+	/**
+	 * <pre>
+	 * [가]
+	 * INTERFACE PROVIDER - 구루미 입장 URI 발급요청
+	 * </pre>
+	 * @param inputTelegram 요청 IfTelegram 객체
+	 * @param request HttpServletRequest 객체
+	 * @return 응답 IfTelegram 객체
+	 * @throws URISyntaxException
+	 */
 	@RequestMapping(path = { (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp"), (IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN + "/otp" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, name = "[가]. 인터페이스 PROVIDER - 구루미 입장 URI 발급요청")
-	public @ResponseBody IfTelegram<Res001Dto> counsellingOtp(@RequestBody IfTelegram<Req001Dto> inputTelegram, HttpServletRequest request) throws URISyntaxException, IOException {
+	public @ResponseBody IfTelegram<Res001Dto> counsellingOtp(@RequestBody IfTelegram<Req001Dto> inputTelegram, HttpServletRequest request) throws URISyntaxException {
 		
 //		log.debug("[counsellingOtp] : {}", objectMapper.writeValueAsString(inputTelegram));
 		
@@ -2508,7 +2528,18 @@ public class GrmExternalBackboneController {
 		
 		dto_I.setRequestAgency(inputTelegramPayload.getRqstOrgnCode());
 		
-		IfProviderResponseCommonDto<String> dto_O = grmExternalBackboneService.counsellingOtp(dto_I);
+		IfProviderResponseCommonDto<String> dto_O;
+		
+		try {
+			dto_O = grmExternalBackboneService.counsellingOtp(dto_I);
+		} catch (URISyntaxException | IOException | RuntimeException e) {
+			IfProviderResponseCommonDto<String> exceptionDto = new IfProviderResponseCommonDto<String>();
+			exceptionDto.setCode("RT_FAIL");
+			exceptionDto.setMessage(e.getMessage());
+			exceptionDto.setData("");
+			
+			dto_O = exceptionDto;
+		}
 		
 		Res001Dto otpResDto = new Res001Dto();
 		otpResDto.setDvsnVal(dto_O.getCode());
@@ -2544,16 +2575,10 @@ public class GrmExternalBackboneController {
 	
 	
 	
-	
 	/**
-	 * 
-	 * <pre>
 	 * [A]
-	 * 인증서비스ID 목록
-	 * </pre>
-	 * 
-	 * @param model
-	 * @return
+	 * API - 인증서비스ID 목록 조회
+	 * @return 인증서비스ID 목록
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/pids") }, method = { RequestMethod.POST }, name = "A. 인증서비스ID")
 	public @ResponseBody List<Map<String, String>> getPids() {
@@ -2571,11 +2596,13 @@ public class GrmExternalBackboneController {
 		return ezCertSrvcIdList;
 	}
 
+	
 	/**
-	 * API 테스트 화면
-	 * 
-	 * @param model
-	 * @return
+	 * <pre>
+	 * API 테스트 화면을 클라이언트에 반환한다.
+	 * </pre>
+	 * @param model Model 객체
+	 * @return API 테스트 화면
 	 * @throws IOException
 	 */
 	@RequestMapping(path = { "/test/apis" }, method = { RequestMethod.GET })
@@ -2591,6 +2618,17 @@ public class GrmExternalBackboneController {
 		return "test/apis";
 	}
 
+	
+	
+	/**
+	 * <pre>
+	 * 
+	 * </pre>
+	 * @param map
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	@RequestMapping(path = { URI_FOR_REQUEST_MOCK_DATA }, method = { RequestMethod.GET })
 	public @ResponseBody String getApiTestRequestMockData(@RequestParam MultiValueMap<String, String> map) throws ClassNotFoundException, IOException {
 		String mockData = null;
@@ -2632,8 +2670,6 @@ public class GrmExternalBackboneController {
 									IfTelegram<Map> ifRequestTelegram = MockUtil.getMockRequestIfTelegram(methodName, null);
 									mockData = objectMapper.writeValueAsString(ifRequestTelegram);
 								}
-
-								
 							}
 						}
 					}
@@ -2643,6 +2679,12 @@ public class GrmExternalBackboneController {
 		return mockData;
 	}
 
+	
+	
+	/**
+	 * API 들의 name 과 path 를 담은 Map 객체의 List 를 반환한다.
+	 * @return API 들의 name 과 path 를 담은 Map 객체의 List
+	 */
 	private List<Map<String, String>> getApiInfoList() {
 		List<Map<String, String>> apiInfoList = new ArrayList<>();
 
@@ -2668,56 +2710,24 @@ public class GrmExternalBackboneController {
 		}
 
 		apiInfoList.sort((o1, o2) -> {
-
 			String name_o1 = o1.get("name");
 			String name_o2 = o2.get("name");
-
 			int compareToIgnoreCase = name_o1.compareToIgnoreCase(name_o2);
-
 			return compareToIgnoreCase;
 		});
 
 		return apiInfoList;
 	}
 
+	
+	
+	/**
+	 * 모조 신분증 이미지 정보 목록을 반환한다.
+	 * @return 모조 신분증 이미지 정보 목록
+	 * @throws IOException
+	 */
 	public List<Map<String, String>> getIdCardMockImageInfoList() throws IOException {
 		List<Map<String, String>> idCardMockImageInfoList = new ArrayList<>();
-
-		/*
-		String mockImageRootPath = MOCK_IMAGE_ROOT_PATH;
-		File mockImageRootPathDirectory = new ClassPathResource(mockImageRootPath).getFile();
-		String[] mockImageDataFileNames = mockImageRootPathDirectory.list((dir, name) -> {
-			
-			boolean endsWith = name.endsWith(IMAGE_DATA_FILE_EXTENSION);
-			
-			return endsWith;
-		});
-		
-		List<String> mockImageDataFileNameList = Arrays.asList(mockImageDataFileNames);
-		mockImageDataFileNameList.sort(new Comparator<String>() {
-			@Override
-			public int compare(String mockImageDataFileName1, String mockImageDataFileName2) {
-				return mockImageDataFileName1.compareTo(mockImageDataFileName2);
-			}
-		});
-		
-		for (String mockImageDataFileName : mockImageDataFileNameList) {
-			File mockImageDataFile = new File(mockImageRootPath, mockImageDataFileName);
-			ClassPathResource resource = new ClassPathResource(mockImageDataFile.toString());
-			
-			Stream<String> lineStream = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")).lines();
-			List<String> lineList = lineStream.collect(Collectors.toList());
-			String idCardMockImageBase64Data = String.join("", lineList);
-			
-			Map<String, String> idCardMockImageInfoMap = new HashMap<>();
-			String mockImageName = mockImageDataFileName.replaceAll("." + IMAGE_DATA_FILE_EXTENSION + "$", "");
-			idCardMockImageInfoMap.put("mockImageName", mockImageName);
-			idCardMockImageInfoMap.put("mockImageDataFileName", mockImageDataFileName);
-			idCardMockImageInfoMap.put("idCardMockImageBase64Data", idCardMockImageBase64Data);
-			
-			idCardMockImageInfoList.add(idCardMockImageInfoMap);
-		}
-		*/
 
 		String cpth = "classpath*:" + MOCK_IMAGE_ROOT_PATH + "/*." + IMAGE_DATA_FILE_EXTENSION;
 
@@ -2738,15 +2748,22 @@ public class GrmExternalBackboneController {
 			idCardMockImageInfoMap.put("idCardMockImageBase64Data", idCardMockImageBase64Data);
 			idCardMockImageInfoList.add(idCardMockImageInfoMap);
 		}
-
 		return idCardMockImageInfoList;
 	}
 	
 	
+	
+	
+	/**
+	 * <pre>
+	 * String 값을 인자로 받아 그 값으로 컨트롤러의 path가 시작이 되는 컨트롤러를 찾고, 
+	 * 그 찾은 컨트롤러의 name 을 반환한다.
+	 * </pre>
+	 * @param controllerPath
+	 * @return
+	 */
 	public String findControllerName(String controllerPath) {
-		
 		String controllerName = null;
-
 		Method[] declaredMethods = this.getClass().getDeclaredMethods();
 		rootFor : for (Method method : declaredMethods) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
@@ -2761,27 +2778,29 @@ public class GrmExternalBackboneController {
 				}
 			}
 		}
-		
-//		controllerName = StringUtils.defaultString(controllerName);
-		
 		return controllerName;
 	}
 	
 	
 	
-
+	/**
+	 * <pre>
+	 * 요청 URI 를 인자로 받아서, 그 요청 URI를 path로 갖는 컨트롤러가 Base64데이터를 취급하는 컨트롤러인지 여부를 반환한다.
+	 * (Base64데이터를 취급하는 컨트롤러의 path 에는 TOKENS_OF_URI_WITH_BASE64_REQUEST_PARAM 의 문자열 값을 포함하고 있다.)
+	 * </pre>
+	 * @param requestUri
+	 * @return
+	 * @throws IOException
+	 */
 	public boolean isRequestThatHasBase64Data(String requestUri) throws IOException {
 		boolean isRequestThatHasBase64Data = false;
-		
 		String[] tokens = TOKENS_OF_URI_WITH_BASE64_REQUEST_PARAM;
-
 		for (String token : tokens) {
 			if(requestUri.contains(token)) {
 				isRequestThatHasBase64Data = true;
 				break;
 			}
 		}
-		
 		return isRequestThatHasBase64Data;
 	}
 }

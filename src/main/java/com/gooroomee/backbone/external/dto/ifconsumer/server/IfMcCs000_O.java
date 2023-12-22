@@ -13,7 +13,7 @@ import lombok.ToString;
 
 
 /**
- * 실제로 인터페이스에 사용하지는 않는 dto.
+ * 실제로 인터페이스에 사용하지는 않는 DTO
  * GrmAdapterAdvice의 responseWithMockData에서 mock 응답을 위한 로직의 통일성을 위해 
  * 인터페이스에 사용하지 않음에도 만들어 놓음.
  * @author 1077593

@@ -4,6 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * <pre>
+ * PROVIDER INTERFACE - 화상상담서비스 진입 URI 조회
+ * 
+ * 요청 DTO
+ * </pre>
+ * @author 신용진
+ */
 @Getter
 @Setter
 @ToString

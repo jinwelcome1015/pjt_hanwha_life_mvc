@@ -8,6 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+/**
+ * <pre>
+ * INTERFACE - 사용안함
+ * 
+ * 요청 DTO
+ * </pre>
+ * @author 신용진
+ */
 @Getter 
 @Setter
 @ToString

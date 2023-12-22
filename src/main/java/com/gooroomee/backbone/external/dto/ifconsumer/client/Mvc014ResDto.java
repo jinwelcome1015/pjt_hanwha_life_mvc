@@ -9,6 +9,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+/**
+ * <pre>
+ * API - SMS 메세지 발송
+ * 
+ * 응답 DTO
+ * </pre>
+ * @author 신용진
+ */
 @Getter
 @Setter
 @ToString

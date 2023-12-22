@@ -4,6 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+
+/**
+ * <pre>
+ * API - 카카오알림톡발송_챗버블
+ * 
+ * 요청 DTO
+ * </pre>
+ * @author 신용진
+ */
 @Getter
 @Setter
 @ToString

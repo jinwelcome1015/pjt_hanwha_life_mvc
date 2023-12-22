@@ -9,15 +9,13 @@ import java.util.Date;
  * @author 신용진
  */
 public class CommonUtil {
-	/*
-	public static void main(String[] args) {
-		String string = "List<Map<String, Map<String, Object>>>";
-		
-		CommonUtil commonUtil = new CommonUtil();
-		String extractTypeParameterClassName = commonUtil.extractTypeParameterClassName(string);
-		System.out.println(extractTypeParameterClassName);
-	}
-	*/
+	
+	/**
+	 * 인자로 받은 타입 파라미터 클래스를 포함한 제네릭 클래스 이름에서 타입 파라미터 클래스 이름을 추출해서 반환한다.
+	 * [example] List<String> → String
+	 * @param originClassName 타입 파라미터 클래스를 포함한 제네릭 클래스
+	 * @return 타입 파라미터 클래스
+	 */
 	public static String extractTypeParameterClassName(String originClassName) {
 		String typeParameterClassName = originClassName;
 		typeParameterClassName = typeParameterClassName.replaceFirst("^(.*\\<)", "");

@@ -7,6 +7,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+/**
+ * <pre>
+ * INTERFACE - 고객계좌목록조회
+ * 
+ * 응답 DTO
+ * </pre>
+ * @author 신용진
+ */
 @Getter
 @Setter
 @ToString

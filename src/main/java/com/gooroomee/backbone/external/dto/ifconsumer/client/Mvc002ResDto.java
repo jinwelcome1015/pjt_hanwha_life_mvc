@@ -4,6 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * <pre>
+ * API - 진위확인결과조회
+ * 
+ * 응답 DTO
+ * </pre>
+ * @author 신용진
+ */
 @Getter
 @Setter
 @ToString

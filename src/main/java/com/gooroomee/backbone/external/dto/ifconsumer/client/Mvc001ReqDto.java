@@ -6,6 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * <pre>
+ * API - 진입2
+ * API - 신분증OCR요청2
+ * 
+ * 요청 DTO
+ * </pre>
+ * @author 신용진
+ *
+ */
 @Getter
 @Setter
 @ToString

@@ -84,6 +84,8 @@ public class GrmCounsellingOtpUriSupplierWithConnectTest implements GrmCounselli
 		return firstConnectableUri;
 	}
 
+	
+	
 	/**
 	 * IpPortInfo 객체의 List를 로컬 머신의  IP를 지닌 IpPortInfo 객체가 List의 첫번째의 요소가 되도록 순서를 조정한다.
 	 * @param ipPortInfos 로컬 머신의  IP를 지닌 IpPortInfo 객체를 List의 첫번째의 요소가 되도록 순서를 조정하기 이전의 IpPortInfo 객체의 List

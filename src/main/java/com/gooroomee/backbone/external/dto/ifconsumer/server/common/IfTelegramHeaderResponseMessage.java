@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * 인터페이스 전문 공통 header 응답 메세지 DTO
+ * @author 신용진
+ */
 @Getter 
 @Setter
 @ToString

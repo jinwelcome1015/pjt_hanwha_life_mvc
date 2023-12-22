@@ -4,16 +4,23 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * <pre>
+ * API - 신분증OCR요청2
+ * 
+ * 응답 DTO
+ * </pre>
+ * @author 신용진
+ *
+ */
 @Getter
 @Setter
 @ToString
 public class Mvc001ResDto {
 
-	// XXX 확인
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
 
-	// XXX 확인
 	/** 데이터바디 */
 	private DataBody dataBody;
 

@@ -9,6 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * API 응답을 위한 공통 wrapping 용 DTO
+ * @author 신용진
+ *
+ * @param <T> 응답 데이터 타입
+ */
 @RequiredArgsConstructor
 @Getter
 @Setter

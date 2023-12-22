@@ -7,6 +7,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 
+/**
+ * 인터페이스 전문 공통 header DTO
+ * @author 신용진
+ */
 @Getter 
 @Setter
 @ToString

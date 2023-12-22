@@ -66,13 +66,23 @@ public class GrmExternalBackboneAdvisor {
 	/** 구루미 코어 응답 DTO 클래스의 SUFFIX */
 	private static final String GRM_CORE_OUTPUT_DTO_SUFFIX = "Dto_O";
 
-	private static final int Res001Dto = 0;
-	
 	/** DTO를 변환할때 필드 이름이 다른 경우, 필드명의 매칭 정보를 담은 Map */
 	private Map<String, String> fieldNameConvertInfoMap;
 	
+	
+	/**
+	 * 의존성 주입이 이루어진 후 스프링에 의해 호출되는 일종의 이벤트 핸들러 메서드
+	 */
 	@PostConstruct
 	public void onPostConstruct() {
+		initFieldNameConvertInfoMap();
+	}
+	
+	
+	/**
+	 * 멤버필드 fieldNameConvertInfoMap 를 초기화한다.
+	 */
+	private void initFieldNameConvertInfoMap() {
 		Map<String, String> fieldNameConvertInfoMap = new HashMap<>();
 		fieldNameConvertInfoMap.put("code", "dvsnVal");
 		fieldNameConvertInfoMap.put("message", "rsltMsgeCntn");
@@ -80,7 +90,7 @@ public class GrmExternalBackboneAdvisor {
 		
 		this.fieldNameConvertInfoMap = fieldNameConvertInfoMap;
 	}
-
+	
 	
 	/**
 	 * 요청 URI 가 MockUtil.URL_SUFFIX_FOR_MOCK 의 값으로 끝날 경우, 모조 데이터로 응답하게 하기 위한 Advisor

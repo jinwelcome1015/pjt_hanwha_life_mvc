@@ -49,13 +49,6 @@ public class MockUtil {
 	 */
 	public static <T> T getMockRequestData(String thisMethodName, Class<T> requestDtoClass, String subCasePath) throws IOException {
 		String mockReqDataFileName = "req.json";
-//		return getMockData(thisMethodName, requestDtoClass, mockResponseDataFileName, subCasePath);
-		/*
-		IfTelegram<Map> ifTelegram = getMockData(thisMethodName, mockReqDataFileName, subCasePath);
-		Map<String, Object> payload = ifTelegram.getPayload();
-		T t = OBJECT_MAPPER.convertValue(payload, requestDtoClass);
-		return t;
-		*/
 		
 		IfTelegram<Map> ifTelegram = getMockRequestIfTelegram(thisMethodName, subCasePath);
 
@@ -66,6 +59,15 @@ public class MockUtil {
 		
 	}
 	
+	
+	/**
+	 * 모조 요청 전문을 반환한다.
+	 * @param <T> 응답 데이터 DTO 타입
+	 * @param thisMethodName 모조 응답 데이터를 사용할 Controller 메소드 이름
+	 * @param subCasePath 경우에 따라 모조 요청 전문을 다르게 만들기 위한 sub case 
+	 * @return 모조 요청 전문
+	 * @throws IOException
+	 */
 	public static <T> IfTelegram<Map> getMockRequestIfTelegram(String thisMethodName, String subCasePath) throws IOException {
 		String mockResDataFileName = "req.json";
 		return getMockData(thisMethodName, mockResDataFileName, subCasePath);
@@ -82,7 +84,6 @@ public class MockUtil {
 	 * @throws IOException
 	 */
 	public static <T> T getMockResponseData(String thisMethodName, Class<T> responseDtoClass, String subCasePath) throws IOException {
-//		return getMockData(thisMethodName, responseDtoClass, mockResponseDataFileName, subCasePath);
 		
 		IfTelegram<Map> ifTelegram = getMockResponseIfTelegram(thisMethodName, subCasePath);
 		
@@ -92,7 +93,14 @@ public class MockUtil {
 		return t;
 	}
 	
-	
+	/**
+	 * 모조 응답 전문을 반환한다.
+	 * @param <T> 응답 데이터 DTO 타입
+	 * @param thisMethodName 모조 응답 데이터를 사용할 Controller 메소드 이름
+	 * @param subCasePath 경우에 따라 모조 응답 전문을 다르게 만들기 위한 sub case 
+	 * @return 모조 응답 전문
+	 * @throws IOException
+	 */
 	public static <T> IfTelegram<Map> getMockResponseIfTelegram(String thisMethodName, String subCasePath) throws IOException {
 		String mockResDataFileName = "res.json";
 		return getMockData(thisMethodName, mockResDataFileName, subCasePath);
@@ -136,11 +144,7 @@ public class MockUtil {
 		JavaType javaType = TypeFactory.defaultInstance().constructParametricType(IfTelegram.class, Map.class);
 		IfTelegram<Map> ifTelegram = null;
 		ifTelegram = OBJECT_MAPPER.readValue(jsonData, javaType);
-//		Map<String, Object> payload = responseTelegram.getPayload();
-
-//		T t = OBJECT_MAPPER.convertValue(payload, outputClass);
-
-//		return t;
+		
 		return ifTelegram;
 
 	}
