@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gooroomee.backbone.external.constant.IfConstant;
+import com.gooroomee.backbone.external.interceptor.logging.client.common.ClientHttpRequestInterceptorForLogging;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Component
 @Slf4j
-public class ImageSystemLoggingInterceptor implements ClientHttpRequestInterceptor {
+public class ImageSystemLoggingInterceptor extends ClientHttpRequestInterceptorForLogging {
 	
 	/** Multi 데이터 logging을 위한 전용 Logger 객체 */
 	private static final Logger loggerForMultipartFormDataLogging = LoggerFactory.getLogger(ImageSystemLoggingInterceptor.class.getCanonicalName() + IfConstant.LOGGER_NAME_SUFFIX_FOR_MULTIPART_FORM_DATA); // "com.gooroomee.backbone.external.interceptor.ImageSystemLoggingInterceptor._MULTIPART_FORM_DATA"
@@ -43,47 +44,15 @@ public class ImageSystemLoggingInterceptor implements ClientHttpRequestIntercept
 	/** ObjectMapper 객체 */
 	private ObjectMapper objectMapper = new ObjectMapper();
 
-	@Override
-	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-		try {
-			this.traceRequest(request, body);
-		}catch (Exception e) {
-			log.error("[LOGGING EXCEPTION]", e);
-		}
 
-		ClientHttpResponse response = execution.execute(request, body);
-
-		URI uri = request.getURI();
-		try {
-			this.traceResponse(response, uri);
-		} catch (Exception e) {
-			log.error("[LOGGING EXCEPTION]", e);
-		}
-		
-		return response;
-	}
-
-	/**
-	 * 요청 내용을 기록한다.
-	 * @param request HttpRequest 객체
-	 * @param body HttpRequest 의 body 
-	 * @throws JsonMappingException
-	 * @throws JsonProcessingException
-	 */
-	private void traceRequest(HttpRequest request, byte[] body) throws JsonMappingException, JsonProcessingException {
+	protected void traceRequest(HttpRequest request, byte[] body) throws JsonMappingException, JsonProcessingException {
 		String requestBody = new String(body, StandardCharsets.UTF_8);
 		log.info("[MULTIPART] [REQUEST] Request Uri : {}", request.getURI());
 		loggerForMultipartFormDataLogging.info("[IMG-SYS] [REQUEST] Request Uri : {}, Request Body Bytes Lengths : {}", request.getURI(), requestBody.getBytes().length);
 	}
 
 	
-	/**
-	 * 응답 내용을 기록한다.
-	 * @param response ClientHttpResponse 객체
-	 * @param uri 요청 URI 문자열
-	 * @throws IOException
-	 */
-	private void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
+	protected void traceResponse(ClientHttpResponse response, URI uri) throws IOException {
 		String responseBody = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
 		ObjectNode responseBodyObjectNode = (ObjectNode) objectMapper.readTree(responseBody);
 		log.info("[IMG-SYS] [RESPONSE] Status code : {}, Response Body : {}", response.getStatusCode(), responseBodyObjectNode);
