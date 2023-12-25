@@ -167,7 +167,7 @@ public class GrmExternalBackboneConfiguration {
 	
 	
 	/**
-	 * 이미지시스템 서버에 이미지 등록 요청을 하기 위한  RestTemplate 객체를 스프링  컨테이너에 추가한다.
+	 * 이미지시스템 서버에 이미지 등록 요청을 하기 위한  RestTemplate 객체를 스프링  IoC 컨테이너에 추가한다.
 	 * @param restTemplateBuilder RestTemplateBuilder 객체
 	 * @return RestTemplate 객체
 	 */
