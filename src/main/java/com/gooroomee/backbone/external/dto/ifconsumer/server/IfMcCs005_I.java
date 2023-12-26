@@ -25,4 +25,6 @@ public class IfMcCs005_I {
 	/** 로그인비밀번호 */
 	private String lognPswd;
 
+	/** 로그인비밀번호가 암호화 되었는지 여부(파라미터로 제어하기 위해 true로 초기화함.) */
+	private boolean isLognPswdEncrypted = true;
 }

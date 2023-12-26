@@ -3,6 +3,7 @@ package com.gooroomee.backbone.external.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.math.BigInteger;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -200,6 +202,14 @@ public class GrmExternalBackboneController {
 	/** ocr secret-key */
 	@Value(value = "${interface.ocr.secret-key}")
 	private String ocrSecretKey;
+		
+	/** API 테스트 페이지 활성화 여부 */
+	@Value(value = "${api.test-page.enabled:false}")
+	private boolean apiTestPageEnabled;
+	
+	/** 이 어플리케이션에 요청 데이터로 전달되는 패스워드가 암호화 되었는지 여부 */
+	@Value(value = "${login.password.request-is-encrypted:false}")
+	private boolean loginPasswordRequestIsEncrypted;
 
 	/** GrmExternalBackboneService 객체 */
 	@Autowired
@@ -1104,8 +1114,16 @@ public class GrmExternalBackboneController {
 
 		String emnb = reqDto.getEmnb();
 
-		String lognPswd = reqDto.getLognPswd();
-		String encLognPswd = SHA256CmCrypt.SHA256_getEncString(lognPswd);
+//		String lognPswd = reqDto.getLognPswd();
+//		String encLognPswd = SHA256CmCrypt.SHA256_getEncString(lognPswd);
+		
+		String encLognPswd = null;
+		
+		if(loginPasswordRequestIsEncrypted && reqDto.isLognPswdEncrypted()) {
+			encLognPswd = reqDto.getLognPswd();	// 요청 DTO에 이미 encrypt 된 패스워드가 담겨 있다.
+		}else {
+			encLognPswd = SHA256CmCrypt.SHA256_getEncString(reqDto.getLognPswd());
+		}
 
 		IfMcCs005_I ifInputDto005 = new IfMcCs005_I();
 		ifInputDto005.setEmnb(emnb);
@@ -2439,10 +2457,29 @@ public class GrmExternalBackboneController {
 	 * @return 응답 DTO 객체
 	 * @throws URISyntaxException
 	 * @throws IOException
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
 	@RequestMapping(path = { (API_URL_TOKEN + "/edmsRgstr"), (API_URL_TOKEN + "/edmsRgstr" + MockUtil.REQUEST_URI_SUFFIX_FOR_MOCK) }, method = {
 			RequestMethod.POST }, name = "99. 이미지 시스템 등록")
-	public @ResponseBody ResponseDto<Mvc999ResDto> edmsRgstr(@ModelAttribute Mvc999ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException{
+	public @ResponseBody ResponseDto<Mvc999ResDto> edmsRgstr(@ModelAttribute Mvc999ReqDto reqDto, HttpServletRequest request) throws URISyntaxException, IOException, IllegalArgumentException, IllegalAccessException{
+		
+		Map<String,Object> mapForLogging = new LinkedHashMap<>();
+		
+		final String multipartFileFieldName = "file";	// reqDto 의 MultipartFile 타입 필드 이름 
+		
+		for (Field field : reqDto.getClass().getDeclaredFields()) {
+			field.setAccessible(true);
+			
+			String fieldName = field.getName();
+			
+			if(fieldName.equalsIgnoreCase(multipartFileFieldName)) {
+				continue;
+			}
+			Object fieldValue = field.get(reqDto);
+			mapForLogging.put(fieldName, fieldValue);
+		} 
+		log.info("[IMAGE-SYSTEM-REQUET-PARAM] : {}", objectMapper.writeValueAsString(mapForLogging));
 		
 		MultipartFile file = reqDto.getFile();
 		String originalFilename = file.getOriginalFilename();
@@ -2468,6 +2505,20 @@ public class GrmExternalBackboneController {
 		IfMcCs999_O imgSysOutput = grmExternalBackboneService.rgstrImgSys(imgSysInput);
 		
 		Mvc999ResDto resDto = modelMapper.map(imgSysOutput, Mvc999ResDto.class);
+		/*
+		Result result = null;
+		if("Y".equalsIgnoreCase(resDto.getRsltYn())) {
+			result = Result.SUCCESS;
+		}else {
+			result = Result.FAIL;
+		}
+		ResponseDto<Mvc999ResDto> responseDto = new ResponseDto<>(result, HttpStatus.OK, resDto);
+		*/
+		if(!"Y".equalsIgnoreCase(resDto.getRsltYn())) {
+			String failDataJson = objectMapper.writeValueAsString(resDto);
+			String message = String.format("이미지 제출에 실패했습니다. (상세정보 : %s)", failDataJson);
+			throw new IfException(HttpStatus.OK, message);
+		}
 		
 		ResponseDto<Mvc999ResDto> responseDto = new ResponseDto<>(Result.SUCCESS, HttpStatus.OK, resDto);
 		
@@ -2603,6 +2654,7 @@ public class GrmExternalBackboneController {
 		model.addAttribute("idCardMockImageInfoList", this.getIdCardMockImageInfoList());
 		model.addAttribute("urlForRequestMockData", URI_FOR_REQUEST_MOCK_DATA);
 		model.addAttribute("paramNameForRequestMockData", PARAM_NAME_FOR_REQUEST_MOCK_DATA);
+		model.addAttribute("apiTestPageEnabled", apiTestPageEnabled);
 
 		return "test/apis";
 	}
@@ -2611,10 +2663,10 @@ public class GrmExternalBackboneController {
 	
 	/**
 	 * <pre>
-	 * 
+	 * 모조 요청 데이터를 반환한다.
 	 * </pre>
-	 * @param map
-	 * @return
+	 * @param map 요청 파라미터
+	 * @return API 모조 요청 데이터
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
@@ -2748,8 +2800,8 @@ public class GrmExternalBackboneController {
 	 * String 값을 인자로 받아 그 값으로 컨트롤러의 path가 시작이 되는 컨트롤러를 찾고, 
 	 * 그 찾은 컨트롤러의 name 을 반환한다.
 	 * </pre>
-	 * @param controllerPath
-	 * @return
+	 * @param controllerPath 컨트롤러의 path
+	 * @return 컨트롤러의 name
 	 */
 	public String findControllerName(String controllerPath) {
 		String controllerName = null;
@@ -2777,8 +2829,8 @@ public class GrmExternalBackboneController {
 	 * 요청 URI 를 인자로 받아서, 그 요청 URI를 path로 갖는 컨트롤러가 Base64데이터를 취급하는 컨트롤러인지 여부를 반환한다.
 	 * (Base64데이터를 취급하는 컨트롤러의 path 에는 TOKENS_OF_URI_WITH_BASE64_REQUEST_PARAM 의 문자열 값을 포함하고 있다.)
 	 * </pre>
-	 * @param requestUri
-	 * @return
+	 * @param requestUri 요청 URI
+	 * @return 요청 URI를 path로 갖는 컨트롤러가 Base64데이터를 취급하는 컨트롤러인지 여부
 	 * @throws IOException
 	 */
 	public boolean isRequestThatHasBase64Data(String requestUri) throws IOException {

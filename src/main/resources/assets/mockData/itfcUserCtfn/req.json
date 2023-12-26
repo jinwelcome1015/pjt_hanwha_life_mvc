@@ -42,6 +42,7 @@
   },
   "payload": {
     "emnb": "1021814",
-    "lognPswd": "hlihli1!"
+    "lognPswd": "hlihli1!",
+    "isLognPswdEncrypted": false
   }
 }
