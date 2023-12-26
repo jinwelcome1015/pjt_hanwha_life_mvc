@@ -944,17 +944,6 @@ public class GrmExternalBackboneController {
 	}
 
 	
-	/**
-	 * <pre>
-	 * [02] 
-	 * 진위확인결과조회
-	 * </pre>
-	 * 
-	 * @param reqDto
-	 * @return
-	 * @throws URISyntaxException
-	 * @throws IOException
-	 */
 	
 	/**
 	 * <pre>
