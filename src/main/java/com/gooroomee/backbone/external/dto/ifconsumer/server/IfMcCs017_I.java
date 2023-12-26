@@ -20,7 +20,6 @@ import lombok.ToString;
 @ToString
 public class IfMcCs017_I {
 
-	// XXX 확인
 	/** 대체키SUID */
 	private BigInteger sbsnKeySuid;
 }

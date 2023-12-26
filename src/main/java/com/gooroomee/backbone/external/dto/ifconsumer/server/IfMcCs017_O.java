@@ -25,22 +25,22 @@ public class IfMcCs017_O {
 	/** 연락처참조SUID */
 	private String cnplRfrnSuid;
 
-	// XXX 확인
 	/** SNS */
 	private Sns sns;
 
-	// XXX 확인
 	/** 전화번호 */
 	private Tlno tlno;
 
-	// XXX 확인
 	/** 주소 */
 	private Addr addr;
 
-	// XXX 확인
 	/** 전자위치 */
 	private ElctLoct elctLoct;
 
+	/**
+	 * SNS DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -56,6 +56,10 @@ public class IfMcCs017_O {
 		private String snsRmrkCntn;
 	}
 
+	/**
+	 * 전화번호 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -82,6 +86,11 @@ public class IfMcCs017_O {
 		private String tlnoRmrkCntn;
 	}
 
+	
+	/**
+	 * 주소 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -128,6 +137,11 @@ public class IfMcCs017_O {
 
 	}
 
+	
+	/**
+	 * 전자위치 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

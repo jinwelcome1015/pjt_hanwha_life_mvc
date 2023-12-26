@@ -102,7 +102,10 @@ public class IfMcCs015_I {
     /** 안내장종류코드 */
     private String ntfcKindCode;
     
-    
+    /**
+	 * 알림톡버튼내용 DTO 클래스
+	 * @author 신용진
+	 */
     @Getter
     @Setter
     @ToString
@@ -110,6 +113,10 @@ public class IfMcCs015_I {
         
         private List<Button> button;
         
+        /**
+    	 * 버튼 DTO 클래스
+    	 * @author 신용진
+    	 */
         @Getter
         @Setter
         @ToString

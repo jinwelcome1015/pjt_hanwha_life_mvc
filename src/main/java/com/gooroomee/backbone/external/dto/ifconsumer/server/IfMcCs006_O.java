@@ -21,11 +21,13 @@ import lombok.ToString;
 @ToString
 public class IfMcCs006_O {
 	
-	// XXX 확인
 	/** 사원정보 */
 	private List<EmpeInfo> empeInfoList;
 	
-	
+	/**
+	 * 사원정보 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString

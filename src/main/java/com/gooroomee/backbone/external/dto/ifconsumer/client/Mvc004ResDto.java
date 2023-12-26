@@ -19,7 +19,6 @@ import lombok.ToString;
 @ToString
 public class Mvc004ResDto {
 
-	// XXX 확인
     /** 사용자리스트 */
 	private List<User> userLstList;
 	
@@ -29,6 +28,10 @@ public class Mvc004ResDto {
     /** pageNumber */
     private int pageNumber;
 
+    /**
+     * 사용자정보 DTO 클래스
+     * @author 신용진
+     */
 	@Getter
 	@Setter
 	@ToString

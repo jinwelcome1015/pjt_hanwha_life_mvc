@@ -28,7 +28,10 @@ public class IfMcCs012_O {
 	private DataBody dataBody;
 
 	
-	
+	/**
+	 * 데이터헤더 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString
@@ -53,7 +56,10 @@ public class IfMcCs012_O {
 	}
 
 	
-	
+	/**
+	 * 데이터바디 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString
@@ -71,7 +77,10 @@ public class IfMcCs012_O {
 		/** 페이로드 */
 		private Payload payload;
 
-
+		/**
+		 * 페이로드 DTO 클래스
+		 * @author 신용진
+		 */
 		@Getter 
 		@Setter
 		@ToString

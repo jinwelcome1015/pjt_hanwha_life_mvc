@@ -51,14 +51,12 @@ public class Mvc002ReqDto {
 	/** 고객명 */
 	private String custNm;
 
-	// XXX 확인
 	/** 발급일자 */
 //	@JsonFormat(pattern = "yyyyMMdd")
 //	@DateTimeFormat(pattern = "yyyyMMdd")
 //	private Date isncDate;
 	private String isncDate;
 
-	// XXX 확인
 	/** 생년월일 */
 //	@JsonFormat(pattern = "yyyyMMdd")
 //	@DateTimeFormat(pattern = "yyyyMMdd")
@@ -80,7 +78,6 @@ public class Mvc002ReqDto {
 	/** 여권번호 */
 	private String psprNo;
 
-	// XXX 확인
 	/** 만료일자 */
 //	@JsonFormat(pattern = "yyyyMMdd")
 //	@DateTimeFormat(pattern = "yyyyMMdd")

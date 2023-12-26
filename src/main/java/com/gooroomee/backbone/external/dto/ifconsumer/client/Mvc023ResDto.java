@@ -28,9 +28,13 @@ import lombok.ToString;
 @ToString
 public class Mvc023ResDto {
 
-	/** 방문이슈고객월간휴일조회 */
+	/** 일자정보 */
 	private List<DateInfo> dateInfoList;
 
+	/**
+	 * 일자정보 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

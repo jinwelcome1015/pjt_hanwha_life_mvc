@@ -22,14 +22,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public class IfMcCs019_I {
-	// XXX 확인
+
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
 	
-	// XXX 확인
 	/** 데이터바디 */
 	private DataBody dataBody;
 	
+	/**
+	 * 데이터헤더 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString
@@ -56,6 +59,11 @@ public class IfMcCs019_I {
 		private String DLRE_MSG;
 	}
 	
+	
+	/**
+	 * 데이터바디 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString
@@ -69,10 +77,14 @@ public class IfMcCs019_I {
 		@JsonProperty("USER_ID")
 		private String USER_ID;
 		
-		// XXX 확인
 		/** 이미지 배열 Json Array */
 		private List<Image> images;
 
+		
+		/**
+		 * 이미지정보 DTO 클래스
+		 * @author 신용진
+		 */
 		@Getter 
 		@Setter
 		@ToString

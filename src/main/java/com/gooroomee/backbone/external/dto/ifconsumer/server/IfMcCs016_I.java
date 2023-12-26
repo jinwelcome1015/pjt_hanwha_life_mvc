@@ -18,22 +18,22 @@ import lombok.ToString;
 @ToString
 public class IfMcCs016_I {
 
-	// XXX 확인
 	/** SNS */
 	private Sns sns;
 
 	/** 전화번호 */
-	// XXX 확인
 	private Tlno tlno;
 
-	// XXX 확인
 	/** 주소 */
 	private Addr addr;
 
-	// XXX 확인
 	/** 전자위치 */
 	private ElctLoct elctLoct;
 
+	/**
+	 * SNS DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -49,6 +49,10 @@ public class IfMcCs016_I {
 		private String snsRmrkCntn;
 	}
 
+	/**
+	 * 전화번호 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -75,6 +79,11 @@ public class IfMcCs016_I {
 		private String tlnoRmrkCntn;
 	}
 
+	
+	/**
+	 * 주소 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -120,6 +129,10 @@ public class IfMcCs016_I {
 
 	}
 
+	/**
+	 * 전자위치 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

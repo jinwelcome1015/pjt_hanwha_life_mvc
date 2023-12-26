@@ -45,15 +45,18 @@ public class Mvc008ResDto {
 	/** 전화가입자번호 */
 	private String tlphSbno;
 
-	// XXX 확인
 	/** 고객계좌목록조회목록 */
 	private List<CustAcntListInqy> custAcntListInqyList;
 
+	/**
+	 * 고객계좌정보 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
 	public static class CustAcntListInqy {
-		// XXX 확인
+
 		/** 등록일시 */
 		private Timestamp rgstDttm;
 

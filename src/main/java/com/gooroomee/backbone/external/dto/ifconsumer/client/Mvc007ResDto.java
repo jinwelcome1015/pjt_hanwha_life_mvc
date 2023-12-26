@@ -31,10 +31,13 @@ public class Mvc007ResDto {
 	/** 다음페이지여부(보험코어의 변수명이 잘못됨. 사실상 마지막 페이지 여부(isLastPageYn)) */
 	private String nextPageYn;
 
-	// XXX 확인
 	/** 고객계약정보조회결과 */
 	private List<CustCntcInfoInqyRslt> custCntcInfoInqyRsltList;
 
+	/**
+	 * 고객계약정보조회결과 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -75,14 +78,12 @@ public class Mvc007ResDto {
 		/** 최종납입년월 */
 		private String lastPaymYymm;
 
-		// XXX 확인
 		/** 계약일자 */
 //		@JsonFormat(pattern = "yyyyMMdd")
 //		@DateTimeFormat(pattern = "yyyyMMdd")
 //		private Date ctdt;
 		private String ctdt;
 
-		// XXX 확인
 		/** 만기일자 */
 //		@JsonFormat(pattern = "yyyyMMdd")
 //		@DateTimeFormat(pattern = "yyyyMMdd")

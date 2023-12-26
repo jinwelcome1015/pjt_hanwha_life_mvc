@@ -22,7 +22,6 @@ import lombok.ToString;
 @ToString
 public class IfMcCs004_O {
 
-    // XXX 확인
     /** 사용자리스트 */
 	private List<User> userLstList;
 	
@@ -33,6 +32,10 @@ public class IfMcCs004_O {
     private int pageNumber;
 	
 
+    /**
+     * 사용자 DTO 클래스
+     * @author 신용진
+     */
 	@Getter
 	@Setter
 	@ToString

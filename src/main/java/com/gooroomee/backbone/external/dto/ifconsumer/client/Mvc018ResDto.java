@@ -20,10 +20,13 @@ import lombok.ToString;
 @ToString
 public class Mvc018ResDto {
 
-	// XXX 확인
 	/** 우편번호 */
 	private List<Pscd> pscdList;
 
+	/**
+	 * 우편번호 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

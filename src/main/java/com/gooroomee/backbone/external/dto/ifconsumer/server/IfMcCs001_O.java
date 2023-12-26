@@ -19,15 +19,16 @@ import lombok.ToString;
 @ToString
 public class IfMcCs001_O {
 	
-	// XXX 확인
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
 	
-	// XXX 확인
 	/** 데이터바디 */
 	private DataBody dataBody;
 	
-	
+	/**
+	 * 데이터헤더 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString
@@ -54,6 +55,10 @@ public class IfMcCs001_O {
 		private String DLRE_MSG;
 	}
 	
+	/**
+	 * 데이터바디 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter 
 	@Setter
 	@ToString

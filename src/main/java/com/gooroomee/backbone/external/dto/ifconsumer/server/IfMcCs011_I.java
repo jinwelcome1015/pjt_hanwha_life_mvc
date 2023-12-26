@@ -21,14 +21,16 @@ import lombok.ToString;
 @ToString
 public class IfMcCs011_I {
 
-	// XXX 확인
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
 
-	// XXX 확인
 	/** 데이터바디 */
 	private DataBody dataBody;
 
+	/**
+	 * 데이터헤더 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -60,6 +62,10 @@ public class IfMcCs011_I {
 
 	}
 
+	/**
+	 * 데이터바디 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -95,14 +101,16 @@ public class IfMcCs011_I {
 		/** 채널코드 */
 		private String channel;
 
-		// XXX 확인
 		/** 전자서명 */
 		private Sign sign;
 
-		// XXX 확인
 		/** 콜백 */
 		private Callback callback;
 
+		/**
+		 * 전자서명 DTO 클래스
+		 * @author 신용진
+		 */
 		@Getter
 		@Setter
 		@ToString
@@ -112,6 +120,10 @@ public class IfMcCs011_I {
 			
 		}
 
+		/**
+		 * 콜백 DTO 클래스
+		 * @author 신용진
+		 */
 		@Getter
 		@Setter
 		@ToString

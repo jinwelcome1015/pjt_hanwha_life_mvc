@@ -23,9 +23,13 @@ import lombok.ToString;
 @ToString
 public class IfMcCs023_O {
 	
-    /** 방문이슈고객월간휴일조회 */
+    /** 일자정보 */
 	private List<DateInfo> dateInfoList;
 
+	/**
+	 * 일자정보 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

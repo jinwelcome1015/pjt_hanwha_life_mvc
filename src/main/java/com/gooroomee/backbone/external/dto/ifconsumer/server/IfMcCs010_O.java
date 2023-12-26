@@ -21,14 +21,16 @@ import lombok.ToString;
 @ToString
 public class IfMcCs010_O {
 
-	// XXX 확인
 	/** 데이터헤더 */
 	private DataHeader dataHeader;
 
-	// XXX 확인
 	/** 데이터바디 */
 	private DataBody dataBody;
 
+	/**
+	 * 데이터헤더 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -52,6 +54,10 @@ public class IfMcCs010_O {
 
 	}
 
+	/**
+	 * 데이터바디 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

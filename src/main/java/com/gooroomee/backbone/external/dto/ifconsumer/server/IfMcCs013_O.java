@@ -215,7 +215,10 @@ public class IfMcCs013_O {
     private TrflCnfmHist trflCnfmHist;
     
 
-
+    /**
+	 * 진위확인이력 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString

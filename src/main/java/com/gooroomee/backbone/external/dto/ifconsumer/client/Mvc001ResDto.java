@@ -23,7 +23,11 @@ public class Mvc001ResDto {
 
 	/** 데이터바디 */
 	private DataBody dataBody;
-
+	
+	/**
+	 * 데이터헤더 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
@@ -45,6 +49,10 @@ public class Mvc001ResDto {
 		private String DLRE_MSG;
 	}
 
+	/**
+	 * 데이터바디 DTO 클래스
+	 * @author 신용진
+	 */
 	@Getter
 	@Setter
 	@ToString
