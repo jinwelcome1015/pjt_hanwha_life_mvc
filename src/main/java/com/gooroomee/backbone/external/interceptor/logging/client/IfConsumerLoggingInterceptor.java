@@ -83,7 +83,7 @@ public class IfConsumerLoggingInterceptor extends ClientHttpRequestInterceptorFo
 		if(ifSpec != null) {
 			rcveSrvcKorNm = String.format("(%s)", ifSpec.getRcveSrvcKorNm());
 		}
-		
+		log.info("[INTERFACE] [REQUEST-URI] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, request.getURI());
 		log.info("[INTERFACE] [REQUEST-HEADER] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("header"));
 		log.info("[INTERFACE] [REQUEST-PAYLOAD] : {}{} : {}", ifSpec.getRcveSrvcId(), rcveSrvcKorNm, requestBodyObjectNode.get("payload"));
 	}
