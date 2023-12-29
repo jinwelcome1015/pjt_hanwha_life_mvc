@@ -60,6 +60,14 @@
 			}
 
 			document.querySelector('#apiPath').addEventListener('change', async (event) => {
+				
+				const oSelectedOption = event.target.options[event.target.selectedIndex];
+
+				const sSelectedOptionText = oSelectedOption.innerText;
+				const bHasSubcase = eval(oSelectedOption.getAttribute('data-has-subcase'));
+				const bIsImageSystemPath = eval(oSelectedOption.getAttribute('data-is-image-system-path'));
+				const sSubcase = oSelectedOption.getAttribute('data-subcase');
+
 				fn_initDivForIdCard();
 
 				document.querySelector('#requestHeader').value = '';
@@ -72,14 +80,14 @@
 				} else {
 					document.querySelector('#btnForRequest').disabled = false;
 				}
-
+				
 				const sParamNameForRequestMockData = document.querySelector('#paramNameForRequestMockData').value;
 				const sUrlForRequestMockData = document.querySelector('#urlForRequestMockData').value;
-
 				const sUrl = sBaseUrl + sUrlForRequestMockData;
 
+				let res;
 				try {
-					const res = await axios({
+					res = await axios({
 						url: sUrl,
 						method: 'GET',
 						headers: {
@@ -90,66 +98,60 @@
 						},
 						responseType: 'json'
 					});
-
-					console.log('response for [API-REQUEST]', res);
-
-					document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);
-					document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
-
-					const sTargetText = event.target.options[event.target.selectedIndex].innerText;
-
-					if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText) || /^19\..*/.test(sTargetText)) {
-						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
-						oHttpRequestHeader['Content-Type'] = 'application/json';
-						document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
-
-						document.querySelector('#divForRequestBody').style.display = 'block';
-						document.querySelector('#divForIdCard').style.display = 'block';
-						document.querySelector('#divForImgSys').style.display = 'none';
-
-					} else if(/^99\..*/.test(sTargetText)){
-						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
-						oHttpRequestHeader['Content-Type'] = 'multipart/form-data';
-						document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
-
-						document.querySelector('#divForRequestBody').style.display = 'none';
-						document.querySelector('#divForIdCard').style.display = 'none';
-						document.querySelector('#divForImgSys').style.display = 'block';
-
-						const oFormForImgSys = document.querySelector('#formForImgSys');
-
-						oFormForImgSys.replaceChildren();
-						
-						const oData = res.data;
-						
-						let aHtml = [];
-						
-						for(let key in oData){
-							if(key === 'file'){
-								aHtml.push(`${key} : <input type="file" name="${key}" id="${key}">`);
-							}else{
-								aHtml.push(`${key} : <input type="text" name="${key}" id="${key}" value="${oData[key]}">`);
-							}
-						}
-
-						let sHtml = aHtml.join('<br/>');
-						
-						oFormForImgSys.innerHTML = sHtml;
-
-					} else {
-						const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
-						oHttpRequestHeader['Content-Type'] = 'application/json';
-						document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
-
-						document.querySelector('#divForRequestBody').style.display = 'block';
-						document.querySelector('#divForIdCard').style.display = 'none';
-						document.querySelector('#divForImgSys').style.display = 'none';
-					}
 				} catch (error) {
 					alert(`[error name] : ${error.name}\n[error message] : ${error.message}`);
 					throw error;
 				}
 
+				console.log('response for [API-REQUEST]', res);
+				document.querySelector('#requestBody').value = JSON.stringify(res.data, null, nJsonStringifySpace);
+				document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+				
+				// if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText) || /^19\..*/.test(sTargetText)) {
+				// if (/^19\..*/.test(sSelectedOptionText)) {
+				if (bHasSubcase) {
+					const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+					oHttpRequestHeader['Content-Type'] = 'application/json';
+					document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+					document.querySelector('#divForRequestBody').style.display = 'block';
+
+					
+					document.querySelector('#divForIdCard').style.display = 'block';
+					document.querySelector('#divForImgSys').style.display = 'none';
+				
+				} else if(bIsImageSystemPath){
+					const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+					oHttpRequestHeader['Content-Type'] = 'multipart/form-data';
+					document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+					document.querySelector('#divForRequestBody').style.display = 'none';
+					document.querySelector('#divForIdCard').style.display = 'none';
+					document.querySelector('#divForImgSys').style.display = 'block';
+					const oFormForImgSys = document.querySelector('#formForImgSys');
+					oFormForImgSys.replaceChildren();
+					
+					const oData = res.data;
+					
+					let aHtml = [];
+					
+					for(let key in oData){
+						if(key === 'file'){
+							aHtml.push(`${key} : <input type="file" name="${key}" id="${key}">`);
+						}else{
+							aHtml.push(`${key} : <input type="text" name="${key}" id="${key}" value="${oData[key]}">`);
+						}
+					}
+					let sHtml = aHtml.join('<br/>');
+					
+					oFormForImgSys.innerHTML = sHtml;
+				
+				} else {
+					const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
+					oHttpRequestHeader['Content-Type'] = 'application/json';
+					document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
+					document.querySelector('#divForRequestBody').style.display = 'block';
+					document.querySelector('#divForIdCard').style.display = 'none';
+					document.querySelector('#divForImgSys').style.display = 'none';
+				}
 			});
 
 
@@ -174,7 +176,6 @@
 
 				
 				try {
-
 					const res = await axios({
 						url: sUrl,
 						method: 'POST',
@@ -261,7 +262,7 @@
 			}
 			return bIsImageFile;
 		}
-
+		
 		function fn_initDivForIdCard() {
 			document.querySelector('#idCardType').selectedIndex = 0;
 			const oImgForIdCard = document.querySelector('#imgForIdCard');
@@ -311,7 +312,7 @@
 					<select name="apiPath" id="apiPath">
 						<option value="">&lt;선택&gt;</option>
 						<option th:each="apiInfo : ${apiInfoList}" th:value="${apiInfo.path}"
-							th:text="${apiInfo.name} + ' ' + '( ' + ${apiInfo.path} + ' )'">
+							th:text="${apiInfo.name} + ' ' + '( ' + ${apiInfo.path} + ' )'" th:data-has-subcase="${apiInfo.hasSubcase}" th:data-subcase="${apiInfo.subcase}" th:data-is-image-system-path="${apiInfo.isImageSystemPath}">
 						</option>
 					</select>
 				</div>

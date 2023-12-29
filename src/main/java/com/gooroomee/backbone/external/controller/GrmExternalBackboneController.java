@@ -22,6 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -265,6 +267,15 @@ public class GrmExternalBackboneController {
 	/** 요청 파라미터로 Base64 데이터를 갖는 API 임을 나타내는 token */
 	private static final String[] TOKENS_OF_URI_WITH_BASE64_REQUEST_PARAM = new String[] { "idcdOcrRqst", "idcdOcrRqst2", "entry2" };
 
+	/** 기본 sub case 경로 */
+	private static final String DEFAULT_SUBCASE_PATH = "/1";
+	
+	/** path variable token */
+	private static final String PATH_VARIABLE_TOKEN = "\\{\\w+\\}";
+	
+	/** image system token */
+	private static final String IMAGE_SYSTEM_TOKEN = "/edms";
+	
 	
 	/**
 	 * 신분증 타입으로부터 진위확인구분코드를 도출해서 반환한다.
@@ -2726,8 +2737,8 @@ public class GrmExternalBackboneController {
 	 * API 들의 name 과 path 를 담은 Map 객체의 List 를 반환한다.
 	 * @return API 들의 name 과 path 를 담은 Map 객체의 List
 	 */
-	private List<Map<String, String>> getApiInfoList() {
-		List<Map<String, String>> apiInfoList = new ArrayList<>();
+	private List<Map<String, Object>> getApiInfoList() {
+		List<Map<String, Object>> apiInfoList = new ArrayList<>();
 
 		Method[] declaredMethods = this.getClass().getDeclaredMethods();
 		for (Method method : declaredMethods) {
@@ -2741,9 +2752,16 @@ public class GrmExternalBackboneController {
 						path.startsWith(API_URL_TOKEN)
 						|| path.startsWith(IF_PROVIDER_FOR_GRM_SERVICE_URL_TOKEN)
 					) {
-						Map<String, String> map = new HashMap<>();
-						map.put("path", path);
+						Map<String, Object> map = new HashMap<>();
+						
+						String modifiedPath = path.replaceAll("/\\{\\w+\\}", DEFAULT_SUBCASE_PATH);
+//						map.put("path", path);
+						
+						map.put("path", modifiedPath);
 						map.put("name", name);
+						map.put("hasSubcase", Pattern.compile(PATH_VARIABLE_TOKEN).matcher(path).find());
+						map.put("subcase", DEFAULT_SUBCASE_PATH);
+						map.put("isImageSystemPath", Pattern.compile(IMAGE_SYSTEM_TOKEN).matcher(path).find());
 						apiInfoList.add(map);
 					}
 				}
@@ -2751,8 +2769,8 @@ public class GrmExternalBackboneController {
 		}
 
 		apiInfoList.sort((o1, o2) -> {
-			String name_o1 = o1.get("name");
-			String name_o2 = o2.get("name");
+			String name_o1 = (String) o1.get("name");
+			String name_o2 = (String) o2.get("name");
 			int compareToIgnoreCase = name_o1.compareToIgnoreCase(name_o2);
 			return compareToIgnoreCase;
 		});
