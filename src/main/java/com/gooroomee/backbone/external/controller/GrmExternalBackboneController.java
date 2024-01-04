@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -2323,6 +2325,13 @@ public class GrmExternalBackboneController {
 
 			mvc002ReqDto.setFrnrRgstNo(alienRegistrationNumber);
 			
+			// XXX [BOC] : 외국인 등록증 일련번호 (보험코어의 신분증 진위확인 화면에서 외국인등록증의 경우, 외국인등록증 뒷면의 일련번호를 자동차운전면허번호에 담아서 요청하기에 이와 동일하게 처리함.)
+			String driverLicenseNumber = StringUtils.defaultString(reqDto.getDrvnLcnsNo());
+			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+			driverLicenseNumber = driverLicenseNumber.replaceAll("\\s+", "");
+			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
+			// XXX [EOC] : 외국인 등록증 일련번호 (보험코어의 신분증 진위확인 화면에서 외국인등록증의 경우, 외국인등록증 뒷면의 일련번호를 자동차운전면허번호에 담아서 요청하기에 이와 동일하게 처리함.)
+			
 			String btdt = this.getBirthYyyyMMddFromPersonalNum(alienRegistrationNumber);
 			mvc002ReqDto.setBtdt(btdt);
 		}
@@ -2669,7 +2678,11 @@ public class GrmExternalBackboneController {
 
 		return "test/apis";
 	}
-
+	
+	public static void main(String[] args) {
+		Path path = Paths.get("/a/", "/b/", "/c");
+		System.out.println(path.toString());
+	}
 	
 	
 	/**
@@ -2692,7 +2705,16 @@ public class GrmExternalBackboneController {
 			if (requestMapping != null) {
 				String[] paths = requestMapping.path();
 				for (String path : paths) {
-					if (path.equalsIgnoreCase(firstParamValue)) {
+					String modifiedPath = path;
+					String subcasePath = null;
+					if(isMatchWithPathVariablePattern(path)) {
+						modifiedPath = path.replaceAll("/" + PATH_VARIABLE_TOKEN + "$", "");
+						subcasePath = firstParamValue.replaceAll("^" + modifiedPath, "");
+					}
+					
+//					if (path.equalsIgnoreCase(firstParamValue)) {
+//					if (modifiedPath.equalsIgnoreCase(firstParamValue)) {
+					if (modifiedPath.equalsIgnoreCase(firstParamValue.replaceAll(subcasePath + "$", ""))) {
 						String methodName = method.getName();
 
 						Parameter[] parameters = method.getParameters();
@@ -2704,9 +2726,11 @@ public class GrmExternalBackboneController {
 
 								Class<?> parameterType = null;
 								
-								if(path.startsWith(API_URL_TOKEN)) {
+//								if(path.startsWith(API_URL_TOKEN)) {
+								if(modifiedPath.startsWith(API_URL_TOKEN)) {
 									parameterType = parameter.getType();
-									Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
+//									Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, null);
+									Object mockRequestDataObject = MockUtil.getMockRequestData(methodName, parameterType, subcasePath);
 									Map<String, Object> mockRequestDataMap = objectMapper.convertValue(mockRequestDataObject,
 											new TypeReference<Map<String, Object>>() {
 											});
@@ -2754,12 +2778,12 @@ public class GrmExternalBackboneController {
 					) {
 						Map<String, Object> map = new HashMap<>();
 						
-						String modifiedPath = path.replaceAll("/\\{\\w+\\}", DEFAULT_SUBCASE_PATH);
+						String modifiedPath = path.replaceAll("/" + PATH_VARIABLE_TOKEN, DEFAULT_SUBCASE_PATH);
 //						map.put("path", path);
 						
 						map.put("path", modifiedPath);
 						map.put("name", name);
-						map.put("hasSubcase", Pattern.compile(PATH_VARIABLE_TOKEN).matcher(path).find());
+						map.put("hasSubcase", isMatchWithPathVariablePattern(path));
 						map.put("subcase", DEFAULT_SUBCASE_PATH);
 						map.put("isImageSystemPath", Pattern.compile(IMAGE_SYSTEM_TOKEN).matcher(path).find());
 						apiInfoList.add(map);
@@ -2778,6 +2802,14 @@ public class GrmExternalBackboneController {
 		return apiInfoList;
 	}
 
+	/**
+	 * 인자로 받은 문자열이 PathVariable 패턴을 담고 있는지 여부를 반환한다.  
+	 * @param string PathVariable 패턴을 담고 있는지 여부를 판별할 대상 문자열
+	 * @return 인자로 받은 문자열이 PathVariable 패턴을 담고 있는지 여부
+	 */
+	private boolean isMatchWithPathVariablePattern(String string) {
+		return Pattern.compile(PATH_VARIABLE_TOKEN).matcher(string).find();
+	}
 	
 	
 	/**

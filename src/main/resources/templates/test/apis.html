@@ -108,14 +108,12 @@
 				document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
 				
 				// if (/^00\..*/.test(sTargetText) || /^01\..*/.test(sTargetText) || /^19\..*/.test(sTargetText)) {
-				// if (/^19\..*/.test(sSelectedOptionText)) {
-				if (bHasSubcase) {
+				if (/^19\..*/.test(sSelectedOptionText)) {
+				// if (bHasSubcase) {
 					const oHttpRequestHeader = JSON.parse(document.querySelector('#requestHeader').value);
 					oHttpRequestHeader['Content-Type'] = 'application/json';
 					document.querySelector('#requestHeader').value = JSON.stringify(oHttpRequestHeader, null, nJsonStringifySpace);
 					document.querySelector('#divForRequestBody').style.display = 'block';
-
-					
 					document.querySelector('#divForIdCard').style.display = 'block';
 					document.querySelector('#divForImgSys').style.display = 'none';
 				

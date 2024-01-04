@@ -97,7 +97,18 @@ public class ApiServerLoggingInterceptor implements HandlerInterceptor {
 				}
 				requestObjectNode.put("data", "");
 			} 
-			log.info("[GRM-CLIENT] [{}({})] [Request Body] : {}", controllerPath, controllerName, requestObjectNode);
+			
+			String requestBodyString = null;
+			
+			if(requestObjectNode.get("lognPswd") == null) {
+				requestBodyString = requestObjectNode.toString();
+			} else {
+				log.info("lognPswd 가 로그에 찍히지 않도록 \"\"로 대체합니다.");
+				requestObjectNode.put("lognPswd", "");
+				requestBodyString = requestObjectNode.toString();
+			}
+//			log.info("[GRM-CLIENT] [{}({})] [Request Body] : {}", controllerPath, controllerName, requestObjectNode);
+			log.info("[GRM-CLIENT] [{}({})] [Request Body] : {}", controllerPath, controllerName, requestBodyString);
 		}
 	}
 

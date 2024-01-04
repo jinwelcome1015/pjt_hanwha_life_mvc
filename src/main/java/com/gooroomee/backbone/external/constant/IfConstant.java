@@ -208,6 +208,7 @@ public class IfConstant {
 
 		/** 인터페이스 명세 : SSO대체로그인인증 */
 		IfMcCs005("HLIMVC00019", "comItfcUserCtfnPSI001c", "SSO대체로그인인증", "COM"),
+//		IfMcCs005("HLIMVC00042", "comItfcUserCtfnNewPSI001c", "SSO대체로그인인증", "COM"),
 
 		/** 인터페이스 명세 : 사원목록조회 */
 		IfMcCs006("HLIMVC00020", "comEmpeInqyPSI001r", "사원목록조회", "COM"),

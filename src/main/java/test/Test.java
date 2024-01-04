@@ -20,6 +20,11 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gooroomee.backbone.external.util.AesUtil;
 
 import korealife.uv.com.cm.SHA256CmCrypt;
@@ -57,7 +62,32 @@ public class Test {
 //		test.regex();
 //		test.sex();
 //		test.log();
-		test.urlPattern();
+//		test.urlPattern();
+		test.jsonNode();
+	}
+
+	private void jsonNode() throws JsonMappingException, JsonProcessingException {
+		String aaa = "{\r\n" + 
+				"			\"a_1\" : {\r\n" + 
+				"				\"b_1\" : {\r\n" + 
+				"					\"c_1\" : \"가\",\r\n" + 
+				"					\"c_2\" : \"나\",\r\n" + 
+				"					\"c_3\" : \"다\"\r\n" + 
+				"				}\r\n" + 
+				"			}\r\n" + 
+				"		}";
+				
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(aaa);
+		JsonNode deepCopyJsonNode = jsonNode.deepCopy();
+		ObjectNode objectNode = ObjectNode.class.cast(deepCopyJsonNode.get("a_1").get("b_1"));
+//		ObjectNode objectNode = ObjectNode.class.cast(jsonNode.get("a_1").get("b_1"));
+		objectNode.put("c_2", "");
+		
+		System.out.println(String.format("[jsonNode] : %s", jsonNode));
+		System.out.println(String.format("[deepCopyJsonNode] : %s", deepCopyJsonNode));
+		System.out.println(String.format("[deepCopyJsonNode] : %s", deepCopyJsonNode.toString()));
+		System.out.println(String.format("[objectNode] : %s", objectNode));
 	}
 
 	private void sex() {

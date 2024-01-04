@@ -123,7 +123,8 @@ public class MockUtil {
 		String mockDataRootPath = "/assets/mockData/";
 		String mockDataDetailPath = mockDataRootPath + thisMethodName;
 		if(subCasePath != null) {
-			mockDataDetailPath += "/" + subCasePath;
+//			mockDataDetailPath += "/" + subCasePath;
+			mockDataDetailPath = Paths.get(mockDataDetailPath, subCasePath).toString();
 		}
 
 		File mockResponseDataFile = new File(mockDataDetailPath, mockDataFileName);
