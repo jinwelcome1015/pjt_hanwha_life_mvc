@@ -459,10 +459,11 @@ public class IfConstant {
 
 		// XXX 확인 : 운전면허증(도로교통공단), 운전면허증(경찰청) 등등 진위확인구분코드 확인 필요
 		/** OCR 신분증 타입 : 운전면허증 */
-		DriverLicense("Driver's License", "dl", "011"),
+//		DriverLicense("Driver's License", "dl", "011"),
+		DriverLicense("Driver's License", "dl", "911"),
 
 		/** OCR 신분증 타입 : 여권 */
-		Passport("Passport", "dl", "991"),
+		Passport("Passport", "pp", "991"),
 
 		/** OCR 신분증 타입 : 외국인등록증 */
 		AlienRegistrationCard("Alien Registration Card", "ac", "017");

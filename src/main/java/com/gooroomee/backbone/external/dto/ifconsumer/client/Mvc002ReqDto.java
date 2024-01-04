@@ -23,7 +23,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Mvc002ReqDto {
-
+			
 	/** 사원번호 */
 	private String emnb;
 

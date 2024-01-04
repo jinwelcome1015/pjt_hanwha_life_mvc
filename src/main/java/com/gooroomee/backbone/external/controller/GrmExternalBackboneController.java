@@ -18,19 +18,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -55,9 +50,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gooroomee.backbone.external.constant.IfConstant;
@@ -114,6 +107,7 @@ import com.gooroomee.backbone.external.dto.ifconsumer.client.Mvc999ResDto;
 import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto;
 import com.gooroomee.backbone.external.dto.ifconsumer.client.common.ResponseDto.Result;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I.DataBody.Image;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs002_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs002_O;
@@ -121,12 +115,14 @@ import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs003_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs003_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_O.User;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs005_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs005_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs006_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs006_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_O.CustCntcInfoInqyRslt;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs008_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs008_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs009_I;
@@ -134,6 +130,7 @@ import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs009_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs010_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs010_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I.DataBody.Callback;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs012_O;
@@ -142,6 +139,7 @@ import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs013_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs014_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs014_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I.NttkButnCntn.Button;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs016_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs016_O;
@@ -153,14 +151,9 @@ import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs019_O;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_O;
+import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_O.DateInfo;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_I;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs999_O;
-import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs001_I.DataBody.Image;
-import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs004_O.User;
-import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs007_O.CustCntcInfoInqyRslt;
-import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs011_I.DataBody.Callback;
-import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs015_I.NttkButnCntn.Button;
-import com.gooroomee.backbone.external.dto.ifconsumer.server.IfMcCs023_O.DateInfo;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegram;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeader;
 import com.gooroomee.backbone.external.dto.ifconsumer.server.common.IfTelegramHeaderResponseMessage;
@@ -972,6 +965,21 @@ public class GrmExternalBackboneController {
 	 * <pre>
 	 * [02] 
 	 * API - 진위확인결과조회
+	 * 
+	 * =============================================================
+	 * [A]
+	 * <보험코어 - 신분증진위확인처리> 화면 참고. 
+	 * 	
+	 * [주민등록증] 경우 : 진위확인구분코드, 고객명, 주민등록번호, 발급일자
+	 * [운전면허증_암호(도로교통공단)] 경우 : 고객명, 운전면허번호, 생년월일, 일련번호
+	 * [외국인등록증(하이코리아)] 경우 : 고객명, 외국인등록번호, 등록일자, 일련번호
+	 * [여권] 경우 : 고객명, 여권번호, 발급일자, 만료일자, 생년월일
+	 * 
+	 * 
+	 * [B]
+	 * 고객 아이디 를 얻기 위해서는 기본적으로 주민등록번호 필요.
+	 * =============================================================
+	 * 
 	 * </pre>
 	 * @param reqDto 요청 DTO 객체
 	 * @param request HttpServletRequest 객체
@@ -2295,11 +2303,16 @@ public class GrmExternalBackboneController {
 			
 			driverLicenseNumber = driverLicenseNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
 			driverLicenseNumber = driverLicenseNumber.replaceAll("\\s+", "");
+			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
 			
 			String driverLicenseSequenceNumber = reqDto.getDrvnLcnsSqno();
+			if("".equals(StringUtils.defaultString(driverLicenseSequenceNumber))) {
+				throw new IfException(HttpStatus.OK, "운전면허일련번호를 입력해주세요.");
+			}
+			driverLicenseSequenceNumber = driverLicenseSequenceNumber.replaceAll(DRIVER_LICENSE_NUMBER_DELIMITER, "");
+			driverLicenseSequenceNumber = driverLicenseSequenceNumber.replaceAll("\\s+", "");
 			
 			mvc002ReqDto.setDrvnLcnsSqno(driverLicenseSequenceNumber);
-			mvc002ReqDto.setDrvnLcnsNo(driverLicenseNumber);
 			
 //			String rrno = reqDto.getRrno();
 //			rrno = rrno.replaceAll(PERSONAL_NUMBER_DELIMITER, "");
